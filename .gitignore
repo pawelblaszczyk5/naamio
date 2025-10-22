@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# testing
+coverage/
+
+# artifacts
+.turbo/
+dist/
+
+# misc
+.DS_Store
+*.pem
+pnpm-debug.log*
+
+# env files
+.env
+
+# apps/web specific
+
+/apps/web/.nitro
+/apps/web/.output
+/apps/web/.tanstack

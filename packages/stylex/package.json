@@ -1,0 +1,31 @@
+{
+	"name": "@naamio/stylex",
+	"description": "Library with StyleX wrapper",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"default": "./dist/src/mod.js",
+			"types": "./dist/src/mod.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck",
+		"dev": "tsc --noCheck",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@stylexjs/stylex": "catalog:"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"typescript": "catalog:"
+	}
+}

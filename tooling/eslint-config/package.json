@@ -1,0 +1,53 @@
+{
+	"name": "@naamio/eslint-config",
+	"description": "Shared ESLint config",
+	"type": "module",
+	"exports": {
+		"./core": {
+			"default": "./core.js"
+		},
+		"./lingui": {
+			"default": "./lingui.js"
+		},
+		"./node": {
+			"default": "./node.js"
+		},
+		"./react": {
+			"default": "./react.js"
+		},
+		"./markdown": {
+			"default": "./markdown.js"
+		}
+	},
+	"dependencies": {
+		"@eslint/eslintrc": "^3.3.1",
+		"@eslint/js": "^9.37.0",
+		"@eslint/markdown": "^7.4.0",
+		"@stylistic/eslint-plugin": "^5.4.0",
+		"eslint": "catalog:",
+		"eslint-config-flat-gitignore": "^2.1.0",
+		"eslint-import-resolver-typescript": "^4.4.4",
+		"eslint-plugin-canonical": "^5.1.3",
+		"eslint-plugin-de-morgan": "^2.0.0",
+		"eslint-plugin-eslint-comments": "^3.2.0",
+		"eslint-plugin-fp": "^2.3.0",
+		"eslint-plugin-import-x": "^4.16.1",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"eslint-plugin-lingui": "^0.11.0",
+		"eslint-plugin-n": "^17.23.1",
+		"eslint-plugin-no-secrets": "^2.2.1",
+		"eslint-plugin-perfectionist": "^4.15.1",
+		"eslint-plugin-prefer-arrow-functions": "^3.9.1",
+		"eslint-plugin-promise": "^7.2.1",
+		"eslint-plugin-react-dom": "^2.0.6",
+		"eslint-plugin-react-hooks": "^7.0.0",
+		"eslint-plugin-react-hooks-extra": "^2.0.6",
+		"eslint-plugin-react-naming-convention": "^2.0.6",
+		"eslint-plugin-react-refresh": "^0.4.23",
+		"eslint-plugin-react-web-api": "^2.0.6",
+		"eslint-plugin-react-x": "^2.0.6",
+		"eslint-plugin-regexp": "^2.10.0",
+		"eslint-plugin-unicorn": "^61.0.2",
+		"typescript-eslint": "8.46.0"
+	}
+}

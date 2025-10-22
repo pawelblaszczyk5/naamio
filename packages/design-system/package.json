@@ -1,0 +1,46 @@
+{
+	"name": "@naamio/design-system",
+	"description": "Everything related to shared UI concepts across the app. CSS reset, components, theming, styles",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		"./reset.css": "./src/reset.css",
+		"./icons-spritesheet.svg": "./src/icons-spritesheet.svg",
+		"./components/*": {
+			"default": "./dist/src/components/*.jsx",
+			"types": "./dist/src/components/*.d.ts"
+		},
+		"./styles/utilities": {
+			"default": "./dist/src/styles/utilities.js",
+			"types": "./dist/src/styles/utilities.d.ts"
+		},
+		"./theme/color.stylex": {
+			"default": "./dist/src/theme/color.stylex.js",
+			"types": "./dist/src/theme/color.stylex.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck",
+		"dev": "tsc --noCheck",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@naamio/assert": "workspace:*",
+		"@naamio/stylex": "workspace:*",
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"eslint": "catalog:",
+		"typescript": "catalog:"
+	}
+}

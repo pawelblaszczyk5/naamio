@@ -1,0 +1,21 @@
+{
+	"name": "@naamio/docs",
+	"description": "Documentation",
+	"sideEffects": false,
+	"type": "module",
+	"scripts": {
+		"build": "vitepress build src",
+		"dev": "vitepress dev src",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"preview": "vitepress preview src --port 3205",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"oxc-minify": "^0.94.0",
+		"vitepress": "2.0.0-alpha.12"
+	}
+}

@@ -1,0 +1,5 @@
+{
+	"extends": "@naamio/typescript-config/dom-build",
+	"compilerOptions": { "jsx": "preserve", "types": ["react/experimental", "react-dom/experimental"] },
+	"include": ["src"]
+}

@@ -1,0 +1,41 @@
+{
+	"name": "@naamio/root",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pawelblaszczyk5/naamio"
+	},
+	"type": "module",
+	"scripts": {
+		"build": "turbo run build",
+		"ci": "turbo run build lint typecheck sort-package-json spellcheck format --continue && turbo boundaries",
+		"ci:fix": "turbo run lint:fix sort-package-json:fix format:fix --continue",
+		"clean": "find . -type d \\( -name \".turbo\" -o -name \"node_modules\" -o -name \"dist\" \\) -prune -exec rm -rf {} +",
+		"predev": "turbo run build --filter=\"./{packages,tooling}/*\"",
+		"dev": "turbo watch dev --experimental-write-cache",
+		"format": "prettier \".\" --check",
+		"format:fix": "prettier \".\" --write",
+		"lint": "turbo run lint",
+		"lint:fix": "turbo run lint:fix",
+		"preview": "turbo run preview",
+		"sort-package-json": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\" --check",
+		"sort-package-json:fix": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\"",
+		"spellcheck": "cspell \"**\" --no-progress --show-context --show-suggestions",
+		"typecheck": "turbo run typecheck",
+		"update-actions": "actions-up",
+		"update-dependencies": "taze major --write --interactive --recursive --includeLocked --force"
+	},
+	"devDependencies": {
+		"@cspell/dict-pl_pl": "^3.0.6",
+		"actions-up": "^1.4.1",
+		"cspell": "^9.2.1",
+		"prettier": "^3.6.2",
+		"sort-package-json": "^3.4.0",
+		"taze": "^19.7.0",
+		"turbo": "2.5.8",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.18.2",
+	"engines": {
+		"node": "24.9.0"
+	}
+}

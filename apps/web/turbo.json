@@ -1,0 +1,9 @@
+{
+	"$schema": "../../node_modules/turbo/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"dev": { "persistent": true },
+		"preview": { "persistent": true },
+		"typecheck": { "outputs": ["node_modules/.cache/tsbuildinfo/"] }
+	}
+}

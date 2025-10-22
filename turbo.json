@@ -1,0 +1,18 @@
+{
+	"$schema": "./node_modules/turbo/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"transit": { "dependsOn": ["^transit"] },
+		"lint": { "dependsOn": ["^transit", "^build"] },
+		"lint:fix": { "dependsOn": ["^transit", "^build"], "cache": false },
+		"build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
+		"typecheck": { "dependsOn": ["^transit", "^build"] },
+		"dev": { "dependsOn": [], "cache": false },
+		"preview": { "dependsOn": ["build"], "cache": false },
+		"//#format": { "dependsOn": [] },
+		"//#format:fix": { "dependsOn": [], "cache": false },
+		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },
+		"//#sort-package-json:fix": { "dependsOn": [], "cache": false },
+		"//#spellcheck": { "dependsOn": [] }
+	}
+}

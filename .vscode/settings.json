@@ -1,0 +1,8 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.preferences.autoImportFileExcludePatterns": ["hono/*"],
+	"editor.quickSuggestions": { "strings": true },
+	"prettier.documentSelectors": ["**/*.svg"],
+	"prettier.prettierPath": "./node_modules/prettier"
+}

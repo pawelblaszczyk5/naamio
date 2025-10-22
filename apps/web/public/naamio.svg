@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24">
+	<filter id="filter">
+		<feGaussianBlur in="SourceAlpha" result="BLUR" stdDeviation="8" />
+		<feSpecularLighting in="BLUR" lighting-color="#F8F8FF" result="SPECULAR" specularExponent="72" surfaceScale="2">
+			<fePointLight x="12" y="12" z="12" />
+		</feSpecularLighting>
+		<feComposite in="SPECULAR" in2="SourceAlpha" operator="in" result="COMPOSITE" />
+		<feMerge>
+			<feMergeNode in="SourceGraphic" />
+			<feMergeNode in="COMPOSITE" />
+		</feMerge>
+	</filter>
+	<g fill="none" stroke="#6E56CF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="filter: url(#filter)">
+		<path d="M18 11c-1.5 0-2.5.5-3 2" />
+		<path
+			d="M4 6a2 2 0 0 0-2 2v4a5 5 0 0 0 5 5a8 8 0 0 1 5 2a8 8 0 0 1 5-2a5 5 0 0 0 5-5V8a2 2 0 0 0-2-2h-3a8 8 0 0 0-5 2a8 8 0 0 0-5-2z"
+		/>
+		<path d="M6 11c1.5 0 2.5.5 3 2" />
+	</g>
+</svg>

@@ -1,0 +1,41 @@
+# cspell:ignore esbuild, unrs
+packages:
+  - apps/*
+  - packages/*
+  - tooling/*
+
+allowUnusedPatches: false
+
+catalog:
+  "@types/node": ^24.7.1
+  eslint: ^9.37.0
+  babel-plugin-react-compiler: 19.1.0-rc.3
+  typescript: ^5.9.3
+  vite: npm:rolldown-vite@7.1.16
+  vite-plugin-inspect: ^11.3.3
+  "@vitejs/plugin-react": ^5.0.4
+  "@types/react": ^19.2.2
+  "@types/react-dom": ^19.2.1
+  "@stylexjs/babel-plugin": ^0.16.1
+  "@stylexjs/postcss-plugin": ^0.16.1
+  "@stylexjs/stylex": ^0.16.1
+  react: ^19.2.0
+  react-dom: ^19.2.0
+
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - esbuild
+  - unrs-resolver
+
+overrides:
+  eslint-import-resolver-typescript>eslint-plugin-import: "-"
+  react: "catalog:"
+  react-dom: "catalog:"
+
+engineStrict: true
+packageManagerStrictVersion: true
+saveWorkspaceProtocol: true
+linkWorkspacePackages: true
+managePackageManagerVersions: false
+verifyDepsBeforeRun: "error"
+strictDepBuilds: true

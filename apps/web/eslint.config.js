@@ -3,10 +3,11 @@ import { defineConfig } from "eslint/config";
 import core from "@naamio/eslint-config/core";
 import react from "@naamio/eslint-config/react";
 import node from "@naamio/eslint-config/node";
+import stylex from "@naamio/eslint-config/stylex";
 
 export default defineConfig(
 	{
-		extends: [core, react, node],
+		extends: [core, react, node, stylex],
 		ignores: ["src/routeTree.gen.ts", "server.ts"],
 		languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	},

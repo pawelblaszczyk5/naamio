@@ -9,6 +9,9 @@ catalogs:
     '@stylexjs/babel-plugin':
       specifier: ^0.16.1
       version: 0.16.1
+    '@stylexjs/eslint-plugin':
+      specifier: ^0.16.1
+      version: 0.16.3
     '@stylexjs/postcss-plugin':
       specifier: ^0.16.1
       version: 0.16.1
@@ -100,18 +103,18 @@ importers:
       '@hono/node-server':
         specifier: ^1.19.5
         version: 1.19.5(hono@4.9.10)
-      '@tanstack/react-router':
-        specifier: ^1.132.47
-        version: 1.132.47(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@tanstack/react-start':
-        specifier: ^1.132.51
-        version: 1.132.51(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rolldown-vite@7.1.16(@types/node@24.7.1)(esbuild@0.25.10)(jiti@2.6.0)(tsx@4.20.6)(yaml@2.8.1))
       '@naamio/design-system':
         specifier: workspace:*
         version: link:../../packages/design-system
       '@naamio/stylex':
         specifier: workspace:*
         version: link:../../packages/stylex
+      '@tanstack/react-router':
+        specifier: ^1.132.47
+        version: 1.132.47(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@tanstack/react-start':
+        specifier: ^1.132.51
+        version: 1.132.51(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(rolldown-vite@7.1.16(@types/node@24.7.1)(esbuild@0.25.10)(jiti@2.6.0)(tsx@4.20.6)(yaml@2.8.1))
       hono:
         specifier: ^4.9.10
         version: 4.9.10
@@ -131,18 +134,18 @@ importers:
       '@fontsource-variable/ibm-plex-sans':
         specifier: ^5.2.8
         version: 5.2.8
-      '@stylexjs/babel-plugin':
-        specifier: 'catalog:'
-        version: 0.16.1
-      '@stylexjs/postcss-plugin':
-        specifier: 'catalog:'
-        version: 0.16.1
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
+      '@stylexjs/babel-plugin':
+        specifier: 'catalog:'
+        version: 0.16.1
+      '@stylexjs/postcss-plugin':
+        specifier: 'catalog:'
+        version: 0.16.1
       '@types/node':
         specifier: 'catalog:'
         version: 24.7.1
@@ -253,6 +256,9 @@ importers:
       '@eslint/markdown':
         specifier: ^7.4.0
         version: 7.4.0
+      '@stylexjs/eslint-plugin':
+        specifier: 'catalog:'
+        version: 0.16.3
       '@stylistic/eslint-plugin':
         specifier: ^5.4.0
         version: 5.4.0(eslint@9.37.0(jiti@2.6.0))
@@ -1398,6 +1404,9 @@ packages:
   '@stylexjs/babel-plugin@0.16.1':
     resolution: {integrity: sha512-IdoS++ERG3IBI3H2yQwI/ZWfW6MKhMeEinPfdKJplVIGTCsNHJGzLu26gxR0EctoO1hblxme3+HR/Qo2PXdLIA==}
 
+  '@stylexjs/eslint-plugin@0.16.3':
+    resolution: {integrity: sha512-5+LV5VuH929OUgurNqM5FWO9dfPBHmvVdDXUjtVGJBOAjNOgHzg7dZUg0iF1G/EsMLWp4zMvEkkKCoPw5RFoRw==}
+
   '@stylexjs/postcss-plugin@0.16.1':
     resolution: {integrity: sha512-9Nwp+KxoHSXh4t6k+w31JZuzmsJZDztxf76IRGka6MQXWrzAw2RhUNy5sIhnIkT86HN92cJNNq5rrbJB4ofo0Q==}
 
@@ -2253,15 +2262,24 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  css-color-names@0.0.1:
+    resolution: {integrity: sha512-i7o8lqlrmiG/EUzlBftBncsrkYgBCfCI9X6plNxdyXMZlMNd4hPX7u/o7YLH9vwXPPPAr+BUs3R0oto+lzjbyA==}
+
   css-mediaquery@0.1.2:
     resolution: {integrity: sha512-COtn4EROW5dBGlE/4PiKnh6rZpAPxDeFLaEEwt4i10jpDMFt2EhQGS79QmmrO+iKCHv0PU/HrOWEhijFd1x99Q==}
 
   css-select@5.2.2:
     resolution: {integrity: sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==}
 
+  css-shorthand-expand@1.2.0:
+    resolution: {integrity: sha512-L3RS1VNYuXgMOfVGX4WzP9AFK6KL0JuioSoO8661egEac2eHX9/s4yFO8mgK6QEtm8UmU8IvuKzPgdQpU0DhpQ==}
+
   css-tree@3.1.0:
     resolution: {integrity: sha512-0eW44TGN5SQXU1mWSkKwFstI/22X2bG1nYzZTYMAWjylYURhse752YgbE4Cx46AC+bAvI+/dYTPRk1LqSUnu6w==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
+
+  css-url-regex@0.0.1:
+    resolution: {integrity: sha512-nFtRgFyJUwz9pyMpyscglpHEFdEJ+y2Q8pK33I99gzhUV1OFzS3t5DtIop3VWLIoGFr4mWcM4hJuWPLXn1NXgA==}
 
   css-what@6.2.2:
     resolution: {integrity: sha512-u/O3vwbptzhMs3L1fQE82ZSLHQQfto5gyZzwteVIEyeaY5Fc7R4dapF/BvRoSYFeqfBk4m0V1Vafq5Pjv25wvA==}
@@ -2953,12 +2971,21 @@ packages:
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
 
+  hex-color-regex@1.1.0:
+    resolution: {integrity: sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==}
+
   hono@4.9.10:
     resolution: {integrity: sha512-AlI15ijFyKTXR7eHo7QK7OR4RoKIedZvBuRjO8iy4zrxvlY5oFCdiRG/V/lFJHCNXJ0k72ATgnyzx8Yqa5arug==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
+
+  hsl-regex@1.0.0:
+    resolution: {integrity: sha512-M5ezZw4LzXbBKMruP+BNANf0k+19hDQMgpzBIYnya//Al+fjNct9Wf3b1WedLqdEs2hKBvxq/jh+DsHJLj0F9A==}
+
+  hsla-regex@1.0.0:
+    resolution: {integrity: sha512-7Wn5GMLuHBjZCb2bTmnDOycho0p/7UVaAeqXZGbHrBCl6Yd/xDhQJAXe6Ga9AXJH2I5zY1dEdYw2u1UptnSBJA==}
 
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
@@ -3332,6 +3359,10 @@ packages:
 
   magic-string@0.30.19:
     resolution: {integrity: sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw==}
+
+  map-obj@1.0.1:
+    resolution: {integrity: sha512-7N/q3lyZ+LVCp7PzuxrJr4KMbBE2hW7BT7YNia330OFxIf4d3r5zVpicP2650l7CPN6RM9zOJRl3NGpqSiw3Eg==}
+    engines: {node: '>=0.10.0'}
 
   mark.js@8.11.1:
     resolution: {integrity: sha512-1I+1qpDt4idfgLQG+BNWmrqku+7/2bi5nLf4YwF8y8zXvmfiTBY3PV3ZibfrjBueCByROpuBjLLFCajqkgYoLQ==}
@@ -3769,6 +3800,10 @@ packages:
     resolution: {integrity: sha512-cnE+y8bz4NhMjISKbgeVJtqNbtf5QpjZP+Bslo+UqkIt9QPnX9q095eiRRASJG1/tz6dlNr6Z5NsBiWYokp6EQ==}
     hasBin: true
 
+  repeat-element@1.1.4:
+    resolution: {integrity: sha512-LFiNfRcSu7KK3evMyYOuCzv3L10TW7yC1G2/+StMjK8Y6Vqd2MG7r/Qjw4ghtuCOjFvlnms/iMmLqpvW/ES/WQ==}
+    engines: {node: '>=0.10.0'}
+
   repeat-string@1.6.1:
     resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
     engines: {node: '>=0.10'}
@@ -3801,6 +3836,12 @@ packages:
 
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
+
+  rgb-regex@1.0.1:
+    resolution: {integrity: sha512-gDK5mkALDFER2YLqH6imYvK6g02gpNGM4ILDZ472EwWfXZnC2ZEpoB2ECXTyOVUKuk/bPJZMzwQPBYICzP+D3w==}
+
+  rgba-regex@1.0.0:
+    resolution: {integrity: sha512-zgn5OjNQXLUTdq8m17KdaicF6w89TZs8ZU8y0AYENIU6wG8GG6LLm0yLSiPY8DmaYmHdgRW8rnApjoT0fQRfMg==}
 
   roarr@7.21.1:
     resolution: {integrity: sha512-3niqt5bXFY1InKU8HKWqqYTYjtrBaxBMnXELXCXUYgtNYGUtZM5rB46HIC430AyacL95iEniGf7RgqsesykLmQ==}
@@ -4415,6 +4456,10 @@ packages:
   xmlbuilder2@3.1.1:
     resolution: {integrity: sha512-WCSfbfZnQDdLQLiMdGUQpMxxckeQ4oZNMNhLVkcekTu7xhD4tuUDyAPoY8CwXvBYE6LwBHd6QW2WZXlOWr1vCw==}
     engines: {node: '>=12.0'}
+
+  xtend@4.0.2:
+    resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
+    engines: {node: '>=0.4'}
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -5435,6 +5480,12 @@ snapshots:
       postcss-value-parser: 4.2.0
     transitivePeerDependencies:
       - supports-color
+
+  '@stylexjs/eslint-plugin@0.16.3':
+    dependencies:
+      css-shorthand-expand: 1.2.0
+      micromatch: 4.0.8
+      postcss-value-parser: 4.2.0
 
   '@stylexjs/postcss-plugin@0.16.1':
     dependencies:
@@ -6530,6 +6581,8 @@ snapshots:
       semver: 7.7.2
       tinyglobby: 0.2.15
 
+  css-color-names@0.0.1: {}
+
   css-mediaquery@0.1.2: {}
 
   css-select@5.2.2:
@@ -6540,10 +6593,25 @@ snapshots:
       domutils: 3.2.2
       nth-check: 2.1.1
 
+  css-shorthand-expand@1.2.0:
+    dependencies:
+      css-color-names: 0.0.1
+      css-url-regex: 0.0.1
+      hex-color-regex: 1.1.0
+      hsl-regex: 1.0.0
+      hsla-regex: 1.0.0
+      map-obj: 1.0.1
+      repeat-element: 1.1.4
+      rgb-regex: 1.0.1
+      rgba-regex: 1.0.0
+      xtend: 4.0.2
+
   css-tree@3.1.0:
     dependencies:
       mdn-data: 2.12.2
       source-map-js: 1.2.1
+
+  css-url-regex@0.0.1: {}
 
   css-what@6.2.2: {}
 
@@ -7455,9 +7523,15 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
+  hex-color-regex@1.1.0: {}
+
   hono@4.9.10: {}
 
   hookable@5.5.3: {}
+
+  hsl-regex@1.0.0: {}
+
+  hsla-regex@1.0.0: {}
 
   html-void-elements@3.0.0: {}
 
@@ -7800,6 +7874,8 @@ snapshots:
   magic-string@0.30.19:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  map-obj@1.0.1: {}
 
   mark.js@8.11.1: {}
 
@@ -8434,6 +8510,8 @@ snapshots:
     dependencies:
       jsesc: 3.0.2
 
+  repeat-element@1.1.4: {}
+
   repeat-string@1.6.1: {}
 
   req-all@0.1.0: {}
@@ -8454,6 +8532,10 @@ snapshots:
   reusify@1.1.0: {}
 
   rfdc@1.4.1: {}
+
+  rgb-regex@1.0.1: {}
+
+  rgba-regex@1.0.0: {}
 
   roarr@7.21.1:
     dependencies:
@@ -9188,6 +9270,8 @@ snapshots:
       '@oozcitak/infra': 1.0.8
       '@oozcitak/util': 8.3.8
       js-yaml: 3.14.1
+
+  xtend@4.0.2: {}
 
   yallist@3.1.1: {}
 

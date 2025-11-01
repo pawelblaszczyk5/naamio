@@ -13,6 +13,7 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig({
 	name: "naamio/react",
+	files: ["**/*.{ts,tsx,js,jsx}"],
 	plugins: {
 		react: react,
 		"react-dom": reactDom,
@@ -70,7 +71,6 @@ export default defineConfig({
 		"react/no-unsafe-component-will-mount": "error",
 		"react/no-unsafe-component-will-receive-props": "error",
 		"react/no-unsafe-component-will-update": "error",
-		"react/no-unstable-context-value": "error",
 		"react/no-unstable-default-props": "error",
 		"react/no-unused-class-component-members": "error",
 		"react/no-unused-state": "error",

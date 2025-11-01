@@ -4,25 +4,29 @@
 	"type": "module",
 	"exports": {
 		"./core": {
-			"default": "./core.js"
+			"default": "./src/core.js"
 		},
 		"./lingui": {
-			"default": "./lingui.js"
+			"default": "./src/lingui.js"
 		},
 		"./node": {
-			"default": "./node.js"
+			"default": "./src/node.js"
 		},
 		"./react": {
-			"default": "./react.js"
+			"default": "./src/react.js"
 		},
 		"./markdown": {
-			"default": "./markdown.js"
+			"default": "./src/markdown.js"
+		},
+		"./stylex": {
+			"default": "./src/stylex.js"
 		}
 	},
 	"dependencies": {
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.37.0",
 		"@eslint/markdown": "^7.4.0",
+		"@stylexjs/eslint-plugin": "catalog:",
 		"@stylistic/eslint-plugin": "^5.4.0",
 		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.1.0",

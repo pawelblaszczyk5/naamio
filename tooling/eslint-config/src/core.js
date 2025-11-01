@@ -54,8 +54,8 @@ const banExtension = (extension) => {
 };
 
 export default defineConfig({
-	files: ["**/*.{ts,tsx,js,jsx}"],
 	name: "naamio/core",
+	files: ["**/*.{ts,tsx,js,jsx}"],
 	linterOptions: { reportUnusedDisableDirectives: "error", reportUnusedInlineConfigs: "error" },
 	ignores: ["eslint.config.js"],
 	plugins: {
@@ -200,7 +200,6 @@ export default defineConfig({
 		// fp
 		"fp/no-arguments": "error",
 		"fp/no-delete": "error",
-		"fp/no-loops": "error",
 		"fp/no-mutating-assign": "error",
 		"fp/no-valueof-field": "error",
 
@@ -234,30 +233,7 @@ export default defineConfig({
 				onlyIfContainsSeparator: false,
 			},
 		],
-		"unicorn/prevent-abbreviations": [
-			"error",
-			{
-				allowList: {
-					args: true,
-					ctx: true,
-					rel: true,
-					fn: true,
-					Fn: true,
-					Params: true,
-					params: true,
-					mod: true,
-					Dev: true,
-					dev: true,
-					props: true,
-					Props: true,
-					src: true,
-					ref: true,
-					Ref: true,
-				},
-				checkProperties: true,
-				checkShorthandProperties: true,
-			},
-		],
+		"unicorn/prevent-abbreviations": "off",
 		"unicorn/require-post-message-target-origin": "error",
 		"unicorn/no-unused-properties": "error",
 		"unicorn/throw-new-error": "off",

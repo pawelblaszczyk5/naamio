@@ -3,9 +3,6 @@
 	"description": "Tiny assert utility",
 	"sideEffects": false,
 	"type": "module",
-	"imports": {
-		"#src/*": "./dist/src/*"
-	},
 	"exports": {
 		".": {
 			"default": "./dist/src/mod.js",
@@ -13,8 +10,8 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc --noCheck",
-		"dev": "tsc --noCheck",
+		"build": "tsc --noCheck && tsc-alias",
+		"dev": "tsc --noCheck && tsc-alias",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"typecheck": "tsc --build --noEmit"
@@ -23,6 +20,7 @@
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
 		"typescript": "catalog:"
 	}
 }

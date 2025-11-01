@@ -20,8 +20,8 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.16.1
   "@stylexjs/postcss-plugin": ^0.16.1
   "@stylexjs/stylex": ^0.16.1
-  react: ^19.2.0
-  react-dom: ^19.2.0
+  react: 19.3.0-canary-561ee24d-20251101
+  react-dom: 19.3.0-canary-561ee24d-20251101
   tsc-alias: ^1.8.16
 
 onlyBuiltDependencies:

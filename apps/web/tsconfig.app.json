@@ -1,5 +1,5 @@
 {
 	"extends": "@naamio/typescript-config/dom-no-build",
-	"compilerOptions": { "jsx": "react-jsx", "types": ["node", "vite/client"] },
+	"compilerOptions": { "jsx": "react-jsx", "types": ["node", "vite/client", "react/canary", "react-dom/canary"] },
 	"include": ["src"]
 }

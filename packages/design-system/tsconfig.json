@@ -1,5 +1,9 @@
 {
 	"extends": "@naamio/typescript-config/dom-build",
-	"compilerOptions": { "jsx": "preserve", "paths": { "#src/*": ["./src/*"] } },
+	"compilerOptions": {
+		"jsx": "preserve",
+		"types": ["react/canary", "react-dom/canary"],
+		"paths": { "#src/*": ["./src/*"] }
+	},
 	"include": ["src"]
 }

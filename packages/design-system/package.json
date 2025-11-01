@@ -7,8 +7,8 @@
 		"./reset.css": "./src/reset.css",
 		"./icons-spritesheet.svg": "./src/icons-spritesheet.svg",
 		"./components/*": {
-			"default": "./dist/src/components/*.jsx",
-			"types": "./dist/src/components/*.d.ts"
+			"default": "./dist/src/components/*/mod.js",
+			"types": "./dist/src/components/*/mod.d.ts"
 		},
 		"./styles/utilities": {
 			"default": "./dist/src/styles/utilities.js",

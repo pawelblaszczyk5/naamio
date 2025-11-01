@@ -14,13 +14,13 @@ hero:
       link: /development/intro
 
 features:
-  - icon: 📈
-    title: Lorem ipsum
-    details: Dolores ergo sum
+  - icon: 🤖
+    title: AI
+    details: All the most powerful models at the tips of your fingers, just when you need them
   - icon: ✨
-    title: Lorem ipsum
-    details: Dolores ergo sum
-  - icon: 🤝
-    title: Lorem ipsum
-    details: Dolores ergo sum
+    title: Seamless experience
+    details: Slick, pretty, everything you want from a modern web application
+  - icon: 🌀
+    title: Proving grounds
+    details: I'm just small programmer building a project in my free time 🙃
 ---

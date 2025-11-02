@@ -15,9 +15,3 @@ pnpm-debug.log*
 
 # env files
 .env
-
-# apps/web specific
-
-/apps/web/.nitro
-/apps/web/.output
-/apps/web/.tanstack

@@ -1,0 +1,5 @@
+{
+	"extends": "@naamio/typescript-config/dom-no-build",
+	"compilerOptions": { "jsx": "react-jsx", "types": ["vite/client", "react/canary", "react-dom/canary"] },
+	"include": ["src", ".storybook/**/*"]
+}

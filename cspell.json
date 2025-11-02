@@ -18,6 +18,7 @@
 	"enableGlobDot": true,
 	"ignoreWords": [
 		"fontaine",
+		"fontsource",
 		"lingui",
 		"pawelblaszczyk",
 		"predev",

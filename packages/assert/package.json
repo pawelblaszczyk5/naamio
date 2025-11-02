@@ -3,6 +3,9 @@
 	"description": "Tiny assert utility",
 	"sideEffects": false,
 	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
 	"exports": {
 		".": {
 			"default": "./dist/src/mod.js",

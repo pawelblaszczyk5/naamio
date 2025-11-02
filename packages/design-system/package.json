@@ -3,6 +3,9 @@
 	"description": "Everything related to shared UI concepts across the app. CSS reset, components, theming, styles",
 	"sideEffects": false,
 	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
 	"exports": {
 		"./reset.css": "./src/reset.css",
 		"./icons-spritesheet.svg": "./src/icons-spritesheet.svg",

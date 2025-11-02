@@ -8,12 +8,13 @@ Non-comprehensive list of important, user-facing features that are currently pla
 - Advanced auto-model routing
 - Web Search <Badge type="tip" text="Future" />
 - Attachments support
+- Incognito conversations <Badge type="tip" text="Future" />
 
 ## Projects
 
 - Personalization
 - LLM accessing past project conversations <Badge type="tip" text="Future" />
-- Auto suggestions <Badge type="tip" text="Future" />
+- Traffic control <Badge type="tip" text="Future" />
 
 ## Miscellaneous
 

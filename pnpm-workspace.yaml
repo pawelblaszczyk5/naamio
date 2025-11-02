@@ -7,8 +7,12 @@ packages:
 allowUnusedPatches: false
 
 catalog:
+  "@babel/plugin-syntax-jsx": ^7.27.1
+  "@babel/preset-typescript": ^7.28.5
+  "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^24.9.2
   eslint: ^9.39.0
+  fontaine: ^0.6.0
   babel-plugin-react-compiler: 19.1.0-rc.3
   typescript: ^5.9.3
   vite: npm:rolldown-vite@7.1.20

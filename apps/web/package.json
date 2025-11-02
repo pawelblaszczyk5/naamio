@@ -25,9 +25,9 @@
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@babel/plugin-syntax-jsx": "^7.27.1",
-		"@babel/preset-typescript": "^7.28.5",
-		"@fontsource-variable/ibm-plex-sans": "^5.2.8",
+		"@babel/plugin-syntax-jsx": "catalog:",
+		"@babel/preset-typescript": "catalog:",
+		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@stylexjs/babel-plugin": "catalog:",
@@ -38,7 +38,7 @@
 		"@vitejs/plugin-react": "catalog:",
 		"babel-plugin-react-compiler": "catalog:",
 		"eslint": "catalog:",
-		"fontaine": "^0.6.0",
+		"fontaine": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:",
 		"vite-plugin-inspect": "catalog:"

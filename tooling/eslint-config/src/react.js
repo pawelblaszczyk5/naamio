@@ -27,6 +27,7 @@ export default defineConfig({
 	extends: [reactHooks.configs.flat["recommended-latest"], jsxA11y.flatConfigs.strict],
 	rules: {
 		// react
+		"react/jsx-dollar": "error",
 		"react/jsx-key-before-spread": "error",
 		"react/jsx-no-comment-textnodes": "error",
 		"react/jsx-no-iife": "error",

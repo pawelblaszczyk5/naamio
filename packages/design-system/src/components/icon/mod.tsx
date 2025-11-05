@@ -20,3 +20,5 @@ export const Icon = ({ name, style }: Readonly<{ name: IconName; style?: StyleXS
 		</svg>
 	);
 };
+
+export { IconSpritesheetContext } from "#src/components/icon/context.jsx";

@@ -10,7 +10,7 @@
 		"./reset.css": "./src/reset.css",
 		"./icons-spritesheet.svg": "./src/icons-spritesheet.svg",
 		"./components/*": {
-			"default": "./dist/src/components/*/mod.js",
+			"default": "./dist/src/components/*/mod.jsx",
 			"types": "./dist/src/components/*/mod.d.ts"
 		},
 		"./styles/utilities": {

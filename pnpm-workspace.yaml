@@ -11,11 +11,11 @@ catalog:
   "@babel/preset-typescript": ^7.28.5
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^24.10.0
-  eslint: ^9.39.0
-  fontaine: ^0.6.0
+  eslint: ^9.39.1
+  fontaine: ^0.7.0
   babel-plugin-react-compiler: 19.1.0-rc.3
   typescript: ^5.9.3
-  vite: npm:rolldown-vite@7.1.20
+  vite: npm:rolldown-vite@7.2.2
   vite-plugin-inspect: ^11.3.3
   "@vitejs/plugin-react": ^5.1.0
   "@types/react": ^19.2.2
@@ -24,8 +24,8 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.16.3
   "@stylexjs/postcss-plugin": ^0.16.3
   "@stylexjs/stylex": ^0.16.3
-  react: 19.3.0-canary-561ee24d-20251101
-  react-dom: 19.3.0-canary-561ee24d-20251101
+  react: 19.3.0-canary-fa50caf5-20251107
+  react-dom: 19.3.0-canary-fa50caf5-20251107
   tsc-alias: ^1.8.16
 
 onlyBuiltDependencies:

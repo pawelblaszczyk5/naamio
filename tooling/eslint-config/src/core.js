@@ -182,8 +182,6 @@ export default defineConfig({
 		"@typescript-eslint/no-useless-empty-export": "error",
 		"@typescript-eslint/promise-function-async": "error",
 		"@typescript-eslint/restrict-template-expressions": "error",
-		// NOTE temporarily solution https://github.com/typescript-eslint/typescript-eslint/issues/11732
-		"@typescript-eslint/unified-signatures": "off",
 
 		// canonical
 		"canonical/filename-no-index": "error",

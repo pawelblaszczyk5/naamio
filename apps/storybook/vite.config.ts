@@ -45,6 +45,6 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
-		plugins: [react({ babel: getBabelConfig(isDevelopment) }), FontaineTransform.vite({ fallbacks: ["Arial"] })],
+		plugins: [react({ babel: getBabelConfig(isDevelopment) }), FontaineTransform.vite({ fallbacks: {} })],
 	};
 });

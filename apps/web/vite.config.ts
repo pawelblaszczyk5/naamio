@@ -52,7 +52,7 @@ export default defineConfig((environment) => {
 			tanstackStart({ router: { addExtensions: true } }),
 			react({ babel: getBabelConfig(isDevelopment) }),
 			inspect(),
-			FontaineTransform.vite({ fallbacks: ["Arial"] }),
+			FontaineTransform.vite({ fallbacks: {} }),
 		],
 		server: { host: true, port: 6_200, strictPort: true },
 	};

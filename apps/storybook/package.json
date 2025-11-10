@@ -12,7 +12,7 @@
 		"dev": "storybook dev --port 6204 --no-open",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "serve storybook-static --port 5204",
+		"preview": "serve dist --listen 5204",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {

@@ -45,3 +45,4 @@ linkWorkspacePackages: true
 managePackageManagerVersions: false
 verifyDepsBeforeRun: "error"
 strictDepBuilds: true
+trustPolicy: no-downgrade

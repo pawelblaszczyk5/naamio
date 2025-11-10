@@ -1,4 +1,4 @@
-# cspell:ignore esbuild, unrs
+# cspell:ignore esbuild, unrs, msgpackr
 packages:
   - apps/*
   - packages/*
@@ -7,6 +7,9 @@ packages:
 allowUnusedPatches: false
 
 catalog:
+  "@effect/platform": ^0.90.6
+  "@effect/platform-node": ^0.96.1
+  effect: ^3.17.11
   "@babel/plugin-syntax-jsx": ^7.27.1
   "@babel/preset-typescript": ^7.28.5
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
@@ -32,6 +35,9 @@ onlyBuiltDependencies:
   - "@parcel/watcher"
   - esbuild
   - unrs-resolver
+
+ignoredBuiltDependencies:
+  - msgpackr-extract
 
 overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"

@@ -1,0 +1,28 @@
+{
+	"name": "@naamio/api",
+	"description": "The deepest backend of the Naamio",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./src/*"
+	},
+	"scripts": {
+		"dev": "PORT=6201 node --import=tsx --watch ./src/mod.ts",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"preview": "PORT=5201 node --import=tsx ./src/mod.ts",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
+		"effect": "catalog:",
+		"tsx": "^4.20.6"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"@types/node": "catalog:",
+		"eslint": "catalog:"
+	}
+}

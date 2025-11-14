@@ -48,7 +48,7 @@ engineStrict: true
 packageManagerStrictVersion: true
 saveWorkspaceProtocol: true
 linkWorkspacePackages: true
-managePackageManagerVersions: false
+managePackageManagerVersions: true
 verifyDepsBeforeRun: "error"
 strictDepBuilds: true
 trustPolicy: no-downgrade

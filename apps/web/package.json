@@ -18,9 +18,9 @@
 		"@hono/node-server": "^1.19.6",
 		"@naamio/design-system": "workspace:*",
 		"@naamio/stylex": "workspace:*",
-		"@tanstack/react-router": "^1.135.2",
-		"@tanstack/react-start": "^1.135.2",
-		"hono": "^4.10.5",
+		"@tanstack/react-router": "^1.136.3",
+		"@tanstack/react-start": "^1.136.3",
+		"hono": "^4.10.6",
 		"react": "catalog:",
 		"react-dom": "catalog:"
 	},

@@ -17,7 +17,7 @@
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
 		"effect": "catalog:",
-		"tsx": "^4.20.6"
+		"tsx": "^4.21.0"
 	},
 	"devDependencies": {
 		"@naamio/eslint-config": "workspace:*",

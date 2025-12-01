@@ -25,13 +25,10 @@
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@babel/plugin-syntax-jsx": "catalog:",
-		"@babel/preset-typescript": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
-		"@stylexjs/babel-plugin": "catalog:",
-		"@stylexjs/postcss-plugin": "catalog:",
+		"@stylexjs/unplugin": "catalog:",
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",

@@ -22,16 +22,13 @@
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@babel/plugin-syntax-jsx": "catalog:",
-		"@babel/preset-typescript": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@storybook/addon-a11y": "^10.1.2",
 		"@storybook/addon-docs": "^10.1.2",
 		"@storybook/react-vite": "^10.1.2",
-		"@stylexjs/babel-plugin": "catalog:",
-		"@stylexjs/postcss-plugin": "catalog:",
+		"@stylexjs/unplugin": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "catalog:",

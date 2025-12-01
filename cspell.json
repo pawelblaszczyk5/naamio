@@ -28,6 +28,7 @@
 		"tanstack",
 		"taze",
 		"tseslint",
+		"unplugin",
 		"vite",
 		"vitejs"
 	]

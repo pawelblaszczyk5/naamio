@@ -29,6 +29,8 @@ const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
 					<link href={stylesheetHref} rel="stylesheet" />
 					<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 					<HeadContent />
+					{import.meta.env.DEV && <script src="/@id/virtual:stylex:runtime" type="module" />}
+					{import.meta.env.DEV && <link href="/virtual:stylex.css" rel="stylesheet" suppressHydrationWarning />}
 				</head>
 				<body>
 					{children}

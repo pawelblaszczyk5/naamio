@@ -6,12 +6,6 @@ settings:
 
 catalogs:
   default:
-    '@babel/plugin-syntax-jsx':
-      specifier: ^7.27.1
-      version: 7.27.1
-    '@babel/preset-typescript':
-      specifier: ^7.28.5
-      version: 7.28.5
     '@effect/platform':
       specifier: ^0.93.6
       version: 0.93.6
@@ -21,16 +15,13 @@ catalogs:
     '@fontsource-variable/ibm-plex-sans':
       specifier: ^5.2.8
       version: 5.2.8
-    '@stylexjs/babel-plugin':
-      specifier: ^0.17.1
-      version: 0.17.1
     '@stylexjs/eslint-plugin':
       specifier: ^0.17.1
       version: 0.17.1
-    '@stylexjs/postcss-plugin':
+    '@stylexjs/stylex':
       specifier: ^0.17.1
       version: 0.17.1
-    '@stylexjs/stylex':
+    '@stylexjs/unplugin':
       specifier: ^0.17.1
       version: 0.17.1
     '@types/node':
@@ -74,6 +65,11 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: '-'
   react: 19.3.0-canary-fd524fe0-20251121
   react-dom: 19.3.0-canary-fd524fe0-20251121
+
+patchedDependencies:
+  '@stylexjs/unplugin':
+    hash: 329182fb3f736e42c32fa1b9948be675352c723f6814ee459322e7c3b3f2d46e
+    path: patches/@stylexjs__unplugin.patch
 
 importers:
 
@@ -165,12 +161,6 @@ importers:
         specifier: 19.3.0-canary-fd524fe0-20251121
         version: 19.3.0-canary-fd524fe0-20251121(react@19.3.0-canary-fd524fe0-20251121)
     devDependencies:
-      '@babel/plugin-syntax-jsx':
-        specifier: 'catalog:'
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/preset-typescript':
-        specifier: 'catalog:'
-        version: 7.28.5(@babel/core@7.28.5)
       '@fontsource-variable/ibm-plex-sans':
         specifier: 'catalog:'
         version: 5.2.8
@@ -189,12 +179,9 @@ importers:
       '@storybook/react-vite':
         specifier: ^10.1.2
         version: 10.1.2(esbuild@0.25.12)(react-dom@19.3.0-canary-fd524fe0-20251121(react@19.3.0-canary-fd524fe0-20251121))(react@19.3.0-canary-fd524fe0-20251121)(rolldown-vite@7.2.9(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.53.3)(storybook@10.1.2(@testing-library/dom@10.4.1)(prettier@3.7.3)(react-dom@19.3.0-canary-fd524fe0-20251121(react@19.3.0-canary-fd524fe0-20251121))(react@19.3.0-canary-fd524fe0-20251121))(typescript@5.9.3)
-      '@stylexjs/babel-plugin':
+      '@stylexjs/unplugin':
         specifier: 'catalog:'
-        version: 0.17.1
-      '@stylexjs/postcss-plugin':
-        specifier: 'catalog:'
-        version: 0.17.1
+        version: 0.17.1(patch_hash=329182fb3f736e42c32fa1b9948be675352c723f6814ee459322e7c3b3f2d46e)(unplugin@2.3.11)
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.7
@@ -253,12 +240,6 @@ importers:
         specifier: 19.3.0-canary-fd524fe0-20251121
         version: 19.3.0-canary-fd524fe0-20251121(react@19.3.0-canary-fd524fe0-20251121)
     devDependencies:
-      '@babel/plugin-syntax-jsx':
-        specifier: 'catalog:'
-        version: 7.27.1(@babel/core@7.28.5)
-      '@babel/preset-typescript':
-        specifier: 'catalog:'
-        version: 7.28.5(@babel/core@7.28.5)
       '@fontsource-variable/ibm-plex-sans':
         specifier: 'catalog:'
         version: 5.2.8
@@ -268,12 +249,9 @@ importers:
       '@naamio/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
-      '@stylexjs/babel-plugin':
+      '@stylexjs/unplugin':
         specifier: 'catalog:'
-        version: 0.17.1
-      '@stylexjs/postcss-plugin':
-        specifier: 'catalog:'
-        version: 0.17.1
+        version: 0.17.1(patch_hash=329182fb3f736e42c32fa1b9948be675352c723f6814ee459322e7c3b3f2d46e)(unplugin@2.3.11)
       '@types/node':
         specifier: 'catalog:'
         version: 24.10.1
@@ -577,6 +555,12 @@ packages:
     resolution: {integrity: sha512-KKBU1VGYR7ORr3At5HAtUQ+TV3SzRCXmA/8OdDZiLDBIZxVyzXuztPjfLd3BV1PRAQGCMWWSHYhL0F8d5uHBDQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+
+  '@babel/plugin-syntax-flow@7.27.1':
+    resolution: {integrity: sha512-p9OkPbZ5G7UT1MofwYFigGebnrzGJacoBSQM0/6bi/PUMVE+qlWDD/OalvQKbwgQzU6dl0xAv6r4X7Jme0RYxA==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
 
   '@babel/plugin-syntax-jsx@7.27.1':
     resolution: {integrity: sha512-y8YTNIeKoyhGd9O0Jiyzyyqk8gdjnumGTQPsz0xOZOQ2RmkVJeZ1vmmfIvFEKqucBG6axJGBZDE/7iI5suUI/w==}
@@ -1990,14 +1974,16 @@ packages:
   '@stylexjs/eslint-plugin@0.17.1':
     resolution: {integrity: sha512-ab6RfDRkoD90lzB0JArmawZvVXxkNEwjzrn6lzrSUC8+boVIlqysd5efmilq/AbwNhu/aBaFV4q0ZoePofYrGQ==}
 
-  '@stylexjs/postcss-plugin@0.17.1':
-    resolution: {integrity: sha512-XDyfVwX+I14mQfJvMYu3xi4AkdFrB54yV1xVw3aCMCyXuBmXPjASnaX5GWmGCYle0Haxg/KQL5ERrw0he76a1Q==}
-
   '@stylexjs/shared@0.17.1':
     resolution: {integrity: sha512-1ITyAzG65DBQEriNIlib+gU0TE+we9wjotbl8mqLArKM9kDioITp7oXMF7DOiDqraTXkfvDezEUvvKoypLhkqQ==}
 
   '@stylexjs/stylex@0.17.1':
     resolution: {integrity: sha512-wH1fnkOwTDgW48e9mIAOXme770I/mnfxyaymfmTn9DcvyLYwaKXcme3ZumuTzyTZxkeCN42/w0TqSKGS42hulw==}
+
+  '@stylexjs/unplugin@0.17.1':
+    resolution: {integrity: sha512-bQqjIa+3/Mmijy3UdqsngT6dLXukE3WSBvxu9ndtXC/x9T8JketzKkrVmlMb8s4CEElBZzjBxXamPOoNN9ZruQ==}
+    peerDependencies:
+      unplugin: ^2.3.11
 
   '@stylistic/eslint-plugin@5.6.1':
     resolution: {integrity: sha512-JCs+MqoXfXrRPGbGmho/zGS/jMcn3ieKl/A8YImqib76C8kjgZwq5uUFzc30lJkMvcchuRn6/v8IApLxli3Jyw==}
@@ -5640,6 +5626,11 @@ snapshots:
     dependencies:
       '@babel/types': 7.28.5
 
+  '@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.5)':
+    dependencies:
+      '@babel/core': 7.28.5
+      '@babel/helper-plugin-utils': 7.27.1
+
   '@babel/plugin-syntax-jsx@7.27.1(@babel/core@7.28.5)':
     dependencies:
       '@babel/core': 7.28.5
@@ -6841,17 +6832,6 @@ snapshots:
       micromatch: 4.0.8
       postcss-value-parser: 4.2.0
 
-  '@stylexjs/postcss-plugin@0.17.1':
-    dependencies:
-      '@babel/core': 7.28.5
-      '@stylexjs/babel-plugin': 0.17.1
-      fast-glob: 3.3.3
-      glob-parent: 6.0.2
-      is-glob: 4.0.3
-      postcss: 8.5.6
-    transitivePeerDependencies:
-      - supports-color
-
   '@stylexjs/shared@0.17.1': {}
 
   '@stylexjs/stylex@0.17.1':
@@ -6859,6 +6839,19 @@ snapshots:
       css-mediaquery: 0.1.2
       invariant: 2.2.4
       styleq: 0.2.1
+
+  '@stylexjs/unplugin@0.17.1(patch_hash=329182fb3f736e42c32fa1b9948be675352c723f6814ee459322e7c3b3f2d46e)(unplugin@2.3.11)':
+    dependencies:
+      '@babel/core': 7.28.5
+      '@babel/plugin-syntax-flow': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-syntax-jsx': 7.27.1(@babel/core@7.28.5)
+      '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.5)
+      '@stylexjs/babel-plugin': 0.17.1
+      browserslist: 4.28.0
+      lightningcss: 1.30.2
+      unplugin: 2.3.11
+    transitivePeerDependencies:
+      - supports-color
 
   '@stylistic/eslint-plugin@5.6.1(eslint@9.39.1(jiti@2.6.1))':
     dependencies:

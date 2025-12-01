@@ -10,16 +10,16 @@
 		"./reset.css": "./src/reset.css",
 		"./icons-spritesheet.svg": "./src/icons-spritesheet.svg",
 		"./components/*": {
-			"default": "./dist/src/components/*/mod.jsx",
-			"types": "./dist/src/components/*/mod.d.ts"
+			"types": "./dist/src/components/*/mod.d.ts",
+			"default": "./dist/src/components/*/mod.jsx"
 		},
 		"./styles/utilities": {
-			"default": "./dist/src/styles/utilities.js",
-			"types": "./dist/src/styles/utilities.d.ts"
+			"types": "./dist/src/styles/utilities.d.ts",
+			"default": "./dist/src/styles/utilities.js"
 		},
 		"./theme/color.stylex": {
-			"default": "./dist/src/theme/color.stylex.js",
-			"types": "./dist/src/theme/color.stylex.d.ts"
+			"types": "./dist/src/theme/color.stylex.d.ts",
+			"default": "./dist/src/theme/color.stylex.js"
 		}
 	},
 	"scripts": {

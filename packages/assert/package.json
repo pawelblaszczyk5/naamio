@@ -8,8 +8,8 @@
 	},
 	"exports": {
 		".": {
-			"default": "./dist/src/mod.js",
-			"types": "./dist/src/mod.d.ts"
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
 		}
 	},
 	"scripts": {

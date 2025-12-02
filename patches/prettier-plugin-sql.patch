@@ -1,0 +1,15 @@
+diff --git a/package.json b/package.json
+index b6091079750a5e9e79b58e9334bb6a86039cef63..d2a566656f136a47b9c54287db1a4851a362a542 100644
+--- a/package.json
++++ b/package.json
+@@ -19,6 +19,10 @@
+       "types": "./lib/index.d.ts",
+       "default": "./lib/index.js"
+     },
++    "module-sync": {
++      "types": "./lib/index.d.ts",
++      "default": "./lib/index.js"
++    },
+     "require": {
+       "types": "./index.d.cts",
+       "default": "./lib/index.cjs"

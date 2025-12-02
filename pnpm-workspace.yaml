@@ -44,6 +44,9 @@ overrides:
   react: "catalog:"
   react-dom: "catalog:"
 
+patchedDependencies:
+  prettier-plugin-sql: patches/prettier-plugin-sql.patch
+
 engineStrict: true
 packageManagerStrictVersion: true
 saveWorkspaceProtocol: true

@@ -1,6 +1,6 @@
 name: "naamio"
 
-# cspell:ignore initdb, tmpfs, maildir
+# cspell:ignore initdb, tmpfs, mailpit, axllent
 
 services:
   postgres:
@@ -22,17 +22,16 @@ services:
       - -c
       - wal_level=logical
 
-  mailhog:
-    image: mailhog/mailhog:v1.0.1
+  mailpit:
+    image: axllent/mailpit:v1.28.0
     environment:
-      MH_STORAGE: maildir
-      MH_MAILDIR_PATH: /data
+      MP_DATABASE: /data/mailpit.db
     ports:
       - 6208:1025
       - 6207:8025
     volumes:
-      - mailhog_data:/data
+      - mailpit_data:/data
 
 volumes:
   postgres_data:
-  mailhog_data:
+  mailpit_data:

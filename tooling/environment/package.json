@@ -1,0 +1,9 @@
+{
+	"name": "@naamio/environment",
+	"description": "Docker compose setting up a local environment",
+	"type": "module",
+	"scripts": {
+		"dev": "docker compose up",
+		"preview": "docker compose up"
+	}
+}

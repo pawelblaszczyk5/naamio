@@ -21,9 +21,9 @@ catalog:
   "@vitejs/plugin-react": ^5.1.1
   "@types/react": ^19.2.7
   "@types/react-dom": ^19.2.3
-  "@stylexjs/eslint-plugin": ^0.17.1
-  "@stylexjs/stylex": ^0.17.1
-  "@stylexjs/unplugin": ^0.17.1
+  "@stylexjs/eslint-plugin": ^0.17.2
+  "@stylexjs/stylex": ^0.17.2
+  "@stylexjs/unplugin": ^0.17.2
   react: 19.3.0-canary-fd524fe0-20251121
   react-dom: 19.3.0-canary-fd524fe0-20251121
   tsc-alias: ^1.8.16
@@ -40,9 +40,6 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-
-patchedDependencies:
-  "@stylexjs/unplugin": patches/@stylexjs__unplugin.patch
 
 engineStrict: true
 packageManagerStrictVersion: true

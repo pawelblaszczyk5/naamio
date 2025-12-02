@@ -1,23 +1,26 @@
 {
-	"name": "@naamio/storybook",
-	"description": "Storybook for Naamio web app design system",
+	"name": "@naamio/gaia",
+	"description": "Web app serving everything to the front user",
 	"sideEffects": false,
 	"type": "module",
 	"imports": {
-		"#storybook/*": "./.storybook/*",
 		"#src/*": "./src/*"
 	},
 	"scripts": {
-		"build": "storybook build --output-dir dist",
-		"dev": "storybook dev --port 6204 --no-open",
+		"build": "vite build",
+		"dev": "vite",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "serve dist --listen 5204",
+		"preview": "node server.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
+		"@hono/node-server": "^1.19.6",
 		"@naamio/design-system": "workspace:*",
 		"@naamio/stylex": "workspace:*",
+		"@tanstack/react-router": "^1.139.13",
+		"@tanstack/react-start": "^1.139.13",
+		"hono": "^4.10.7",
 		"react": "catalog:",
 		"react-dom": "catalog:"
 	},
@@ -25,19 +28,16 @@
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
-		"@storybook/addon-a11y": "^10.1.3",
-		"@storybook/addon-docs": "^10.1.3",
-		"@storybook/react-vite": "^10.1.3",
 		"@stylexjs/unplugin": "catalog:",
+		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "catalog:",
 		"babel-plugin-react-compiler": "catalog:",
 		"eslint": "catalog:",
 		"fontaine": "catalog:",
-		"serve": "^14.2.5",
-		"storybook": "^10.1.3",
 		"typescript": "catalog:",
-		"vite": "catalog:"
+		"vite": "catalog:",
+		"vite-plugin-inspect": "catalog:"
 	}
 }

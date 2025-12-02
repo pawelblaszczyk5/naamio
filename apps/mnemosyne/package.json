@@ -1,6 +1,6 @@
 {
-	"name": "@naamio/docs",
-	"description": "Documentation",
+	"name": "@naamio/mnemosyne",
+	"description": "Documentation for the Naamio system",
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {

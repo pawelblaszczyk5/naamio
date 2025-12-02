@@ -1,6 +1,6 @@
 {
-	"name": "@naamio/api",
-	"description": "The deepest backend of the Naamio",
+	"name": "@naamio/hermes",
+	"description": "The API layer of Naamio system",
 	"sideEffects": false,
 	"type": "module",
 	"imports": {

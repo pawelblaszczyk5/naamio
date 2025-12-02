@@ -1,2 +1,2 @@
 pnpm-lock.yaml
-apps/web/src/routeTree.gen.ts
+apps/gaia/src/routeTree.gen.ts

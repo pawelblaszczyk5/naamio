@@ -7,15 +7,17 @@
 		"#src/*": "./src/*"
 	},
 	"scripts": {
-		"dev": "PORT=6201 node --import=tsx --watch ./src/mod.ts",
+		"dev": "wait-on tcp:6206 && PORT=6201 node --env-file=.env --import=tsx --watch ./src/mod.ts",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "PORT=5201 node --import=tsx ./src/mod.ts",
+		"preview": "wait-on tcp:6206 && PORT=5201 node --env-file=.env --import=tsx ./src/mod.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
+		"@effect/sql": "catalog:",
+		"@effect/sql-pg": "catalog:",
 		"effect": "catalog:",
 		"tsx": "^4.21.0"
 	},
@@ -23,6 +25,7 @@
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@types/node": "catalog:",
-		"eslint": "catalog:"
+		"eslint": "catalog:",
+		"wait-on": "catalog:"
 	}
 }

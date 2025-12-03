@@ -25,7 +25,15 @@ export default defineConfig({
 				],
 				text: "General",
 			},
-			{ collapsed: false, items: [{ link: "/development/intro", text: "Intro" }], text: "Development" },
+			{
+				collapsed: false,
+				items: [
+					{ link: "/development/intro", text: "Intro" },
+					{ link: "/development/architecture", text: "Architecture" },
+					{ link: "/development/auth", text: "Auth" },
+				],
+				text: "Development",
+			},
 		],
 		socialLinks: [{ icon: "github", link: "https://github.com/pawelblaszczyk5/naamio" }],
 	},

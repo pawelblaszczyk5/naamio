@@ -14,7 +14,7 @@
 	],
 	"dictionaries": ["lorem-ipsum"],
 	"useGitignore": true,
-	"words": ["codeowner", "naamio", "spritesheet", "typecheck"],
+	"words": ["codeowner", "naamio", "spritesheet", "statefulness", "typecheck"],
 	"enableGlobDot": true,
 	"ignoreWords": [
 		"fontaine",

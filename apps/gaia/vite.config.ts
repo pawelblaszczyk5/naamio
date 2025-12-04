@@ -1,3 +1,5 @@
+// cspell:ignore lightningcss
+
 import stylex from "@stylexjs/unplugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -14,6 +16,8 @@ export default defineConfig({
 			devPersistToDisk: true,
 			enableMediaQueryOrder: true,
 			importSources: ["@naamio/stylex"],
+			// eslint-disable-next-line n/no-process-env -- that's a fine simple use to control the minification process
+			lightningcssOptions: { minify: process.env["NODE_ENV"] === "production" },
 			unstable_moduleResolution: { type: "commonJS" },
 			useCSSLayers: true,
 		}),

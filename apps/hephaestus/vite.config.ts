@@ -1,3 +1,5 @@
+// cspell:ignore lightningcss
+
 import stylex from "@stylexjs/unplugin";
 import react from "@vitejs/plugin-react";
 import { FontaineTransform } from "fontaine";
@@ -11,6 +13,7 @@ export default defineConfig({
 			devPersistToDisk: true,
 			enableMediaQueryOrder: true,
 			importSources: ["@naamio/stylex"],
+			lightningcssOptions: { minify: process.env["NODE_ENV"] === "production" },
 			unstable_moduleResolution: { type: "commonJS" },
 			useCSSLayers: true,
 		}),

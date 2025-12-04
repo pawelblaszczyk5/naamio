@@ -12,6 +12,7 @@ export default defineConfig({
 			enableMediaQueryOrder: true,
 			importSources: ["@naamio/stylex"],
 			unstable_moduleResolution: { type: "commonJS" },
+			useCSSLayers: true,
 		}),
 		react({ babel: { plugins: [["babel-plugin-react-compiler", {}]] } }),
 		FontaineTransform.vite({ fallbacks: {} }),

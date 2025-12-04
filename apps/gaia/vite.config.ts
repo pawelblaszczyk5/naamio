@@ -15,6 +15,7 @@ export default defineConfig({
 			enableMediaQueryOrder: true,
 			importSources: ["@naamio/stylex"],
 			unstable_moduleResolution: { type: "commonJS" },
+			useCSSLayers: true,
 		}),
 		tanstackStart({ router: { addExtensions: true } }),
 		react({ babel: { plugins: [["babel-plugin-react-compiler", {}]] } }),

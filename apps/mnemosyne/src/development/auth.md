@@ -33,6 +33,7 @@ Expiration, invalidation, and rate-limiting policies must be defined during impl
 ### Notes:
 
 - Code doesn't need to have some time-based factor included in the generation algorithm, because it's stored in the database and is meant to be verified with it. That makes it trivial to implement.
+- Code must be stored as hashed/salted thing on database level. Hence, we can't really resend it - resending would mean initializing a new flow, and invalidating the old one.
 - It's important to use constant time equality check to don't be vulnerable to time-based attacks. It's probably impossible with multiple API layers anyway, but it's a good practice.
 - Should code be invalidated anyway if it's valid but state is invalid? That sounds like a situation where some shady stuff is going on so it's probably safer to do.
 - We need rate limiting for sending emails containing new code and for verifying codes.

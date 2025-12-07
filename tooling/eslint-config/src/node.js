@@ -16,5 +16,5 @@ export default defineConfig({
 		"n/prefer-promises/dns": "error",
 		"n/prefer-promises/fs": "error",
 	},
-	settings: { node: { version: "24.9.0" } },
+	settings: { node: { version: "25.2.1" } },
 });

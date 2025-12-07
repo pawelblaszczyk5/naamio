@@ -13,6 +13,7 @@ import promise from "eslint-plugin-promise";
 import noSecrets from "eslint-plugin-no-secrets";
 import deMorgan from "eslint-plugin-de-morgan";
 import { defineConfig } from "eslint/config";
+import naamio from "@naamio/eslint-plugin";
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 
@@ -77,6 +78,7 @@ export default defineConfig({
 		regexpPlugin.configs["flat/recommended"],
 		promise.configs["flat/recommended"],
 		deMorgan.configs.recommended,
+		naamio.configs.recommended,
 	],
 	rules: {
 		// builtin overrides

@@ -1,0 +1,29 @@
+{
+	"name": "@naamio/eslint-plugin",
+	"description": "Custom ESLint rules for Naamio project",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck && tsc-alias",
+		"dev": "tsc --noCheck && tsc-alias",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@typescript-eslint/utils": "^8.48.1"
+	},
+	"devDependencies": {
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:"
+	}
+}

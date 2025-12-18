@@ -7,6 +7,8 @@ packages:
 allowUnusedPatches: false
 
 catalog:
+  "@babel/plugin-syntax-jsx": ^7.27.1
+  "@babel/preset-typescript": ^7.28.5
   "@effect/platform": ^0.93.8
   "@effect/platform-node": ^0.103.0
   "@effect/sql": ^0.48.6
@@ -23,9 +25,10 @@ catalog:
   "@vitejs/plugin-react": ^5.1.2
   "@types/react": ^19.2.7
   "@types/react-dom": ^19.2.3
+  "@stylexjs/babel-plugin": ^0.17.3
   "@stylexjs/eslint-plugin": ^0.17.3
+  "@stylexjs/postcss-plugin": ^0.17.3
   "@stylexjs/stylex": ^0.17.3
-  "@stylexjs/unplugin": ^0.17.3
   react: 19.3.0-canary-f93b9fd4-20251217
   react-dom: 19.3.0-canary-f93b9fd4-20251217
   tsc-alias: ^1.8.16

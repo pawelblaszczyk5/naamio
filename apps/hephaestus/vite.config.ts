@@ -1,3 +1,5 @@
+import type { BabelOptions } from "@vitejs/plugin-react";
+
 // @ts-expect-error - untyped module
 import stylexPlugin from "@stylexjs/postcss-plugin";
 import react from "@vitejs/plugin-react";
@@ -12,23 +14,36 @@ const typedStylexPlugin = stylexPlugin as (options: {
 	useCSSLayers?: boolean;
 }) => never;
 
-const getBabelConfig = (isDevelopment: boolean) => ({
-	plugins: [
-		["babel-plugin-react-compiler", {}],
-		["@babel/plugin-syntax-jsx", {}],
-		[
-			"@stylexjs/babel-plugin",
-			{
-				dev: isDevelopment,
-				enableMediaQueryOrder: true,
-				importSources: ["@naamio/stylex"],
-				treeshakeCompensation: true,
-				unstable_moduleResolution: { type: "commonJS" },
-			},
+const getBabelConfig = ({
+	isDevelopment,
+	isPostCssPipeline,
+}: {
+	isDevelopment: boolean;
+	isPostCssPipeline: boolean;
+}) => {
+	const config: { plugins: NonNullable<BabelOptions["plugins"]>; presets: NonNullable<BabelOptions["presets"]> } = {
+		plugins: [
+			[
+				"@stylexjs/babel-plugin",
+				{
+					dev: isDevelopment,
+					enableMediaQueryOrder: true,
+					importSources: ["@naamio/stylex"],
+					treeshakeCompensation: true,
+					unstable_moduleResolution: { type: "commonJS" },
+				},
+			],
 		],
-	],
-	presets: ["@babel/preset-typescript"],
-});
+		presets: [],
+	};
+
+	if (isPostCssPipeline) {
+		config.plugins.unshift(["babel-plugin-react-compiler", {}], ["@babel/plugin-syntax-jsx", {}]);
+		config.presets.push("@babel/preset-typescript");
+	}
+
+	return config;
+};
 
 export default defineConfig((environment) => {
 	const isDevelopment = environment.command === "serve";
@@ -38,13 +53,16 @@ export default defineConfig((environment) => {
 			postcss: {
 				plugins: [
 					typedStylexPlugin({
-						babelConfig: { ...getBabelConfig(isDevelopment), babelrc: false },
+						babelConfig: { ...getBabelConfig({ isDevelopment, isPostCssPipeline: true }), babelrc: false },
 						include: ["./src/**/*.{js,jsx,ts,tsx}", "../../packages/*/dist/src/**/*.{js,jsx}"],
 						useCSSLayers: true,
 					}),
 				],
 			},
 		},
-		plugins: [react({ babel: getBabelConfig(isDevelopment) }), FontaineTransform.vite({ fallbacks: {} })],
+		plugins: [
+			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
+			FontaineTransform.vite({ fallbacks: {} }),
+		],
 	};
 });

@@ -9,6 +9,7 @@
 	"scripts": {
 		"build": "vite build",
 		"dev": "vite",
+		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"preview": "node server.ts",
@@ -16,6 +17,8 @@
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.7",
+		"@lingui/core": "^5.7.0",
+		"@lingui/react": "^5.7.0",
 		"@naamio/design-system": "workspace:*",
 		"@naamio/stylex": "workspace:*",
 		"@tanstack/react-router": "^1.141.6",
@@ -28,6 +31,10 @@
 		"@babel/plugin-syntax-jsx": "catalog:",
 		"@babel/preset-typescript": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
+		"@lingui/babel-plugin-lingui-macro": "^5.7.0",
+		"@lingui/cli": "^5.7.0",
+		"@lingui/conf": "^5.7.0",
+		"@lingui/vite-plugin": "^5.7.0",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@stylexjs/babel-plugin": "catalog:",

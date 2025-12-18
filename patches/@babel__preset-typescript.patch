@@ -1,0 +1,29 @@
+diff --git a/lib/index.js b/lib/index.js
+index 546752ed7dafd2fc95f1e5012eebefb97b026560..010103fd4c75d349bdf2844a3d77fee590455244 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -138,20 +138,20 @@ var index = helperPluginUtils.declarePreset((api, opts) => {
+     overrides: disableExtensionDetect ? [{
+       plugins: getPlugins(isTSX, disallowAmbiguousJSXLike)
+     }] : [{
+-      test: /\.ts$/,
++      test: /\.ts(?:\?.*)?$/,
+       plugins: getPlugins(false, false)
+     }, {
+-      test: /\.mts$/,
++      test: /\.mts(?:\?.*)?$/,
+       sourceType: "module",
+       plugins: getPlugins(false, true)
+     }, {
+-      test: /\.cts$/,
++      test: /\.cts(?:\?.*)?$/,
+       sourceType: "unambiguous",
+       plugins: [[transformModulesCommonJS__default.default, {
+         allowTopLevelThis: true
+       }], [transformTypeScript__default.default, pluginOptions(true)]]
+     }, {
+-      test: /\.tsx$/,
++      test: /\.tsx(?:\?.*)?$/,
+       plugins: getPlugins(true, false)
+     }]
+   };

@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/react/macro";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Button } from "@naamio/design-system/components/button";
@@ -13,7 +14,7 @@ const Home = () => (
 	<>
 		<title>Home | Naamio</title>
 		<h1 {...stylex.props(styles.heading)}>
-			Hello world <Icon name="webhook" style={styles.icon} />
+			<Trans>Hello world</Trans> <Icon name="webhook" style={styles.icon} />
 		</h1>
 		<Button />
 	</>

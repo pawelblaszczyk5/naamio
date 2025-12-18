@@ -1,5 +1,6 @@
 import type { BabelOptions } from "@vitejs/plugin-react";
 
+import { lingui } from "@lingui/vite-plugin";
 // @ts-expect-error - untyped module
 import stylexPlugin from "@stylexjs/postcss-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -23,8 +24,17 @@ const getBabelConfig = ({
 	isDevelopment: boolean;
 	isPostCssPipeline: boolean;
 }) => {
+	const pipelineDependentPlugins =
+		isPostCssPipeline ?
+			[["@babel/plugin-syntax-jsx", {}]]
+		:	[
+				["@lingui/babel-plugin-lingui-macro", {}],
+				["babel-plugin-react-compiler", {}],
+			];
+
 	const config: { plugins: NonNullable<BabelOptions["plugins"]>; presets: NonNullable<BabelOptions["presets"]> } = {
 		plugins: [
+			...pipelineDependentPlugins,
 			[
 				"@stylexjs/babel-plugin",
 				{
@@ -36,13 +46,8 @@ const getBabelConfig = ({
 				},
 			],
 		],
-		presets: [],
+		presets: isPostCssPipeline ? ["@babel/preset-typescript"] : [],
 	};
-
-	if (isPostCssPipeline) {
-		config.plugins.unshift(["babel-plugin-react-compiler", {}], ["@babel/plugin-syntax-jsx", {}]);
-		config.presets.push("@babel/preset-typescript");
-	}
 
 	return config;
 };
@@ -64,9 +69,10 @@ export default defineConfig((environment) => {
 			},
 		},
 		plugins: [
+			inspect(),
 			tanstackStart({ router: { addExtensions: true } }),
 			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
-			inspect(),
+			lingui({ failOnCompileError: true, failOnMissing: true }),
 			FontaineTransform.vite({ fallbacks: {} }),
 		],
 		server: { host: true, port: 6_200, strictPort: true },

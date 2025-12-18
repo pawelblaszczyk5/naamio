@@ -115,3 +115,27 @@ jobs:
 
       - name: Run
         run: pnpm turbo boundaries
+
+  i18n-catalogs:
+    name: 🌐 i18n catalogs
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm i18n:extract
+
+      - name: Verify
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "❌ ERROR: Uncommitted changes detected after extracting i18n catalogs"
+            echo "💡 The following files were modified:"
+            git status --porcelain
+            echo "✨ Make sure to extract new version of catalogs and properly translate them"
+            exit 1
+          fi

@@ -1,1 +1,1 @@
-{ "extends": "@naamio/typescript-config/node-no-build", "include": ["vite.config.ts"] }
+{ "extends": "@naamio/typescript-config/node-no-build", "include": ["vite.config.ts", "lingui.config.ts"] }

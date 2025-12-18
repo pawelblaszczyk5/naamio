@@ -25,10 +25,10 @@ catalog:
   "@vitejs/plugin-react": ^5.1.2
   "@types/react": ^19.2.7
   "@types/react-dom": ^19.2.3
-  "@stylexjs/babel-plugin": ^0.17.3
-  "@stylexjs/eslint-plugin": ^0.17.3
-  "@stylexjs/postcss-plugin": ^0.17.3
-  "@stylexjs/stylex": ^0.17.3
+  "@stylexjs/babel-plugin": ^0.17.4
+  "@stylexjs/eslint-plugin": ^0.17.4
+  "@stylexjs/postcss-plugin": ^0.17.4
+  "@stylexjs/stylex": ^0.17.4
   react: 19.3.0-canary-f93b9fd4-20251217
   react-dom: 19.3.0-canary-f93b9fd4-20251217
   tsc-alias: ^1.8.16
@@ -46,7 +46,8 @@ overrides:
   react-dom: "catalog:"
 
 patchedDependencies:
-  prettier-plugin-sql: patches/prettier-plugin-sql.patch
+  "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
+  prettier-plugin-sql@0.19.2: patches/prettier-plugin-sql.patch
 
 engineStrict: true
 packageManagerStrictVersion: true

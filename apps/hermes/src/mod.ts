@@ -18,6 +18,13 @@ const ApiLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 			}),
 		),
 	),
+	Layer.tap(
+		Effect.fn(function* () {
+			const PORT = yield* Config.number("PORT");
+
+			yield* Effect.log(`Starting Hermes on port ${PORT.toString()}`);
+		}),
+	),
 );
 
 const EnvironmentLive = Layer.mergeAll(ApiLive, DatabaseLive);

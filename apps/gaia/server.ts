@@ -7,6 +7,7 @@ import handler from "./dist/server/server.js";
 
 const ONE_YEAR_IN_SECONDS = 60 * 60 * 24 * 365;
 const ONE_HOUR_IN_SECONDS = 60 * 60;
+const PORT = 6_200;
 
 const cache = ({ immutable, seconds }: { immutable: boolean; seconds: number }) =>
 	createMiddleware(async (ctx, next) => {
@@ -25,4 +26,6 @@ app.use("/assets/*", cache({ immutable: true, seconds: ONE_YEAR_IN_SECONDS }), s
 app.use("*", cache({ immutable: false, seconds: ONE_HOUR_IN_SECONDS }), serveStatic({ root: "./dist/client" }));
 app.use("*", async (ctx) => handler.fetch(ctx.req.raw) as Promise<Response>);
 
-serve({ fetch: app.fetch, port: 6_200 });
+serve({ fetch: app.fetch, port: PORT });
+
+console.log(`Starting Gaia on port ${PORT}`);

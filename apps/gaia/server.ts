@@ -26,6 +26,6 @@ app.use("/assets/*", cache({ immutable: true, seconds: ONE_YEAR_IN_SECONDS }), s
 app.use("*", cache({ immutable: false, seconds: ONE_HOUR_IN_SECONDS }), serveStatic({ root: "./dist/client" }));
 app.use("*", async (ctx) => handler.fetch(ctx.req.raw) as Promise<Response>);
 
-serve({ fetch: app.fetch, port: PORT });
-
-console.log(`Starting Gaia on port ${PORT}`);
+serve({ fetch: app.fetch, port: PORT }, (info) => {
+	console.log(`Listening on http://0.0.0.0:${info.port}`);
+});

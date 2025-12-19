@@ -8,6 +8,7 @@
 	},
 	"scripts": {
 		"build": "vite build",
+		"codegen": "pnpm run i18n:extract",
 		"dev": "vite",
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",

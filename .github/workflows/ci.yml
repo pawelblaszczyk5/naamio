@@ -116,8 +116,8 @@ jobs:
       - name: Run
         run: pnpm turbo boundaries
 
-  i18n-catalogs:
-    name: 🌐 i18n catalogs
+  verify-codegen:
+    name: ⚙️ Verify codegen
     timeout-minutes: 1
     runs-on: ubuntu-latest
     steps:
@@ -128,7 +128,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run
-        run: pnpm i18n:extract
+        run: pnpm codegen
 
       - name: Verify
         run: |

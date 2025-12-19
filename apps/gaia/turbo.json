@@ -4,6 +4,7 @@
 	"tasks": {
 		"dev": { "persistent": true },
 		"preview": { "persistent": true },
-		"typecheck": { "outputs": ["node_modules/.cache/tsbuildinfo/"] }
+		"typecheck": { "outputs": ["node_modules/.cache/tsbuildinfo/"] },
+		"codegen": { "outputs": ["src/locales/"], "inputs": ["$TURBO_DEFAULT$", "!app/locales/"] }
 	}
 }

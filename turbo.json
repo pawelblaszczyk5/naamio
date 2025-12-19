@@ -9,6 +9,7 @@
 		"typecheck": { "dependsOn": ["^transit", "^build"] },
 		"dev": { "dependsOn": [], "cache": false },
 		"preview": { "dependsOn": ["build"], "cache": false },
+		"codegen": { "dependsOn": [] },
 		"//#format": { "dependsOn": [] },
 		"//#format:fix": { "dependsOn": [], "cache": false },
 		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },

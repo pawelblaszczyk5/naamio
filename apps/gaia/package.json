@@ -9,21 +9,25 @@
 	"scripts": {
 		"build": "vite build",
 		"codegen": "pnpm run i18n:extract",
-		"dev": "vite",
+		"dev": "wait-on tcp:6201 && vite",
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "node server.ts",
+		"preview": "wait-on tcp:6201 && node --env-file=.env server.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
+		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
 		"@hono/node-server": "^1.19.7",
 		"@lingui/core": "^5.7.0",
 		"@lingui/react": "^5.7.0",
+		"@naamio/api": "workspace:*",
 		"@naamio/design-system": "workspace:*",
 		"@naamio/stylex": "workspace:*",
 		"@tanstack/react-router": "^1.141.6",
 		"@tanstack/react-start": "^1.141.7",
+		"effect": "catalog:",
 		"hono": "^4.11.1",
 		"react": "catalog:",
 		"react-dom": "catalog:"
@@ -49,6 +53,7 @@
 		"fontaine": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:",
-		"vite-plugin-inspect": "catalog:"
+		"vite-plugin-inspect": "catalog:",
+		"wait-on": "catalog:"
 	}
 }

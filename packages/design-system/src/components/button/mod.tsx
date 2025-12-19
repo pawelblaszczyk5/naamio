@@ -4,11 +4,10 @@ import { color } from "#src/theme/color.stylex.js";
 
 const styles = stylex.create({ root: { backgroundColor: color.primary } });
 
-export const Button = () => (
+export const Button = ({ onClick }: { onClick: () => void }) => (
 	<button
 		onClick={() => {
-			// eslint-disable-next-line no-alert -- temporary for testing client boundaries
-			alert("Hello world");
+			onClick();
 		}}
 		type="button"
 		{...stylex.props(styles.root)}

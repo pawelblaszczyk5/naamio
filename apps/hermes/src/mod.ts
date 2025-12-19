@@ -1,14 +1,15 @@
-import { HttpApi, HttpApiBuilder, HttpMiddleware } from "@effect/platform";
+import { HttpApiBuilder, HttpApiSwagger, HttpMiddleware, HttpServer } from "@effect/platform";
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
 import { Config, Effect, Layer } from "effect";
 import { createServer } from "node:http";
 
+import { NaamioApiServerLive } from "#src/modules/api-server/mod.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";
 
-const Api = HttpApi.make("MyApi");
-
-const ApiLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
-	Layer.provide(HttpApiBuilder.api(Api)),
+const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
+	HttpServer.withLogAddress,
+	Layer.provide(HttpApiSwagger.layer({ path: "/docs" })),
+	Layer.provide(NaamioApiServerLive),
 	Layer.provide(
 		Layer.unwrapEffect(
 			Effect.gen(function* () {
@@ -18,15 +19,8 @@ const ApiLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 			}),
 		),
 	),
-	Layer.tap(
-		Effect.fn(function* () {
-			const PORT = yield* Config.number("PORT");
-
-			yield* Effect.log(`Starting Hermes on port ${PORT.toString()}`);
-		}),
-	),
 );
 
-const EnvironmentLive = Layer.mergeAll(ApiLive, DatabaseLive);
+const EnvironmentLive = Layer.mergeAll(HttpLive, DatabaseLive);
 
 EnvironmentLive.pipe(Layer.launch, NodeRuntime.runMain);

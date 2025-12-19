@@ -1,0 +1,33 @@
+{
+	"name": "@naamio/api",
+	"description": "API schema that allows type-safe consumption and enforcing implementation",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck && tsc-alias",
+		"dev": "tsc --noCheck && tsc-alias",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@effect/platform": "catalog:",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:"
+	}
+}

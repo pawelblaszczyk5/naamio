@@ -5,12 +5,13 @@ import { Config, Context, Effect, Layer } from "effect";
 
 import { NaamioApi } from "@naamio/api";
 
-type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups, any> ? Groups : never;
-type Errors = typeof NaamioApi extends HttpApi.HttpApi<any, any, infer Errors> ? Errors : never;
+type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups, any, any> ? Groups : never;
+type Errors = typeof NaamioApi extends HttpApi.HttpApi<any, any, infer Errors, any> ? Errors : never;
+type Requirements = typeof NaamioApi extends HttpApi.HttpApi<any, any, any, infer Requirements> ? Requirements : never;
 
 export class NaamioApiClient extends Context.Tag("@naamio/gaia/NaamioApiClient")<
 	NaamioApiClient,
-	HttpApiClient.Client<Groups, Errors, never>
+	HttpApiClient.Client<Groups, Errors, Requirements>
 >() {
 	static Live = Layer.effect(
 		NaamioApiClient,

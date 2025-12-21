@@ -7,7 +7,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "turbo run build",
-		"ci": "turbo run build lint typecheck sort-package-json spellcheck format --continue && turbo boundaries",
+		"ci": "turbo run build lint typecheck sort-package-json spellcheck format test --continue && turbo boundaries",
 		"ci:fix": "turbo run lint:fix sort-package-json:fix format:fix --continue",
 		"clean": "find . -type d \\( -name \".turbo\" -o -name \"node_modules\" -o -name \"dist\" \\) -prune -exec rm -rf {} +",
 		"codegen": "turbo run codegen",

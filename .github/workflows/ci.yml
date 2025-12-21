@@ -32,6 +32,20 @@ jobs:
       - name: Run
         run: pnpm run build
 
+  test:
+    name: 📌 Test
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run
+        run: pnpm run test
+
   lint:
     name: 🔬 Lint
     timeout-minutes: 3

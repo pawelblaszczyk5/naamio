@@ -10,6 +10,7 @@
 		"build": "vite build",
 		"codegen": "pnpm run i18n:extract",
 		"dev": "wait-on tcp:6201 tcp:6209 && vite",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
@@ -38,6 +39,7 @@
 	"devDependencies": {
 		"@babel/plugin-syntax-jsx": "catalog:",
 		"@babel/preset-typescript": "catalog:",
+		"@effect/language-service": "catalog:",
 		"@effect/vitest": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@lingui/babel-plugin-lingui-macro": "^5.7.0",

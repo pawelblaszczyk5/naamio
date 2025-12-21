@@ -8,6 +8,7 @@
 	},
 	"scripts": {
 		"dev": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"preview": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx ./src/mod.ts",
@@ -24,6 +25,7 @@
 		"tsx": "^4.21.0"
 	},
 	"devDependencies": {
+		"@effect/language-service": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@types/node": "catalog:",

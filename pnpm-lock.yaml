@@ -12,6 +12,9 @@ catalogs:
     '@babel/preset-typescript':
       specifier: ^7.28.5
       version: 7.28.5
+    '@effect/language-service':
+      specifier: ^0.62.4
+      version: 0.62.4
     '@effect/opentelemetry':
       specifier: ^0.60.0
       version: 0.60.0
@@ -191,6 +194,9 @@ importers:
       '@babel/preset-typescript':
         specifier: 'catalog:'
         version: 7.28.5(patch_hash=ee9804e542a66f0c266a5cab5343f3983738f1bda5347c5dcf24cc8b7d0b6762)(@babel/core@7.28.5)
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.62.4
       '@effect/vitest':
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.13)(vitest@4.0.16(@opentelemetry/api@1.9.0)(@types/node@25.0.3)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -285,6 +291,9 @@ importers:
         specifier: ^4.21.0
         version: 4.21.0
     devDependencies:
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.62.4
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -404,6 +413,9 @@ importers:
         specifier: 'catalog:'
         version: 3.19.13
     devDependencies:
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.62.4
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -487,6 +499,9 @@ importers:
         specifier: 'catalog:'
         version: 3.19.13
     devDependencies:
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.62.4
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -1062,6 +1077,10 @@ packages:
         optional: true
       lmdb:
         optional: true
+
+  '@effect/language-service@0.62.4':
+    resolution: {integrity: sha512-IPe/oGOILtzUIUdhhaz6e2JcnGymPADnjI03f1xOe+LaPLDg/AsRmkY87jhbtb/6qg8NVzlU+ZK4s0JoIMW/yQ==}
+    hasBin: true
 
   '@effect/opentelemetry@0.60.0':
     resolution: {integrity: sha512-YaKCKdtvzQ+efMCSg7f9583zxQU1TSyPSiTn4D8tnd/+okxuYrz2/RKbb+7qAUT1cajV6UIcdX/1lSLJi8uIew==}
@@ -6771,6 +6790,8 @@ snapshots:
       '@effect/platform': 0.94.0(effect@3.19.13)
       effect: 3.19.13
       uuid: 11.1.0
+
+  '@effect/language-service@0.62.4': {}
 
   '@effect/opentelemetry@0.60.0(@effect/platform@0.94.0(effect@3.19.13))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.38.0)(effect@3.19.13)':
     dependencies:

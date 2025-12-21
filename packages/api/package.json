@@ -15,6 +15,7 @@
 	"scripts": {
 		"build": "tsc --noCheck && tsc-alias",
 		"dev": "tsc --noCheck && tsc-alias",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"typecheck": "tsc --build --noEmit"
@@ -24,6 +25,7 @@
 		"effect": "catalog:"
 	},
 	"devDependencies": {
+		"@effect/language-service": "catalog:",
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"eslint": "catalog:",

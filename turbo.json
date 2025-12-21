@@ -11,6 +11,7 @@
 		"codegen": { "dependsOn": [] },
 		"test": { "dependsOn": ["^build"] },
 		"test:dev": { "dependsOn": [], "cache": false, "persistent": true },
+		"effect-diagnostics": { "dependsOn": ["^build"] },
 		"//#format": { "dependsOn": [] },
 		"//#format:fix": { "dependsOn": [], "cache": false },
 		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },

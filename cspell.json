@@ -31,5 +31,5 @@
 		"vite",
 		"vitejs"
 	],
-	"overrides": [{ "language": "pl-PL,en-US", "filename": "apps/gaia/src/locales/pl-PL.po" }]
+	"overrides": [{ "language": "pl-PL,en-US", "filename": "apps/janus/src/locales/pl-PL.po" }]
 }

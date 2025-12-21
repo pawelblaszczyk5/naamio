@@ -1,5 +1,5 @@
 {
-	"name": "@naamio/gaia",
+	"name": "@naamio/janus",
 	"description": "Web app serving everything to the front user",
 	"sideEffects": false,
 	"type": "module",

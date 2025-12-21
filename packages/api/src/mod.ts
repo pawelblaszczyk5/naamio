@@ -8,7 +8,7 @@ export class NaamioApi extends HttpApi.make("naamioApi")
 	.annotateContext(
 		OpenApi.annotations({
 			description:
-				"Internal API of the application, used for communication between any of the frontend systems and the one true backend - Hermes",
+				"Internal API of the application, used for communication between any of the frontend systems and the one true backend - Mercury",
 			title: "Naamio API",
 		}),
 	) {}

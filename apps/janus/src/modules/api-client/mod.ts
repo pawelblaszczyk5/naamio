@@ -9,7 +9,7 @@ type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups, any, a
 type Errors = typeof NaamioApi extends HttpApi.HttpApi<any, any, infer Errors, any> ? Errors : never;
 type Requirements = typeof NaamioApi extends HttpApi.HttpApi<any, any, any, infer Requirements> ? Requirements : never;
 
-export class NaamioApiClient extends Context.Tag("@naamio/gaia/NaamioApiClient")<
+export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient")<
 	NaamioApiClient,
 	HttpApiClient.Client<Groups, Errors, Requirements>
 >() {

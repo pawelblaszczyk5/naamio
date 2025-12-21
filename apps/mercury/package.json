@@ -1,5 +1,5 @@
 {
-	"name": "@naamio/hermes",
+	"name": "@naamio/mercury",
 	"description": "The API layer of Naamio system",
 	"sideEffects": false,
 	"type": "module",

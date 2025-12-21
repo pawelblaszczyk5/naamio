@@ -1,5 +1,5 @@
 {
-	"name": "@naamio/hephaestus",
+	"name": "@naamio/vulcan",
 	"description": "Storybook for displaying Naamio design system",
 	"sideEffects": false,
 	"type": "module",

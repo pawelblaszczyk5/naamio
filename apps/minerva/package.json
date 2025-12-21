@@ -1,5 +1,5 @@
 {
-	"name": "@naamio/mnemosyne",
+	"name": "@naamio/minerva",
 	"description": "Documentation for the Naamio system",
 	"sideEffects": false,
 	"type": "module",

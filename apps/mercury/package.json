@@ -7,10 +7,10 @@
 		"#src/*": "./src/*"
 	},
 	"scripts": {
-		"dev": "wait-on tcp:6206 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
+		"dev": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:6206 && node --env-file=.env --import=tsx ./src/mod.ts",
+		"preview": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx ./src/mod.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
@@ -19,6 +19,7 @@
 		"@effect/sql": "catalog:",
 		"@effect/sql-pg": "catalog:",
 		"@naamio/api": "workspace:*",
+		"@naamio/observability": "workspace:*",
 		"effect": "catalog:",
 		"tsx": "^4.21.0"
 	},

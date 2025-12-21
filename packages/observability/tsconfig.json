@@ -1,0 +1,5 @@
+{
+	"extends": "@naamio/typescript-config/node-build",
+	"compilerOptions": { "paths": { "#src/*": ["./src/*"] } },
+	"include": ["src"]
+}

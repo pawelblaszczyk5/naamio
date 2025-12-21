@@ -20,10 +20,8 @@ const getGreeting = createServerFn().handler(async () =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
 
-			yield* Effect.log("lol");
-
 			return yield* naamioApiClient.example.greeting();
-		}),
+		}).pipe(Effect.withSpan("getGreetingServerFn")),
 	),
 );
 

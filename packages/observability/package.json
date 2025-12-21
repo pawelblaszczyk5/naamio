@@ -1,0 +1,34 @@
+{
+	"name": "@naamio/observability",
+	"description": "Shared configuration for observability services",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck && tsc-alias",
+		"dev": "tsc --noCheck && tsc-alias",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@effect/opentelemetry": "catalog:",
+		"@effect/platform": "catalog:",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:"
+	}
+}

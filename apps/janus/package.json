@@ -9,11 +9,11 @@
 	"scripts": {
 		"build": "vite build",
 		"codegen": "pnpm run i18n:extract",
-		"dev": "wait-on tcp:6201 && vite",
+		"dev": "wait-on tcp:6201 tcp:6209 && vite",
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:6201 && node --env-file=.env server.ts",
+		"preview": "wait-on tcp:6201 tcp:6209 && node --env-file=.env server.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
@@ -24,6 +24,7 @@
 		"@lingui/react": "^5.7.0",
 		"@naamio/api": "workspace:*",
 		"@naamio/design-system": "workspace:*",
+		"@naamio/observability": "workspace:*",
 		"@naamio/stylex": "workspace:*",
 		"@tanstack/react-router": "^1.141.8",
 		"@tanstack/react-start": "^1.142.5",

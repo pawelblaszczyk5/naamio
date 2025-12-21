@@ -14,7 +14,7 @@ export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient"
 	HttpApiClient.Client<Groups, Errors, Requirements>
 >() {
 	static Live = Layer.effect(
-		NaamioApiClient,
+		this,
 		Effect.gen(function* () {
 			const API_BASE_URL = yield* Config.string("API_BASE_URL");
 

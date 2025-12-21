@@ -32,6 +32,15 @@ services:
     volumes:
       - mailpit_data:/data
 
+  otel-lgtm:
+    image: grafana/otel-lgtm:0.13.0
+    ports:
+      - 6209:4318
+      - 6210:3000
+    volumes:
+      - otel_data:/data
+
 volumes:
   postgres_data:
   mailpit_data:
+  otel_data:

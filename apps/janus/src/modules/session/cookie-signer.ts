@@ -11,8 +11,8 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<Option.Option<T>>;
 		encode: <T>(
-			value: NoInfer<T>,
-			schema: SignedCookieSchema<T>,
+			value: T,
+			schema: SignedCookieSchema<NoInfer<T>>,
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<string>;
 	}

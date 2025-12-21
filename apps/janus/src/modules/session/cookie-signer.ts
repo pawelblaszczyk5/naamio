@@ -64,7 +64,7 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 			});
 
 			return {
-				decode: Effect.fn("@naamio/janus/CookieSigner/decode")(function* <T>(
+				decode: Effect.fn("@naamio/janus/CookieSigner#decode")(function* <T>(
 					cookie: string,
 					schema: SignedCookieSchema<T>,
 					secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
@@ -93,7 +93,7 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 
 					return value;
 				}),
-				encode: Effect.fn("@naamio/janus/CookieSigner/encode")(function* <T>(
+				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* <T>(
 					value: T,
 					schema: SignedCookieSchema<T>,
 					secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,

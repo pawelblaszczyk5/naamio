@@ -8,12 +8,13 @@ const ExampleSchemaDifferent = Schema.Struct({ bar: Schema.String, foo: Schema.S
 const ExampleSchemaJson = Schema.parseJson(ExampleSchema);
 const ExampleSchemaDifferentJson = Schema.parseJson(ExampleSchemaDifferent);
 
+const secret = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
+
 it.effect(
 	"Should support basic back and forth flow",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secret = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
 
 		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
 
@@ -33,10 +34,7 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secrets = Array.make(
-			Redacted.make("EXAMPLE_SUPER_SECURE_SECRET"),
-			Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"),
-		);
+		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secrets);
 
@@ -56,10 +54,7 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secrets = Array.make(
-			Redacted.make("EXAMPLE_SUPER_SECURE_SECRET"),
-			Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"),
-		);
+		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secrets);
 
@@ -74,7 +69,6 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secret = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
 
 		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
 
@@ -89,8 +83,7 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secrets = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secrets);
+		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
 
 		const decoded = yield* cookieSigner.decode(
 			encoded,
@@ -107,11 +100,21 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const secret = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
 
 		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
 
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaDifferentJson, secret);
+
+		expect(decoded).toEqual(Option.none());
+	}, Effect.provide(CookieSigner.Live)),
+);
+
+it.effect(
+	"Should correctly decode to empty option with empty value",
+	Effect.fn(function* () {
+		const cookieSigner = yield* CookieSigner;
+
+		const decoded = yield* cookieSigner.decode("", ExampleSchemaJson, secret);
 
 		expect(decoded).toEqual(Option.none());
 	}, Effect.provide(CookieSigner.Live)),

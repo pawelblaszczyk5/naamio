@@ -21,6 +21,8 @@
 		"sort-package-json": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\" --check",
 		"sort-package-json:fix": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\"",
 		"spellcheck": "cspell \"**\" --no-progress --show-context --show-suggestions",
+		"test": "turbo run test",
+		"test:dev": "turbo run test:dev",
 		"typecheck": "turbo run typecheck",
 		"update-actions": "actions-up",
 		"update-dependencies": "taze major --write --interactive --recursive --includeLocked --force"

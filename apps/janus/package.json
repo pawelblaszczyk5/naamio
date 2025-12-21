@@ -14,6 +14,8 @@
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"preview": "wait-on tcp:6201 tcp:6209 && node --env-file=.env server.ts",
+		"test": "vitest run",
+		"test:dev": "vitest dev",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
@@ -36,6 +38,7 @@
 	"devDependencies": {
 		"@babel/plugin-syntax-jsx": "catalog:",
 		"@babel/preset-typescript": "catalog:",
+		"@effect/vitest": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@lingui/babel-plugin-lingui-macro": "^5.7.0",
 		"@lingui/cli": "^5.7.0",
@@ -55,6 +58,7 @@
 		"typescript": "catalog:",
 		"vite": "catalog:",
 		"vite-plugin-inspect": "catalog:",
+		"vitest": "catalog:",
 		"wait-on": "catalog:"
 	}
 }

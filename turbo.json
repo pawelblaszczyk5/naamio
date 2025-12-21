@@ -10,6 +10,8 @@
 		"dev": { "dependsOn": [], "cache": false },
 		"preview": { "dependsOn": ["build"], "cache": false },
 		"codegen": { "dependsOn": [] },
+		"test": { "dependsOn": ["^transit", "^build"] },
+		"test:dev": { "dependsOn": [], "cache": false, "persistent": true },
 		"//#format": { "dependsOn": [] },
 		"//#format:fix": { "dependsOn": [], "cache": false },
 		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },

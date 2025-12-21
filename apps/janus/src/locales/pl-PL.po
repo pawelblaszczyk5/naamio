@@ -13,6 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/routes/index.tsx:34
+#: src/routes/index.tsx:32
 msgid "Hello world"
 msgstr "Cześć świecie!"

@@ -1,0 +1,45 @@
+{
+	"name": "@naamio/id-generator",
+	"description": "Custom ID generator, supporting offline-like use cases with built-in verification capabilities.",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		"./promise": {
+			"types": "./dist/src/promise.d.ts",
+			"default": "./dist/src/promise.js"
+		},
+		"./effect": {
+			"types": "./dist/src/effect.d.ts",
+			"default": "./dist/src/effect.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
+		"dev": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"test": "vitest run",
+		"test:dev": "vitest dev",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@naamio/assert": "workspace:*",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@effect/language-service": "catalog:",
+		"@effect/vitest": "catalog:",
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"@types/node": "catalog:",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	}
+}

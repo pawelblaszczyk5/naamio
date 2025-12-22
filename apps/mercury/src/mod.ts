@@ -6,7 +6,6 @@ import { createServer } from "node:http";
 import { ObservabilityLive } from "@naamio/observability";
 
 import { NaamioApiServerLive } from "#src/modules/api-server/mod.js";
-import { DatabaseLive } from "#src/modules/database/mod.js";
 
 const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	HttpServer.withLogAddress,
@@ -23,6 +22,6 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	),
 );
 
-const EnvironmentLive = Layer.mergeAll(HttpLive, DatabaseLive).pipe(Layer.provide(ObservabilityLive));
+const EnvironmentLive = HttpLive.pipe(Layer.provide(ObservabilityLive));
 
 EnvironmentLive.pipe(Layer.launch, NodeRuntime.runMain);

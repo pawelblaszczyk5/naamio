@@ -18,8 +18,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: 🛠️ Build
+  verify:
+    name: 🔬 Verify
     timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
@@ -30,105 +30,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run
-        run: pnpm run build
-
-  test:
-    name: 📌 Test
-    timeout-minutes: 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm run test
-
-  lint:
-    name: 🔬 Lint
-    timeout-minutes: 3
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm run lint
-
-  effect-diagnostics:
-    name: 👨‍⚕️ Effect diagnostics
-    timeout-minutes: 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm run effect-diagnostics
-
-  typecheck:
-    name: 🌀 Typecheck
-    timeout-minutes: 3
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm run typecheck
-
-  format:
-    name: 🔍 Format
-    timeout-minutes: 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm turbo run format
-
-  spellcheck:
-    name: ❌ Spellcheck
-    timeout-minutes: 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm turbo run spellcheck
-
-  sort-package-json:
-    name: 📑 package.json sorter
-    timeout-minutes: 1
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Run
-        run: pnpm turbo run sort-package-json
+        run: pnpm turbo run build lint typecheck sort-package-json spellcheck format test effect-diagnostics --continue
 
   boundaries:
     name: 🛂 Boundaries
@@ -144,8 +46,8 @@ jobs:
       - name: Run
         run: pnpm turbo boundaries
 
-  verify-codegen:
-    name: ⚙️ Verify codegen
+  codegen:
+    name: ⚙️ Codegen
     timeout-minutes: 1
     runs-on: ubuntu-latest
     steps:
@@ -161,9 +63,9 @@ jobs:
       - name: Verify
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "❌ ERROR: Uncommitted changes detected after extracting i18n catalogs"
+            echo "❌ ERROR: Uncommitted changes detected after executing codegen"
             echo "💡 The following files were modified:"
             git status --porcelain
-            echo "✨ Make sure to extract new version of catalogs and properly translate them"
+            echo "✨ Make sure to run all codegen tasks before committing and push all up-to-date files"
             exit 1
           fi

@@ -6,5 +6,5 @@
 		"plugins": [{ "name": "@effect/language-service" }]
 	},
 	"include": ["src"],
-	"exclude": ["**/*.spec.ts"]
+	"exclude": ["src/**/*.spec.ts"]
 }

@@ -24,7 +24,7 @@
 		"lint:fix": "eslint --fix",
 		"test": "vitest run",
 		"test:dev": "vitest dev",
-		"typecheck": "tsc --build --noEmit"
+		"typecheck": "tsc --build"
 	},
 	"dependencies": {
 		"@naamio/assert": "workspace:*",

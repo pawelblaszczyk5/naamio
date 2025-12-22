@@ -5,11 +5,11 @@ import { Config, Effect, Layer } from "effect";
 import { allMigrations } from "#src/modules/database/migrations/mod.js";
 
 const PostgresLive = PgClient.layerConfig({
-	database: Config.string("POSTGRES_DATABASE"),
-	host: Config.string("POSTGRES_HOST"),
-	password: Config.redacted("POSTGRES_PASSWORD"),
-	port: Config.number("POSTGRES_PORT"),
-	username: Config.string("POSTGRES_USERNAME"),
+	database: Config.string("APP_POSTGRES_DATABASE"),
+	host: Config.string("APP_POSTGRES_HOST"),
+	password: Config.redacted("APP_POSTGRES_PASSWORD"),
+	port: Config.number("APP_POSTGRES_PORT"),
+	username: Config.string("APP_POSTGRES_USERNAME"),
 });
 
 const MigratorLive = PgMigrator.layer({ loader: Effect.succeed(allMigrations) }).pipe(

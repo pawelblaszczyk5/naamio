@@ -15,10 +15,13 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
+		"@effect/cluster": "catalog:",
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
+		"@effect/rpc": "catalog:",
 		"@effect/sql": "catalog:",
 		"@effect/sql-pg": "catalog:",
+		"@effect/workflow": "catalog:",
 		"@naamio/api": "workspace:*",
 		"@naamio/observability": "workspace:*",
 		"effect": "catalog:",

@@ -9,12 +9,15 @@ allowUnusedPatches: false
 catalog:
   "@babel/plugin-syntax-jsx": ^7.27.1
   "@babel/preset-typescript": ^7.28.5
+  "@effect/cluster": ^0.56.0
   "@effect/language-service": ^0.62.4
   "@effect/opentelemetry": ^0.60.0
   "@effect/platform": ^0.94.0
   "@effect/platform-node": ^0.104.0
+  "@effect/rpc": ^0.73.0
   "@effect/sql": ^0.49.0
   "@effect/sql-pg": ^0.50.0
+  "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
   effect: ^3.19.13
   "@fontsource-variable/ibm-plex-sans": ^5.2.8

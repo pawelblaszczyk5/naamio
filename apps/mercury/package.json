@@ -7,11 +7,11 @@
 		"#src/*": "./src/*"
 	},
 	"scripts": {
-		"dev": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
+		"dev": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
 		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:6206 tcp:6208 tcp:6209 && node --env-file=.env --import=tsx ./src/mod.ts",
+		"preview": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 && node --env-file=.env --import=tsx ./src/mod.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {

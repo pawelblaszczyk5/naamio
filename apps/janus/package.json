@@ -9,12 +9,12 @@
 	"scripts": {
 		"build": "vite build",
 		"codegen": "pnpm run i18n:extract",
-		"dev": "wait-on tcp:6201 tcp:6209 && vite",
+		"dev": "wait-on tcp:mercury.naamio.orb.local:80 tcp:otel-lgtm.naamio.orb.local:4318 && vite",
 		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:6201 tcp:6209 && node --env-file=.env server.ts",
+		"preview": "wait-on tcp:mercury.naamio.orb.local:80 tcp:otel-lgtm.naamio.orb.local:4318 && node --env-file=.env server.ts",
 		"test": "vitest run",
 		"test:dev": "vitest dev",
 		"typecheck": "tsc --build --noEmit"

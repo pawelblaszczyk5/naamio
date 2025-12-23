@@ -1,0 +1,15 @@
+janus.naamio.orb.local {
+	reverse_proxy host.docker.internal:6200
+}
+
+http://mercury.naamio.orb.local {
+	reverse_proxy host.docker.internal:6201
+}
+
+minerva.naamio.orb.local {
+	reverse_proxy host.docker.internal:6202
+}
+
+vulcan.naamio.orb.local {
+	reverse_proxy host.docker.internal:6203
+}

@@ -9,10 +9,10 @@
 	},
 	"scripts": {
 		"build": "storybook build --output-dir dist",
-		"dev": "storybook dev --port 6204 --no-open",
+		"dev": "storybook dev --port 6203 --no-open",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "serve dist --listen 6204",
+		"preview": "serve dist --listen 6203",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {

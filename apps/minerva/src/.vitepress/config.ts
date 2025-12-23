@@ -38,5 +38,5 @@ export default defineConfig({
 		socialLinks: [{ icon: "github", link: "https://github.com/pawelblaszczyk5/naamio" }],
 	},
 	title: "Naamio",
-	vite: { server: { port: 6_205 } },
+	vite: { server: { allowedHosts: ["minerva.naamio.orb.local"], port: 6_202 } },
 });

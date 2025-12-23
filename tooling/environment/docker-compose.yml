@@ -1,6 +1,6 @@
 name: "naamio"
 
-# cspell:ignore initdb, tmpfs, mailpit, axllent
+# cspell:ignore initdb, tmpfs, axllent, caddyfile, orbstack
 
 services:
   postgres:
@@ -9,11 +9,9 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example_root_password_123
-    ports:
-      - 6206:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init-postgres-databases.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh:ro
+      - ./config/init-postgres-databases.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh:ro
     tmpfs:
       - /tmp
     command:
@@ -26,19 +24,20 @@ services:
     image: axllent/mailpit:v1.28.0
     environment:
       MP_DATABASE: /data/mailpit.db
-    ports:
-      - 6208:1025
-      - 6207:8025
     volumes:
       - mailpit_data:/data
 
   otel-lgtm:
     image: grafana/otel-lgtm:0.13.0
-    ports:
-      - 6209:4318
-      - 6210:3000
     volumes:
       - otel_data:/data
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile
+    labels:
+      - dev.orbstack.domains=janus.naamio.orb.local,mercury.naamio.orb.local,minerva.naamio.orb.local,vulcan.naamio.orb.local
 
 volumes:
   postgres_data:

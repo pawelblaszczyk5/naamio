@@ -75,6 +75,6 @@ export default defineConfig((environment) => {
 			lingui({ failOnCompileError: true, failOnMissing: true }),
 			FontaineTransform.vite({ fallbacks: {} }),
 		],
-		server: { host: true, port: 6_200, strictPort: true },
+		server: { allowedHosts: ["janus.naamio.orb.local"], port: 6_200, strictPort: true },
 	};
 });

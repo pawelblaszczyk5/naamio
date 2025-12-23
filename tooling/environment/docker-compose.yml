@@ -5,6 +5,7 @@ name: "naamio"
 services:
   postgres:
     image: postgres:18.1-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -22,6 +23,7 @@ services:
 
   mailpit:
     image: axllent/mailpit:v1.28.0
+    restart: unless-stopped
     environment:
       MP_DATABASE: /data/mailpit.db
     volumes:
@@ -29,11 +31,13 @@ services:
 
   otel-lgtm:
     image: grafana/otel-lgtm:0.13.0
+    restart: unless-stopped
     volumes:
       - otel_data:/data
 
   caddy:
     image: caddy:2.10.2-alpine
+    restart: unless-stopped
     volumes:
       - ./config/Caddyfile:/etc/caddy/Caddyfile
     labels:

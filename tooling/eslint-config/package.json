@@ -41,7 +41,7 @@
 		"eslint-plugin-lingui": "^0.11.0",
 		"eslint-plugin-n": "^17.23.1",
 		"eslint-plugin-no-secrets": "^2.2.1",
-		"eslint-plugin-perfectionist": "^5.0.0",
+		"eslint-plugin-perfectionist": "^5.1.0",
 		"eslint-plugin-prefer-arrow-functions": "^3.9.1",
 		"eslint-plugin-promise": "^7.2.1",
 		"eslint-plugin-react-dom": "^2.3.13",
@@ -53,6 +53,6 @@
 		"eslint-plugin-react-x": "^2.3.13",
 		"eslint-plugin-regexp": "^2.10.0",
 		"eslint-plugin-unicorn": "^62.0.0",
-		"typescript-eslint": "^8.50.0"
+		"typescript-eslint": "^8.50.1"
 	}
 }

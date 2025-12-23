@@ -10,7 +10,7 @@ catalog:
   "@babel/plugin-syntax-jsx": ^7.27.1
   "@babel/preset-typescript": ^7.28.5
   "@effect/cluster": ^0.56.0
-  "@effect/language-service": ^0.62.4
+  "@effect/language-service": ^0.62.5
   "@effect/opentelemetry": ^0.60.0
   "@effect/platform": ^0.94.0
   "@effect/platform-node": ^0.104.0

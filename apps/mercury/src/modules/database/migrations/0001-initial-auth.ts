@@ -20,7 +20,7 @@ const migration = Effect.gen(function* () {
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("deviceLabel")} TEXT NOT NULL,
 			${sql("expiresAt")} TIMESTAMPTZ NOT NULL,
-			${sql("hash")} TEXT NOT NULL,
+			${sql("signature")} TEXT NOT NULL,
 			${sql("revokedAt")} TIMESTAMPTZ NULL,
 			${sql("userId")} TEXT NOT NULL,
 			FOREIGN KEY (${sql("userId")}) REFERENCES ${sql("user")} (${sql("id")})

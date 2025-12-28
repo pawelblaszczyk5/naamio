@@ -47,7 +47,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					SELECT
 						${sql("id")},
 						${sql("userId")},
-						${sql("hash")},
+						${sql("signature")},
 						${sql("expiresAt")},
 						${sql("revokedAt")}
 					FROM
@@ -56,7 +56,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						${sql("id")} = ${request}
 				`,
 				Request: SessionModel.fields.id,
-				Result: SessionModel.select.pick("id", "userId", "hash", "expiresAt", "revokedAt"),
+				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
 			});
 
 			return {
@@ -72,9 +72,9 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							createdAt: undefined,
 							deviceLabel: data.deviceLabel,
 							expiresAt,
-							hash: signature,
 							id,
 							revokedAt: Option.none(),
+							signature,
 							userId: data.userId,
 						}).pipe(Effect.orDie);
 
@@ -96,7 +96,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							return Option.none();
 						}
 
-						const isValidValue = yield* verifyHmacSignature(value, maybeSession.value.hash, SESSION_VALUE_SECRET);
+						const isValidValue = yield* verifyHmacSignature(value, maybeSession.value.signature, SESSION_VALUE_SECRET);
 
 						if (!isValidValue) {
 							return Option.none();

@@ -24,5 +24,5 @@ export class EmailChallengeModel extends Model.Class<EmailChallengeModel>("@naam
 	hash: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("EmailChallengeId"))),
 	revokedAt: Model.FieldOption(Model.DateTimeFromDate),
-	state: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
+	state: Schema.Trimmed.pipe(Schema.length(32), Schema.Redacted),
 }) {}

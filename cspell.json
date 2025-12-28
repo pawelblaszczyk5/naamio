@@ -32,5 +32,8 @@
 		"vite",
 		"vitejs"
 	],
-	"overrides": [{ "language": "pl-PL,en-US", "filename": "apps/janus/src/locales/pl-PL.po" }]
+	"overrides": [
+		{ "language": "pl-PL,en-US", "filename": "apps/janus/src/locales/pl-PL.po" },
+		{ "filename": ["apps/mercury/src/modules/database/migrations/**"], "ignoreWords": ["timestamptz"] }
+	]
 }

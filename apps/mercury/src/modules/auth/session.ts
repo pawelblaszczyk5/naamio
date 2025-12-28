@@ -7,12 +7,10 @@ import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 import { generateId } from "@naamio/id-generator/effect";
 import { SessionModel } from "@naamio/schema";
 
+import { ALPHABET } from "#src/modules/auth/constants.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";
 
 const SESSION_EXPIRATION_DURATION = Duration.days(30);
-
-// eslint-disable-next-line no-secrets/no-secrets -- that's custom alphabet for session value generation
-const ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"; // cspell:disable-line
 
 export class Session extends Context.Tag("@naamio/mercury/Session")<
 	Session,
@@ -44,7 +42,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				Request: SessionModel.insert,
 			});
 
-			const findById = SqlSchema.findOne({
+			const findByPublicId = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -55,26 +53,26 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					FROM
 						${sql("session")}
 					WHERE
-						${sql("id")} = ${request}
+						${sql("publicId")} = ${request}
 				`,
-				Request: SessionModel.fields.id,
+				Request: SessionModel.fields.publicId,
 				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
 			});
 
 			return {
 				system: {
 					create: Effect.fn("@naamio/mercury/Session#create")(function* (data) {
-						const id = SessionModel.fields.id.make(yield* generateId());
+						const publicId = SessionModel.fields.publicId.make(yield* generateId());
 						const expiresAt = yield* DateTime.now.pipe(Effect.map(DateTime.addDuration(SESSION_EXPIRATION_DURATION)));
 						const value = generateSessionValue();
 						const signature = yield* generateHmacSignature(value, SESSION_VALUE_SECRET);
-						const token = Redacted.make(`${id}.${value}`);
+						const token = Redacted.make(`${publicId}.${value}`);
 
 						yield* insertSession({
 							createdAt: undefined,
 							deviceLabel: data.deviceLabel,
 							expiresAt,
-							id,
+							publicId,
 							revokedAt: Option.none(),
 							signature,
 							userId: data.userId,
@@ -85,14 +83,16 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					retrieveFromToken: Effect.fn("@naamio/mercury/Session#retrieveFromToken")(function* (token) {
 						const unredactedToken = Redacted.value(token);
 						const lastDotIndex = unredactedToken.lastIndexOf(".");
-						const maybeId = Schema.decodeOption(SessionModel.fields.id)(unredactedToken.slice(0, lastDotIndex));
+						const maybePublicId = Schema.decodeOption(SessionModel.fields.publicId)(
+							unredactedToken.slice(0, lastDotIndex),
+						);
 						const value = unredactedToken.slice(lastDotIndex + 1);
 
-						if (Option.isNone(maybeId)) {
+						if (Option.isNone(maybePublicId)) {
 							return Option.none();
 						}
 
-						const maybeSession = yield* findById(maybeId.value).pipe(Effect.orDie);
+						const maybeSession = yield* findByPublicId(maybePublicId.value).pipe(Effect.orDie);
 
 						if (Option.isNone(maybeSession)) {
 							return Option.none();

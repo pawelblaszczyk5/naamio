@@ -27,8 +27,8 @@
 		"@naamio/id-generator": "workspace:*",
 		"@naamio/observability": "workspace:*",
 		"@naamio/schema": "workspace:*",
-		"nanoid": "^5.1.6",
 		"effect": "catalog:",
+		"nanoid": "^5.1.6",
 		"tsx": "^4.21.0"
 	},
 	"devDependencies": {

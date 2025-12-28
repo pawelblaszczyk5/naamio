@@ -7,6 +7,8 @@ import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 import { generateId } from "@naamio/id-generator/effect";
 import { SessionModel } from "@naamio/schema";
 
+import { DatabaseLive } from "#src/modules/database/mod.js";
+
 const SESSION_EXPIRATION_DURATION = Duration.days(30);
 
 // eslint-disable-next-line no-secrets/no-secrets -- that's custom alphabet for session value generation
@@ -114,5 +116,5 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				},
 			} satisfies Session["Type"];
 		}),
-	);
+	).pipe(Layer.provide(DatabaseLive));
 }

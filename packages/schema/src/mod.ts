@@ -11,7 +11,9 @@ export class UserModel extends Model.Class<UserModel>("@naamio/schema/User")({
 
 export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Session")({
 	createdAt: Model.DateTimeInsertFromDate,
+	deviceLabel: Schema.NonEmptyTrimmedString,
 	expiresAt: Model.DateTimeFromDate,
+	hash: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("SessionId"))),
 	revokedAt: Model.FieldOption(Model.DateTimeFromDate),
 	userId: UserModel.fields.id,

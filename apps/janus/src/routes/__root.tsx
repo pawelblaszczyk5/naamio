@@ -21,7 +21,6 @@ import { messages as polishMessages } from "#src/locales/pl-PL.po";
 import stylesheetHref from "#src/styles.css?url";
 
 const RootDocument = ({ children }: Readonly<{ children: ReactNode }>) => {
-	// eslint-disable-next-line react-naming-convention/use-state -- for now, will change in future when language will be possible to change
 	const [i18n] = useState(() => {
 		const i18n = setupI18n();
 

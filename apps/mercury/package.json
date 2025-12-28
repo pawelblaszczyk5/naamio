@@ -23,7 +23,11 @@
 		"@effect/sql-pg": "catalog:",
 		"@effect/workflow": "catalog:",
 		"@naamio/api": "workspace:*",
+		"@naamio/hmac": "workspace:*",
+		"@naamio/id-generator": "workspace:*",
 		"@naamio/observability": "workspace:*",
+		"@naamio/schema": "workspace:*",
+		"nanoid": "^5.1.6",
 		"effect": "catalog:",
 		"tsx": "^4.21.0"
 	},

@@ -14,7 +14,7 @@
 	],
 	"dictionaries": ["lorem-ipsum"],
 	"useGitignore": true,
-	"words": ["codegen", "codeowner", "hmac", "naamio", "spritesheet", "statefulness", "typecheck"],
+	"words": ["codegen", "codeowner", "hmac", "naamio", "spritesheet", "statefulness", "typecheck", "unredacted"],
 	"enableGlobDot": true,
 	"ignoreWords": [
 		"fontaine",

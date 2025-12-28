@@ -39,3 +39,12 @@ Expiration, invalidation, and rate-limiting policies must be defined during impl
 - We need rate limiting for sending emails containing new code and for verifying codes.
 - It should still be possible to initiate multiple auth flows at the same time, because you can concurrently auth yourself on both mobile and desktop device.
 - That setup allows us to create easy session management, with e.g. signing out from all devices.
+
+## Rate limiting and security details
+
+- 3 challenges per 5 minutes
+- 6 challenges per 1 hour
+- 3 attempts per challenge
+- Resend is available after 2 minutes and counts towards standard limits, it's available only for matching state and invalidates it
+- Code is valid for 5 minutes
+- Any suspicious attempt (state mismatch, funky stuff detected) -> invalidate all challenges

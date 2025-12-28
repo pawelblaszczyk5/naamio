@@ -1,5 +1,7 @@
 import { Array, Context, Effect, Either, Encoding, Layer, Option, Redacted, Schema } from "effect";
 
+import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
+
 type SignedCookieSchema<T> = Schema.Schema<T, string>;
 
 export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
@@ -20,49 +22,6 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 	static Live = Layer.effect(
 		this,
 		Effect.gen(function* () {
-			const encoder = new TextEncoder();
-
-			const createKey = Effect.fn(function* (secret: Redacted.Redacted, usage: "sign" | "verify") {
-				return yield* Effect.promise(async () =>
-					crypto.subtle.importKey(
-						"raw",
-						encoder.encode(secret.pipe(Redacted.value)),
-						{ hash: "SHA-512", name: "HMAC" },
-						false,
-						[usage],
-					),
-				);
-			});
-
-			const sign = Effect.fn(function* (value: string, secret: Redacted.Redacted) {
-				const data = encoder.encode(value);
-				const key = yield* createKey(secret, "sign");
-
-				const signature = yield* Effect.promise(async () => crypto.subtle.sign("HMAC", key, data));
-
-				const digest = Encoding.encodeBase64Url(new Uint8Array(signature));
-				const valueWithSignature = `${value}.${digest}`;
-
-				return valueWithSignature;
-			});
-
-			const verify = Effect.fn(function* (value: string, digest: string, secret: Redacted.Redacted) {
-				const data = encoder.encode(value);
-				const key = yield* createKey(secret, "verify");
-
-				const maybeSignature = Encoding.decodeBase64Url(digest);
-
-				if (Either.isLeft(maybeSignature)) {
-					return false;
-				}
-
-				const valid = yield* Effect.promise(async () =>
-					crypto.subtle.verify("HMAC", key, new Uint8Array(maybeSignature.right), data),
-				);
-
-				return valid;
-			});
-
 			return {
 				decode: Effect.fn("@naamio/janus/CookieSigner#decode")(function* <T>(
 					cookie: string,
@@ -71,12 +30,12 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 				) {
 					const lastDotIndex = cookie.lastIndexOf(".");
 					const base64Value = cookie.slice(0, lastDotIndex);
-					const digest = cookie.slice(lastDotIndex + 1);
+					const digest = Redacted.make(cookie.slice(lastDotIndex + 1));
 
 					const allSecrets = Array.isArray(secrets) ? secrets : Array.make(secrets);
 
 					const maybeMatchingSecret = yield* Effect.findFirst(allSecrets, (secret) =>
-						verify(base64Value, digest, secret),
+						verifyHmacSignature(base64Value, digest, secret),
 					);
 
 					if (Option.isNone(maybeMatchingSecret)) {
@@ -102,9 +61,11 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 					const base64Value = Encoding.encodeBase64Url(stringifiedValue);
 					const secretToUse = Array.isArray(secrets) ? Array.lastNonEmpty(secrets) : secrets;
 
-					const cookie = yield* sign(base64Value, secretToUse);
+					const signature = yield* generateHmacSignature(base64Value, secretToUse);
 
-					return cookie;
+					const valueWithSignature = `${base64Value}.${Redacted.value(signature)}`;
+
+					return valueWithSignature;
 				}),
 			} satisfies CookieSigner["Type"];
 		}),

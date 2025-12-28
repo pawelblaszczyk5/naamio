@@ -27,6 +27,7 @@
 		"@lingui/react": "^5.7.0",
 		"@naamio/api": "workspace:*",
 		"@naamio/design-system": "workspace:*",
+		"@naamio/hmac": "workspace:*",
 		"@naamio/observability": "workspace:*",
 		"@naamio/stylex": "workspace:*",
 		"@tanstack/react-router": "^1.144.0",

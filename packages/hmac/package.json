@@ -1,0 +1,40 @@
+{
+	"name": "@naamio/hmac",
+	"description": "HMAC signing/verifying utilities, based on Effect + Web Crypto APIs.",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
+		"dev": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"test": "vitest run",
+		"test:dev": "vitest dev",
+		"typecheck": "tsc --build"
+	},
+	"dependencies": {
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@effect/language-service": "catalog:",
+		"@effect/vitest": "catalog:",
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"@types/node": "catalog:",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	}
+}

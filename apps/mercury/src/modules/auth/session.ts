@@ -7,7 +7,7 @@ import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 import { generateId } from "@naamio/id-generator/effect";
 import { SessionModel } from "@naamio/schema";
 
-import { ALPHABET } from "#src/modules/auth/constants.js";
+import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";
 
 const SESSION_EXPIRATION_DURATION = Duration.days(30);
@@ -32,7 +32,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 
 			const sql = yield* PgClient.PgClient;
 
-			const generateSessionValue = customAlphabet(ALPHABET, 32);
+			const generateSessionValue = customAlphabet(STANDARD_ID_ALPHABET, 32);
 
 			const insertSession = SqlSchema.void({
 				execute: (request) => sql`

@@ -3,8 +3,8 @@ import { HttpApi, OpenApi } from "@effect/platform";
 import { ExampleGroup } from "#src/modules/example.js";
 
 export class NaamioApi extends HttpApi.make("naamioApi")
-	.prefix("/api")
 	.add(ExampleGroup)
+	.prefix("/api")
 	.annotateContext(
 		OpenApi.annotations({
 			description:

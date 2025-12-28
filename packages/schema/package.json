@@ -1,0 +1,36 @@
+{
+	"name": "@naamio/schema",
+	"description": "Schema of various entities and domain specific objects",
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/src/mod.d.ts",
+			"default": "./dist/src/mod.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc --noCheck && tsc-alias",
+		"dev": "tsc --noCheck && tsc-alias",
+		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@effect/experimental": "catalog:",
+		"@effect/sql": "catalog:",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@effect/language-service": "catalog:",
+		"@naamio/eslint-config": "workspace:*",
+		"@naamio/typescript-config": "workspace:*",
+		"eslint": "catalog:",
+		"tsc-alias": "catalog:",
+		"typescript": "catalog:"
+	}
+}

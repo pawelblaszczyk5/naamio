@@ -15,6 +15,9 @@ catalogs:
     '@effect/cluster':
       specifier: ^0.56.0
       version: 0.56.0
+    '@effect/experimental':
+      specifier: ^0.58.0
+      version: 0.58.0
     '@effect/language-service':
       specifier: ^0.62.5
       version: 0.62.5
@@ -553,6 +556,37 @@ importers:
       '@effect/platform':
         specifier: 'catalog:'
         version: 0.94.0(effect@3.19.13)
+      effect:
+        specifier: 'catalog:'
+        version: 3.19.13
+    devDependencies:
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.62.5
+      '@naamio/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@naamio/typescript-config':
+        specifier: workspace:*
+        version: link:../../tooling/typescript-config
+      eslint:
+        specifier: 'catalog:'
+        version: 9.39.2(jiti@2.6.1)
+      tsc-alias:
+        specifier: 'catalog:'
+        version: 1.8.16
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/schema:
+    dependencies:
+      '@effect/experimental':
+        specifier: 'catalog:'
+        version: 0.58.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13)
+      '@effect/sql':
+        specifier: 'catalog:'
+        version: 0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13)
       effect:
         specifier: 'catalog:'
         version: 3.19.13

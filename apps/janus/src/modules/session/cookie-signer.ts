@@ -69,5 +69,5 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 				}),
 			} satisfies CookieSigner["Type"];
 		}),
-	);
+	) satisfies Layer.Layer<CookieSigner, unknown>;
 }

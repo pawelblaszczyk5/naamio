@@ -116,5 +116,5 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				},
 			} satisfies Session["Type"];
 		}),
-	).pipe(Layer.provide(DatabaseLive));
+	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<Session, unknown>;
 }

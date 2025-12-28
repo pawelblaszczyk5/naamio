@@ -63,5 +63,5 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				},
 			} satisfies User["Type"];
 		}),
-	).pipe(Layer.provide(DatabaseLive));
+	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<User, unknown>;
 }

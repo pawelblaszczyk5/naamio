@@ -20,5 +20,5 @@ export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient"
 
 			return yield* HttpApiClient.make(NaamioApi, { baseUrl: API_BASE_URL });
 		}),
-	).pipe(Layer.provide(FetchHttpClient.layer));
+	).pipe(Layer.provide(FetchHttpClient.layer)) satisfies Layer.Layer<NaamioApiClient, unknown>;
 }

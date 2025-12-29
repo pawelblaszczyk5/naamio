@@ -42,9 +42,8 @@ Expiration, invalidation, and rate-limiting policies must be defined during impl
 
 ## Rate limiting and security details
 
-- 3 challenges per 5 minutes
-- 6 challenges per 1 hour
+- 4 challenges per 5 minutes
+- 8 challenges per 1 hour
 - 3 attempts per challenge
-- Resend is available after 2 minutes and counts towards standard limits, it's available only for matching state and invalidates it
+- Resend is available after 2 minutes and counts towards standard limits, it's available only for matching state and revokes it
 - Code is valid for 5 minutes
-- Any suspicious attempt (state mismatch, funky stuff detected) -> invalidate all challenges

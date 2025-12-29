@@ -39,21 +39,34 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 	EmailChallenge,
 	{
 		system: {
-			attempt: (data: {
-				code: Redacted.Redacted;
-				state: EmailChallengeModel["state"];
-			}) => Effect.Effect<
-				EmailChallengeModel["email"],
-				InvalidChallengeAttemptError | MissingChallengeError | TooManyChallengeAttemptsError | UnavailableChallengeError
+			findMetadata: (
+				state: EmailChallengeModel["state"],
+			) => Effect.Effect<
+				Option.Option<
+					Pick<EmailChallengeModel, "email"> & {
+						expiresAt: DateTime.DateTime;
+						refreshAvailableAt: DateTime.DateTime;
+						remainingAttempts: number;
+					}
+				>
 			>;
 			initialize: (
 				data: Pick<EmailChallengeModel, "email" | "language">,
 			) => Effect.Effect<EmailChallengeModel["state"]>;
-			refresh: (
-				state: EmailChallengeModel["state"],
-			) => Effect.Effect<
+			refresh: (data: {
+				email: EmailChallengeModel["email"];
+				state: EmailChallengeModel["state"];
+			}) => Effect.Effect<
 				EmailChallengeModel["state"],
 				ChallengeRefreshUnavailableError | MissingChallengeError | UnavailableChallengeError
+			>;
+			solve: (data: {
+				code: Redacted.Redacted;
+				email: EmailChallengeModel["email"];
+				state: EmailChallengeModel["state"];
+			}) => Effect.Effect<
+				void,
+				InvalidChallengeAttemptError | MissingChallengeError | TooManyChallengeAttemptsError | UnavailableChallengeError
 			>;
 		};
 	}
@@ -83,10 +96,38 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				Request: EmailChallengeModel.insert,
 			});
 
-			const findByStateForSolvingAttempt = SqlSchema.findOne({
+			const findByStateForMetadata = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
-						${sql("attemptCount")},
+						${sql("remainingAttempts")},
+						${sql("consumedAt")},
+						${sql("refreshAvailableAt")},
+						${sql("email")},
+						${sql("expiresAt")},
+						${sql("id")},
+						${sql("revokedAt")}
+					FROM
+						${sql("emailChallenge")}
+					WHERE
+						${sql("state")} = ${request};
+				`,
+				Request: EmailChallengeModel.fields.state,
+				Result: EmailChallengeModel.select.pick(
+					"remainingAttempts",
+					"consumedAt",
+					"refreshAvailableAt",
+					"email",
+					"expiresAt",
+					"hash",
+					"id",
+					"revokedAt",
+				),
+			});
+
+			const findByStateForSolving = SqlSchema.findOne({
+				execute: (request) => sql`
+					SELECT
+						${sql("remainingAttempts")},
 						${sql("consumedAt")},
 						${sql("email")},
 						${sql("expiresAt")},
@@ -96,12 +137,12 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					FROM
 						${sql("emailChallenge")}
 					WHERE
-						${sql("state")} = ${request}
+						${sql.and([sql`${sql("state")} = ${request.state}`, sql`${sql("email")} = ${request.email}`])}
 					FOR UPDATE;
 				`,
-				Request: EmailChallengeModel.fields.state,
+				Request: EmailChallengeModel.select.pick("state", "email"),
 				Result: EmailChallengeModel.select.pick(
-					"attemptCount",
+					"remainingAttempts",
 					"consumedAt",
 					"email",
 					"expiresAt",
@@ -115,7 +156,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				execute: (request) => sql`
 					SELECT
 						${sql("consumedAt")},
-						${sql("createdAt")},
+						${sql("refreshAvailableAt")},
 						${sql("email")},
 						${sql("expiresAt")},
 						${sql("id")},
@@ -124,13 +165,13 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					FROM
 						${sql("emailChallenge")}
 					WHERE
-						${sql("state")} = ${request}
+						${sql.and([sql`${sql("state")} = ${request.state}`, sql`${sql("email")} = ${request.email}`])}
 					FOR UPDATE;
 				`,
-				Request: EmailChallengeModel.fields.state,
+				Request: EmailChallengeModel.select.pick("state", "email"),
 				Result: EmailChallengeModel.select.pick(
 					"consumedAt",
-					"createdAt",
+					"refreshAvailableAt",
 					"email",
 					"expiresAt",
 					"hash",
@@ -140,13 +181,13 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				),
 			});
 
-			const increaseEmailChallengeAttemptCount = SqlSchema.void({
+			const consumeEmailChallengeAttempt = SqlSchema.void({
 				execute: (request) => sql`
 					UPDATE ${sql("emailChallenge")}
 					SET
-						${sql("attemptCount")} = ${sql("attemptCount")} + 1
+						${sql("remainingAttempts")} = ${sql("remainingAttempts")} - 1
 					WHERE
-						${sql("state")} = ${request};
+						${sql("id")} = ${request};
 				`,
 				Request: EmailChallengeModel.fields.id,
 			});
@@ -212,18 +253,19 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				const state = Redacted.make(generateEmailChallengeState());
 				const code = Redacted.make(generateEmailChallengeCode());
 				const hash = yield* hashEmailChallengeCode(code);
-				const expiresAt = yield* DateTime.now.pipe(
-					Effect.map(DateTime.addDuration(EMAIL_CHALLENGE_EXPIRATION_DURATION)),
-				);
+				const now = yield* DateTime.now;
+				const expiresAt = DateTime.addDuration(now, EMAIL_CHALLENGE_EXPIRATION_DURATION);
+				const refreshAvailableAt = DateTime.addDuration(now, EMAIL_CHALLENGE_REFRESH_CUTOFF_DURATION);
 
 				yield* insertEmailChallenge({
-					attemptCount: 0,
 					consumedAt: Option.none(),
 					createdAt: undefined,
 					email: data.email,
 					expiresAt,
 					hash,
 					language: data.language,
+					refreshAvailableAt,
+					remainingAttempts: EMAIL_CHALLENGE_MAX_ATTEMPT_COUNT,
 					revokedAt: Option.none(),
 					state,
 				}).pipe(Effect.orDie);
@@ -241,46 +283,26 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 
 			return {
 				system: {
-					attempt: Effect.fn("@naamio/mercury/EmailChallenge#attempt")(
-						function* (data) {
-							const maybeEmailChallenge = yield* findByStateForSolvingAttempt(data.state).pipe(Effect.orDie);
+					findMetadata: Effect.fn("@naamio/mercury/EmailChallenge#findMetadata")(function* (state) {
+						const maybeEmailChallenge = yield* findByStateForMetadata(state).pipe(Effect.orDie);
 
-							if (Option.isNone(maybeEmailChallenge)) {
-								return yield* new MissingChallengeError();
-							}
+						if (Option.isNone(maybeEmailChallenge)) {
+							return Option.none();
+						}
 
-							const isAvailable = yield* isEmailChallengeAvailable(maybeEmailChallenge.value);
-							const hasTooManyAttempts = maybeEmailChallenge.value.attemptCount >= EMAIL_CHALLENGE_MAX_ATTEMPT_COUNT;
+						const isAvailable = yield* isEmailChallengeAvailable(maybeEmailChallenge.value);
 
-							if (!isAvailable) {
-								return yield* new UnavailableChallengeError();
-							}
+						if (!isAvailable) {
+							return Option.none();
+						}
 
-							if (hasTooManyAttempts) {
-								return yield* new TooManyChallengeAttemptsError();
-							}
-
-							yield* increaseEmailChallengeAttemptCount(maybeEmailChallenge.value.id).pipe(Effect.orDie);
-
-							const isSuccessfulAttempt = yield* verifyEmailChallengeCode({
-								code: data.code,
-								hash: maybeEmailChallenge.value.hash,
-							});
-
-							if (!isSuccessfulAttempt) {
-								return yield* new InvalidChallengeAttemptError();
-							}
-
-							yield* consumeEmailChallenge({
-								consumedAt: Option.some(yield* DateTime.now),
-								id: maybeEmailChallenge.value.id,
-							}).pipe(Effect.orDie);
-
-							return maybeEmailChallenge.value.email;
-						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
-					),
+						return Option.some({
+							email: maybeEmailChallenge.value.email,
+							expiresAt: maybeEmailChallenge.value.expiresAt,
+							refreshAvailableAt: maybeEmailChallenge.value.refreshAvailableAt,
+							remainingAttempts: maybeEmailChallenge.value.remainingAttempts,
+						});
+					}),
 					initialize: Effect.fn("@naamio/mercury/EmailChallenge#initialize")(function* (data) {
 						const result = yield* createNewChallenge(data);
 
@@ -289,17 +311,17 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						return result.state;
 					}),
 					refresh: Effect.fn("@naamio/mercury/EmailChallenge#refresh")(
-						function* (state) {
-							const maybeEmailChallenge = yield* findByStateForRefresh(state).pipe(Effect.orDie);
+						function* (data) {
+							const maybeEmailChallenge = yield* findByStateForRefresh({ email: data.email, state: data.state }).pipe(
+								Effect.orDie,
+							);
 
 							if (Option.isNone(maybeEmailChallenge)) {
 								return yield* new MissingChallengeError();
 							}
 
 							const isAvailable = yield* isEmailChallengeAvailable(maybeEmailChallenge.value);
-							const isAfterRefreshCutoff = yield* DateTime.isPast(
-								maybeEmailChallenge.value.createdAt.pipe(DateTime.addDuration(EMAIL_CHALLENGE_REFRESH_CUTOFF_DURATION)),
-							);
+							const isAfterRefreshCutoff = yield* DateTime.isPast(maybeEmailChallenge.value.refreshAvailableAt);
 
 							if (!isAvailable) {
 								return yield* new UnavailableChallengeError();
@@ -326,6 +348,46 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 							});
 
 							return result.state;
+						},
+						sql.withTransaction,
+						Effect.catchTag("SqlError", (error) => Effect.die(error)),
+					),
+					solve: Effect.fn("@naamio/mercury/EmailChallenge#solve")(
+						function* (data) {
+							const maybeEmailChallenge = yield* findByStateForSolving({ email: data.email, state: data.state }).pipe(
+								Effect.orDie,
+							);
+
+							if (Option.isNone(maybeEmailChallenge)) {
+								return yield* new MissingChallengeError();
+							}
+
+							const isAvailable = yield* isEmailChallengeAvailable(maybeEmailChallenge.value);
+							const hasAnyAttemptsLeft = maybeEmailChallenge.value.remainingAttempts > 0;
+
+							if (!isAvailable) {
+								return yield* new UnavailableChallengeError();
+							}
+
+							if (!hasAnyAttemptsLeft) {
+								return yield* new TooManyChallengeAttemptsError();
+							}
+
+							yield* consumeEmailChallengeAttempt(maybeEmailChallenge.value.id).pipe(Effect.orDie);
+
+							const isSuccessfulAttempt = yield* verifyEmailChallengeCode({
+								code: data.code,
+								hash: maybeEmailChallenge.value.hash,
+							});
+
+							if (!isSuccessfulAttempt) {
+								return yield* new InvalidChallengeAttemptError();
+							}
+
+							yield* consumeEmailChallenge({
+								consumedAt: Option.some(yield* DateTime.now),
+								id: maybeEmailChallenge.value.id,
+							}).pipe(Effect.orDie);
 						},
 						sql.withTransaction,
 						Effect.catchTag("SqlError", (error) => Effect.die(error)),

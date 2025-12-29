@@ -33,13 +33,14 @@ const migration = Effect.gen(function* () {
 	yield* sql`
 		CREATE TABLE ${sql("emailChallenge")} (
 			${sql("id")} BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-			${sql("attemptCount")} SMALLINT NOT NULL,
 			${sql("consumedAt")} TIMESTAMPTZ NULL,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("expiresAt")} TIMESTAMPTZ NOT NULL,
+			${sql("refreshAvailableAt")} TIMESTAMPTZ NOT NULL,
 			${sql("revokedAt")} TIMESTAMPTZ NULL,
 			${sql("email")} TEXT NOT NULL,
 			${sql("language")} TEXT NOT NULL,
+			${sql("remainingAttempts")} SMALLINT NOT NULL,
 			${sql("hash")} TEXT NOT NULL,
 			${sql("state")} TEXT NOT NULL UNIQUE
 		);

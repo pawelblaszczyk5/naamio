@@ -284,6 +284,9 @@ importers:
       '@effect/cluster':
         specifier: 'catalog:'
         version: 0.56.0(@effect/platform@0.94.0(effect@3.19.13))(@effect/rpc@0.73.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(@effect/workflow@0.16.0(@effect/experimental@0.58.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(@effect/platform@0.94.0(effect@3.19.13))(@effect/rpc@0.73.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13))(effect@3.19.13))(effect@3.19.13)
+      '@effect/experimental':
+        specifier: 'catalog:'
+        version: 0.58.0(@effect/platform@0.94.0(effect@3.19.13))(effect@3.19.13)
       '@effect/platform':
         specifier: 'catalog:'
         version: 0.94.0(effect@3.19.13)

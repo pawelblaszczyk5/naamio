@@ -23,7 +23,6 @@ export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Sess
 }) {}
 
 export class EmailChallengeModel extends Model.Class<EmailChallengeModel>("@naamio/schema/EmailChallenge")({
-	attemptCount: Schema.Int.pipe(Schema.between(0, 3)),
 	consumedAt: Model.FieldOption(Model.DateTimeFromDate),
 	createdAt: Model.DateTimeInsertFromDate,
 	email: UserModel.fields.email,
@@ -31,6 +30,8 @@ export class EmailChallengeModel extends Model.Class<EmailChallengeModel>("@naam
 	hash: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
 	id: Model.Generated(Schema.BigInt.pipe(Schema.brand("EmailChallengeId"))),
 	language: UserModel.fields.language,
+	refreshAvailableAt: Model.DateTimeFromDate,
+	remainingAttempts: Schema.Int.pipe(Schema.between(0, 3)),
 	revokedAt: Model.FieldOption(Model.DateTimeFromDate),
 	state: Schema.Trimmed.pipe(Schema.length(32), Schema.Redacted),
 }) {}

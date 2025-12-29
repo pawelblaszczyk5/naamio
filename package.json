@@ -13,6 +13,7 @@
 		"codegen": "turbo run codegen",
 		"predev": "turbo run build --filter=\"./{packages,tooling}/*\"",
 		"dev": "turbo watch dev --experimental-write-cache",
+		"dev:packages": "turbo watch dev --filter=\"./packages/*\" --experimental-write-cache",
 		"effect-diagnostics": "turbo run effect-diagnostics",
 		"format": "prettier \".\" --check",
 		"format:fix": "prettier \".\" --write",

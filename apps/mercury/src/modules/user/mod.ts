@@ -13,7 +13,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 	User,
 	{
 		system: {
-			create: (email: UserModel["email"]) => Effect.Effect<UserModel["id"]>;
+			create: (data: Pick<UserModel, "email" | "language">) => Effect.Effect<UserModel["id"]>;
 			findByEmail: (email: UserModel["email"]) => Effect.Effect<Option.Option<Pick<UserModel, "email" | "id">>>;
 		};
 	}
@@ -50,10 +50,15 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 
 			return {
 				system: {
-					create: Effect.fn("@naamio/mercury/User#create")(function* (email) {
+					create: Effect.fn("@naamio/mercury/User#create")(function* (data) {
 						const publicId = UserModel.fields.publicId.make(yield* generateId());
 
-						const inserted = yield* insertUser({ createdAt: undefined, email, publicId }).pipe(Effect.orDie);
+						const inserted = yield* insertUser({
+							createdAt: undefined,
+							email: data.email,
+							language: data.language,
+							publicId,
+						}).pipe(Effect.orDie);
 
 						return inserted.id;
 					}),

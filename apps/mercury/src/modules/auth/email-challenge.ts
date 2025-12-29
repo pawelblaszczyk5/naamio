@@ -46,10 +46,9 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				EmailChallengeModel["email"],
 				InvalidChallengeAttemptError | MissingChallengeError | TooManyChallengeAttemptsError | UnavailableChallengeError
 			>;
-			initialize: (data: {
-				email: EmailChallengeModel["email"];
-				language: EmailChallengeModel["language"];
-			}) => Effect.Effect<EmailChallengeModel["state"]>;
+			initialize: (
+				data: Pick<EmailChallengeModel, "email" | "language">,
+			) => Effect.Effect<EmailChallengeModel["state"]>;
 			refresh: (
 				state: EmailChallengeModel["state"],
 			) => Effect.Effect<

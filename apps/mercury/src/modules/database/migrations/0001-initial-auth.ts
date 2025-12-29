@@ -11,6 +11,7 @@ const migration = Effect.gen(function* () {
 			${sql("id")} BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 			${sql("publicId")} TEXT NOT NULL UNIQUE,
 			${sql("email")} TEXT NOT NULL UNIQUE,
+			${sql("language")} TEXT NOT NULL,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL
 		);
 	`;
@@ -38,6 +39,7 @@ const migration = Effect.gen(function* () {
 			${sql("expiresAt")} TIMESTAMPTZ NOT NULL,
 			${sql("revokedAt")} TIMESTAMPTZ NULL,
 			${sql("email")} TEXT NOT NULL,
+			${sql("language")} TEXT NOT NULL,
 			${sql("hash")} TEXT NOT NULL,
 			${sql("state")} TEXT NOT NULL UNIQUE
 		);

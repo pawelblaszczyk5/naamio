@@ -5,8 +5,9 @@ const PublicId = Schema.Trimmed.pipe(Schema.length(16));
 
 export class UserModel extends Model.Class<UserModel>("@naamio/schema/User")({
 	createdAt: Model.DateTimeInsertFromDate,
-	email: Schema.NonEmptyTrimmedString,
+	email: Schema.TemplateLiteral(Schema.NonEmptyTrimmedString, "@", Schema.NonEmptyTrimmedString),
 	id: Model.Generated(Schema.BigInt.pipe(Schema.brand("UserId"))),
+	language: Schema.Literal("en-US", "pl-PL"),
 	publicId: Model.GeneratedByApp(PublicId.pipe(Schema.brand("UserPublicId"))),
 }) {}
 
@@ -29,6 +30,7 @@ export class EmailChallengeModel extends Model.Class<EmailChallengeModel>("@naam
 	expiresAt: Model.DateTimeFromDate,
 	hash: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
 	id: Model.Generated(Schema.BigInt.pipe(Schema.brand("EmailChallengeId"))),
+	language: UserModel.fields.language,
 	revokedAt: Model.FieldOption(Model.DateTimeFromDate),
 	state: Schema.Trimmed.pipe(Schema.length(32), Schema.Redacted),
 }) {}

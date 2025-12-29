@@ -46,7 +46,10 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				EmailChallengeModel["email"],
 				InvalidChallengeAttemptError | MissingChallengeError | TooManyChallengeAttemptsError | UnavailableChallengeError
 			>;
-			initialize: (email: EmailChallengeModel["email"]) => Effect.Effect<EmailChallengeModel["state"]>;
+			initialize: (data: {
+				email: EmailChallengeModel["email"];
+				language: EmailChallengeModel["language"];
+			}) => Effect.Effect<EmailChallengeModel["state"]>;
 			refresh: (
 				state: EmailChallengeModel["state"],
 			) => Effect.Effect<
@@ -117,7 +120,8 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						${sql("email")},
 						${sql("expiresAt")},
 						${sql("id")},
-						${sql("revokedAt")}
+						${sql("revokedAt")},
+						${sql("language")}
 					FROM
 						${sql("emailChallenge")}
 					WHERE
@@ -133,6 +137,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					"hash",
 					"id",
 					"revokedAt",
+					"language",
 				),
 			});
 
@@ -201,7 +206,10 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				return !isExpired && !isRevoked && !isConsumed;
 			});
 
-			const createNewChallenge = Effect.fn(function* (email: EmailChallengeModel["email"]) {
+			const createNewChallenge = Effect.fn(function* (data: {
+				email: EmailChallengeModel["email"];
+				language: EmailChallengeModel["language"];
+			}) {
 				const state = Redacted.make(generateEmailChallengeState());
 				const code = Redacted.make(generateEmailChallengeCode());
 				const hash = yield* hashEmailChallengeCode(code);
@@ -213,9 +221,10 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					attemptCount: 0,
 					consumedAt: Option.none(),
 					createdAt: undefined,
-					email,
+					email: data.email,
 					expiresAt,
 					hash,
+					language: data.language,
 					revokedAt: Option.none(),
 					state,
 				}).pipe(Effect.orDie);
@@ -226,6 +235,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 			const sendEmailChallenge = Effect.fn(function* (data: {
 				code: Redacted.Redacted;
 				email: EmailChallengeModel["email"];
+				language: EmailChallengeModel["language"];
 			}) {
 				yield* Effect.log("TEMPORARY LOGGING CODE, IMPLEMENT SENDING EMAIL", data.email, Redacted.value(data.code));
 			});
@@ -272,10 +282,10 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						sql.withTransaction,
 						Effect.catchTag("SqlError", (error) => Effect.die(error)),
 					),
-					initialize: Effect.fn("@naamio/mercury/EmailChallenge#initialize")(function* (email) {
-						const result = yield* createNewChallenge(email);
+					initialize: Effect.fn("@naamio/mercury/EmailChallenge#initialize")(function* (data) {
+						const result = yield* createNewChallenge(data);
 
-						yield* sendEmailChallenge({ code: result.code, email });
+						yield* sendEmailChallenge({ code: result.code, email: data.email, language: data.language });
 
 						return result.state;
 					}),
@@ -305,9 +315,16 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 								revokedAt: Option.some(yield* DateTime.now),
 							}).pipe(Effect.orDie);
 
-							const result = yield* createNewChallenge(maybeEmailChallenge.value.email);
+							const result = yield* createNewChallenge({
+								email: maybeEmailChallenge.value.email,
+								language: maybeEmailChallenge.value.language,
+							});
 
-							yield* sendEmailChallenge({ code: result.code, email: maybeEmailChallenge.value.email });
+							yield* sendEmailChallenge({
+								code: result.code,
+								email: maybeEmailChallenge.value.email,
+								language: maybeEmailChallenge.value.language,
+							});
 
 							return result.state;
 						},

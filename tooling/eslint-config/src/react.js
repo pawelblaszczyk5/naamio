@@ -108,6 +108,7 @@ export default defineConfig({
 		// react-naming-convention
 		"react-naming-convention/component-name": "error",
 		"react-naming-convention/use-state": "error",
+		"react-naming-convention/ref-name": "error",
 		"react-naming-convention/context-name": "error",
 
 		// stylistic

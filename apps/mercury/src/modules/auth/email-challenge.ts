@@ -43,11 +43,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				state: EmailChallengeModel["state"],
 			) => Effect.Effect<
 				Option.Option<
-					Pick<EmailChallengeModel, "email"> & {
-						expiresAt: DateTime.DateTime;
-						refreshAvailableAt: DateTime.DateTime;
-						remainingAttempts: number;
-					}
+					Pick<EmailChallengeModel, "email" | "expiresAt" | "language" | "refreshAvailableAt" | "remainingAttempts">
 				>
 			>;
 			initialize: (
@@ -91,7 +87,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 			const insertEmailChallenge = SqlSchema.void({
 				execute: (request) => sql`
 					INSERT INTO
-						${sql("EmailChallenge")} ${sql.insert(request)};
+						${sql("emailChallenge")} ${sql.insert(request)};
 				`,
 				Request: EmailChallengeModel.insert,
 			});
@@ -105,7 +101,8 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						${sql("email")},
 						${sql("expiresAt")},
 						${sql("id")},
-						${sql("revokedAt")}
+						${sql("revokedAt")},
+						${sql("language")}
 					FROM
 						${sql("emailChallenge")}
 					WHERE
@@ -118,7 +115,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					"refreshAvailableAt",
 					"email",
 					"expiresAt",
-					"hash",
+					"language",
 					"id",
 					"revokedAt",
 				),
@@ -174,7 +171,6 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					"refreshAvailableAt",
 					"email",
 					"expiresAt",
-					"hash",
 					"id",
 					"revokedAt",
 					"language",
@@ -299,6 +295,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						return Option.some({
 							email: maybeEmailChallenge.value.email,
 							expiresAt: maybeEmailChallenge.value.expiresAt,
+							language: maybeEmailChallenge.value.language,
 							refreshAvailableAt: maybeEmailChallenge.value.refreshAvailableAt,
 							remainingAttempts: maybeEmailChallenge.value.remainingAttempts,
 						});

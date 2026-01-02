@@ -10,6 +10,14 @@
 		".": {
 			"types": "./dist/src/mod.d.ts",
 			"default": "./dist/src/mod.js"
+		},
+		"./errors": {
+			"types": "./dist/src/errors/mod.d.ts",
+			"default": "./dist/src/errors/mod.js"
+		},
+		"./middlewares/authenticated-only": {
+			"types": "./dist/src/middlewares/authenticated-only.d.ts",
+			"default": "./dist/src/middlewares/authenticated-only.js"
 		}
 	},
 	"scripts": {
@@ -22,6 +30,7 @@
 	},
 	"dependencies": {
 		"@effect/platform": "catalog:",
+		"@naamio/schema": "workspace:*",
 		"effect": "catalog:"
 	},
 	"devDependencies": {

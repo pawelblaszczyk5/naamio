@@ -3,7 +3,7 @@ import { RateLimiter } from "@effect/experimental";
 import { Rpc } from "@effect/rpc";
 import { Duration, Effect, Layer, Schema } from "effect";
 
-import { EmailChallengeModel } from "@naamio/schema";
+import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema";
 
 import {
 	ChallengeRefreshUnavailableError,
@@ -22,8 +22,8 @@ export class TooManyAuthenticatorRequestsError extends Schema.TaggedError<TooMan
 export const Authenticator = Entity.make("Authenticator", [
 	Rpc.make("InitializeChallenge", {
 		error: TooManyAuthenticatorRequestsError,
-		payload: Schema.Struct({ language: EmailChallengeModel.insert.fields.language }),
-		success: Schema.Struct({ state: EmailChallengeModel.insert.fields.state }),
+		payload: EmailChallengeModel.insert.pick("language"),
+		success: EmailChallengeModel.select.pick("state"),
 	}),
 	Rpc.make("SolveChallenge", {
 		error: Schema.Union(
@@ -32,10 +32,7 @@ export const Authenticator = Entity.make("Authenticator", [
 			InvalidChallengeAttemptError,
 			TooManyChallengeAttemptsError,
 		),
-		payload: Schema.Struct({
-			code: Schema.Redacted(Schema.Trimmed.pipe(Schema.length(6))),
-			state: Schema.Redacted(Schema.NonEmptyTrimmedString),
-		}),
+		payload: Schema.extend(EmailChallengeModel.select.pick("state"))(Schema.Struct({ code: EmailChallengeCode })),
 	}),
 	Rpc.make("RefreshChallenge", {
 		error: Schema.Union(
@@ -44,8 +41,8 @@ export const Authenticator = Entity.make("Authenticator", [
 			MissingChallengeError,
 			UnavailableChallengeError,
 		),
-		payload: Schema.Struct({ state: EmailChallengeModel.insert.fields.state }),
-		success: Schema.Struct({ state: EmailChallengeModel.insert.fields.state }),
+		payload: EmailChallengeModel.select.pick("state"),
+		success: EmailChallengeModel.select.pick("state"),
 	}),
 ]);
 

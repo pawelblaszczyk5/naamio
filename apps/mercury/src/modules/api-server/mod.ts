@@ -53,7 +53,7 @@ const AuthenticationGroupLive = HttpApiBuilder.group(
 		return handlers
 			.handle(
 				"getEmailChallengeMetadata",
-				Effect.fn(function* (context) {
+				Effect.fn("@naamio/mercury/AuthenticationGroup#getEmailChallengeMetadata")(function* (context) {
 					return yield* emailChallenge.system.findMetadata(context.path.state).pipe(
 						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
 						Effect.catchTag("NoSuchElementException", () => new HttpApiError.NotFound()),
@@ -62,7 +62,7 @@ const AuthenticationGroupLive = HttpApiBuilder.group(
 			)
 			.handle(
 				"initializeEmailChallenge",
-				Effect.fn(function* (context) {
+				Effect.fn("@naamio/mercury/AuthenticationGroup#initializeEmailChallenge")(function* (context) {
 					const authenticatorEntity = getAuthenticatorEntity(context.payload.email);
 
 					const result = yield* authenticatorEntity
@@ -81,7 +81,7 @@ const AuthenticationGroupLive = HttpApiBuilder.group(
 			)
 			.handle(
 				"refreshEmailChallenge",
-				Effect.fn(function* (context) {
+				Effect.fn("@naamio/mercury/AuthenticationGroup#refreshEmailChallenge")(function* (context) {
 					const challenge = yield* emailChallenge.system.findMetadata(context.path.state).pipe(
 						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
 						Effect.catchTag("NoSuchElementException", () => new HttpApiError.BadRequest()),
@@ -108,7 +108,7 @@ const AuthenticationGroupLive = HttpApiBuilder.group(
 			)
 			.handle(
 				"solveEmailChallenge",
-				Effect.fn(function* (context) {
+				Effect.fn("@naamio/mercury/AuthenticationGroup#solveEmailChallenge")(function* (context) {
 					const challenge = yield* emailChallenge.system.findMetadata(context.path.state).pipe(
 						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
 						Effect.catchTag("NoSuchElementException", () => new HttpApiError.BadRequest()),
@@ -158,13 +158,13 @@ const SessionGroupLive = HttpApiBuilder.group(
 		return handlers
 			.handle(
 				"verify",
-				Effect.fn(function* () {
+				Effect.fn("@naamio/mercury/SessionGroup#verify")(function* () {
 					return yield* session.viewer.verify();
 				}),
 			)
 			.handle(
 				"revoke",
-				Effect.fn(function* (context) {
+				Effect.fn("@naamio/mercury/SessionGroup#revoke")(function* (context) {
 					yield* session.viewer
 						.revoke(context.path.sessionId)
 						.pipe(
@@ -177,7 +177,7 @@ const SessionGroupLive = HttpApiBuilder.group(
 			)
 			.handle(
 				"revokeAll",
-				Effect.fn(function* () {
+				Effect.fn("@naamio/mercury/SessionGroup#revokeAll")(function* () {
 					yield* session.viewer.revokeAll();
 				}),
 			);

@@ -1,5 +1,5 @@
 import { HttpApiBuilder, HttpApiError } from "@effect/platform";
-import { Effect, Layer, Option } from "effect";
+import { Effect, Layer, Option, Redacted } from "effect";
 
 import { NaamioApi } from "@naamio/api";
 import { InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
@@ -18,6 +18,16 @@ const AuthenticatedOnlyLive = Layer.effect(
 
 		return {
 			sessionToken: Effect.fn("@naamio/mercury/AuthenticatedOnly#sessionToken")(function* (token) {
+				const isEmptyToken = yield* Effect.gen(function* () {
+					const rawToken = Redacted.value(token);
+
+					return rawToken.length === 0;
+				});
+
+				if (isEmptyToken) {
+					return yield* new HttpApiError.Unauthorized();
+				}
+
 				const maybeUserSession = yield* session.system.retrieveFromToken(token);
 
 				if (Option.isNone(maybeUserSession)) {

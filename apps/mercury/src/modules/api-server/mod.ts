@@ -3,12 +3,32 @@ import { Effect, Layer, Option } from "effect";
 
 import { NaamioApi } from "@naamio/api";
 import { InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
+import { AuthenticatedOnly } from "@naamio/api/middlewares/authenticated-only";
 
 import { Authenticator, AuthenticatorLive } from "#src/modules/auth/authenticator.js";
 import { EmailChallenge } from "#src/modules/auth/email-challenge.js";
 import { Session } from "#src/modules/auth/session.js";
 import { ClusterRunnerLive } from "#src/modules/cluster/mod.js";
 import { User } from "#src/modules/user/mod.js";
+
+const AuthenticatedOnlyLive = Layer.effect(
+	AuthenticatedOnly,
+	Effect.gen(function* () {
+		const session = yield* Session;
+
+		return {
+			sessionToken: Effect.fn("@naamio/mercury/AuthenticatedOnly#sessionToken")(function* (token) {
+				const maybeUserSession = yield* session.system.retrieveFromToken(token);
+
+				if (Option.isNone(maybeUserSession)) {
+					return yield* new HttpApiError.Unauthorized();
+				}
+
+				return maybeUserSession.value;
+			}),
+		};
+	}),
+).pipe(Layer.provide(Session.Live));
 
 const AuthenticationGroupLive = HttpApiBuilder.group(
 	NaamioApi,
@@ -119,4 +139,41 @@ const AuthenticationGroupLive = HttpApiBuilder.group(
 	}),
 ).pipe(Layer.provide([Session.Live, EmailChallenge.Live, User.Live, AuthenticatorLive, ClusterRunnerLive]));
 
-export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(Layer.provide(AuthenticationGroupLive));
+const SessionGroupLive = HttpApiBuilder.group(
+	NaamioApi,
+	"Session",
+	Effect.fn(function* (handlers) {
+		const session = yield* Session;
+
+		return handlers
+			.handle(
+				"verify",
+				Effect.fn(function* () {
+					return yield* session.viewer.verify();
+				}),
+			)
+			.handle(
+				"revoke",
+				Effect.fn(function* (context) {
+					yield* session.viewer
+						.revoke(context.path.sessionId)
+						.pipe(
+							Effect.catchTags({
+								MissingSessionError: () => new HttpApiError.NotFound(),
+								UnavailableSessionError: () => new HttpApiError.BadRequest(),
+							}),
+						);
+				}),
+			)
+			.handle(
+				"revokeAll",
+				Effect.fn(function* () {
+					yield* session.viewer.revokeAll();
+				}),
+			);
+	}),
+).pipe(Layer.provide([Session.Live, AuthenticatedOnlyLive]));
+
+export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
+	Layer.provide([AuthenticationGroupLive, SessionGroupLive]),
+);

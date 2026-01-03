@@ -18,7 +18,7 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 				OpenApi.annotations({
 					description:
 						"Allows to create a new email challenge that allows to create a session token suitable for interacting with part of the app that requires authentication. Returns a state that's a sole user-facing identifier for this challenge, and should be used for further requests regarding this challenge. It should be stored in a way that disallows user to modify it.",
-					summary: "Initialize new email challenge",
+					summary: "Initialize new email challenge.",
 				}),
 			),
 	)
@@ -31,8 +31,8 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 			.annotateContext(
 				OpenApi.annotations({
 					description:
-						"Allows to refresh already existing challenge, as long as it's valid and user still has tied state available - it didn't expire yet and isn't revoked. It revokes the refreshed challenge and creates a completely new one. It's only available after a brief delay which is indicated by the challenge metadata",
-					summary: "Refresh existing email challenge",
+						"Allows to refresh already existing challenge, as long as it's valid and user still has tied state available - it didn't expire yet and isn't revoked. It revokes the refreshed challenge and creates a completely new one. It's only available after a brief delay which is indicated by the challenge metadata.",
+					summary: "Refresh existing email challenge.",
 				}),
 			),
 	)
@@ -52,7 +52,7 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 				OpenApi.annotations({
 					description:
 						"Performs an attempt at solving the challenge that was previously initialized. It requires providing the code that was sent to the user via email. After successfully performing a challenge, new session is minted for a given user which allows for further interactions with the app.",
-					summary: "Solve a challenge to mint session",
+					summary: "Solve a challenge to mint session.",
 				}),
 			),
 	)
@@ -66,13 +66,13 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 				OpenApi.annotations({
 					description:
 						"Allows to fetch the metadata of a given challenge, helpful for displaying user information about the state of his ongoing attempt to sign in into the system.",
-					summary: "Retrieve challenge information",
+					summary: "Retrieve challenge information.",
 				}),
 			),
 	)
 	.prefix("/authentication")
 	.annotateContext(
 		OpenApi.annotations({
-			description: "Everything related to authenticating user and allowing to use secure parts of the app",
+			description: "Everything related to authenticating user and allowing to use secure parts of the app.",
 		}),
 	) {}

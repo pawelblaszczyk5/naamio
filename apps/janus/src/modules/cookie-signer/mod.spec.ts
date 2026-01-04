@@ -1,7 +1,7 @@
 import { expect, it } from "@effect/vitest";
 import { Array, Effect, Option, Redacted, Schema } from "effect";
 
-import { CookieSigner } from "#src/modules/session/cookie-signer.js";
+import { CookieSigner } from "#src/modules/cookie-signer/mod.js";
 
 const ExampleSchema = Schema.Struct({ bar: Schema.String, foo: Schema.Number });
 const ExampleSchemaDifferent = Schema.Struct({ bar: Schema.String, foo: Schema.String });
@@ -16,7 +16,7 @@ it.effect(
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		expect(encoded).toMatchInlineSnapshot(
 			// eslint-disable-next-line no-secrets/no-secrets -- encoded value it's expected, cspell:disable-next-line
@@ -36,7 +36,7 @@ it.effect(
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secrets);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
 
 		expect(encoded).toMatchInlineSnapshot(
 			// eslint-disable-next-line no-secrets/no-secrets -- encoded value it's expected, cspell:disable-next-line
@@ -56,7 +56,7 @@ it.effect(
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secrets);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
 
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaJson, Array.lastNonEmpty(secrets));
 
@@ -70,7 +70,7 @@ it.effect(
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(`${encoded}-example`, ExampleSchemaJson, secret);
 
@@ -83,7 +83,7 @@ it.effect(
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(
 			encoded,
@@ -101,7 +101,7 @@ it.effect(
 		const cookieSigner = yield* CookieSigner;
 		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
-		const encoded = yield* cookieSigner.encode(data, ExampleSchemaJson, secret);
+		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaDifferentJson, secret);
 

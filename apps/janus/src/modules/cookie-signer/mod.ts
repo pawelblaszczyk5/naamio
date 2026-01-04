@@ -13,8 +13,8 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<Option.Option<T>>;
 		encode: <T>(
-			value: T,
-			schema: SignedCookieSchema<NoInfer<T>>,
+			schema: SignedCookieSchema<T>,
+			value: NoInfer<T>,
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<string>;
 	}
@@ -53,8 +53,8 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 					return value;
 				}),
 				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* <T>(
-					value: T,
 					schema: SignedCookieSchema<T>,
+					value: T,
 					secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 				) {
 					const stringifiedValue = yield* Schema.encode(schema)(value).pipe(Effect.orDie);

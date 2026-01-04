@@ -48,12 +48,12 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 			>;
 			initialize: (
 				data: Pick<EmailChallengeModel, "email" | "language">,
-			) => Effect.Effect<EmailChallengeModel["state"]>;
+			) => Effect.Effect<Pick<EmailChallengeModel, "expiresAt" | "state">>;
 			refresh: (data: {
 				email: EmailChallengeModel["email"];
 				state: EmailChallengeModel["state"];
 			}) => Effect.Effect<
-				EmailChallengeModel["state"],
+				Pick<EmailChallengeModel, "expiresAt" | "state">,
 				ChallengeRefreshUnavailableError | MissingChallengeError | UnavailableChallengeError
 			>;
 			solve: (data: {
@@ -266,7 +266,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					state,
 				}).pipe(Effect.orDie);
 
-				return { code, state };
+				return { code, expiresAt, state };
 			});
 
 			const sendEmailChallenge = Effect.fn(function* (data: {
@@ -305,7 +305,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 
 						yield* sendEmailChallenge({ code: result.code, email: data.email, language: data.language });
 
-						return result.state;
+						return { expiresAt: result.expiresAt, state: result.state };
 					}),
 					refresh: Effect.fn("@naamio/mercury/EmailChallenge#refresh")(
 						function* (data) {
@@ -344,7 +344,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 								language: maybeEmailChallenge.value.language,
 							});
 
-							return result.state;
+							return { expiresAt: result.expiresAt, state: result.state };
 						},
 						sql.withTransaction,
 						Effect.catchTag("SqlError", (error) => Effect.die(error)),

@@ -11,7 +11,7 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 	.add(
 		HttpApiEndpoint.post("initializeEmailChallenge", "/email-challenge")
 			.setPayload(EmailChallengeModel.jsonCreate.pick("language", "email"))
-			.addSuccess(EmailChallengeModel.json.pick("state"))
+			.addSuccess(EmailChallengeModel.json.pick("state", "expiresAt"))
 			.addError(TooManyRequests)
 			.addError(InsufficientStorage)
 			.annotateContext(
@@ -24,7 +24,7 @@ export class Authentication extends HttpApiGroup.make("Authentication")
 	)
 	.add(
 		HttpApiEndpoint.post("refreshEmailChallenge")`/email-challenge/${stateParam}/refresh`
-			.addSuccess(EmailChallengeModel.json.pick("state"))
+			.addSuccess(EmailChallengeModel.json.pick("state", "expiresAt"))
 			.addError(TooManyRequests)
 			.addError(InsufficientStorage)
 			.addError(HttpApiError.BadRequest)

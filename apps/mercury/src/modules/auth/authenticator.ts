@@ -23,7 +23,7 @@ export const Authenticator = Entity.make("Authenticator", [
 	Rpc.make("InitializeChallenge", {
 		error: TooManyAuthenticatorRequestsError,
 		payload: EmailChallengeModel.insert.pick("language"),
-		success: EmailChallengeModel.select.pick("state"),
+		success: EmailChallengeModel.select.pick("state", "expiresAt"),
 	}),
 	Rpc.make("SolveChallenge", {
 		error: Schema.Union(
@@ -42,7 +42,7 @@ export const Authenticator = Entity.make("Authenticator", [
 			UnavailableChallengeError,
 		),
 		payload: EmailChallengeModel.select.pick("state"),
-		success: EmailChallengeModel.select.pick("state"),
+		success: EmailChallengeModel.select.pick("state", "expiresAt"),
 	}),
 ]);
 
@@ -74,9 +74,9 @@ export const AuthenticatorLive = Authenticator.toLayer(
 		return {
 			InitializeChallenge: Effect.fn("@naamio/mercury/Authenticator#InitializeChallenge")(
 				function* (request) {
-					const state = yield* emailChallenge.system.initialize({ email, language: request.payload.language });
+					const result = yield* emailChallenge.system.initialize({ email, language: request.payload.language });
 
-					return { state };
+					return result;
 				},
 				withChallengeInitializationShortRateLimit,
 				withChallengeInitializationLongRateLimit,
@@ -84,9 +84,9 @@ export const AuthenticatorLive = Authenticator.toLayer(
 			),
 			RefreshChallenge: Effect.fn("@naamio/mercury/Authenticator#RefreshChallenge")(
 				function* (request) {
-					const state = yield* emailChallenge.system.refresh({ email, state: request.payload.state });
+					const result = yield* emailChallenge.system.refresh({ email, state: request.payload.state });
 
-					return { state };
+					return result;
 				},
 				withChallengeInitializationShortRateLimit,
 				withChallengeInitializationLongRateLimit,

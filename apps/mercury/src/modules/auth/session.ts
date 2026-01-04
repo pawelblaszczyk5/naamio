@@ -38,7 +38,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				publicId: SessionModel["publicId"],
 			) => Effect.Effect<void, MissingSessionError | UnavailableSessionError, CurrentSession>;
 			revokeAll: () => Effect.Effect<void, never, CurrentSession>;
-			verify: () => Effect.Effect<{ expiresAt: SessionModel["expiresAt"] }, never, CurrentSession>;
+			verify: () => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; refreshed: boolean }, never, CurrentSession>;
 		};
 	}
 >() {
@@ -235,7 +235,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						const isWithinExtensionCutoff = DateTime.lessThanOrEqualTo(currentSession.expiresAt, extensionCutoff);
 
 						if (!isWithinExtensionCutoff) {
-							return { expiresAt: currentSession.expiresAt };
+							return { expiresAt: currentSession.expiresAt, refreshed: false };
 						}
 
 						const newExpiration = yield* DateTime.now.pipe(
@@ -248,7 +248,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							userId: currentSession.userId,
 						}).pipe(Effect.orDie);
 
-						return { expiresAt: newExpiration };
+						return { expiresAt: newExpiration, refreshed: true };
 					}),
 				},
 			} satisfies Session["Type"];

@@ -1,4 +1,5 @@
 import { HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
+import { Schema } from "effect";
 
 import { SessionModel } from "@naamio/schema";
 
@@ -9,7 +10,7 @@ const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields
 export class Session extends HttpApiGroup.make("Session")
 	.add(
 		HttpApiEndpoint.post("verify", "/verify")
-			.addSuccess(SessionModel.json.pick("expiresAt"))
+			.addSuccess(SessionModel.json.pick("expiresAt").pipe(Schema.extend(Schema.Struct({ refreshed: Schema.Boolean }))))
 			.annotateContext(
 				OpenApi.annotations({
 					description:

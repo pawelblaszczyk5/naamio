@@ -3,7 +3,7 @@ import { Context } from "effect";
 
 import type { SessionModel } from "@naamio/schema";
 
-export class CurrentSession extends Context.Tag("@naamio/api/middlewares/authenticated-only/CurrentSession")<
+export class CurrentSession extends Context.Tag("@naamio/api/CurrentSession")<
 	CurrentSession,
 	Pick<SessionModel, "expiresAt" | "id" | "userId">
 >() {}

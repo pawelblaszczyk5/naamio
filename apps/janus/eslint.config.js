@@ -12,6 +12,7 @@ export default defineConfig(
 		ignores: ["src/routeTree.gen.ts", "server.ts"],
 		languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	},
+	{ rules: { "@typescript-eslint/only-throw-error": "off" } },
 	{ files: ["vite.config.ts", "lingui.config.ts"], rules: { "import-x/no-default-export": "off" } },
 	{
 		files: ["src/routes/**"],

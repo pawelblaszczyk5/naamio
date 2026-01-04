@@ -9,38 +9,106 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root.tsx'
+import { Route as AppRouteImport } from './routes/app.tsx'
 import { Route as IndexRouteImport } from './routes/index.tsx'
+import { Route as AppIndexRouteImport } from './routes/app.index.tsx'
+import { Route as HomeChar123languageChar125RouteImport } from './routes/_home.{$language}.tsx'
+import { Route as HomeChar123languageChar125IndexRouteImport } from './routes/_home.{$language}.index.tsx'
+import { Route as HomeChar123languageChar125SignInRouteImport } from './routes/_home.{$language}.sign-in.tsx'
 
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const HomeChar123languageChar125Route =
+  HomeChar123languageChar125RouteImport.update({
+    id: '/_home/{$language}',
+    path: '/{$language}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const HomeChar123languageChar125IndexRoute =
+  HomeChar123languageChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => HomeChar123languageChar125Route,
+  } as any)
+const HomeChar123languageChar125SignInRoute =
+  HomeChar123languageChar125SignInRouteImport.update({
+    id: '/sign-in',
+    path: '/sign-in',
+    getParentRoute: () => HomeChar123languageChar125Route,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/{$language}': typeof HomeChar123languageChar125RouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppIndexRoute
+  '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/{$language}': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/_home/{$language}': typeof HomeChar123languageChar125RouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/_home/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/_home/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/{$language}'
+    | '/app/'
+    | '/{$language}/sign-in'
+    | '/{$language}/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/app' | '/{$language}/sign-in' | '/{$language}'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/_home/{$language}'
+    | '/app/'
+    | '/_home/{$language}/sign-in'
+    | '/_home/{$language}/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  HomeChar123languageChar125Route: typeof HomeChar123languageChar125RouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +116,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_home/{$language}': {
+      id: '/_home/{$language}'
+      path: '/{$language}'
+      fullPath: '/{$language}'
+      preLoaderRoute: typeof HomeChar123languageChar125RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_home/{$language}/': {
+      id: '/_home/{$language}/'
+      path: '/'
+      fullPath: '/{$language}/'
+      preLoaderRoute: typeof HomeChar123languageChar125IndexRouteImport
+      parentRoute: typeof HomeChar123languageChar125Route
+    }
+    '/_home/{$language}/sign-in': {
+      id: '/_home/{$language}/sign-in'
+      path: '/sign-in'
+      fullPath: '/{$language}/sign-in'
+      preLoaderRoute: typeof HomeChar123languageChar125SignInRouteImport
+      parentRoute: typeof HomeChar123languageChar125Route
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface HomeChar123languageChar125RouteChildren {
+  HomeChar123languageChar125SignInRoute: typeof HomeChar123languageChar125SignInRoute
+  HomeChar123languageChar125IndexRoute: typeof HomeChar123languageChar125IndexRoute
+}
+
+const HomeChar123languageChar125RouteChildren: HomeChar123languageChar125RouteChildren =
+  {
+    HomeChar123languageChar125SignInRoute:
+      HomeChar123languageChar125SignInRoute,
+    HomeChar123languageChar125IndexRoute: HomeChar123languageChar125IndexRoute,
+  }
+
+const HomeChar123languageChar125RouteWithChildren =
+  HomeChar123languageChar125Route._addFileChildren(
+    HomeChar123languageChar125RouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  HomeChar123languageChar125Route: HomeChar123languageChar125RouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

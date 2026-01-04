@@ -1,21 +1,11 @@
-import { Trans } from "@lingui/react/macro";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { Icon } from "@naamio/design-system/components/icon";
-import stylex from "@naamio/stylex";
+import { getPreferredLanguage } from "#src/modules/home/procedures.js";
 
-const styles = stylex.create({
-	heading: { alignItems: "center", color: "rebeccapurple", display: "flex", fontSize: 14, gap: 4, marginBlock: 8 },
-	icon: { height: 16, width: 16 },
+export const Route = createFileRoute("/")({
+	loader: async () => {
+		const preferredLanguage = await getPreferredLanguage();
+
+		throw redirect({ params: { language: preferredLanguage }, to: "/{$language}" });
+	},
 });
-
-const Home = () => (
-	<>
-		<title>Home | Naamio</title>
-		<h1 {...stylex.props(styles.heading)}>
-			<Trans>Hello world</Trans> <Icon name="webhook" style={styles.icon} />
-		</h1>
-	</>
-);
-
-export const Route = createFileRoute("/")({ component: Home });

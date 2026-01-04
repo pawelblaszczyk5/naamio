@@ -13,6 +13,54 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/routes/index.tsx:16
-msgid "Hello world"
-msgstr "Cześć świecie!"
+#: src/modules/home/ui/home-layout.tsx:18
+msgid "Hello world!"
+msgstr "Witaj świecie!"
+
+#: src/modules/home/ui/home-layout.tsx:20
+msgid "Home"
+msgstr "Strona główna"
+
+#: src/modules/home/ui/home-layout.tsx:24
+msgid "App"
+msgstr "Aplikacja"
+
+#: src/modules/home/ui/home-layout.tsx:29
+msgid "Sign in"
+msgstr "Zaloguj się"
+
+#: src/modules/home/ui/home-layout.tsx:33
+msgid "English"
+msgstr "Angielski"
+
+#: src/modules/home/ui/home-layout.tsx:36
+msgid "Polish"
+msgstr "Polski"
+
+#: src/modules/home/ui/home-not-found.tsx:3
+msgid "Unfortunately, it looks like you're lost :("
+msgstr "Niestety, wygląda na to, że jesteś zagubiony :("
+
+#: src/modules/home/ui/home-page.tsx:5
+msgid "Home page"
+msgstr "Strona główna"
+
+#: src/modules/home/ui/sign-in-page.tsx:40
+msgid "Email"
+msgstr "Email"
+
+#: src/modules/home/ui/sign-in-page.tsx:53
+msgid "Start challenge"
+msgstr "Zacznij challenge"
+
+#: src/modules/home/ui/sign-in-page.tsx:87
+msgid "OTP"
+msgstr "OTP"
+
+#: src/modules/home/ui/sign-in-page.tsx:103
+msgid "Complete challenge"
+msgstr "Ukończ challenge"
+
+#: src/modules/home/ui/sign-in-page.tsx:118
+msgid "Sign in page"
+msgstr "Strona logowania"

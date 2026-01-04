@@ -65,4 +65,3 @@ linkWorkspacePackages: true
 managePackageManagerVersions: true
 verifyDepsBeforeRun: "error"
 strictDepBuilds: true
-blockExoticSubdeps: true

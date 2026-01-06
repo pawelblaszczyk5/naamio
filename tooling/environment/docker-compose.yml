@@ -1,6 +1,6 @@
 name: "naamio"
 
-# cspell:ignore initdb, tmpfs, axllent, caddyfile, orbstack
+# cspell:ignore initdb, tmpfs, axllent, caddyfile, orbstack, electricsql
 
 services:
   postgres:
@@ -28,6 +28,14 @@ services:
       MP_DATABASE: /data/mailpit.db
     volumes:
       - mailpit_data:/data
+
+  electric:
+    image: electricsql/electric:1.2.9
+    environment:
+      DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
+      ELECTRIC_SECRET: example_electric_secret_123
+    depends_on:
+      - postgres
 
   otel-lgtm:
     image: grafana/otel-lgtm:0.13.0

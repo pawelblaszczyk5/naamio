@@ -13,27 +13,42 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/home/ui/home-layout.tsx:18
+#: src/modules/app/ui/app-layout.tsx:22
+#: src/modules/home/ui/home-layout.tsx:20
 msgid "Hello world!"
 msgstr "Witaj świecie!"
 
-#: src/modules/home/ui/home-layout.tsx:20
+#: src/modules/app/ui/app-layout.tsx:24
+#: src/modules/home/ui/home-layout.tsx:22
 msgid "Home"
 msgstr "Strona główna"
 
-#: src/modules/home/ui/home-layout.tsx:24
+#: src/modules/app/ui/app-layout.tsx:27
+#: src/modules/home/ui/home-layout.tsx:26
 msgid "App"
 msgstr "Aplikacja"
 
-#: src/modules/home/ui/home-layout.tsx:29
+#: src/modules/app/ui/app-layout.tsx:30
+msgid "App example"
+msgstr "Przykładowa strona aplikacji"
+
+#: src/modules/app/ui/app-page.tsx:5
+msgid "App page"
+msgstr "Strona aplikacji"
+
+#: src/modules/app/ui/example-page.tsx:5
+msgid "Example page"
+msgstr "Przykładowa strona"
+
+#: src/modules/home/ui/home-layout.tsx:31
 msgid "Sign in"
 msgstr "Zaloguj się"
 
-#: src/modules/home/ui/home-layout.tsx:33
+#: src/modules/home/ui/home-layout.tsx:35
 msgid "English"
 msgstr "Angielski"
 
-#: src/modules/home/ui/home-layout.tsx:36
+#: src/modules/home/ui/home-layout.tsx:38
 msgid "Polish"
 msgstr "Polski"
 
@@ -45,22 +60,22 @@ msgstr "Niestety, wygląda na to, że jesteś zagubiony :("
 msgid "Home page"
 msgstr "Strona główna"
 
-#: src/modules/home/ui/sign-in-page.tsx:40
+#: src/modules/home/ui/sign-in-page.tsx:41
 msgid "Email"
 msgstr "Email"
 
-#: src/modules/home/ui/sign-in-page.tsx:53
+#: src/modules/home/ui/sign-in-page.tsx:54
 msgid "Start challenge"
 msgstr "Zacznij challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:87
+#: src/modules/home/ui/sign-in-page.tsx:88
 msgid "OTP"
 msgstr "OTP"
 
-#: src/modules/home/ui/sign-in-page.tsx:103
+#: src/modules/home/ui/sign-in-page.tsx:104
 msgid "Complete challenge"
 msgstr "Ukończ challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:117
+#: src/modules/home/ui/sign-in-page.tsx:118
 msgid "Sign in page"
 msgstr "Strona logowania"

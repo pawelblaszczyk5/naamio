@@ -13,27 +13,42 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/home/ui/home-layout.tsx:18
+#: src/modules/app/ui/app-layout.tsx:22
+#: src/modules/home/ui/home-layout.tsx:20
 msgid "Hello world!"
 msgstr "Hello world!"
 
-#: src/modules/home/ui/home-layout.tsx:20
+#: src/modules/app/ui/app-layout.tsx:24
+#: src/modules/home/ui/home-layout.tsx:22
 msgid "Home"
 msgstr "Home"
 
-#: src/modules/home/ui/home-layout.tsx:24
+#: src/modules/app/ui/app-layout.tsx:27
+#: src/modules/home/ui/home-layout.tsx:26
 msgid "App"
 msgstr "App"
 
-#: src/modules/home/ui/home-layout.tsx:29
+#: src/modules/app/ui/app-layout.tsx:30
+msgid "App example"
+msgstr "App example"
+
+#: src/modules/app/ui/app-page.tsx:5
+msgid "App page"
+msgstr "App page"
+
+#: src/modules/app/ui/example-page.tsx:5
+msgid "Example page"
+msgstr "Example page"
+
+#: src/modules/home/ui/home-layout.tsx:31
 msgid "Sign in"
 msgstr "Sign in"
 
-#: src/modules/home/ui/home-layout.tsx:33
+#: src/modules/home/ui/home-layout.tsx:35
 msgid "English"
 msgstr "English"
 
-#: src/modules/home/ui/home-layout.tsx:36
+#: src/modules/home/ui/home-layout.tsx:38
 msgid "Polish"
 msgstr "Polish"
 
@@ -45,22 +60,22 @@ msgstr "Unfortunately, it looks like you're lost :("
 msgid "Home page"
 msgstr "Home page"
 
-#: src/modules/home/ui/sign-in-page.tsx:40
+#: src/modules/home/ui/sign-in-page.tsx:41
 msgid "Email"
 msgstr "Email"
 
-#: src/modules/home/ui/sign-in-page.tsx:53
+#: src/modules/home/ui/sign-in-page.tsx:54
 msgid "Start challenge"
 msgstr "Start challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:87
+#: src/modules/home/ui/sign-in-page.tsx:88
 msgid "OTP"
 msgstr "OTP"
 
-#: src/modules/home/ui/sign-in-page.tsx:103
+#: src/modules/home/ui/sign-in-page.tsx:104
 msgid "Complete challenge"
 msgstr "Complete challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:117
+#: src/modules/home/ui/sign-in-page.tsx:118
 msgid "Sign in page"
 msgstr "Sign in page"

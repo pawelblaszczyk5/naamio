@@ -46,28 +46,16 @@ const extractBrowserName = Effect.fn(function* (userAgent: string) {
 		return Option.some("Brave" as const);
 	}
 
-	if (firefoxOnIosMatchResult) {
-		return Option.some("Firefox" as const);
-	}
-
-	if (chromeOnIosMatchResult) {
-		return Option.some("Chrome" as const);
-	}
-
-	if (edgeOnIosMatchResult) {
-		return Option.some("Edge" as const);
-	}
-
-	if (edgeOnAndroidMatchResult) {
-		return Option.some("Edge" as const);
-	}
-
 	if (seaMonkeyMatchResult) {
 		return Option.some("SeaMonkey" as const);
 	}
 
-	if (firefoxMatchResult) {
+	if (firefoxOnIosMatchResult || firefoxMatchResult) {
 		return Option.some("Firefox" as const);
+	}
+
+	if (edgeOnIosMatchResult || edgeOnAndroidMatchResult || edgeMatchResult) {
+		return Option.some("Edge" as const);
 	}
 
 	if (operaMatchResult) {
@@ -78,15 +66,11 @@ const extractBrowserName = Effect.fn(function* (userAgent: string) {
 		return Option.some("Vivaldi" as const);
 	}
 
-	if (edgeMatchResult) {
-		return Option.some("Edge" as const);
-	}
-
 	if (chromiumMatchResult) {
 		return Option.some("Chromium" as const);
 	}
 
-	if (chromeMatchResult) {
+	if (chromeOnIosMatchResult || chromeMatchResult) {
 		return Option.some("Chrome" as const);
 	}
 

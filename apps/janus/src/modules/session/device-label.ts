@@ -1,11 +1,11 @@
 import { regex } from "arkregex";
 import { Effect, Option } from "effect";
 
-// cspell:ignore seamonkey, Edgi
+// cspell:ignore Edgi
 /* eslint-disable unicorn/prefer-string-raw -- that produces invalid regex here */
 const firefox = regex("Firefox/[\\w.]+");
 const firefoxOnIos = regex("FxiOS/[\\w.]+");
-const seamonkey = regex("Seamonkey/[\\w.]+");
+const seaMonkey = regex("SeaMonkey/[\\w.]+");
 const chrome = regex("Chrome/[\\w.]+");
 const chromeOnIos = regex("CriOS/[\\w.]+");
 const chromium = regex("Chromium/[\\w.]+");
@@ -27,7 +27,7 @@ const DEVICE_LABEL_SEPARATOR = "·";
 
 const extractBrowserName = Effect.fn(function* (userAgent: string) {
 	const firefoxMatchResult = firefox.exec(userAgent);
-	const seamonkeyMatchResult = seamonkey.exec(userAgent);
+	const seaMonkeyMatchResult = seaMonkey.exec(userAgent);
 	const chromeMatchResult = chrome.exec(userAgent);
 	const chromiumMatchResult = chromium.exec(userAgent);
 	const safariMatchResult = safari.exec(userAgent);
@@ -62,8 +62,8 @@ const extractBrowserName = Effect.fn(function* (userAgent: string) {
 		return Option.some("Edge" as const);
 	}
 
-	if (seamonkeyMatchResult) {
-		return Option.some("Seamonkey" as const);
+	if (seaMonkeyMatchResult) {
+		return Option.some("SeaMonkey" as const);
 	}
 
 	if (firefoxMatchResult) {

@@ -1,7 +1,9 @@
 import { Trans } from "@lingui/react/macro";
-import { Link, Outlet, useLoaderData, useParams } from "@tanstack/react-router";
+import { Link, Outlet, useLoaderData } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
+
+import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const styles = stylex.create({
 	nav: { display: "flex", gap: 16 },
@@ -9,7 +11,7 @@ const styles = stylex.create({
 });
 
 export const HomeLayout = () => {
-	const currentLanguage = useParams({ from: "/_home/{$language}", select: (params) => params.language });
+	const currentLanguage = useCurrentLanguage();
 	const isLoggedIn = useLoaderData({ from: "/_home/{$language}", select: (loaderData) => loaderData.isLoggedIn });
 
 	return (

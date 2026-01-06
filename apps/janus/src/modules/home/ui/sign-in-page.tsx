@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/react/macro";
-import { useLoaderData, useParams, useRouter } from "@tanstack/react-router";
+import { useLoaderData, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Match } from "effect";
 import { useId, useState } from "react";
@@ -8,6 +8,7 @@ import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
 import { initializeAuthenticationChallenge, solveAuthenticationChallenge } from "#src/modules/session/procedures.js";
+import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const initializeFormStyles = stylex.create({
 	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
@@ -18,7 +19,7 @@ const InitializeForm = () => {
 	const id = useId();
 	const router = useRouter();
 	const callInitializeAuthenticationChallenge = useServerFn(initializeAuthenticationChallenge);
-	const currentLanguage = useParams({ from: "/_home/{$language}", select: (params) => params.language });
+	const currentLanguage = useCurrentLanguage();
 
 	const [email, setEmail] = useState("");
 

@@ -3,7 +3,7 @@ import { Link, Outlet } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
-import { useCurrentLanguage } from "#src/modules/app/hooks/use-current-language.js";
+import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const styles = stylex.create({
 	nav: { display: "flex", gap: 16 },

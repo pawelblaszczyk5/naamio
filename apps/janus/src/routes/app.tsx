@@ -14,7 +14,7 @@ export const Route = createFileRoute("/app")({
 
 		const result = await verifySession();
 
-		insertSessionCacheEntry({ lastRefreshAt: new Date(), publicId: result.publicId });
+		insertSessionCacheEntry({ id: result.id, lastRefreshAt: new Date() });
 	},
 	component: AppLayout,
 	ssr: false,

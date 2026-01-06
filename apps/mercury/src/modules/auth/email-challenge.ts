@@ -4,6 +4,7 @@ import { hash, verify } from "@node-rs/argon2";
 import { Config, Context, DateTime, Duration, Effect, Layer, Option, Redacted, Schema } from "effect";
 import { customAlphabet } from "nanoid";
 
+import { generateId } from "@naamio/id-generator/effect";
 import { EmailChallengeModel } from "@naamio/schema";
 
 import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
@@ -246,6 +247,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				email: EmailChallengeModel["email"];
 				language: EmailChallengeModel["language"];
 			}) {
+				const id = EmailChallengeModel.fields.id.make(yield* generateId());
 				const state = Redacted.make(generateEmailChallengeState());
 				const code = Redacted.make(generateEmailChallengeCode());
 				const hash = yield* hashEmailChallengeCode(code);
@@ -259,6 +261,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 					email: data.email,
 					expiresAt,
 					hash,
+					id,
 					language: data.language,
 					refreshAvailableAt,
 					remainingAttempts: EMAIL_CHALLENGE_MAX_ATTEMPT_COUNT,

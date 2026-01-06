@@ -31,15 +31,15 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 			) => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; token: Redacted.Redacted }>;
 			retrieveFromToken: (
 				token: Redacted.Redacted,
-			) => Effect.Effect<Option.Option<Pick<SessionModel, "expiresAt" | "id" | "publicId" | "userId">>>;
+			) => Effect.Effect<Option.Option<Pick<SessionModel, "expiresAt" | "id" | "userId">>>;
 		};
 		viewer: {
 			revoke: (
-				publicId: SessionModel["publicId"],
+				id: SessionModel["id"],
 			) => Effect.Effect<void, MissingSessionError | UnavailableSessionError, CurrentSession>;
 			revokeAll: () => Effect.Effect<void, never, CurrentSession>;
 			verify: () => Effect.Effect<
-				Pick<SessionModel, "expiresAt" | "publicId"> & { refreshed: boolean },
+				Pick<SessionModel, "expiresAt" | "id"> & { refreshed: boolean },
 				never,
 				CurrentSession
 			>;
@@ -63,25 +63,24 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				Request: SessionModel.insert,
 			});
 
-			const findByPublicIdForRetrievalFromToken = SqlSchema.findOne({
+			const findByIdForRetrievalFromToken = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
 						${sql("userId")},
 						${sql("signature")},
 						${sql("expiresAt")},
-						${sql("revokedAt")},
-						${sql("publicId")}
+						${sql("revokedAt")}
 					FROM
 						${sql("session")}
 					WHERE
-						${sql("publicId")} = ${request};
+						${sql("id")} = ${request};
 				`,
-				Request: SessionModel.fields.publicId,
-				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt", "publicId"),
+				Request: SessionModel.fields.id,
+				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
 			});
 
-			const findByPublicIdForRevocation = SqlSchema.findOne({
+			const findByIdForRevocation = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -90,10 +89,10 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					FROM
 						${sql("session")}
 					WHERE
-						${sql.and([sql`${sql("publicId")} = ${request.publicId}`, sql`${sql("userId")} = ${request.userId}`])}
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])}
 					FOR UPDATE;
 				`,
-				Request: SessionModel.update.pick("userId", "publicId"),
+				Request: SessionModel.update.pick("userId", "id"),
 				Result: SessionModel.select.pick("id", "expiresAt", "revokedAt"),
 			});
 
@@ -137,17 +136,17 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 			return {
 				system: {
 					create: Effect.fn("@naamio/mercury/Session#create")(function* (data) {
-						const publicId = SessionModel.fields.publicId.make(yield* generateId());
+						const id = SessionModel.fields.id.make(yield* generateId());
 						const expiresAt = yield* DateTime.now.pipe(Effect.map(DateTime.addDuration(SESSION_EXPIRATION_DURATION)));
 						const value = generateSessionValue();
 						const signature = yield* generateHmacSignature(value, SESSION_VALUE_SECRET);
-						const token = Redacted.make(`${publicId}.${value}`);
+						const token = Redacted.make(`${id}.${value}`);
 
 						yield* insertSession({
 							createdAt: undefined,
 							deviceLabel: data.deviceLabel,
 							expiresAt,
-							publicId,
+							id,
 							revokedAt: Option.none(),
 							signature,
 							userId: data.userId,
@@ -158,16 +157,14 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					retrieveFromToken: Effect.fn("@naamio/mercury/Session#retrieveFromToken")(function* (token) {
 						const unredactedToken = Redacted.value(token);
 						const lastDotIndex = unredactedToken.lastIndexOf(".");
-						const maybePublicId = Schema.decodeOption(SessionModel.fields.publicId)(
-							unredactedToken.slice(0, lastDotIndex),
-						);
+						const maybeId = Schema.decodeOption(SessionModel.fields.id)(unredactedToken.slice(0, lastDotIndex));
 						const value = unredactedToken.slice(lastDotIndex + 1);
 
-						if (Option.isNone(maybePublicId)) {
+						if (Option.isNone(maybeId)) {
 							return Option.none();
 						}
 
-						const maybeSession = yield* findByPublicIdForRetrievalFromToken(maybePublicId.value).pipe(Effect.orDie);
+						const maybeSession = yield* findByIdForRetrievalFromToken(maybeId.value).pipe(Effect.orDie);
 
 						if (Option.isNone(maybeSession)) {
 							return Option.none();
@@ -189,17 +186,16 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						return Option.some({
 							expiresAt: maybeSession.value.expiresAt,
 							id: maybeSession.value.id,
-							publicId: maybeSession.value.publicId,
 							userId: maybeSession.value.userId,
 						});
 					}),
 				},
 				viewer: {
 					revoke: Effect.fn("@naamio/mercury/Session#revoke")(
-						function* (publicId) {
+						function* (id) {
 							const currentSession = yield* CurrentSession;
 
-							const maybeSession = yield* findByPublicIdForRevocation({ publicId, userId: currentSession.userId }).pipe(
+							const maybeSession = yield* findByIdForRevocation({ id, userId: currentSession.userId }).pipe(
 								Effect.orDie,
 							);
 
@@ -241,7 +237,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						const isWithinExtensionCutoff = DateTime.lessThanOrEqualTo(currentSession.expiresAt, extensionCutoff);
 
 						if (!isWithinExtensionCutoff) {
-							return { expiresAt: currentSession.expiresAt, publicId: currentSession.publicId, refreshed: false };
+							return { expiresAt: currentSession.expiresAt, id: currentSession.id, refreshed: false };
 						}
 
 						const newExpiration = yield* DateTime.now.pipe(
@@ -254,7 +250,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							userId: currentSession.userId,
 						}).pipe(Effect.orDie);
 
-						return { expiresAt: newExpiration, publicId: currentSession.publicId, refreshed: true };
+						return { expiresAt: newExpiration, id: currentSession.id, refreshed: true };
 					}),
 				},
 			} satisfies Session["Type"];

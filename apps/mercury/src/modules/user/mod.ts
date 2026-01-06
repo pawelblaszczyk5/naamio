@@ -23,15 +23,12 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 		Effect.gen(function* () {
 			const sql = yield* PgClient.PgClient;
 
-			const insertUser = SqlSchema.single({
+			const insertUser = SqlSchema.void({
 				execute: (request) => sql`
 					INSERT INTO
-						${sql("user")} ${sql.insert(request)}
-					RETURNING
-						${sql("id")};
+						${sql("user")} ${sql.insert(request)};
 				`,
 				Request: UserModel.insert,
-				Result: UserModel.select.pick("id"),
 			});
 
 			const findByEmail = SqlSchema.findOne({
@@ -51,16 +48,13 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 			return {
 				system: {
 					create: Effect.fn("@naamio/mercury/User#create")(function* (data) {
-						const publicId = UserModel.fields.publicId.make(yield* generateId());
+						const id = UserModel.fields.id.make(yield* generateId());
 
-						const inserted = yield* insertUser({
-							createdAt: undefined,
-							email: data.email,
-							language: data.language,
-							publicId,
-						}).pipe(Effect.orDie);
+						yield* insertUser({ createdAt: undefined, email: data.email, id, language: data.language }).pipe(
+							Effect.orDie,
+						);
 
-						return inserted.id;
+						return id;
 					}),
 					findByEmail: Effect.fn("@naamio/mercury/User#findByEmail")(function* (email) {
 						return yield* findByEmail(email).pipe(Effect.orDie);

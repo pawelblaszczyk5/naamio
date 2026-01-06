@@ -111,11 +111,11 @@ export const verifySession = createServerFn({ method: "POST" })
 			const result = yield* naamioApiClient.Session.verify();
 
 			if (!result.refreshed) {
-				return { publicId: result.publicId };
+				return { id: result.id };
 			}
 
 			yield* setSessionCookie({ token: sessionToken }, result.expiresAt);
 
-			return { publicId: result.publicId };
+			return { id: result.id };
 		}).pipe(runAuthenticatedOnlyServerFn(ctx)),
 	);

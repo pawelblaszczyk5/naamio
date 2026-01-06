@@ -5,15 +5,13 @@ import { SessionModel } from "@naamio/schema";
 
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
 
-const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields.publicId);
+const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields.id);
 
 export class Session extends HttpApiGroup.make("Session")
 	.add(
 		HttpApiEndpoint.post("verify", "/verify")
 			.addSuccess(
-				SessionModel.json
-					.pick("expiresAt", "publicId")
-					.pipe(Schema.extend(Schema.Struct({ refreshed: Schema.Boolean }))),
+				SessionModel.json.pick("expiresAt", "id").pipe(Schema.extend(Schema.Struct({ refreshed: Schema.Boolean }))),
 			)
 			.annotateContext(
 				OpenApi.annotations({

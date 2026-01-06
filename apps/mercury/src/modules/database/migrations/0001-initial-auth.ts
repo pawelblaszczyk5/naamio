@@ -8,8 +8,7 @@ const migration = Effect.gen(function* () {
 
 	yield* sql`
 		CREATE TABLE ${sql("user")} (
-			${sql("id")} BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-			${sql("publicId")} TEXT NOT NULL UNIQUE,
+			${sql("id")} TEXT PRIMARY KEY,
 			${sql("email")} TEXT NOT NULL UNIQUE,
 			${sql("language")} TEXT NOT NULL,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL
@@ -18,21 +17,20 @@ const migration = Effect.gen(function* () {
 
 	yield* sql`
 		CREATE TABLE ${sql("session")} (
-			${sql("id")} BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-			${sql("publicId")} TEXT NOT NULL UNIQUE,
+			${sql("id")} TEXT PRIMARY KEY,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("deviceLabel")} TEXT NULL,
 			${sql("expiresAt")} TIMESTAMPTZ NOT NULL,
 			${sql("signature")} TEXT NOT NULL,
 			${sql("revokedAt")} TIMESTAMPTZ NULL,
-			${sql("userId")} BIGINT NOT NULL,
+			${sql("userId")} TEXT NOT NULL,
 			FOREIGN KEY (${sql("userId")}) REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
 
 	yield* sql`
 		CREATE TABLE ${sql("emailChallenge")} (
-			${sql("id")} BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+			${sql("id")} TEXT PRIMARY KEY,
 			${sql("consumedAt")} TIMESTAMPTZ NULL,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("expiresAt")} TIMESTAMPTZ NOT NULL,

@@ -8,14 +8,11 @@ import { SessionModel } from "@naamio/schema";
 
 import { verifySession } from "#src/modules/session/procedures.js";
 
-const SessionCacheEntry = Schema.Struct({
-	lastRefreshAt: Schema.DateFromSelf,
-	publicId: SessionModel.json.fields.publicId,
-});
+const SessionCacheEntry = Schema.Struct({ id: SessionModel.json.fields.id, lastRefreshAt: Schema.DateFromSelf });
 
 const sessionCacheCollection = createCollection(
 	localOnlyCollectionOptions({
-		getKey: (cacheEntry) => cacheEntry.publicId,
+		getKey: (cacheEntry) => cacheEntry.id,
 		schema: Schema.standardSchemaV1(SessionCacheEntry),
 	}),
 );
@@ -49,16 +46,16 @@ export const useSessionVerificationPoller = () => {
 
 			assert(sessionCacheEntry, "Session cache entry must exist in poller");
 
-			if (sessionCacheEntry.publicId === result.publicId) {
-				sessionCacheCollection.update(result.publicId, (draft) => {
+			if (sessionCacheEntry.id === result.id) {
+				sessionCacheCollection.update(result.id, (draft) => {
 					draft.lastRefreshAt = new Date();
 				});
 
 				return;
 			}
 
-			sessionCacheCollection.delete(sessionCacheEntry.publicId);
-			sessionCacheCollection.insert({ lastRefreshAt: new Date(), publicId: result.publicId });
+			sessionCacheCollection.delete(sessionCacheEntry.id);
+			sessionCacheCollection.insert({ id: result.id, lastRefreshAt: new Date() });
 		}, SESSION_VERIFICATION_POLL_INTERVAL);
 
 		return () => {

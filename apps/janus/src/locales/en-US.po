@@ -61,6 +61,6 @@ msgstr "OTP"
 msgid "Complete challenge"
 msgstr "Complete challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:118
+#: src/modules/home/ui/sign-in-page.tsx:117
 msgid "Sign in page"
 msgstr "Sign in page"

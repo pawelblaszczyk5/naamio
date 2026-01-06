@@ -21,10 +21,12 @@ export const runServerFn = async <A, E, R extends ManagedRuntime.ManagedRuntime.
 	effect: Effect.Effect<A, E, R>,
 ) => effect.pipe(runtime.runPromise);
 
-export const sessionTokenMiddleware = createMiddleware({ type: "function" }).server(async (ctx) => {
-	const sessionToken = await Effect.gen(function* () {
-		return yield* getDecodedSessionTokenFromSessionCookie().pipe(Effect.map(Option.getOrNull));
-	}).pipe(Effect.withTracerEnabled(false), runtime.runPromise);
+export const sessionTokenMiddleware = createMiddleware().server(async (ctx) => {
+	const sessionToken = await getDecodedSessionTokenFromSessionCookie().pipe(
+		Effect.map(Option.getOrNull),
+		Effect.withTracerEnabled(false),
+		runtime.runPromise,
+	);
 
 	return ctx.next({ context: { sessionToken } });
 });

@@ -3,6 +3,7 @@ import { Link, Outlet } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
+import { useSessionVerificationPoller } from "#src/modules/app/data/session-cache.js";
 import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const styles = stylex.create({
@@ -12,6 +13,8 @@ const styles = stylex.create({
 
 export const AppLayout = () => {
 	const currentLanguage = useCurrentLanguage();
+
+	useSessionVerificationPoller();
 
 	return (
 		<div {...stylex.props(styles.root)}>

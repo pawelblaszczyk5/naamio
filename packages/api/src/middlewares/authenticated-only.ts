@@ -5,7 +5,7 @@ import type { SessionModel } from "@naamio/schema";
 
 export class CurrentSession extends Context.Tag("@naamio/api/CurrentSession")<
 	CurrentSession,
-	Pick<SessionModel, "expiresAt" | "id" | "userId">
+	Pick<SessionModel, "expiresAt" | "id" | "publicId" | "userId">
 >() {}
 
 export class AuthenticatedOnly extends HttpApiMiddleware.Tag<AuthenticatedOnly>()("AuthenticatedOnly", {

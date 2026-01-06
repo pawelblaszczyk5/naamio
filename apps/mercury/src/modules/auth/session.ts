@@ -31,14 +31,18 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 			) => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; token: Redacted.Redacted }>;
 			retrieveFromToken: (
 				token: Redacted.Redacted,
-			) => Effect.Effect<Option.Option<Pick<SessionModel, "expiresAt" | "id" | "userId">>>;
+			) => Effect.Effect<Option.Option<Pick<SessionModel, "expiresAt" | "id" | "publicId" | "userId">>>;
 		};
 		viewer: {
 			revoke: (
 				publicId: SessionModel["publicId"],
 			) => Effect.Effect<void, MissingSessionError | UnavailableSessionError, CurrentSession>;
 			revokeAll: () => Effect.Effect<void, never, CurrentSession>;
-			verify: () => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; refreshed: boolean }, never, CurrentSession>;
+			verify: () => Effect.Effect<
+				Pick<SessionModel, "expiresAt" | "publicId"> & { refreshed: boolean },
+				never,
+				CurrentSession
+			>;
 		};
 	}
 >() {
@@ -66,14 +70,15 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						${sql("userId")},
 						${sql("signature")},
 						${sql("expiresAt")},
-						${sql("revokedAt")}
+						${sql("revokedAt")},
+						${sql("publicId")}
 					FROM
 						${sql("session")}
 					WHERE
 						${sql("publicId")} = ${request};
 				`,
 				Request: SessionModel.fields.publicId,
-				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
+				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt", "publicId"),
 			});
 
 			const findByPublicIdForRevocation = SqlSchema.findOne({
@@ -184,6 +189,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						return Option.some({
 							expiresAt: maybeSession.value.expiresAt,
 							id: maybeSession.value.id,
+							publicId: maybeSession.value.publicId,
 							userId: maybeSession.value.userId,
 						});
 					}),
@@ -235,7 +241,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						const isWithinExtensionCutoff = DateTime.lessThanOrEqualTo(currentSession.expiresAt, extensionCutoff);
 
 						if (!isWithinExtensionCutoff) {
-							return { expiresAt: currentSession.expiresAt, refreshed: false };
+							return { expiresAt: currentSession.expiresAt, publicId: currentSession.publicId, refreshed: false };
 						}
 
 						const newExpiration = yield* DateTime.now.pipe(
@@ -248,7 +254,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							userId: currentSession.userId,
 						}).pipe(Effect.orDie);
 
-						return { expiresAt: newExpiration, refreshed: true };
+						return { expiresAt: newExpiration, publicId: currentSession.publicId, refreshed: true };
 					}),
 				},
 			} satisfies Session["Type"];

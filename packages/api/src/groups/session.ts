@@ -10,7 +10,11 @@ const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields
 export class Session extends HttpApiGroup.make("Session")
 	.add(
 		HttpApiEndpoint.post("verify", "/verify")
-			.addSuccess(SessionModel.json.pick("expiresAt").pipe(Schema.extend(Schema.Struct({ refreshed: Schema.Boolean }))))
+			.addSuccess(
+				SessionModel.json
+					.pick("expiresAt", "publicId")
+					.pipe(Schema.extend(Schema.Struct({ refreshed: Schema.Boolean }))),
+			)
 			.annotateContext(
 				OpenApi.annotations({
 					description:

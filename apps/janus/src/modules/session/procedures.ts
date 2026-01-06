@@ -1,5 +1,6 @@
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { DateTime, Effect, Option, Schema } from "effect";
 
 import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema";
@@ -12,7 +13,8 @@ import {
 	getDecodedStateFromChallengeCookie,
 	setChallengeCookie,
 	setSessionCookie,
-} from "#src/modules/session/utilities.js";
+} from "#src/modules/session/cookies.js";
+import { extractDeviceLabel } from "#src/modules/session/device-label.js";
 
 export const getAuthenticationChallengeMetadata = createServerFn({ method: "GET" }).handler(async () =>
 	Effect.gen(function* () {
@@ -63,10 +65,13 @@ export const solveAuthenticationChallenge = createServerFn({ method: "POST" })
 			const naamioApiClient = yield* NaamioApiClient;
 
 			const state = yield* yield* getDecodedStateFromChallengeCookie();
+			const userAgent = getRequestHeader("User-Agent");
+
+			const deviceLabel = userAgent ? yield* extractDeviceLabel(userAgent) : Option.none();
 
 			const result = yield* naamioApiClient.Authentication.solveEmailChallenge({
 				path: { state },
-				payload: { code: ctx.data.code, deviceLabel: "Lorem Ipsum" },
+				payload: { code: ctx.data.code, deviceLabel },
 			});
 
 			yield* setSessionCookie({ token: result.token }, result.expiresAt);

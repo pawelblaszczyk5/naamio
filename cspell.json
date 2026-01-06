@@ -17,6 +17,7 @@
 	"words": ["codegen", "codeowner", "hmac", "naamio", "spritesheet", "statefulness", "typecheck", "unredacted"],
 	"enableGlobDot": true,
 	"ignoreWords": [
+		"arkregex",
 		"fontaine",
 		"fontsource",
 		"lingui",

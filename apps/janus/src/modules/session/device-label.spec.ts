@@ -3,7 +3,7 @@ import { Effect, Option } from "effect";
 
 import { extractDeviceLabel } from "#src/modules/session/device-label.js";
 
-// cspell:ignore KHTML, SeaMonkey
+// cspell:ignore KHTML, Edgi
 
 const extractDeviceLabelToStringOrNull = (userAgent: string) =>
 	extractDeviceLabel(userAgent).pipe(Effect.map(Option.getOrNull));
@@ -161,7 +161,7 @@ it.effect(
 			),
 		).toMatchInlineSnapshot(`"Brave · Desktop"`);
 
-		// Seamonkey
+		// SeaMonkey
 		expect(
 			yield* extractDeviceLabelToStringOrNull(
 				"Mozilla/5.0 (Windows NT 5.0; U; Debian; fr; rev:7.5) Firefox/95.7.9 AppleWebKit/67.8.9 SeaMonkey/67.0.8",

@@ -3,7 +3,7 @@ import { RateLimiter } from "@effect/experimental";
 import { Rpc } from "@effect/rpc";
 import { Duration, Effect, Layer, Schema } from "effect";
 
-import { EmailChallengeCode, EmailChallengeModel } from "../../../../../packages/schema/dist/src/domain.js";
+import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema/domain";
 
 import {
 	ChallengeRefreshUnavailableError,

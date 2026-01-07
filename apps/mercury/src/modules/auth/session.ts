@@ -6,7 +6,7 @@ import { customAlphabet } from "nanoid";
 import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 import { generateId } from "@naamio/id-generator/effect";
-import { SessionModel } from "../../../../../packages/schema/dist/src/domain.js";
+import { SessionModel } from "@naamio/schema/domain";
 
 import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";

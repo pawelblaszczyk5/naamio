@@ -5,7 +5,7 @@ import { Config, Context, DateTime, Duration, Effect, Layer, Option, Redacted, S
 import { customAlphabet } from "nanoid";
 
 import { generateId } from "@naamio/id-generator/effect";
-import { EmailChallengeModel } from "../../../../../packages/schema/dist/src/domain.js";
+import { EmailChallengeModel } from "@naamio/schema/domain";
 
 import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";

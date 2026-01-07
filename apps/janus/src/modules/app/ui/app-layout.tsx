@@ -17,8 +17,6 @@ export const AppLayout = () => {
 	const currentLanguage = useCurrentLanguage();
 	const { data } = useLiveQuery((q) => q.from({ sessions: sessionCollection }));
 
-	console.log(data);
-
 	useSessionVerificationPoller();
 
 	return (
@@ -36,6 +34,7 @@ export const AppLayout = () => {
 				</Link>
 			</nav>
 			<div>
+				<pre>{JSON.stringify(data, null, 2)}</pre>
 				<Outlet />
 			</div>
 		</div>

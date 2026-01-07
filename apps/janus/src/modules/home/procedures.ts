@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { Effect } from "effect";
 
-import type { UserModel } from "@naamio/schema";
+import type { UserModel } from "@naamio/schema/domain";
 
 import { runServerFn } from "#src/modules/effect-bridge/mod.js";
 

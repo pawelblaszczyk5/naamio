@@ -1,6 +1,6 @@
 import { useLingui } from "@lingui/react";
 
-import type { UserModel } from "@naamio/schema";
+import type { UserModel } from "@naamio/schema/domain";
 
 export const useCurrentLanguage = () => {
 	const { i18n } = useLingui();

@@ -1,7 +1,7 @@
 import { HttpApiError, HttpApiMiddleware, HttpApiSecurity, OpenApi } from "@effect/platform";
 import { Context } from "effect";
 
-import type { SessionModel } from "@naamio/schema";
+import type { SessionModel } from "@naamio/schema/domain";
 
 export class CurrentSession extends Context.Tag("@naamio/api/CurrentSession")<
 	CurrentSession,

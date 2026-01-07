@@ -12,7 +12,7 @@ import { HeadContent, Outlet, Scripts, useMatch, useParams } from "@tanstack/rea
 import { use, useState } from "react";
 import { preload } from "react-dom";
 
-import type { UserModel } from "@naamio/schema";
+import type { UserModel } from "@naamio/schema/domain";
 
 import { assert } from "@naamio/assert";
 import { IconSpritesheetContext } from "@naamio/design-system/components/icon";

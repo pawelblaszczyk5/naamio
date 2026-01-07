@@ -7,9 +7,9 @@
 		"#src/*": "./dist/src/*"
 	},
 	"exports": {
-		".": {
-			"types": "./dist/src/mod.d.ts",
-			"default": "./dist/src/mod.js"
+		"./domain": {
+			"types": "./dist/src/domain.d.ts",
+			"default": "./dist/src/domain.js"
 		}
 	},
 	"scripts": {

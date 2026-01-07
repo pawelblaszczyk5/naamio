@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from "@tanstack/react-start/server";
 import { Config, DateTime, Effect, Option, Schema } from "effect";
 
-import { EmailChallengeModel } from "@naamio/schema";
+import { EmailChallengeModel } from "@naamio/schema/domain";
 
 import { CookieSigner } from "#src/modules/cookie-signer/mod.js";
 

@@ -5,7 +5,7 @@ import { PgClient } from "@effect/sql-pg";
 import { Context, Effect, Layer } from "effect";
 
 import { generateId } from "@naamio/id-generator/effect";
-import { UserModel } from "@naamio/schema";
+import { UserModel } from "../../../../../packages/schema/dist/src/domain.js";
 
 import { DatabaseLive } from "#src/modules/database/mod.js";
 

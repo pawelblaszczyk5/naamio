@@ -1,7 +1,7 @@
 import { HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
 import { Schema } from "effect";
 
-import { SessionModel } from "@naamio/schema";
+import { SessionModel } from "@naamio/schema/domain";
 
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
 

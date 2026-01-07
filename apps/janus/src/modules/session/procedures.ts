@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { DateTime, Effect, Option, Schema } from "effect";
 
-import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema";
+import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema/domain";
 
 import { NaamioApiClient } from "#src/modules/api-client/mod.js";
 import { SessionToken } from "#src/modules/effect-bridge/context.js";

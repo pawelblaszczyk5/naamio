@@ -2,7 +2,7 @@ import { electricCollectionOptions } from "@tanstack/electric-db-collection";
 import { createCollection } from "@tanstack/react-db";
 import { Schema } from "effect";
 
-import { SessionModel } from "@naamio/schema";
+import { SessionModel } from "@naamio/schema/domain";
 
 const Session = Schema.Struct({ expires_at: Schema.DateFromSelf, id: SessionModel.json.fields.id });
 

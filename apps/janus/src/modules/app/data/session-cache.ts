@@ -4,7 +4,7 @@ import { Schema } from "effect";
 import { useEffect } from "react";
 
 import { assert } from "@naamio/assert";
-import { SessionModel } from "@naamio/schema";
+import { SessionModel } from "@naamio/schema/domain";
 
 import { verifySession } from "#src/modules/session/procedures.js";
 

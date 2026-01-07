@@ -1,7 +1,7 @@
 import { HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
 import { Schema } from "effect";
 
-import { EmailChallengeCode, EmailChallengeModel, SessionModel } from "@naamio/schema";
+import { EmailChallengeCode, EmailChallengeModel, SessionModel } from "@naamio/schema/domain";
 
 import { InsufficientStorage, TooManyRequests } from "#src/errors/mod.js";
 

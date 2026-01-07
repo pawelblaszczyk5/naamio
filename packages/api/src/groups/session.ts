@@ -1,8 +1,10 @@
 import { HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } from "@effect/platform";
 import { Schema } from "effect";
 
+import { ElectricProtocolUrlParams } from "@naamio/schema/api";
 import { SessionModel } from "@naamio/schema/domain";
 
+import { BadGateway } from "#src/errors/mod.js";
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
 
 const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields.id);
@@ -44,7 +46,8 @@ export class Session extends HttpApiGroup.make("Session")
 	)
 	.add(
 		HttpApiEndpoint.get("shape", "/shape")
-			.setUrlParams(Schema.Record({ key: Schema.String, value: Schema.String }))
+			.setUrlParams(ElectricProtocolUrlParams)
+			.addError(BadGateway)
 			.annotateContext(
 				OpenApi.annotations({
 					description:

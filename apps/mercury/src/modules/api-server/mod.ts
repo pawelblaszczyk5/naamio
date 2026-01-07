@@ -2,7 +2,7 @@ import { HttpApiBuilder, HttpApiError } from "@effect/platform";
 import { Effect, Layer, Option, Redacted } from "effect";
 
 import { NaamioApi } from "@naamio/api";
-import { InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
+import { BadGateway, InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
 import { AuthenticatedOnly } from "@naamio/api/middlewares/authenticated-only";
 
 import { Authenticator, AuthenticatorLive } from "#src/modules/auth/authenticator.js";
@@ -186,9 +186,9 @@ const SessionGroupLive = HttpApiBuilder.group(
 			.handleRaw(
 				"shape",
 				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (ctx) {
-					return yield* electric
-						.proxy({ columns: ["id", "expires_at"], table: "session", where: "" }, ctx.urlParams)
-						.pipe(Effect.orDie);
+					return yield* electric.viewer
+						.sessionShape(ctx.urlParams)
+						.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
 				}),
 			);
 	}),

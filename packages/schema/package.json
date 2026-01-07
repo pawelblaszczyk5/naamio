@@ -7,6 +7,10 @@
 		"#src/*": "./dist/src/*"
 	},
 	"exports": {
+		"./api": {
+			"types": "./dist/src/api.d.ts",
+			"default": "./dist/src/api.js"
+		},
 		"./domain": {
 			"types": "./dist/src/domain.d.ts",
 			"default": "./dist/src/domain.js"
@@ -23,6 +27,7 @@
 	"dependencies": {
 		"@effect/experimental": "catalog:",
 		"@effect/sql": "catalog:",
+		"@electric-sql/client": "catalog:",
 		"effect": "catalog:"
 	},
 	"devDependencies": {

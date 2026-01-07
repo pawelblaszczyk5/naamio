@@ -1,16 +1,34 @@
-import type { HttpClientError } from "@effect/platform";
+import type { Statement } from "@effect/sql";
 
 import { FetchHttpClient, Headers, HttpClient, HttpClientRequest, HttpServerResponse } from "@effect/platform";
-import { ELECTRIC_PROTOCOL_QUERY_PARAMS } from "@electric-sql/client";
-import { Config, Context, Effect, Layer, Redacted } from "effect";
+import { PgClient } from "@effect/sql-pg";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+
+import type { ElectricProtocolUrlParams } from "@naamio/schema/api";
+
+import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
+
+import { DatabaseLive } from "#src/modules/database/mod.js";
+
+interface ShapeDefinition {
+	columns: Array<Statement.Identifier>;
+	table: Statement.Identifier;
+	where: Statement.Statement<unknown>;
+}
+
+export class ShapeProxyError extends Schema.TaggedError<ShapeProxyError>("@naamio/mercury/Electric/ShapeProxyError")(
+	"ShapeProxyError",
+	{},
+) {}
 
 export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 	Electric,
 	{
-		proxy: (
-			shapeDefinition: { columns: Array<string>; table: string; where: string },
-			urlParams: Record<string, string>,
-		) => Effect.Effect<HttpServerResponse.HttpServerResponse, HttpClientError.HttpClientError>;
+		viewer: {
+			sessionShape: (
+				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
+		};
 	}
 >() {
 	static Live = Layer.effect(
@@ -19,36 +37,79 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 			const BASE_URL = yield* Config.string("ELECTRIC_BASE_URL");
 			const SECRET = yield* Config.redacted("ELECTRIC_SECRET");
 
+			const sql = yield* PgClient.PgClient;
+
 			const httpClient = (yield* HttpClient.HttpClient).pipe(
 				HttpClient.mapRequest(HttpClientRequest.prependUrl(BASE_URL)),
 				HttpClient.mapRequest(HttpClientRequest.appendUrlParam("secret", Redacted.value(SECRET))),
 			);
 
+			const compileIdentifier = Effect.fn(function* (identifier: Statement.Identifier) {
+				return sql`${identifier}`.compile()[0];
+			});
+
+			const mapColumns = Effect.fn(function* (columns: ShapeDefinition["columns"]) {
+				return yield* Effect.forEach(
+					columns,
+					Effect.fn(function* (column) {
+						return yield* compileIdentifier(column);
+					}),
+				).pipe(Effect.map((columns) => columns.join(",")));
+			});
+
+			const mapWhereClause = Effect.fn(function* (statement: Statement.Statement<unknown>) {
+				const [where, params] = statement.compile();
+
+				const mappedParams: Record<`params[${number}]`, string> = Object.fromEntries(
+					params.map((value, index) => {
+						const paramKey = `params[${(index + 1).toString()}]`;
+						const stringifiedValue = String(value);
+
+						return [paramKey, stringifiedValue];
+					}),
+				);
+
+				return { where, ...mappedParams };
+			});
+
+			const proxy = Effect.fn(function* (request: HttpClientRequest.HttpClientRequest) {
+				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError()));
+				const headers = Headers.remove(response.headers, ["Content-Encoding", "Content-Length"]);
+
+				return yield* HttpServerResponse.stream(response.stream, { headers, status: response.status });
+			});
+
+			const mapShapeDefinitionIntoRequest = Effect.fn(function* (
+				shapeDefinition: ShapeDefinition,
+				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+			) {
+				return HttpClientRequest.get("/v1/shape", {
+					urlParams: {
+						...electricUrlParams,
+						columns: yield* mapColumns(shapeDefinition.columns),
+						table: yield* compileIdentifier(shapeDefinition.table),
+						...(yield* mapWhereClause(shapeDefinition.where)),
+					},
+				});
+			});
+
 			return {
-				proxy: Effect.fn("@naamio/mercury/Electric#proxy")(function* (shapeDefinition, urlParams) {
-					const filteredOutParams = Object.fromEntries(
-						Object.entries(urlParams).filter(([key]) => ELECTRIC_PROTOCOL_QUERY_PARAMS.includes(key)),
-					);
+				viewer: {
+					sessionShape: Effect.fn("@naamio/mercury/Electric#sessionShape")(function* (electricUrlParams) {
+						const currentSession = yield* CurrentSession;
 
-					const response = yield* httpClient.get("/v1/shape", {
-						urlParams: {
-							...filteredOutParams,
-							columns: shapeDefinition.columns.join(","),
-							table: shapeDefinition.table,
-							where: shapeDefinition.where,
-						},
-					});
+						const shapeDefinition: ShapeDefinition = {
+							columns: [sql("id"), sql("expiresAt")],
+							table: sql("session"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
 
-					const newHeaders = Headers.remove(response.headers, ["content-encoding", "content-length"]);
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
 
-					const serverResponse = yield* HttpServerResponse.stream(response.stream, {
-						headers: newHeaders,
-						status: response.status,
-					});
-
-					return serverResponse;
-				}),
+						return yield* proxy(request);
+					}),
+				},
 			};
 		}),
-	).pipe(Layer.provide(FetchHttpClient.layer));
+	).pipe(Layer.provide([DatabaseLive, FetchHttpClient.layer]));
 }

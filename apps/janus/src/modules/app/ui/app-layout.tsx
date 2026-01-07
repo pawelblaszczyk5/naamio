@@ -1,9 +1,11 @@
 import { Trans } from "@lingui/react/macro";
+import { useLiveQuery } from "@tanstack/react-db";
 import { Link, Outlet } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
 import { useSessionVerificationPoller } from "#src/modules/app/data/session-cache.js";
+import { sessionCollection } from "#src/modules/app/data/session.js";
 import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const styles = stylex.create({
@@ -13,6 +15,9 @@ const styles = stylex.create({
 
 export const AppLayout = () => {
 	const currentLanguage = useCurrentLanguage();
+	const { data } = useLiveQuery((q) => q.from({ sessions: sessionCollection }));
+
+	console.log(data);
 
 	useSessionVerificationPoller();
 

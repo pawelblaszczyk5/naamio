@@ -9,6 +9,7 @@ import { Authenticator, AuthenticatorLive } from "#src/modules/auth/authenticato
 import { EmailChallenge } from "#src/modules/auth/email-challenge.js";
 import { Session } from "#src/modules/auth/session.js";
 import { ClusterRunnerLive } from "#src/modules/cluster/mod.js";
+import { Electric } from "#src/modules/electric/mod.js";
 import { User } from "#src/modules/user/mod.js";
 
 const AuthenticatedOnlyLive = Layer.effect(
@@ -154,6 +155,7 @@ const SessionGroupLive = HttpApiBuilder.group(
 	"Session",
 	Effect.fn(function* (handlers) {
 		const session = yield* Session;
+		const electric = yield* Electric;
 
 		return handlers
 			.handle(
@@ -180,9 +182,17 @@ const SessionGroupLive = HttpApiBuilder.group(
 				Effect.fn("@naamio/mercury/SessionGroup#revokeAll")(function* () {
 					yield* session.viewer.revokeAll();
 				}),
+			)
+			.handleRaw(
+				"shape",
+				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (ctx) {
+					return yield* electric
+						.proxy({ columns: ["id", "expires_at"], table: "session", where: "" }, ctx.urlParams)
+						.pipe(Effect.orDie);
+				}),
 			);
 	}),
-).pipe(Layer.provide([Session.Live, AuthenticatedOnlyLive]));
+).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
 
 export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
 	Layer.provide([AuthenticationGroupLive, SessionGroupLive]),

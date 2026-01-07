@@ -42,6 +42,17 @@ export class Session extends HttpApiGroup.make("Session")
 			}),
 		),
 	)
+	.add(
+		HttpApiEndpoint.get("shape", "/shape")
+			.setUrlParams(Schema.Record({ key: Schema.String, value: Schema.String }))
+			.annotateContext(
+				OpenApi.annotations({
+					description:
+						"Electric shape API, which allows to sync all sessions for current user. It proxies the request to electric, utilizing Proxy auth pattern, adding required params etc.",
+					summary: "Electric session shape",
+				}),
+			),
+	)
 	.prefix("/session")
 	.middleware(AuthenticatedOnly)
 	.annotateContext(

@@ -22,6 +22,7 @@
 	"dependencies": {
 		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
+		"@electric-sql/client": "catalog:",
 		"@hono/node-server": "^1.19.7",
 		"@lingui/core": "^5.7.0",
 		"@lingui/react": "^5.7.0",
@@ -35,6 +36,7 @@
 		"@remix-run/headers": "^0.18.0",
 		"@standard-schema/spec": "^1.1.0",
 		"@tanstack/react-db": "^0.1.60",
+		"@tanstack/electric-db-collection": "^0.2.20",
 		"@tanstack/react-router": "^1.145.7",
 		"@tanstack/react-start": "^1.145.8",
 		"arkregex": "^0.0.5",

@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index.tsx'
 import { Route as AppExampleRouteImport } from './routes/app.example.tsx'
 import { Route as HomeChar123languageChar125RouteImport } from './routes/_home.{$language}.tsx'
 import { Route as HomeChar123languageChar125IndexRouteImport } from './routes/_home.{$language}.index.tsx'
+import { Route as ApiShapeSessionRouteImport } from './routes/api.shape.session.tsx'
 import { Route as HomeChar123languageChar125SignInRouteImport } from './routes/_home.{$language}.sign-in.tsx'
 
 const AppRoute = AppRouteImport.update({
@@ -49,6 +50,11 @@ const HomeChar123languageChar125IndexRoute =
     path: '/',
     getParentRoute: () => HomeChar123languageChar125Route,
   } as any)
+const ApiShapeSessionRoute = ApiShapeSessionRouteImport.update({
+  id: '/api/shape/session',
+  path: '/api/shape/session',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeChar123languageChar125SignInRoute =
   HomeChar123languageChar125SignInRouteImport.update({
     id: '/sign-in',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/app/example': typeof AppExampleRoute
   '/app/': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/api/shape/session': typeof ApiShapeSessionRoute
   '/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRoutesByTo {
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/app/example': typeof AppExampleRoute
   '/app': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/api/shape/session': typeof ApiShapeSessionRoute
   '/{$language}': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRoutesById {
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/app/example': typeof AppExampleRoute
   '/app/': typeof AppIndexRoute
   '/_home/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/api/shape/session': typeof ApiShapeSessionRoute
   '/_home/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
 export interface FileRouteTypes {
@@ -91,9 +100,16 @@ export interface FileRouteTypes {
     | '/app/example'
     | '/app/'
     | '/{$language}/sign-in'
+    | '/api/shape/session'
     | '/{$language}/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/example' | '/app' | '/{$language}/sign-in' | '/{$language}'
+  to:
+    | '/'
+    | '/app/example'
+    | '/app'
+    | '/{$language}/sign-in'
+    | '/api/shape/session'
+    | '/{$language}'
   id:
     | '__root__'
     | '/'
@@ -102,6 +118,7 @@ export interface FileRouteTypes {
     | '/app/example'
     | '/app/'
     | '/_home/{$language}/sign-in'
+    | '/api/shape/session'
     | '/_home/{$language}/'
   fileRoutesById: FileRoutesById
 }
@@ -109,6 +126,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   HomeChar123languageChar125Route: typeof HomeChar123languageChar125RouteWithChildren
+  ApiShapeSessionRoute: typeof ApiShapeSessionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -155,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeChar123languageChar125IndexRouteImport
       parentRoute: typeof HomeChar123languageChar125Route
     }
+    '/api/shape/session': {
+      id: '/api/shape/session'
+      path: '/api/shape/session'
+      fullPath: '/api/shape/session'
+      preLoaderRoute: typeof ApiShapeSessionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_home/{$language}/sign-in': {
       id: '/_home/{$language}/sign-in'
       path: '/sign-in'
@@ -198,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   HomeChar123languageChar125Route: HomeChar123languageChar125RouteWithChildren,
+  ApiShapeSessionRoute: ApiShapeSessionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

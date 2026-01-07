@@ -21,6 +21,7 @@ catalog:
   "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
   effect: ^3.19.14
+  "@electric-sql/client": ^1.4.0
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.0.3
   eslint: ^9.39.2

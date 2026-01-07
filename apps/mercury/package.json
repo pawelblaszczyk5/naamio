@@ -7,11 +7,11 @@
 		"#src/*": "./src/*"
 	},
 	"scripts": {
-		"dev": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
+		"dev": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 tcp:electric.naamio.orb.local:3000 && node --env-file=.env --import=tsx --watch ./src/mod.ts",
 		"effect-diagnostics": "effect-language-service diagnostics --project tsconfig.json",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 && node --env-file=.env --import=tsx ./src/mod.ts",
+		"preview": "wait-on tcp:postgres.naamio.orb.local:5432 tcp:mailpit.naamio.orb.local:1025 tcp:otel-lgtm.naamio.orb.local:4318 tcp:electric.naamio.orb.local:3000 && node --env-file=.env --import=tsx ./src/mod.ts",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
@@ -23,6 +23,7 @@
 		"@effect/sql": "catalog:",
 		"@effect/sql-pg": "catalog:",
 		"@effect/workflow": "catalog:",
+		"@electric-sql/client": "catalog:",
 		"@naamio/api": "workspace:*",
 		"@naamio/hmac": "workspace:*",
 		"@naamio/id-generator": "workspace:*",

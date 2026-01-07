@@ -11,18 +11,18 @@ type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups, any, a
 type Errors = typeof NaamioApi extends HttpApi.HttpApi<any, any, infer Errors, any> ? Errors : never;
 type Requirements = typeof NaamioApi extends HttpApi.HttpApi<any, any, any, infer Requirements> ? Requirements : never;
 
-export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient")<
-	NaamioApiClient,
-	HttpApiClient.Client<Groups, Errors, Requirements>
+export class NaamioHttpClient extends Context.Tag("@naamio/janus/NaamioHttpClient")<
+	NaamioHttpClient,
+	HttpClient.HttpClient
 >() {
 	static Live = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const API_BASE_URL = yield* Config.string("API_BASE_URL");
 
-			return yield* HttpApiClient.make(NaamioApi, {
-				baseUrl: API_BASE_URL,
-				transformClient: HttpClient.mapRequestEffect(
+			const httpClient = (yield* HttpClient.HttpClient).pipe(
+				HttpClient.mapRequest(HttpClientRequest.prependUrl(API_BASE_URL)),
+				HttpClient.mapRequestEffect(
 					Effect.fn(function* (request) {
 						const maybeSessionToken = yield* Effect.serviceOption(SessionToken);
 
@@ -33,7 +33,23 @@ export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient"
 						return request.pipe(HttpClientRequest.bearerToken(maybeSessionToken.value));
 					}),
 				),
-			});
+			);
+
+			return httpClient;
 		}),
-	).pipe(Layer.provide(FetchHttpClient.layer)) satisfies Layer.Layer<NaamioApiClient, unknown>;
+	).pipe(Layer.provide(FetchHttpClient.layer)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
+}
+
+export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient")<
+	NaamioApiClient,
+	HttpApiClient.Client<Groups, Errors, Requirements>
+>() {
+	static Live = Layer.effect(
+		this,
+		Effect.gen(function* () {
+			const httpClient = yield* NaamioHttpClient;
+
+			return yield* HttpApiClient.makeWith(NaamioApi, { httpClient });
+		}),
+	).pipe(Layer.provide(NaamioHttpClient.Live)) satisfies Layer.Layer<NaamioApiClient, unknown>;
 }

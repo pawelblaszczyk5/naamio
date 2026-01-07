@@ -6,12 +6,12 @@ import { Effect, Layer, Logger, ManagedRuntime, Option } from "effect";
 
 import { ObservabilityLive } from "@naamio/observability";
 
-import { NaamioApiClient } from "#src/modules/api-client/mod.js";
+import { NaamioApiClient, NaamioHttpClient } from "#src/modules/api-client/mod.js";
 import { CookieSigner } from "#src/modules/cookie-signer/mod.js";
 import { SessionToken } from "#src/modules/effect-bridge/context.js";
 import { getDecodedSessionTokenFromSessionCookie } from "#src/modules/session/cookies.js";
 
-const EnvironmentLive = Layer.mergeAll(NaamioApiClient.Live, CookieSigner.Live).pipe(
+const EnvironmentLive = Layer.mergeAll(NaamioHttpClient.Live, NaamioApiClient.Live, CookieSigner.Live).pipe(
 	Layer.provide([Logger.pretty, ObservabilityLive]),
 );
 

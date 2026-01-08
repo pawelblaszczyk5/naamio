@@ -23,7 +23,7 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 
 					const urlParams = getRequestUrl().searchParams;
 
-					const response = yield* naamioHttpClient.get(`/api/session/shape`, { urlParams });
+					const response = yield* naamioHttpClient.get(`/api/${shapeName}/shape`, { urlParams });
 
 					const body = Stream.toReadableStream(response.stream);
 					const headers = Headers.remove(response.headers, ["content-encoding", "content-length"]);

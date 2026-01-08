@@ -13,22 +13,22 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/app/ui/app-layout.tsx:25
+#: src/modules/app/ui/app-layout.tsx:27
 #: src/modules/home/ui/home-layout.tsx:20
 msgid "Hello world!"
 msgstr "Witaj świecie!"
 
-#: src/modules/app/ui/app-layout.tsx:27
+#: src/modules/app/ui/app-layout.tsx:29
 #: src/modules/home/ui/home-layout.tsx:22
 msgid "Home"
 msgstr "Strona główna"
 
-#: src/modules/app/ui/app-layout.tsx:30
+#: src/modules/app/ui/app-layout.tsx:32
 #: src/modules/home/ui/home-layout.tsx:26
 msgid "App"
 msgstr "Aplikacja"
 
-#: src/modules/app/ui/app-layout.tsx:33
+#: src/modules/app/ui/app-layout.tsx:35
 msgid "App example"
 msgstr "Przykładowa strona aplikacji"
 

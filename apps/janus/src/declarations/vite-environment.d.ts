@@ -3,7 +3,7 @@ interface ViteTypeOptions {
 }
 
 interface CustomEnvironment extends ImportMetaEnv {
-	VITE_DUMMY: string;
+	VITE_SITE_DOMAIN: string;
 }
 
 interface ImportMeta {

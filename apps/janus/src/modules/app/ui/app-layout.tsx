@@ -6,6 +6,7 @@ import stylex from "@naamio/stylex";
 
 import { useSessionVerificationPoller } from "#src/modules/app/data/session-cache.js";
 import { sessionCollection } from "#src/modules/app/data/session.js";
+import { userCollection } from "#src/modules/app/data/user.js";
 import { useCurrentLanguage } from "#src/modules/shell/use-current-language.js";
 
 const styles = stylex.create({
@@ -15,7 +16,8 @@ const styles = stylex.create({
 
 export const AppLayout = () => {
 	const currentLanguage = useCurrentLanguage();
-	const { data } = useLiveQuery((q) => q.from({ sessions: sessionCollection }));
+	const { data: sessions } = useLiveQuery((q) => q.from({ sessions: sessionCollection }));
+	const { data: user } = useLiveQuery((q) => q.from({ user: userCollection }).findOne());
 
 	useSessionVerificationPoller();
 
@@ -34,7 +36,8 @@ export const AppLayout = () => {
 				</Link>
 			</nav>
 			<div>
-				<pre>{JSON.stringify(data, null, 2)}</pre>
+				<pre>{JSON.stringify(sessions, null, 2)}</pre>
+				<pre>{JSON.stringify(user, null, 2)}</pre>
 				<Outlet />
 			</div>
 		</div>

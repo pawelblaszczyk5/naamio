@@ -13,7 +13,7 @@ export const sessionCollection = createCollection(
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
 			parser: { timestamptz: (date: string) => new Date(date) },
-			url: `${globalThis.location.origin}/api/shape/session`,
+			url: `${import.meta.env.VITE_SITE_DOMAIN}/api/shape/session`,
 		},
 	}),
 );

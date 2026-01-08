@@ -194,6 +194,23 @@ const SessionGroupLive = HttpApiBuilder.group(
 	}),
 ).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
 
+const UserGroupLive = HttpApiBuilder.group(
+	NaamioApi,
+	"User",
+	Effect.fn(function* (handlers) {
+		const electric = yield* Electric;
+
+		return handlers.handleRaw(
+			"shape",
+			Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (ctx) {
+				return yield* electric.viewer
+					.userShape(ctx.urlParams)
+					.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+			}),
+		);
+	}),
+).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
+
 export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
-	Layer.provide([AuthenticationGroupLive, SessionGroupLive]),
+	Layer.provide([AuthenticationGroupLive, SessionGroupLive, UserGroupLive]),
 );

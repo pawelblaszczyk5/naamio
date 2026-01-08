@@ -9,7 +9,7 @@ import fontStandardLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-p
 import { setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { HeadContent, Outlet, Scripts, useMatch, useParams } from "@tanstack/react-router";
-import { use, useState } from "react";
+import { use, useState, useSyncExternalStore } from "react";
 import { preload } from "react-dom";
 
 import type { UserModel } from "@naamio/schema/domain";
@@ -21,6 +21,7 @@ import stylex from "@naamio/stylex";
 
 import { messages as englishMessages } from "#src/locales/en-US.po";
 import { messages as polishMessages } from "#src/locales/pl-PL.po";
+import { useMaybeCurrentUser } from "#src/modules/app/data/user.js";
 import { LanguageContext } from "#src/modules/shell/language-context.js";
 
 import stylesheetHref from "#src/styles.css?url";
@@ -37,9 +38,30 @@ const HomeLanguageProvider = ({ children }: { children: ReactNode }) => {
 	return <LanguageContext value={params.language}>{children}</LanguageContext>;
 };
 
-const AppLanguageProvider = ({ children }: { children: ReactNode }) => (
-	<LanguageContext value="en-US">{children}</LanguageContext>
-);
+const InternalAppLanguageProvider = ({ children }: { children: ReactNode }) => {
+	const currentUser = useMaybeCurrentUser();
+
+	if (!currentUser) {
+		return <LanguageContext value="en-US">{children}</LanguageContext>;
+	}
+
+	return <LanguageContext value={currentUser.language}>{children}</LanguageContext>;
+};
+
+const AppLanguageProvider = ({ children }: { children: ReactNode }) => {
+	const isHydrated = useSyncExternalStore(
+		// eslint-disable-next-line unicorn/consistent-function-scoping, @typescript-eslint/no-empty-function -- temporary solution, I'm not yet sure whether I'll handle it this way
+		() => () => {},
+		() => true,
+		() => false,
+	);
+
+	if (!isHydrated) {
+		return <LanguageContext value="en-US">{children}</LanguageContext>;
+	}
+
+	return <InternalAppLanguageProvider>{children}</InternalAppLanguageProvider>;
+};
 
 const LanguageProvider = ({ children }: { children: ReactNode }) => {
 	const homeMatch = useMatch({ from: "/_home/{$language}", shouldThrow: false });

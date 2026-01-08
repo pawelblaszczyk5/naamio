@@ -2,10 +2,12 @@ import { HttpApi, OpenApi } from "@effect/platform";
 
 import { Authentication } from "#src/groups/authentication.js";
 import { Session } from "#src/groups/session.js";
+import { User } from "#src/groups/user.js";
 
 export class NaamioApi extends HttpApi.make("NaamioApi")
 	.add(Authentication)
 	.add(Session)
+	.add(User)
 	.prefix("/api")
 	.annotateContext(
 		OpenApi.annotations({

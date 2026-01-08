@@ -28,6 +28,9 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 			sessionShape: (
 				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
+			userShape: (
+				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 		};
 	}
 >() {
@@ -99,9 +102,22 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
-							columns: [sql("id"), sql("expiresAt")],
+							columns: [sql("id"), sql("expiresAt"), sql("revokedAt"), sql("deviceLabel"), sql("createdAt")],
 							table: sql("session"),
 							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
+
+						return yield* proxy(request);
+					}),
+					userShape: Effect.fn("@naamio/mercury/Electric#userShape")(function* (electricUrlParams) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [sql("id"), sql("email"), sql("language")],
+							table: sql("user"),
+							where: sql`${sql("id")} = ${currentSession.userId}`,
 						};
 
 						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);

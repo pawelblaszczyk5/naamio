@@ -31,6 +31,7 @@ services:
 
   electric:
     image: electricsql/electric:1.2.9
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
       ELECTRIC_SECRET: example_electric_secret_123

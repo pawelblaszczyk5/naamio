@@ -1,10 +1,6 @@
 {
-	"extends": "@naamio/typescript-config/node-build",
-	"compilerOptions": {
-		"paths": { "#src/*": ["./src/*"] },
-		"types": ["node"],
-		"plugins": [{ "name": "@effect/language-service" }]
-	},
+	"extends": ["@naamio/typescript-config/node-build", "@naamio/typescript-config/effect"],
+	"compilerOptions": { "paths": { "#src/*": ["./src/*"] }, "types": ["node"] },
 	"include": ["src"],
 	"exclude": ["src/**/*.spec.ts"]
 }

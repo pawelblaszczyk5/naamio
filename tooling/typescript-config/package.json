@@ -5,6 +5,7 @@
 		"node-build.json",
 		"dom-build.json",
 		"node-no-build.json",
-		"dom-no-build.json"
+		"dom-no-build.json",
+		"effect.json"
 	]
 }

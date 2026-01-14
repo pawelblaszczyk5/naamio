@@ -1,5 +1,5 @@
 {
-	"extends": "@naamio/typescript-config/node-build",
-	"compilerOptions": { "paths": { "#src/*": ["./src/*"] }, "plugins": [{ "name": "@effect/language-service" }] },
+	"extends": ["@naamio/typescript-config/node-build", "@naamio/typescript-config/effect"],
+	"compilerOptions": { "paths": { "#src/*": ["./src/*"] } },
 	"include": ["src"]
 }

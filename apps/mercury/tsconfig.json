@@ -1,5 +1,5 @@
 {
-	"extends": "@naamio/typescript-config/node-no-build",
-	"compilerOptions": { "types": ["node"], "plugins": [{ "name": "@effect/language-service" }] },
+	"extends": ["@naamio/typescript-config/node-no-build", "@naamio/typescript-config/effect"],
+	"compilerOptions": { "types": ["node"] },
 	"include": ["src"]
 }

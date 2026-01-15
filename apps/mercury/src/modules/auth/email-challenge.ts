@@ -280,7 +280,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				yield* Effect.log("TEMPORARY LOGGING CODE, IMPLEMENT SENDING EMAIL", data.email, Redacted.value(data.code));
 			});
 
-			return {
+			return EmailChallenge.of({
 				system: {
 					findMetadata: Effect.fn("@naamio/mercury/EmailChallenge#findMetadata")(function* (state) {
 						const maybeEmailChallenge = yield* findByStateForMetadata(state).pipe(Effect.orDie);
@@ -393,7 +393,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 						Effect.catchTag("SqlError", (error) => Effect.die(error)),
 					),
 				},
-			} satisfies EmailChallenge["Type"];
+			});
 		}),
 	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<EmailChallenge, unknown>;
 }

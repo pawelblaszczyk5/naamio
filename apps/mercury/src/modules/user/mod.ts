@@ -45,7 +45,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				Result: UserModel.select.pick("id", "email"),
 			});
 
-			return {
+			return User.of({
 				system: {
 					create: Effect.fn("@naamio/mercury/User#create")(function* (data) {
 						const id = UserModel.fields.id.make(yield* generateId());
@@ -60,7 +60,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 						return yield* findByEmail(email).pipe(Effect.orDie);
 					}),
 				},
-			} satisfies User["Type"];
+			});
 		}),
 	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<User, unknown>;
 }

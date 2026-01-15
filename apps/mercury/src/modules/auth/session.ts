@@ -133,7 +133,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				Request: SessionModel.update.pick("userId", "expiresAt", "id"),
 			});
 
-			return {
+			return Session.of({
 				system: {
 					create: Effect.fn("@naamio/mercury/Session#create")(function* (data) {
 						const id = SessionModel.fields.id.make(yield* generateId());
@@ -253,7 +253,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						return { expiresAt: newExpiration, id: currentSession.id, refreshed: true };
 					}),
 				},
-			} satisfies Session["Type"];
+			});
 		}),
 	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<Session, unknown>;
 }

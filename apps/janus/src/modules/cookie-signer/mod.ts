@@ -22,12 +22,8 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 	static Live = Layer.effect(
 		this,
 		Effect.gen(function* () {
-			return {
-				decode: Effect.fn("@naamio/janus/CookieSigner#decode")(function* <T>(
-					cookie: string,
-					schema: SignedCookieSchema<T>,
-					secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
-				) {
+			return CookieSigner.of({
+				decode: Effect.fn("@naamio/janus/CookieSigner#decode")(function* (cookie, schema, secrets) {
 					const lastDotIndex = cookie.lastIndexOf(".");
 					const base64Value = cookie.slice(0, lastDotIndex);
 					const digest = Redacted.make(cookie.slice(lastDotIndex + 1));
@@ -52,11 +48,7 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 
 					return value;
 				}),
-				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* <T>(
-					schema: SignedCookieSchema<T>,
-					value: T,
-					secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
-				) {
+				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* (schema, value, secrets) {
 					const stringifiedValue = yield* Schema.encode(schema)(value).pipe(Effect.orDie);
 					const base64Value = Encoding.encodeBase64Url(stringifiedValue);
 					const secretToUse = Array.isArray(secrets) ? Array.lastNonEmpty(secrets) : secrets;
@@ -67,7 +59,7 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 
 					return valueWithSignature;
 				}),
-			} satisfies CookieSigner["Type"];
+			});
 		}),
 	) satisfies Layer.Layer<CookieSigner, unknown>;
 }

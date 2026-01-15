@@ -96,7 +96,7 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 				});
 			});
 
-			return {
+			return Electric.of({
 				viewer: {
 					sessionShape: Effect.fn("@naamio/mercury/Electric#sessionShape")(function* (electricUrlParams) {
 						const currentSession = yield* CurrentSession;
@@ -125,7 +125,7 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 						return yield* proxy(request);
 					}),
 				},
-			};
+			});
 		}),
 	).pipe(Layer.provide([DatabaseLive, FetchHttpClient.layer]));
 }

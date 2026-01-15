@@ -7,11 +7,11 @@ packages:
 allowUnusedPatches: false
 
 catalog:
-  "@babel/plugin-syntax-jsx": ^7.27.1
+  "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
   "@effect/cluster": ^0.56.1
   "@effect/experimental": ^0.58.0
-  "@effect/language-service": ^0.64.1
+  "@effect/language-service": ^0.65.0
   "@effect/opentelemetry": ^0.60.0
   "@effect/platform": ^0.94.1
   "@effect/platform-node": ^0.104.0
@@ -21,23 +21,23 @@ catalog:
   "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
   effect: ^3.19.14
-  "@electric-sql/client": ^1.4.0
+  "@electric-sql/client": ^1.4.1
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
-  "@types/node": ^25.0.5
+  "@types/node": ^25.0.9
   eslint: ^9.39.2
-  fontaine: ^0.7.0
+  fontaine: ^0.8.0
   babel-plugin-react-compiler: 19.1.0-rc.3
   typescript: ^5.9.3
   vite: npm:rolldown-vite@7.3.1
-  vitest: ^4.0.16
+  vitest: ^4.0.17
   vite-plugin-inspect: ^11.3.3
   "@vitejs/plugin-react": ^5.1.2
   "@types/react": ^19.2.8
   "@types/react-dom": ^19.2.3
-  "@stylexjs/babel-plugin": ^0.17.4
-  "@stylexjs/eslint-plugin": ^0.17.4
-  "@stylexjs/postcss-plugin": ^0.17.4
-  "@stylexjs/stylex": ^0.17.4
+  "@stylexjs/babel-plugin": ^0.17.5
+  "@stylexjs/eslint-plugin": ^0.17.5
+  "@stylexjs/postcss-plugin": ^0.17.5
+  "@stylexjs/stylex": ^0.17.5
   react: 19.3.0-canary-f93b9fd4-20251217
   react-dom: 19.3.0-canary-f93b9fd4-20251217
   tsc-alias: ^1.8.16

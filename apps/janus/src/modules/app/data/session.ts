@@ -4,7 +4,12 @@ import { Schema, String } from "effect";
 
 import { SessionModel } from "@naamio/schema/domain";
 
-const Session = Schema.Struct({ expiresAt: Schema.DateFromSelf, id: SessionModel.json.fields.id });
+const Session = Schema.Struct({
+	deviceLabel: Schema.NullOr(SessionModel.json.fields.deviceLabel.from),
+	expiresAt: Schema.DateFromSelf,
+	id: SessionModel.json.fields.id,
+	revokedAt: Schema.NullOr(Schema.DateFromSelf),
+});
 
 export const sessionCollection = createCollection(
 	electricCollectionOptions({

@@ -9,6 +9,7 @@ import { EmailChallengeModel } from "@naamio/schema/domain";
 
 import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
 import { DatabaseLive } from "#src/modules/database/mod.js";
+import { Mailer } from "#src/modules/mailer/mod.js";
 
 const EMAIL_CHALLENGE_EXPIRATION_DURATION = Duration.minutes(5);
 const EMAIL_CHALLENGE_REFRESH_CUTOFF_DURATION = Duration.minutes(2);
@@ -81,6 +82,7 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 			);
 
 			const sql = yield* PgClient.PgClient;
+			const mailer = yield* Mailer;
 
 			const generateEmailChallengeState = customAlphabet(STANDARD_ID_ALPHABET, 32);
 			const generateEmailChallengeCode = customAlphabet(EMAIL_CHALLENGE_CODE_ALPHABET, 6);
@@ -277,7 +279,15 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				email: EmailChallengeModel["email"];
 				language: EmailChallengeModel["language"];
 			}) {
-				yield* Effect.log("TEMPORARY LOGGING CODE, IMPLEMENT SENDING EMAIL", data.email, Redacted.value(data.code));
+				yield* mailer
+					.send({
+						from: "authenticator@naamio.com",
+						html: `<h1>Your authentication code is ${Redacted.value(data.code)}</h1>`,
+						subject: "Your authentication code",
+						text: `Your authentication code is ${Redacted.value(data.code)}`,
+						to: data.email,
+					})
+					.pipe(Effect.forkDaemon);
 			});
 
 			return EmailChallenge.of({
@@ -395,5 +405,5 @@ export class EmailChallenge extends Context.Tag("@naamio/mercury/EmailChallenge"
 				},
 			});
 		}),
-	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<EmailChallenge, unknown>;
+	).pipe(Layer.provide([DatabaseLive, Mailer.Live])) satisfies Layer.Layer<EmailChallenge, unknown>;
 }

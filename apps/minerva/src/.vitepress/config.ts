@@ -31,6 +31,7 @@ export default defineConfig({
 					{ link: "/development/intro", text: "Intro" },
 					{ link: "/development/architecture", text: "Architecture" },
 					{ link: "/development/auth", text: "Auth" },
+					{ link: "/development/chat", text: "Chat" },
 				],
 				text: "Development",
 			},

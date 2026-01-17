@@ -1,9 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
 	"version": "0.2",
-	"import": [
-		"@cspell/dict-pl_pl/cspell-ext.json"
-	],
+	"import": ["@cspell/dict-pl_pl/cspell-ext.json"],
 	"ignorePaths": [
 		"pnpm-lock.yaml",
 		"cspell.json",
@@ -14,9 +12,7 @@
 		"LICENSE.md",
 		"patches/"
 	],
-	"dictionaries": [
-		"lorem-ipsum"
-	],
+	"dictionaries": ["lorem-ipsum"],
 	"useGitignore": true,
 	"words": [
 		"codegen",
@@ -48,10 +44,5 @@
 		"vite",
 		"vitejs"
 	],
-	"overrides": [
-		{
-			"language": "pl-PL,en-US",
-			"filename": "apps/janus/src/locales/pl-PL.po"
-		}
-	]
+	"overrides": [{ "language": "pl-PL,en-US", "filename": "apps/janus/src/locales/pl-PL.po" }]
 }

@@ -118,9 +118,7 @@ export const SignInPage = () => {
 				<Trans>Sign in page</Trans>
 			</h1>
 			{Match.value(hasChallenge).pipe(
-				// eslint-disable-next-line react/no-missing-key -- temporary, https://github.com/Rel1cx/eslint-react/issues/1412
 				Match.when(false, () => <InitializeForm />),
-				// eslint-disable-next-line react/no-missing-key -- temporary, https://github.com/Rel1cx/eslint-react/issues/1412
 				Match.when(true, () => <CompleteForm />),
 				Match.exhaustive,
 			)}

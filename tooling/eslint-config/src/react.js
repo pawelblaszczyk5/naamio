@@ -68,6 +68,7 @@ export default defineConfig({
 		"react/no-unnecessary-key": "error",
 		"react/no-unnecessary-use-callback": "error",
 		"react/no-unnecessary-use-memo": "error",
+		"react/no-unnecessary-use-ref": "error",
 		"react/no-unnecessary-use-prefix": "error",
 		"react/no-unsafe-component-will-mount": "error",
 		"react/no-unsafe-component-will-receive-props": "error",

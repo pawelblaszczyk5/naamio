@@ -25,3 +25,4 @@ const sessionCollection = createCollection(
 );
 
 export const preloadSessionData = async () => sessionCollection.preload();
+export const cleanupSessionData = async () => sessionCollection.cleanup();

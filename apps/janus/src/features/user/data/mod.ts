@@ -62,3 +62,4 @@ export const useCurrentUserLanguageSsrSafe = () => {
 };
 
 export const preloadUserData = async () => userCollection.preload();
+export const cleanupUserData = async () => userCollection.cleanup();

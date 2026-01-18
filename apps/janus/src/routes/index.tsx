@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { getPreferredLanguage } from "#src/modules/home/procedures.js";
+import { getPreferredLanguage } from "#src/features/home/procedures/mod.js";
 
 export const Route = createFileRoute("/")({
 	loader: async () => {

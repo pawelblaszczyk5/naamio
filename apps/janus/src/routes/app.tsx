@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { getSessionCacheEntry, insertSessionCacheEntry } from "#src/modules/app/data/session-cache.js";
-import { sessionCollection } from "#src/modules/app/data/session.js";
-import { userCollection } from "#src/modules/app/data/user.js";
-import { AppLayout } from "#src/modules/app/ui/app-layout.js";
-import { verifySession } from "#src/modules/session/procedures.js";
+import { AppLayout } from "#src/features/app/ui/app-layout.js";
+import { getSessionCacheEntry, insertSessionCacheEntry } from "#src/features/auth/data/session-cache.js";
+import { preloadSessionData } from "#src/features/auth/data/session.js";
+import { verifySession } from "#src/features/auth/procedures/authenticated.js";
+import { preloadUserData } from "#src/features/user/data/mod.js";
 
 export const Route = createFileRoute("/app")({
 	beforeLoad: async () => {
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/app")({
 	},
 	component: AppLayout,
 	loader: async () => {
-		await Promise.all([userCollection.preload(), sessionCollection.preload()]);
+		await Promise.all([preloadUserData(), preloadSessionData()]);
 	},
 	ssr: false,
 });

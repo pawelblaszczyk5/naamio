@@ -1,8 +1,8 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { HomeLayout } from "#src/modules/home/ui/home-layout.js";
-import { HomeNotFound } from "#src/modules/home/ui/home-not-found.js";
-import { checkHasSessionToken } from "#src/modules/session/procedures.js";
+import { checkHasSessionToken } from "#src/features/auth/procedures/unauthenticated.js";
+import { HomeLayout } from "#src/features/home/ui/home-layout.js";
+import { HomeNotFound } from "#src/features/home/ui/home-not-found.js";
 
 export const Route = createFileRoute("/_home/{$language}")({
 	component: HomeLayout,

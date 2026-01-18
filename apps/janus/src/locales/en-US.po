@@ -13,69 +13,61 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/modules/app/ui/app-layout.tsx:27
-#: src/modules/home/ui/home-layout.tsx:20
+#: src/features/app/ui/app-layout.tsx:22
+#: src/features/home/ui/home-layout.tsx:20
 msgid "Hello world!"
 msgstr "Hello world!"
 
-#: src/modules/app/ui/app-layout.tsx:29
-#: src/modules/home/ui/home-layout.tsx:22
+#: src/features/app/ui/app-layout.tsx:24
+#: src/features/home/ui/home-layout.tsx:22
 msgid "Home"
 msgstr "Home"
 
-#: src/modules/app/ui/app-layout.tsx:32
-#: src/modules/home/ui/home-layout.tsx:26
+#: src/features/app/ui/app-layout.tsx:27
+#: src/features/home/ui/home-layout.tsx:26
 msgid "App"
 msgstr "App"
 
-#: src/modules/app/ui/app-layout.tsx:35
-msgid "App example"
-msgstr "App example"
-
-#: src/modules/app/ui/app-page.tsx:5
-msgid "App page"
-msgstr "App page"
-
-#: src/modules/app/ui/example-page.tsx:5
-msgid "Example page"
-msgstr "Example page"
-
-#: src/modules/home/ui/home-layout.tsx:31
-msgid "Sign in"
-msgstr "Sign in"
-
-#: src/modules/home/ui/home-layout.tsx:35
-msgid "English"
-msgstr "English"
-
-#: src/modules/home/ui/home-layout.tsx:38
-msgid "Polish"
-msgstr "Polish"
-
-#: src/modules/home/ui/home-not-found.tsx:3
-msgid "Unfortunately, it looks like you're lost :("
-msgstr "Unfortunately, it looks like you're lost :("
-
-#: src/modules/home/ui/home-page.tsx:5
-msgid "Home page"
-msgstr "Home page"
-
-#: src/modules/home/ui/sign-in-page.tsx:41
+#: src/features/auth/ui/sign-in-form.tsx:44
 msgid "Email"
 msgstr "Email"
 
-#: src/modules/home/ui/sign-in-page.tsx:54
+#: src/features/auth/ui/sign-in-form.tsx:57
 msgid "Start challenge"
 msgstr "Start challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:88
+#: src/features/auth/ui/sign-in-form.tsx:91
 msgid "OTP"
 msgstr "OTP"
 
-#: src/modules/home/ui/sign-in-page.tsx:104
+#: src/features/auth/ui/sign-in-form.tsx:107
 msgid "Complete challenge"
 msgstr "Complete challenge"
 
-#: src/modules/home/ui/sign-in-page.tsx:118
+#: src/features/auth/ui/sign-in-form.tsx:121
 msgid "Sign in page"
 msgstr "Sign in page"
+
+#: src/features/chat/ui/chat-page.tsx:5
+msgid "Chat page"
+msgstr "Chat page"
+
+#: src/features/home/ui/home-layout.tsx:31
+msgid "Sign in"
+msgstr "Sign in"
+
+#: src/features/home/ui/home-layout.tsx:35
+msgid "English"
+msgstr "English"
+
+#: src/features/home/ui/home-layout.tsx:38
+msgid "Polish"
+msgstr "Polish"
+
+#: src/features/home/ui/home-not-found.tsx:3
+msgid "Unfortunately, it looks like you're lost :("
+msgstr "Unfortunately, it looks like you're lost :("
+
+#: src/features/home/ui/home-page.tsx:5
+msgid "Home page"
+msgstr "Home page"

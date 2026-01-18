@@ -3,8 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { getRequestUrl } from "@tanstack/react-start/server";
 import { Effect, Option, Stream } from "effect";
 
-import { NaamioHttpClient } from "#src/modules/api-client/mod.js";
-import { runAuthenticatedOnlyServerFn, sessionTokenMiddleware } from "#src/modules/effect-bridge/mod.js";
+import { NaamioHttpClient } from "#src/lib/api-client/mod.js";
+import { runAuthenticatedOnlyServerFn, sessionTokenMiddleware } from "#src/lib/effect-bridge/mod.js";
 
 const allowedShapeNames = new Set(["session", "user"]);
 

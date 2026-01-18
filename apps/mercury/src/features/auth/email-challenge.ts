@@ -7,9 +7,9 @@ import { customAlphabet } from "nanoid";
 import { generateId } from "@naamio/id-generator/effect";
 import { EmailChallengeModel } from "@naamio/schema/domain";
 
-import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
-import { DatabaseLive } from "#src/modules/database/mod.js";
-import { Mailer } from "#src/modules/mailer/mod.js";
+import { STANDARD_ID_ALPHABET } from "#src/features/auth/constants.js";
+import { DatabaseLive } from "#src/lib/database/mod.js";
+import { Mailer } from "#src/lib/mailer/mod.js";
 
 const EMAIL_CHALLENGE_EXPIRATION_DURATION = Duration.minutes(5);
 const EMAIL_CHALLENGE_REFRESH_CUTOFF_DURATION = Duration.minutes(2);

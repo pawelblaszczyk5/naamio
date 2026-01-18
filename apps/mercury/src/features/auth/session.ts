@@ -8,8 +8,8 @@ import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 import { generateId } from "@naamio/id-generator/effect";
 import { SessionModel } from "@naamio/schema/domain";
 
-import { STANDARD_ID_ALPHABET } from "#src/modules/auth/constants.js";
-import { DatabaseLive } from "#src/modules/database/mod.js";
+import { STANDARD_ID_ALPHABET } from "#src/features/auth/constants.js";
+import { DatabaseLive } from "#src/lib/database/mod.js";
 
 const SESSION_EXPIRATION_DURATION = Duration.days(30);
 const SESSION_EXTENSION_CUTOFF_DURATION = Duration.unsafeDivide(SESSION_EXPIRATION_DURATION, 2);

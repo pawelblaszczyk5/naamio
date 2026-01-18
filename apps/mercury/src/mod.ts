@@ -5,7 +5,7 @@ import { createServer } from "node:http";
 
 import { ObservabilityLive } from "@naamio/observability";
 
-import { NaamioApiServerLive } from "#src/modules/api-server/mod.js";
+import { NaamioApiServerLive } from "#src/api/mod.js";
 
 const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	HttpServer.withLogAddress,

@@ -8,7 +8,7 @@ import type { ElectricProtocolUrlParams } from "@naamio/schema/api";
 
 import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 
-import { DatabaseLive } from "#src/modules/database/mod.js";
+import { DatabaseLive } from "#src/lib/database/mod.js";
 
 interface ShapeDefinition {
 	columns: Array<Statement.Identifier>;

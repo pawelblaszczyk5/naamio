@@ -12,8 +12,8 @@ import {
 	MissingChallengeError,
 	TooManyChallengeAttemptsError,
 	UnavailableChallengeError,
-} from "#src/modules/auth/email-challenge.js";
-import { ClusterRunnerLive } from "#src/modules/cluster/mod.js";
+} from "#src/features/auth/email-challenge.js";
+import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
 
 export class TooManyAuthenticatorRequestsError extends Schema.TaggedError<TooManyAuthenticatorRequestsError>(
 	"@naamio/mercury/Authenticator/TooManyAuthenticatorRequestsError",

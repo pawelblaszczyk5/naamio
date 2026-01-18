@@ -5,12 +5,12 @@ import { NaamioApi } from "@naamio/api";
 import { BadGateway, InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
 import { AuthenticatedOnly } from "@naamio/api/middlewares/authenticated-only";
 
-import { Authenticator, AuthenticatorLive } from "#src/modules/auth/authenticator.js";
-import { EmailChallenge } from "#src/modules/auth/email-challenge.js";
-import { Session } from "#src/modules/auth/session.js";
-import { ClusterRunnerLive } from "#src/modules/cluster/mod.js";
-import { Electric } from "#src/modules/electric/mod.js";
-import { User } from "#src/modules/user/mod.js";
+import { Authenticator, AuthenticatorLive } from "#src/features/auth/authenticator.js";
+import { EmailChallenge } from "#src/features/auth/email-challenge.js";
+import { Session } from "#src/features/auth/session.js";
+import { Electric } from "#src/features/electric/mod.js";
+import { User } from "#src/features/user/mod.js";
+import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
 
 const AuthenticatedOnlyLive = Layer.effect(
 	AuthenticatedOnly,

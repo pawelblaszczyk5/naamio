@@ -7,7 +7,7 @@ import { Context, Effect, Layer } from "effect";
 import { generateId } from "@naamio/id-generator/effect";
 import { UserModel } from "@naamio/schema/domain";
 
-import { DatabaseLive } from "#src/modules/database/mod.js";
+import { DatabaseLive } from "#src/lib/database/mod.js";
 
 export class User extends Context.Tag("@naamio/mercury/User")<
 	User,

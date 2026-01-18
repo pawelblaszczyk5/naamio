@@ -1,22 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Function, Match } from "effect";
 
 import { AppLayout } from "#src/features/app/ui/app-layout.js";
-import { getSessionCacheEntry, insertSessionCacheEntry } from "#src/features/auth/data/session-cache.js";
+import {
+	checkSessionCacheStatus,
+	hydrateSessionCache,
+	refreshSessionCache,
+} from "#src/features/auth/data/session-cache.js";
 import { preloadSessionData } from "#src/features/auth/data/session.js";
-import { verifySession } from "#src/features/auth/procedures/authenticated.js";
 import { preloadUserData } from "#src/features/user/data/mod.js";
 
 export const Route = createFileRoute("/app")({
 	beforeLoad: async () => {
-		const sessionCacheEntry = getSessionCacheEntry();
+		const sessionCacheStatus = checkSessionCacheStatus();
 
-		if (sessionCacheEntry) {
-			return;
-		}
-
-		const result = await verifySession();
-
-		insertSessionCacheEntry({ id: result.id, lastRefreshAt: new Date() });
+		await Match.value(sessionCacheStatus).pipe(
+			Match.when("FRESH", Function.constVoid),
+			Match.when("MISSING", async () => hydrateSessionCache()),
+			Match.when("STALE", () => void refreshSessionCache()),
+			Match.exhaustive,
+		);
 	},
 	component: AppLayout,
 	loader: async () => {

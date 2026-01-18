@@ -18,6 +18,7 @@
 		"codegen",
 		"codeowner",
 		"hmac",
+		"millis",
 		"naamio",
 		"spritesheet",
 		"statefulness",

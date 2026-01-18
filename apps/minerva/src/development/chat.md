@@ -32,7 +32,7 @@ We can't talk about AI chat without talking about models. There're a lot of mode
 Naturally, what I can implement here is routing. But it's not a trivial task at all. There're a few concerns when it comes to routing, which are especially applicable to naive approach that I already experimented with:
 
 - Cache busting - if each question initiates routing mechanism and we have a chance to route it to completely different model we lose caching which saves a lot of inferences costs when it comes to modern LLMs.
-- Conversation continuity - if each message potentially lands to different model, it'll result in less smooth, dumber chat. Models like to continue their own words. If model downgrades, it may be significiatenly visible. Current model allows also for passing and continuing reasoning, which can't be picked up by a different model.
+- Conversation continuity - if each message potentially lands to different model, it'll result in less smooth, dumber chat. Models like to continue their own words. If model downgrades, it may be significantly visible. Current model allows also for passing and continuing reasoning, which can't be picked up by a different model.
 - Non-trivial when it comes to non-question messages - it's simple to decide whether it's a complicated/simple message, when user asks about something. It's much harder when user speaks "tell me more", "why do you think this way".
 - Accounting user feedback - if user is frustrated or express some preferences about answer, this should be considered in routing logic.
 - Feature differences between models - many models have a small differences between supported features. Especially when it comes to attachments, where even if they support them, formats, sizes differs a lot between models.

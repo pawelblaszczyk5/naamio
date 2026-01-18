@@ -68,6 +68,35 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
+		environments: {
+			client: {
+				build: {
+					rolldownOptions: {
+						output: {
+							advancedChunks: {
+								groups: [
+									{
+										name: "react",
+										test: (name) => name.includes("/node_modules/react/") || name.includes("/node_modules/react-dom/"),
+									},
+									{
+										name: "effect",
+										test: (name) => name.includes("/node_modules/effect/") || name.includes("/node_modules/@effect/"),
+									},
+									{
+										name: "tanstack-db",
+										test: (name) =>
+											name.includes("/node_modules/@tanstack/db/")
+											|| name.includes("/node_modules/@tanstack/react-db/")
+											|| name.includes("/node_modules/@electric-sql/client/"),
+									},
+								],
+							},
+						},
+					},
+				},
+			},
+		},
 		plugins: [
 			inspect(),
 			tanstackStart({ router: { addExtensions: true } }),

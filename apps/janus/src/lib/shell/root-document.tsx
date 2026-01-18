@@ -1,15 +1,13 @@
 // cspell:ignore wght
 
-import type { ReactNode } from "react";
-
 import fontItalicLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-ext-wght-italic.woff2";
 import fontStandardLatinExtendedUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-ext-wght-normal.woff2";
 import fontItalicLatinExtendedUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-italic.woff2";
 import fontStandardLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2";
 import { setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { HeadContent, Outlet, Scripts, useMatch, useParams } from "@tanstack/react-router";
-import { use, useState, useSyncExternalStore } from "react";
+import { HeadContent, Outlet, Scripts, useMatch } from "@tanstack/react-router";
+import { useState } from "react";
 import { preload } from "react-dom";
 
 import type { UserModel } from "@naamio/schema/domain";
@@ -19,8 +17,7 @@ import { IconSpritesheetContext } from "@naamio/design-system/components/icon";
 import iconsSpritesheet from "@naamio/design-system/icons-spritesheet.svg";
 import stylex from "@naamio/stylex";
 
-import { useMaybeCurrentUser } from "#src/features/user/data/mod.js";
-import { LanguageContext } from "#src/lib/shell/language-context.js";
+import { useCurrentUserLanguageSsrSafe } from "#src/features/user/data/mod.js";
 import { messages as englishMessages } from "#src/locales/en-US.po";
 import { messages as polishMessages } from "#src/locales/pl-PL.po";
 
@@ -28,58 +25,26 @@ import stylesheetHref from "#src/styles.css?url";
 
 const styles = stylex.create({ body: { padding: 32 } });
 
-const FallbackLanguageProvider = ({ children }: { children: ReactNode }) => (
-	<LanguageContext value="en-US">{children}</LanguageContext>
-);
+const FALLBACK_LANGUAGE = "en-US";
 
-const HomeLanguageProvider = ({ children }: { children: ReactNode }) => {
-	const params = useParams({ from: "/_home/{$language}" });
-
-	return <LanguageContext value={params.language}>{children}</LanguageContext>;
-};
-
-const InternalAppLanguageProvider = ({ children }: { children: ReactNode }) => {
-	const currentUser = useMaybeCurrentUser();
-
-	if (!currentUser) {
-		return <LanguageContext value="en-US">{children}</LanguageContext>;
-	}
-
-	return <LanguageContext value={currentUser.language}>{children}</LanguageContext>;
-};
-
-const AppLanguageProvider = ({ children }: { children: ReactNode }) => {
-	const isHydrated = useSyncExternalStore(
-		// eslint-disable-next-line unicorn/consistent-function-scoping, @typescript-eslint/no-empty-function -- temporary solution, I'm not yet sure whether I'll handle it this way
-		() => () => {},
-		() => true,
-		() => false,
-	);
-
-	if (!isHydrated) {
-		return <LanguageContext value="en-US">{children}</LanguageContext>;
-	}
-
-	return <InternalAppLanguageProvider>{children}</InternalAppLanguageProvider>;
-};
-
-const LanguageProvider = ({ children }: { children: ReactNode }) => {
+const useLanguage = (): UserModel["language"] => {
 	const homeMatch = useMatch({ from: "/_home/{$language}", shouldThrow: false });
 	const appMatch = useMatch({ from: "/app", shouldThrow: false });
+	const currentUserLanguage = useCurrentUserLanguageSsrSafe();
 
 	if (homeMatch) {
 		if (homeMatch.status === "notFound") {
-			return <FallbackLanguageProvider>{children}</FallbackLanguageProvider>;
+			return FALLBACK_LANGUAGE;
 		}
 
-		return <HomeLanguageProvider>{children}</HomeLanguageProvider>;
+		return homeMatch.params.language;
 	}
 
 	if (appMatch) {
-		return <AppLanguageProvider>{children}</AppLanguageProvider>;
+		return currentUserLanguage ?? FALLBACK_LANGUAGE;
 	}
 
-	return <FallbackLanguageProvider>{children}</FallbackLanguageProvider>;
+	return FALLBACK_LANGUAGE;
 };
 
 const createI18nInstanceForLanguage = (language: UserModel["language"]) => {
@@ -93,8 +58,8 @@ const createI18nInstanceForLanguage = (language: UserModel["language"]) => {
 	return i18n;
 };
 
-const Document = () => {
-	const language = use(LanguageContext);
+export const RootDocument = () => {
+	const language = useLanguage();
 
 	assert(language, "Language must always be provided default value");
 
@@ -132,9 +97,3 @@ const Document = () => {
 		</I18nProvider>
 	);
 };
-
-export const RootDocument = () => (
-	<LanguageProvider>
-		<Document />
-	</LanguageProvider>
-);

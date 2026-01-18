@@ -1,6 +1,7 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { createCollection, useLiveQuery } from "@tanstack/react-db";
+import { createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
+import { useSyncExternalStore } from "react";
 
 import { UserModel } from "@naamio/schema/domain";
 
@@ -21,10 +22,28 @@ const userCollection = createCollection(
 	}),
 );
 
-export const preloadUserData = async () => userCollection.preload();
+export const useCurrentUserLanguageSsrSafe = () => {
+	const language = useSyncExternalStore(
+		(callback) => {
+			const subscription = userCollection.subscribeChanges(callback);
 
-export const useMaybeCurrentUser = () => {
-	const { data } = useLiveQuery((q) => q.from({ user: userCollection }).findOne());
+			return () => {
+				subscription.unsubscribe();
+			};
+		},
+		() => {
+			const user = userCollection.state.values().take(1).next().value;
 
-	return data;
+			if (user) {
+				return user.language;
+			}
+
+			return null;
+		},
+		() => null,
+	);
+
+	return language;
 };
+
+export const preloadUserData = async () => userCollection.preload();

@@ -26,10 +26,24 @@ const userCollection = createCollection(
 export const useCurrentUserLanguageSsrSafe = () => {
 	const language = useSyncExternalStore(
 		(callback) => {
-			const subscription = userCollection.subscribeChanges(callback);
+			let subscription: null | ReturnType<(typeof userCollection)["subscribeChanges"]> = null;
+
+			const unsubscribeFromStatusChanges = userCollection.on("status:change", (event) => {
+				if (event.status === "ready") {
+					subscription = userCollection.subscribeChanges(callback);
+
+					return;
+				}
+
+				if (subscription) {
+					subscription.unsubscribe();
+					subscription = null;
+				}
+			});
 
 			return () => {
-				subscription.unsubscribe();
+				subscription?.unsubscribe();
+				unsubscribeFromStatusChanges();
 			};
 		},
 		() => {

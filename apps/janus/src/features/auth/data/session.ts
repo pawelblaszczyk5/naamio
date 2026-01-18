@@ -17,6 +17,7 @@ const sessionCollection = createCollection(
 		schema: Schema.standardSchemaV1(Session),
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
+			liveSse: true,
 			parser: { timestamptz: (date: string) => new Date(date) },
 			url: `${import.meta.env.VITE_SITE_DOMAIN}/api/shape/session`,
 		},

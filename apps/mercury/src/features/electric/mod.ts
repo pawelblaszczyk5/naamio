@@ -102,9 +102,11 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
-							columns: [sql("id"), sql("expiresAt"), sql("revokedAt"), sql("deviceLabel"), sql("createdAt")],
+							columns: [sql("id"), sql("expiresAt"), sql("deviceLabel"), sql("createdAt")],
 							table: sql("session"),
-							where: sql`${sql("userId")} = ${currentSession.userId}`,
+							where: sql`
+								${sql.and([sql`${sql("userId")} = ${currentSession.userId}`, sql`${sql("revokedAt")} IS NULL`])}
+							`,
 						};
 
 						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);

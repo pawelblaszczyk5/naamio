@@ -25,10 +25,6 @@ class SessionCookie extends Schema.Class<SessionCookie>("@naamio/janus/SessionCo
 
 const SessionCookieJson = Schema.parseJson(SessionCookie);
 
-const deleteSessionCookie = Effect.fn(function* () {
-	deleteCookie(SESSION_COOKIE_NAME, { domain: yield* COOKIE_DOMAIN, ...SHARED_COOKIE_OPTIONS });
-});
-
 export const setSessionCookie = Effect.fn(function* (data: SessionCookie, expiresAt: DateTime.DateTime) {
 	const cookieSigner = yield* CookieSigner;
 
@@ -39,6 +35,10 @@ export const setSessionCookie = Effect.fn(function* (data: SessionCookie, expire
 		expires: expiresAt.pipe(DateTime.toDate),
 		...SHARED_COOKIE_OPTIONS,
 	});
+});
+
+export const deleteSessionCookie = Effect.fn(function* () {
+	deleteCookie(SESSION_COOKIE_NAME, { domain: yield* COOKIE_DOMAIN, ...SHARED_COOKIE_OPTIONS });
 });
 
 export const setChallengeCookie = Effect.fn(function* (data: ChallengeCookie, expiresAt: DateTime.DateTime) {

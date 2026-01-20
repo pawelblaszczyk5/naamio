@@ -1,10 +1,12 @@
-import { createCollection, localOnlyCollectionOptions } from "@tanstack/react-db";
+import { createCollection, localOnlyCollectionOptions, useLiveQuery } from "@tanstack/react-db";
+import { redirect, useNavigate } from "@tanstack/react-router";
 import { DateTime, Duration, Schema } from "effect";
 import { useEffect } from "react";
 
 import { assert } from "@naamio/assert";
 import { SessionModel } from "@naamio/schema/domain";
 
+import { useSessionById } from "#src/features/auth/data/session.js";
 import { verifySession } from "#src/features/auth/procedures/authenticated.js";
 
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
@@ -43,6 +45,10 @@ export const checkSessionCacheStatus = () => {
 export const hydrateSessionCache = async () => {
 	const currentSession = await verifySession();
 
+	if (!currentSession) {
+		throw redirect({ to: "/" });
+	}
+
 	sessionCacheCollection.insert({ id: currentSession.id, refreshedAt: new Date() });
 };
 
@@ -52,6 +58,7 @@ export const refreshSessionCache = async () => {
 	const entry = getSessionCacheEntry();
 
 	assert(entry, "Session cache entry must exist in poller");
+	assert(currentSession, "Missing session should be caught by electric sync before hitting refresher");
 
 	if (entry.id === currentSession.id) {
 		sessionCacheCollection.update(currentSession.id, (draft) => {
@@ -66,6 +73,20 @@ export const refreshSessionCache = async () => {
 };
 
 export const useSessionVerificationPoller = () => {
+	const navigate = useNavigate();
+
+	const { data } = useLiveQuery((q) => q.from({ sessionCache: sessionCacheCollection }).findOne());
+
+	assert(data, "Session cache entry must always include at least one entry");
+
+	const session = useSessionById(data.id);
+
+	useEffect(() => {
+		if (!session) {
+			void navigate({ to: "/" });
+		}
+	}, [session, navigate]);
+
 	useEffect(() => {
 		const interval = setInterval(async () => {
 			const sessionCacheStatus = checkSessionCacheStatus();

@@ -17,7 +17,6 @@ const userCollection = createCollection(
 		schema: Schema.standardSchemaV1(User),
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
-			liveSse: true,
 			url: `${import.meta.env.VITE_SITE_DOMAIN}/api/shape/user`,
 		},
 	}),

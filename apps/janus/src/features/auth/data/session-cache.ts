@@ -1,5 +1,5 @@
 import { createCollection, localOnlyCollectionOptions, useLiveQuery } from "@tanstack/react-db";
-import { redirect, useNavigate } from "@tanstack/react-router";
+import { redirect } from "@tanstack/react-router";
 import { DateTime, Duration, Schema } from "effect";
 import { useEffect } from "react";
 
@@ -73,8 +73,6 @@ export const refreshSessionCache = async () => {
 };
 
 export const useSessionVerificationPoller = () => {
-	const navigate = useNavigate();
-
 	const { data } = useLiveQuery((q) => q.from({ sessionCache: sessionCacheCollection }).findOne());
 
 	assert(data, "Session cache entry must always include at least one entry");
@@ -83,9 +81,9 @@ export const useSessionVerificationPoller = () => {
 
 	useEffect(() => {
 		if (!session) {
-			void navigate({ to: "/" });
+			globalThis.location.reload();
 		}
-	}, [session, navigate]);
+	}, [session]);
 
 	useEffect(() => {
 		const interval = setInterval(async () => {

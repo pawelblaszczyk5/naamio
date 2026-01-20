@@ -19,8 +19,8 @@ catalogs:
       specifier: ^0.58.0
       version: 0.58.0
     '@effect/language-service':
-      specifier: ^0.71.0
-      version: 0.71.0
+      specifier: ^0.71.2
+      version: 0.71.2
     '@effect/opentelemetry':
       specifier: ^0.60.0
       version: 0.60.0
@@ -67,8 +67,8 @@ catalogs:
       specifier: ^25.0.9
       version: 25.0.9
     '@types/react':
-      specifier: ^19.2.8
-      version: 19.2.8
+      specifier: ^19.2.9
+      version: 19.2.9
     '@types/react-dom':
       specifier: ^19.2.3
       version: 19.2.3
@@ -203,17 +203,17 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@tanstack/electric-db-collection':
-        specifier: ^0.2.26
-        version: 0.2.26(typescript@5.9.3)
+        specifier: ^0.2.27
+        version: 0.2.27(typescript@5.9.3)
       '@tanstack/react-db':
-        specifier: ^0.1.65
-        version: 0.1.65(react@19.3.0-canary-f93b9fd4-20251217)(typescript@5.9.3)
+        specifier: ^0.1.66
+        version: 0.1.66(react@19.3.0-canary-f93b9fd4-20251217)(typescript@5.9.3)
       '@tanstack/react-router':
-        specifier: ^1.153.1
-        version: 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+        specifier: ^1.153.2
+        version: 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
       '@tanstack/react-start':
-        specifier: ^1.153.1
-        version: 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+        specifier: ^1.154.0
+        version: 1.154.0(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       arkregex:
         specifier: ^0.0.5
         version: 0.0.5
@@ -238,7 +238,7 @@ importers:
         version: 7.28.5(patch_hash=ee9804e542a66f0c266a5cab5343f3983738f1bda5347c5dcf24cc8b7d0b6762)(@babel/core@7.28.5)
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@effect/vitest':
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.14)(vitest@4.0.17(@opentelemetry/api@1.9.0)(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -274,10 +274,10 @@ importers:
         version: 25.0.9
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.2.9
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.8)
+        version: 19.2.3(@types/react@19.2.9)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.2(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -368,7 +368,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -441,7 +441,7 @@ importers:
         version: 10.1.11(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))
       '@storybook/addon-docs':
         specifier: ^10.1.11
-        version: 10.1.11(@types/react@19.2.8)(esbuild@0.27.2)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))
+        version: 10.1.11(@types/react@19.2.9)(esbuild@0.27.2)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))
       '@storybook/react-vite':
         specifier: ^10.1.11
         version: 10.1.11(esbuild@0.27.2)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(typescript@5.9.3)
@@ -453,10 +453,10 @@ importers:
         version: 0.17.5
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.2.9
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.8)
+        version: 19.2.3(@types/react@19.2.9)
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.2(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
@@ -496,7 +496,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -554,10 +554,10 @@ importers:
         version: link:../../tooling/typescript-config
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.2.9
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.8)
+        version: 19.2.3(@types/react@19.2.9)
       eslint:
         specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
@@ -576,7 +576,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@effect/vitest':
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.14)(vitest@4.0.17(@opentelemetry/api@1.9.0)(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -616,7 +616,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@effect/vitest':
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.14)(vitest@4.0.17(@opentelemetry/api@1.9.0)(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -659,7 +659,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -693,7 +693,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.71.0
+        version: 0.71.2
       '@naamio/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -1406,8 +1406,8 @@ packages:
       lmdb:
         optional: true
 
-  '@effect/language-service@0.71.0':
-    resolution: {integrity: sha512-ttfev0+RFba5j4/xp+6puRNK7qDBxduT37zuKtNN4ylZkIw2MW5eS4cCgLAXrz/T2K3gdliJ3AP/yiNYPVoOpg==}
+  '@effect/language-service@0.71.2':
+    resolution: {integrity: sha512-l5MaMxopOMjzSwEmQdIq5KeKqaLVLwkFdWeplCZw58O1kV1TYQIaG6uZ1nb5XvMtldLcfLu+44mdpiaW484fHg==}
     hasBin: true
 
   '@effect/opentelemetry@0.60.0':
@@ -2982,50 +2982,50 @@ packages:
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/db@0.5.21':
-    resolution: {integrity: sha512-B6p3Lsczl/Sm3o2sk6dNcH9LZCWy1LFxUzLgCFoiNOVAMuB1fsF/ojOwBCl1ukoPNhEoSxWuBzeIZeKhyRnhdw==}
+  '@tanstack/db@0.5.22':
+    resolution: {integrity: sha512-Qh33d9Idw7lEa/sg7veJfG8EUmSMtBzRkk/ghAVIDA3MJWAjyGOzU29TVZaM7K36BegTL8T/yVVlAFqjn/G2pw==}
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/electric-db-collection@0.2.26':
-    resolution: {integrity: sha512-B/va8UA+YLbBvWoowndzesgD0tiTYc7x+KnlRRUmpkuEdGBXym+lxKpw9AqK47me8f96ibytayTxX4cgt/7q9g==}
+  '@tanstack/electric-db-collection@0.2.27':
+    resolution: {integrity: sha512-nCJosh3GV8iX0w5b1LNys8a6l8k0I28bU86Zw3lIN/xN/blZ/dOO7nVDWE+jFBfu7UWYK2qFSzHATPKezWrHfw==}
 
-  '@tanstack/history@1.151.1':
-    resolution: {integrity: sha512-Z/eymNBuUGHYIea7nNX3xR5feqx418ChlwWOKklVpCVzEQ5Q3kNTUw+WK4HYUKxF+1uXFN01Dbuhhl7SmW1LJA==}
+  '@tanstack/history@1.153.2':
+    resolution: {integrity: sha512-TVa0Wju5w6JZGq/S74Q7TQNtKXDatJaB4NYrhMZVU9ETlkgpr35NhDfOzsCJ93P0KCo1ZoDodlFp3c54/dLsyw==}
     engines: {node: '>=12'}
 
   '@tanstack/pacer-lite@0.2.1':
     resolution: {integrity: sha512-3PouiFjR4B6x1c969/Pl4ZIJleof1M0n6fNX8NRiC9Sqv1g06CVDlEaXUR4212ycGFyfq4q+t8Gi37Xy+z34iQ==}
     engines: {node: '>=18'}
 
-  '@tanstack/react-db@0.1.65':
-    resolution: {integrity: sha512-UtodzNrIWZrkqo1VTaNr1cECMqFMpJxCgrhhxd7n34VRqyoIS2N5n+pr7WIooJdXrDjb+L4C+gnFigW0zzNdFQ==}
+  '@tanstack/react-db@0.1.66':
+    resolution: {integrity: sha512-BEFrXv0pa3KPZfLmfrR6KU1QwUtDPQoV/PdJYGhVEsOwYf61yVQkuFOqK2aGYOynipMdACl5N6TXs82mS4fB6A==}
     peerDependencies:
       react: 19.3.0-canary-f93b9fd4-20251217
 
-  '@tanstack/react-router@1.153.1':
-    resolution: {integrity: sha512-unKyeG+lf1lv/IVERNrlUMc5G2pCxq6tsLRnRjvDM510F5CtEWms+kai/lWnySEOU39frU70oOqzOlvLWTmHow==}
+  '@tanstack/react-router@1.153.2':
+    resolution: {integrity: sha512-fAXUBA2gZAId7h2eSHsRcgTeF8pioUz8V5rrQ+IrvA0a6IsxhbTSKLYyqUg4jRDkkcUKtM8StKtvbZCY+0IYWw==}
     engines: {node: '>=12'}
     peerDependencies:
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217
 
-  '@tanstack/react-start-client@1.153.1':
-    resolution: {integrity: sha512-2FfGWJkk7XzrwlHYByiKVYt8YX7XaBMhlPNRPf6K4W2cPnicEzlM0GXWkx9Op6uZRHZ3iXZqDYV4bVS+4ekbfw==}
+  '@tanstack/react-start-client@1.153.2':
+    resolution: {integrity: sha512-VlHWqywDKbAuGlnDM484T59kvu9AKHQ/2QaTwILfnPagjU1Dx13gyTQJIrCmORC1BKACVbVtZHD8TvkFwejuLQ==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217
 
-  '@tanstack/react-start-server@1.153.1':
-    resolution: {integrity: sha512-Kjv9+eRoRdKrEUstnkpwxU7F/gIyG64GxsIl8w9fN8A6sGpPXRUip21Tv67GCBpO0Qswmx3XUEARgyO7brLkvw==}
+  '@tanstack/react-start-server@1.153.2':
+    resolution: {integrity: sha512-ZehQ8d4C0xvEpcrj2QDmmFWylRoTvDYwitSPUlosg37cf8WVrtSx6dgs2v9TLzStrqcabNPc6t5oFcBd1R7Rzw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217
 
-  '@tanstack/react-start@1.153.1':
-    resolution: {integrity: sha512-cIf9AGYAWXbR+FJiljlYRYG+Sijqn9b0trMq8lI3+ZuhEwXqGtfRbYQFLOtL4fJ/Of9RGL+pYRGodIGbCDVtaA==}
+  '@tanstack/react-start@1.154.0':
+    resolution: {integrity: sha512-umfxigl+oqW2oWlIYEk+FI85a9GUKvUIMLN2AH6MrGvuVqPbL5uFOl4qHY78VKTyzdDjzxndtMwoHSodm038aw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       react: 19.3.0-canary-f93b9fd4-20251217
@@ -3038,20 +3038,20 @@ packages:
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217
 
-  '@tanstack/router-core@1.153.1':
-    resolution: {integrity: sha512-wY+eZ71VE2Nj88+1h1GWdl9IcS0NHRHLM7O6Jm3bLMgYnP/hyWgWGbElk+GkxJDzh0lYyiTVMWRbwdTORsX4eQ==}
+  '@tanstack/router-core@1.153.2':
+    resolution: {integrity: sha512-WLaR+rSNW7bj9UCJQ3SKpuh6nZBZkpGnf2mpjn/uRB6joIQ3BU7aRdhb7w9Via/MP52iaHh5sd8NY3MaLpF2tQ==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-generator@1.153.1':
-    resolution: {integrity: sha512-eA1ttdvju+2Saz21m4L4sYR0+38Y33ClmKYLz4nvxU911Pqy6AiYIJgnUkmotlfYx9FOgqm/YCBYjQLSdKT7dQ==}
+  '@tanstack/router-generator@1.153.2':
+    resolution: {integrity: sha512-bEhmCtXq5vv3HukKq5zmTDBNDRqVllYxsHoWtqEvHv5hCb5xwKKfUMGemRoiQ96/wLFuGnA5DYkem2GZWcG3wg==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-plugin@1.153.1':
-    resolution: {integrity: sha512-ZUkVzxZj71OVJDswDha3p6k/KVALJNekdL2KTbbUthPNv6++XLJyJBjYcTAt2eOJDZkWKV9GjoWKBy+fUFMQgA==}
+  '@tanstack/router-plugin@1.153.2':
+    resolution: {integrity: sha512-aMMc70ChM0wBYOToq39kTMKI2A0EKWpumiKTJyAwEglXf0raF48+26Fmv0gr9/5CLvD0g8ljllsskVDyzg8oDw==}
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
-      '@tanstack/react-router': ^1.153.1
+      '@tanstack/react-router': ^1.153.2
       vite: '>=5.0.0 || >=6.0.0 || >=7.0.0'
       vite-plugin-solid: ^2.11.10
       webpack: '>=5.92.0'
@@ -3071,26 +3071,26 @@ packages:
     resolution: {integrity: sha512-N24G4LpfyK8dOlnP8BvNdkuxg1xQljkyl6PcrdiPSA301pOjatRT1y8wuCCJZKVVD8gkd0MpCZ0VEjRMGILOtA==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-client-core@1.153.1':
-    resolution: {integrity: sha512-rRZc5RrsBFQfaN4zzgcRz0acwh08WI7EEjvhQ0oNVwEIYeM7zv+YRsMPXt8GODNEdU3Ttn+csfQgH+WHkpcvcQ==}
+  '@tanstack/start-client-core@1.153.2':
+    resolution: {integrity: sha512-CsDV9QiviQeBCTxRbBF5R63seVjasXrfWDk87ccLIMLC15+SP5eUQbNLPkIRtYQYYvaAAQuNGJyvsMzDO+u3yQ==}
     engines: {node: '>=22.12.0'}
 
   '@tanstack/start-fn-stubs@1.151.3':
     resolution: {integrity: sha512-/zWBnfsOwact936Bn0CxigudU1QRZdiNTsK7ME/LMXXA66XsDxkryX5+5FeGwU5ETNPfLAx6pRUet1mtUKnLCg==}
     engines: {node: '>=22.12.0'}
 
-  '@tanstack/start-plugin-core@1.153.1':
-    resolution: {integrity: sha512-OIjjDzFbOI2kk4ZAaBwl++PMgECJ90a+y7SNRBZcoXrcEg19Za8AK9S91Ap681VdygM+kRXpY+oBKSGMgT/4aw==}
+  '@tanstack/start-plugin-core@1.154.0':
+    resolution: {integrity: sha512-qlywkB43bltkS9poMtAEjxPG9Y4YTP4GSaCOyINYdkrfCEU42xCpUghvANFMpeKEQn+I2YvBtUlGcRpJxKyjDw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       vite: '>=7.0.0'
 
-  '@tanstack/start-server-core@1.153.1':
-    resolution: {integrity: sha512-kWbS4jFX3ecjqBNNZLB8RhlVnKw60CR1km0VE3ZcflE+L9OzfRKLPHEUROsrA2Psk3uR9o5D8IkNcFmZqIj0HQ==}
+  '@tanstack/start-server-core@1.153.2':
+    resolution: {integrity: sha512-erjRPok9MWXJpFfw2ofUDh2lYi+aVNCrZiJFrkwrVvt45dhWnkOuLDl9bk3SfW/vaSm15pKjT3xDjEItsX2AUQ==}
     engines: {node: '>=22.12.0'}
 
-  '@tanstack/start-storage-context@1.153.1':
-    resolution: {integrity: sha512-fQOnsHVBupOsccE6017Z+56dS+/8VNJXpsxZz5iG+a31EElwaOfVLpJsm0TiwrnAcZCNLAmcKMfpbsqql6bEkw==}
+  '@tanstack/start-storage-context@1.153.2':
+    resolution: {integrity: sha512-kmD+OIxJPx6oHtfT578UuLJp2p4gF5EFD2ZiVD0WfCj9BKWpp0i8fqBe+g7x1rpXzHUPNqAz3ILkGT38wV++xQ==}
     engines: {node: '>=22.12.0'}
 
   '@tanstack/store@0.8.0':
@@ -3194,8 +3194,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.8':
-    resolution: {integrity: sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg==}
+  '@types/react@19.2.9':
+    resolution: {integrity: sha512-Lpo8kgb/igvMIPeNV2rsYKTgaORYdO1XGVZ4Qz3akwOj0ySGYMPlQWa8BaLn0G63D1aSaAQ5ldR06wCpChQCjA==}
 
   '@types/resolve@1.20.6':
     resolution: {integrity: sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==}
@@ -7955,7 +7955,7 @@ snapshots:
       effect: 3.19.14
       uuid: 11.1.0
 
-  '@effect/language-service@0.71.0': {}
+  '@effect/language-service@0.71.2': {}
 
   '@effect/opentelemetry@0.60.0(@effect/platform@0.94.1(effect@3.19.14))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.2.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.38.0)(effect@3.19.14)':
     dependencies:
@@ -8537,10 +8537,10 @@ snapshots:
       - supports-color
       - typescript
 
-  '@mdx-js/react@3.1.1(@types/react@19.2.8)(react@19.3.0-canary-f93b9fd4-20251217)':
+  '@mdx-js/react@3.1.1(@types/react@19.2.9)(react@19.3.0-canary-f93b9fd4-20251217)':
     dependencies:
       '@types/mdx': 2.0.13
-      '@types/react': 19.2.8
+      '@types/react': 19.2.9
       react: 19.3.0-canary-f93b9fd4-20251217
 
   '@messageformat/parser@5.1.1':
@@ -9281,9 +9281,9 @@ snapshots:
       axe-core: 4.11.0
       storybook: 10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
 
-  '@storybook/addon-docs@10.1.11(@types/react@19.2.8)(esbuild@0.27.2)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))':
+  '@storybook/addon-docs@10.1.11(@types/react@19.2.9)(esbuild@0.27.2)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))':
     dependencies:
-      '@mdx-js/react': 3.1.1(@types/react@19.2.8)(react@19.3.0-canary-f93b9fd4-20251217)
+      '@mdx-js/react': 3.1.1(@types/react@19.2.9)(react@19.3.0-canary-f93b9fd4-20251217)
       '@storybook/csf-plugin': 10.1.11(esbuild@0.27.2)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(rollup@4.54.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))
       '@storybook/icons': 2.0.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
       '@storybook/react-dom-shim': 10.1.11(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(storybook@10.1.11(@testing-library/dom@10.4.1)(prettier@3.8.0)(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))
@@ -9424,78 +9424,78 @@ snapshots:
       sorted-btree: 1.8.1
       typescript: 5.9.3
 
-  '@tanstack/db@0.5.21(typescript@5.9.3)':
+  '@tanstack/db@0.5.22(typescript@5.9.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@tanstack/db-ivm': 0.1.17(typescript@5.9.3)
       '@tanstack/pacer-lite': 0.2.1
       typescript: 5.9.3
 
-  '@tanstack/electric-db-collection@0.2.26(typescript@5.9.3)':
+  '@tanstack/electric-db-collection@0.2.27(typescript@5.9.3)':
     dependencies:
       '@electric-sql/client': 1.4.1
       '@standard-schema/spec': 1.1.0
-      '@tanstack/db': 0.5.21(typescript@5.9.3)
+      '@tanstack/db': 0.5.22(typescript@5.9.3)
       '@tanstack/store': 0.8.0
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  '@tanstack/history@1.151.1': {}
+  '@tanstack/history@1.153.2': {}
 
   '@tanstack/pacer-lite@0.2.1': {}
 
-  '@tanstack/react-db@0.1.65(react@19.3.0-canary-f93b9fd4-20251217)(typescript@5.9.3)':
+  '@tanstack/react-db@0.1.66(react@19.3.0-canary-f93b9fd4-20251217)(typescript@5.9.3)':
     dependencies:
-      '@tanstack/db': 0.5.21(typescript@5.9.3)
+      '@tanstack/db': 0.5.22(typescript@5.9.3)
       react: 19.3.0-canary-f93b9fd4-20251217
       use-sync-external-store: 1.6.0(react@19.3.0-canary-f93b9fd4-20251217)
     transitivePeerDependencies:
       - typescript
 
-  '@tanstack/react-router@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
+  '@tanstack/react-router@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
     dependencies:
-      '@tanstack/history': 1.151.1
+      '@tanstack/history': 1.153.2
       '@tanstack/react-store': 0.8.0(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
-      '@tanstack/router-core': 1.153.1
+      '@tanstack/router-core': 1.153.2
       isbot: 5.1.32
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217)
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/react-start-client@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
+  '@tanstack/react-start-client@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
     dependencies:
-      '@tanstack/react-router': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
-      '@tanstack/router-core': 1.153.1
-      '@tanstack/start-client-core': 1.153.1
+      '@tanstack/react-router': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/router-core': 1.153.2
+      '@tanstack/start-client-core': 1.153.2
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217)
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/react-start-server@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
+  '@tanstack/react-start-server@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)':
     dependencies:
-      '@tanstack/history': 1.151.1
-      '@tanstack/react-router': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
-      '@tanstack/router-core': 1.153.1
-      '@tanstack/start-client-core': 1.153.1
-      '@tanstack/start-server-core': 1.153.1
+      '@tanstack/history': 1.153.2
+      '@tanstack/react-router': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/router-core': 1.153.2
+      '@tanstack/start-client-core': 1.153.2
+      '@tanstack/start-server-core': 1.153.2
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217)
     transitivePeerDependencies:
       - crossws
 
-  '@tanstack/react-start@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@tanstack/react-start@1.154.0(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
-      '@tanstack/react-router': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
-      '@tanstack/react-start-client': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
-      '@tanstack/react-start-server': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/react-router': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/react-start-client': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/react-start-server': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
       '@tanstack/router-utils': 1.143.11
-      '@tanstack/start-client-core': 1.153.1
-      '@tanstack/start-plugin-core': 1.153.1(@tanstack/react-router@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
-      '@tanstack/start-server-core': 1.153.1
+      '@tanstack/start-client-core': 1.153.2
+      '@tanstack/start-plugin-core': 1.154.0(@tanstack/react-router@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@tanstack/start-server-core': 1.153.2
       pathe: 2.0.3
       react: 19.3.0-canary-f93b9fd4-20251217
       react-dom: 19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217)
@@ -9514,9 +9514,9 @@ snapshots:
       react-dom: 19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217)
       use-sync-external-store: 1.6.0(react@19.3.0-canary-f93b9fd4-20251217)
 
-  '@tanstack/router-core@1.153.1':
+  '@tanstack/router-core@1.153.2':
     dependencies:
-      '@tanstack/history': 1.151.1
+      '@tanstack/history': 1.153.2
       '@tanstack/store': 0.8.0
       cookie-es: 2.0.0
       seroval: 1.4.1
@@ -9524,9 +9524,9 @@ snapshots:
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/router-generator@1.153.1':
+  '@tanstack/router-generator@1.153.2':
     dependencies:
-      '@tanstack/router-core': 1.153.1
+      '@tanstack/router-core': 1.153.2
       '@tanstack/router-utils': 1.143.11
       '@tanstack/virtual-file-routes': 1.145.4
       prettier: 3.8.0
@@ -9537,7 +9537,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/router-plugin@1.153.1(@tanstack/react-router@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@tanstack/router-plugin@1.153.2(@tanstack/react-router@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-syntax-jsx': 7.28.6(@babel/core@7.28.5)
@@ -9545,8 +9545,8 @@ snapshots:
       '@babel/template': 7.27.2
       '@babel/traverse': 7.28.5
       '@babel/types': 7.28.5
-      '@tanstack/router-core': 1.153.1
-      '@tanstack/router-generator': 1.153.1
+      '@tanstack/router-core': 1.153.2
+      '@tanstack/router-generator': 1.153.2
       '@tanstack/router-utils': 1.143.11
       '@tanstack/virtual-file-routes': 1.145.4
       babel-dead-code-elimination: 1.0.11
@@ -9554,7 +9554,7 @@ snapshots:
       unplugin: 2.3.11
       zod: 3.25.76
     optionalDependencies:
-      '@tanstack/react-router': 1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
+      '@tanstack/react-router': 1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217)
       vite: rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
@@ -9571,29 +9571,29 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/start-client-core@1.153.1':
+  '@tanstack/start-client-core@1.153.2':
     dependencies:
-      '@tanstack/router-core': 1.153.1
+      '@tanstack/router-core': 1.153.2
       '@tanstack/start-fn-stubs': 1.151.3
-      '@tanstack/start-storage-context': 1.153.1
+      '@tanstack/start-storage-context': 1.153.2
       seroval: 1.4.1
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
   '@tanstack/start-fn-stubs@1.151.3': {}
 
-  '@tanstack/start-plugin-core@1.153.1(@tanstack/react-router@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@tanstack/start-plugin-core@1.154.0(@tanstack/react-router@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/core': 7.28.5
       '@babel/types': 7.28.5
       '@rolldown/pluginutils': 1.0.0-beta.40
-      '@tanstack/router-core': 1.153.1
-      '@tanstack/router-generator': 1.153.1
-      '@tanstack/router-plugin': 1.153.1(@tanstack/react-router@1.153.1(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
+      '@tanstack/router-core': 1.153.2
+      '@tanstack/router-generator': 1.153.2
+      '@tanstack/router-plugin': 1.153.2(@tanstack/react-router@1.153.2(react-dom@19.3.0-canary-f93b9fd4-20251217(react@19.3.0-canary-f93b9fd4-20251217))(react@19.3.0-canary-f93b9fd4-20251217))(rolldown-vite@7.3.1(@types/node@25.0.9)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
       '@tanstack/router-utils': 1.143.11
-      '@tanstack/start-client-core': 1.153.1
-      '@tanstack/start-server-core': 1.153.1
+      '@tanstack/start-client-core': 1.153.2
+      '@tanstack/start-server-core': 1.153.2
       babel-dead-code-elimination: 1.0.11
       cheerio: 1.1.2
       exsolve: 1.0.8
@@ -9613,21 +9613,21 @@ snapshots:
       - vite-plugin-solid
       - webpack
 
-  '@tanstack/start-server-core@1.153.1':
+  '@tanstack/start-server-core@1.153.2':
     dependencies:
-      '@tanstack/history': 1.151.1
-      '@tanstack/router-core': 1.153.1
-      '@tanstack/start-client-core': 1.153.1
-      '@tanstack/start-storage-context': 1.153.1
+      '@tanstack/history': 1.153.2
+      '@tanstack/router-core': 1.153.2
+      '@tanstack/start-client-core': 1.153.2
+      '@tanstack/start-storage-context': 1.153.2
       h3-v2: h3@2.0.1-rc.7
       seroval: 1.4.1
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
       - crossws
 
-  '@tanstack/start-storage-context@1.153.1':
+  '@tanstack/start-storage-context@1.153.2':
     dependencies:
-      '@tanstack/router-core': 1.153.1
+      '@tanstack/router-core': 1.153.2
 
   '@tanstack/store@0.8.0': {}
 
@@ -9746,11 +9746,11 @@ snapshots:
 
   '@types/pegjs@0.10.6': {}
 
-  '@types/react-dom@19.2.3(@types/react@19.2.8)':
+  '@types/react-dom@19.2.3(@types/react@19.2.9)':
     dependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.9
 
-  '@types/react@19.2.8':
+  '@types/react@19.2.9':
     dependencies:
       csstype: 3.2.3
 

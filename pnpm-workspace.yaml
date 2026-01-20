@@ -11,7 +11,7 @@ catalog:
   "@babel/preset-typescript": ^7.28.5
   "@effect/cluster": ^0.56.1
   "@effect/experimental": ^0.58.0
-  "@effect/language-service": ^0.71.0
+  "@effect/language-service": ^0.71.2
   "@effect/opentelemetry": ^0.60.0
   "@effect/platform": ^0.94.1
   "@effect/platform-node": ^0.104.0
@@ -32,7 +32,7 @@ catalog:
   vitest: ^4.0.17
   vite-plugin-inspect: ^11.3.3
   "@vitejs/plugin-react": ^5.1.2
-  "@types/react": ^19.2.8
+  "@types/react": ^19.2.9
   "@types/react-dom": ^19.2.3
   "@stylexjs/babel-plugin": ^0.17.5
   "@stylexjs/eslint-plugin": ^0.17.5

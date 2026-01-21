@@ -35,7 +35,7 @@ export class NaamioHttpClient extends Context.Tag("@naamio/janus/NaamioHttpClien
 				),
 			);
 
-			return httpClient;
+			return NaamioHttpClient.of(httpClient);
 		}),
 	).pipe(Layer.provide(FetchHttpClient.layer)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
 }
@@ -49,7 +49,7 @@ export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient"
 		Effect.gen(function* () {
 			const httpClient = yield* NaamioHttpClient;
 
-			return yield* HttpApiClient.makeWith(NaamioApi, { httpClient });
+			return NaamioApiClient.of(yield* HttpApiClient.makeWith(NaamioApi, { httpClient }));
 		}),
 	).pipe(Layer.provide(NaamioHttpClient.Live)) satisfies Layer.Layer<NaamioApiClient, unknown>;
 }

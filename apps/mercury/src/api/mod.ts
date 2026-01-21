@@ -17,7 +17,7 @@ const AuthenticatedOnlyLive = Layer.effect(
 	Effect.gen(function* () {
 		const session = yield* Session;
 
-		return {
+		return AuthenticatedOnly.of({
 			sessionToken: Effect.fn("@naamio/mercury/AuthenticatedOnly#sessionToken")(function* (token) {
 				const isEmptyToken = yield* Effect.gen(function* () {
 					const rawToken = Redacted.value(token);
@@ -37,7 +37,7 @@ const AuthenticatedOnlyLive = Layer.effect(
 
 				return maybeUserSession.value;
 			}),
-		};
+		});
 	}),
 ).pipe(Layer.provide(Session.Live));
 

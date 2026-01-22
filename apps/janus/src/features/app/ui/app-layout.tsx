@@ -7,8 +7,18 @@ import { useSessionVerificationPoller } from "#src/features/auth/data/session-ca
 import { useCurrentLanguage } from "#src/lib/shell/use-current-language.js";
 
 const styles = stylex.create({
-	nav: { display: "flex", gap: 16 },
-	root: { display: "flex", flexDirection: "column", gap: 24 },
+	main: { padding: 32 },
+	nav: {
+		blockSize: "100%",
+		borderColor: "#626262",
+		borderInlineEndWidth: 1,
+		display: "flex",
+		flexDirection: "column",
+		gap: 16,
+		inlineSize: 240,
+		padding: 32,
+	},
+	root: { blockSize: "100dvh", display: "flex", gap: 24 },
 });
 
 export const AppLayout = () => {
@@ -27,9 +37,9 @@ export const AppLayout = () => {
 					<Trans>App</Trans>
 				</Link>
 			</nav>
-			<div>
+			<main {...stylex.props(styles.main)}>
 				<Outlet />
-			</div>
+			</main>
 		</div>
 	);
 };

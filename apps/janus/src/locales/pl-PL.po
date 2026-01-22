@@ -13,18 +13,18 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/app/ui/app-layout.tsx:22
-#: src/features/home/ui/home-layout.tsx:20
+#: src/features/app/ui/app-layout.tsx:32
+#: src/features/home/ui/home-layout.tsx:30
 msgid "Hello world!"
 msgstr "Witaj świecie!"
 
-#: src/features/app/ui/app-layout.tsx:24
-#: src/features/home/ui/home-layout.tsx:22
+#: src/features/app/ui/app-layout.tsx:34
+#: src/features/home/ui/home-layout.tsx:32
 msgid "Home"
 msgstr "Strona główna"
 
-#: src/features/app/ui/app-layout.tsx:27
-#: src/features/home/ui/home-layout.tsx:26
+#: src/features/app/ui/app-layout.tsx:37
+#: src/features/home/ui/home-layout.tsx:36
 msgid "App"
 msgstr "Aplikacja"
 
@@ -52,15 +52,15 @@ msgstr "Strona logowania"
 msgid "Chat page"
 msgstr "Strona chatu"
 
-#: src/features/home/ui/home-layout.tsx:31
+#: src/features/home/ui/home-layout.tsx:41
 msgid "Sign in"
 msgstr "Zaloguj się"
 
-#: src/features/home/ui/home-layout.tsx:35
+#: src/features/home/ui/home-layout.tsx:45
 msgid "English"
 msgstr "Angielski"
 
-#: src/features/home/ui/home-layout.tsx:38
+#: src/features/home/ui/home-layout.tsx:48
 msgid "Polish"
 msgstr "Polski"
 

@@ -15,15 +15,12 @@ import type { UserModel } from "@naamio/schema/domain";
 import { assert } from "@naamio/assert";
 import { IconSpritesheetContext } from "@naamio/design-system/components/icon";
 import iconsSpritesheet from "@naamio/design-system/icons-spritesheet.svg";
-import stylex from "@naamio/stylex";
 
 import { useCurrentUserLanguageSsrSafe } from "#src/features/user/data/mod.js";
 import { messages as englishMessages } from "#src/locales/en-US.po";
 import { messages as polishMessages } from "#src/locales/pl-PL.po";
 
 import stylesheetHref from "#src/styles.css?url";
-
-const styles = stylex.create({ body: { padding: 32 } });
 
 const FALLBACK_LANGUAGE = "en-US";
 
@@ -88,7 +85,7 @@ export const RootDocument = () => {
 						<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 						<HeadContent />
 					</head>
-					<body {...stylex.props(styles.body)}>
+					<body>
 						<Outlet />
 						<Scripts />
 					</body>

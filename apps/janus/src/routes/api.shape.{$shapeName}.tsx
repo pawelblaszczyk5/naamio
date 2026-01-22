@@ -4,7 +4,8 @@ import { getRequestUrl } from "@tanstack/react-start/server";
 import { Effect, Option, Stream } from "effect";
 
 import { NaamioHttpClient } from "#src/lib/api-client/mod.js";
-import { runAuthenticatedOnlyServerFn, sessionTokenMiddleware } from "#src/lib/effect-bridge/mod.js";
+import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
+import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";
 
 const allowedShapeNames = new Set(["session", "user"]);
 

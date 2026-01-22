@@ -13,7 +13,8 @@ import {
 } from "#src/features/auth/utilities/cookies.js";
 import { extractDeviceLabel } from "#src/features/auth/utilities/device-label.js";
 import { NaamioApiClient } from "#src/lib/api-client/mod.js";
-import { runServerFn, sessionTokenMiddleware } from "#src/lib/effect-bridge/mod.js";
+import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
+import { runServerFn } from "#src/lib/effect-bridge/mod.js";
 
 export const getAuthenticationChallengeMetadata = createServerFn({ method: "GET" }).handler(async () =>
 	Effect.gen(function* () {

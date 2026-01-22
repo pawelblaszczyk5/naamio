@@ -4,7 +4,8 @@ import { Effect, Option } from "effect";
 import { deleteSessionCookie, setSessionCookie } from "#src/features/auth/utilities/cookies.js";
 import { NaamioApiClient } from "#src/lib/api-client/mod.js";
 import { SessionToken } from "#src/lib/effect-bridge/context.js";
-import { runAuthenticatedOnlyServerFn, sessionTokenMiddleware } from "#src/lib/effect-bridge/mod.js";
+import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
+import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";
 
 export const verifySession = createServerFn({ method: "POST" })
 	.middleware([sessionTokenMiddleware])

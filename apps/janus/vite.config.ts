@@ -88,6 +88,7 @@ export default defineConfig((environment) => {
 										test: (name) =>
 											name.includes("/node_modules/@tanstack/db/")
 											|| name.includes("/node_modules/@tanstack/react-db/")
+											|| name.includes("/node_modules/@tanstack/electric-db-collection/")
 											|| name.includes("/node_modules/@electric-sql/client/"),
 									},
 								],

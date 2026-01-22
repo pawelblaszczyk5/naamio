@@ -6,7 +6,7 @@ import {
 	checkSessionCacheStatus,
 	hydrateSessionCache,
 	refreshSessionCache,
-} from "#src/features/auth/data/session-cache.js";
+} from "#src/features/auth/data/session-verification.js";
 import { preloadSessionData } from "#src/features/auth/data/session.js";
 import { preloadUserData } from "#src/features/user/data/mod.js";
 

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root.tsx'
 import { Route as AppRouteImport } from './routes/app.tsx'
 import { Route as IndexRouteImport } from './routes/index.tsx'
 import { Route as AppIndexRouteImport } from './routes/app.index.tsx'
+import { Route as AppSettingsRouteImport } from './routes/app.settings.tsx'
 import { Route as HomeChar123languageChar125RouteImport } from './routes/_home.{$language}.tsx'
 import { Route as HomeChar123languageChar125IndexRouteImport } from './routes/_home.{$language}.index.tsx'
 import { Route as ApiShapeChar123shapeNameChar125RouteImport } from './routes/api.shape.{$shapeName}.tsx'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const HomeChar123languageChar125Route =
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/{$language}': typeof HomeChar123languageChar125RouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/_home/{$language}': typeof HomeChar123languageChar125RouteWithChildren
+  '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
   '/_home/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/{$language}'
+    | '/app/settings'
     | '/app/'
     | '/{$language}/sign-in'
     | '/api/shape/{$shapeName}'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/app/settings'
     | '/app'
     | '/{$language}/sign-in'
     | '/api/shape/{$shapeName}'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/_home/{$language}'
+    | '/app/settings'
     | '/app/'
     | '/_home/{$language}/sign-in'
     | '/api/shape/{$shapeName}'
@@ -141,6 +153,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_home/{$language}': {
       id: '/_home/{$language}'
       path: '/{$language}'
@@ -173,10 +192,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
 }
 

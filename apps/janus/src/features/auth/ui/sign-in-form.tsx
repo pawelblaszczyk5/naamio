@@ -11,7 +11,7 @@ import {
 	initializeAuthenticationChallenge,
 	solveAuthenticationChallenge,
 } from "#src/features/auth/procedures/unauthenticated.js";
-import { useCurrentLanguage } from "#src/lib/shell/use-current-language.js";
+import { useLanguage } from "#src/lib/shell/use-language.js";
 
 const initializeFormStyles = stylex.create({
 	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
@@ -22,7 +22,7 @@ const InitializeForm = () => {
 	const id = useId();
 	const router = useRouter();
 	const callInitializeAuthenticationChallenge = useServerFn(initializeAuthenticationChallenge);
-	const currentLanguage = useCurrentLanguage();
+	const language = useLanguage();
 
 	const [email, setEmail] = useState("");
 
@@ -33,7 +33,7 @@ const InitializeForm = () => {
 			onSubmit={async (event) => {
 				event.preventDefault();
 
-				await callInitializeAuthenticationChallenge({ data: { email: email as never, language: currentLanguage } });
+				await callInitializeAuthenticationChallenge({ data: { email: email as never, language } });
 
 				void router.invalidate();
 			}}

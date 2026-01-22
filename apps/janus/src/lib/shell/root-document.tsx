@@ -16,7 +16,7 @@ import { assert } from "@naamio/assert";
 import { IconSpritesheetContext } from "@naamio/design-system/components/icon";
 import iconsSpritesheet from "@naamio/design-system/icons-spritesheet.svg";
 
-import { useCurrentUserLanguageSsrSafe } from "#src/features/user/data/mod.js";
+import { useUserLanguageSsrSafe } from "#src/features/user/data/queries.js";
 import { messages as englishMessages } from "#src/locales/en-US.po";
 import { messages as polishMessages } from "#src/locales/pl-PL.po";
 
@@ -27,7 +27,7 @@ const FALLBACK_LANGUAGE = "en-US";
 const useLanguage = (): UserModel["language"] => {
 	const homeMatch = useMatch({ from: "/_home/{$language}", shouldThrow: false });
 	const appMatch = useMatch({ from: "/app", shouldThrow: false });
-	const currentUserLanguage = useCurrentUserLanguageSsrSafe();
+	const userLanguage = useUserLanguageSsrSafe();
 
 	if (homeMatch) {
 		if (homeMatch.status === "notFound") {
@@ -38,7 +38,7 @@ const useLanguage = (): UserModel["language"] => {
 	}
 
 	if (appMatch) {
-		return currentUserLanguage ?? FALLBACK_LANGUAGE;
+		return userLanguage ?? FALLBACK_LANGUAGE;
 	}
 
 	return FALLBACK_LANGUAGE;

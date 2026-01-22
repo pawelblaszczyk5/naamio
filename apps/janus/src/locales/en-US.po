@@ -28,6 +28,11 @@ msgstr "Home"
 msgid "App"
 msgstr "App"
 
+#: src/features/app/ui/app-layout.tsx:40
+#: src/features/user/ui/settings-page.tsx:16
+msgid "Settings"
+msgstr "Settings"
+
 #: src/features/auth/ui/sign-in-form.tsx:44
 msgid "Email"
 msgstr "Email"
@@ -71,3 +76,31 @@ msgstr "Unfortunately, it looks like you're lost :("
 #: src/features/home/ui/home-page.tsx:5
 msgid "Home page"
 msgstr "Home page"
+
+#: src/features/user/ui/settings-page.tsx:19
+msgid "Your email address: {email}"
+msgstr "Your email address: {email}"
+
+#: src/features/user/ui/settings-page.tsx:22
+msgid "Your language: {language}"
+msgstr "Your language: {language}"
+
+#: src/features/user/ui/settings-page.tsx:25
+msgid "Your user ID: {id}"
+msgstr "Your user ID: {id}"
+
+#: src/features/user/ui/settings-page.tsx:28
+msgid "Sessions"
+msgstr "Sessions"
+
+#: src/features/user/ui/settings-page.tsx:33
+msgid "Session for device \"{label}\", expires at {date}"
+msgstr "Session for device \"{label}\", expires at {date}"
+
+#: src/features/user/ui/settings-page.tsx:34
+msgid "Unknown device"
+msgstr "Unknown device"
+
+#: src/features/user/ui/settings-page.tsx:37
+msgid "Current session"
+msgstr "Current session"

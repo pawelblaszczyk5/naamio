@@ -1,5 +1,5 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { createCollection, eq, useLiveQuery } from "@tanstack/react-db";
+import { createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
 
 import { SessionModel } from "@naamio/schema/domain";
@@ -10,9 +10,9 @@ const Session = Schema.Struct({
 	id: SessionModel.json.fields.id,
 });
 
-type Session = (typeof Session)["Type"];
+export type Session = (typeof Session)["Type"];
 
-const sessionCollection = createCollection(
+export const sessionCollection = createCollection(
 	electricCollectionOptions({
 		getKey: (item) => item.id,
 		schema: Schema.standardSchemaV1(Session),
@@ -24,15 +24,5 @@ const sessionCollection = createCollection(
 		},
 	}),
 );
-
-export const useSessionById = (id: Session["id"]) =>
-	useLiveQuery(
-		(q) =>
-			q
-				.from({ session: sessionCollection })
-				.where(({ session }) => eq(session.id, id))
-				.findOne(),
-		[id],
-	).data;
 
 export const preloadSessionData = async () => sessionCollection.preload();

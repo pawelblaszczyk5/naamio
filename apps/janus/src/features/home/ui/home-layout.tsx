@@ -3,7 +3,7 @@ import { Link, Outlet, useLoaderData } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
-import { useCurrentLanguage } from "#src/lib/shell/use-current-language.js";
+import { useLanguage } from "#src/lib/shell/use-language.js";
 
 const styles = stylex.create({
 	main: { padding: 32 },
@@ -21,14 +21,14 @@ const styles = stylex.create({
 });
 
 export const HomeLayout = () => {
-	const currentLanguage = useCurrentLanguage();
+	const language = useLanguage();
 	const isLoggedIn = useLoaderData({ from: "/_home/{$language}", select: (loaderData) => loaderData.isLoggedIn });
 
 	return (
 		<div {...stylex.props(styles.root)}>
 			<nav {...stylex.props(styles.nav)}>
 				<Trans>Hello world!</Trans>
-				<Link params={{ language: currentLanguage }} to="/{$language}">
+				<Link params={{ language }} to="/{$language}">
 					<Trans>Home</Trans>
 				</Link>
 				{isLoggedIn && (
@@ -37,7 +37,7 @@ export const HomeLayout = () => {
 					</Link>
 				)}
 				{!isLoggedIn && (
-					<Link params={{ language: currentLanguage }} to="/{$language}/sign-in">
+					<Link params={{ language }} to="/{$language}/sign-in">
 						<Trans>Sign in</Trans>
 					</Link>
 				)}

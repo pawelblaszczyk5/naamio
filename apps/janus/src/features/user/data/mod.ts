@@ -1,7 +1,6 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
 import { createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
-import { useSyncExternalStore } from "react";
 
 import { UserModel } from "@naamio/schema/domain";
 
@@ -11,7 +10,9 @@ const User = Schema.Struct({
 	language: UserModel.json.fields.language,
 });
 
-const userCollection = createCollection(
+export type User = (typeof User)["Type"];
+
+export const userCollection = createCollection(
 	electricCollectionOptions({
 		getKey: (item) => item.id,
 		schema: Schema.standardSchemaV1(User),
@@ -22,43 +23,5 @@ const userCollection = createCollection(
 		},
 	}),
 );
-
-export const useCurrentUserLanguageSsrSafe = () => {
-	const language = useSyncExternalStore(
-		(callback) => {
-			let subscription: null | ReturnType<(typeof userCollection)["subscribeChanges"]> = null;
-
-			const unsubscribeFromStatusChanges = userCollection.on("status:change", (event) => {
-				if (event.status === "ready") {
-					subscription = userCollection.subscribeChanges(callback);
-
-					return;
-				}
-
-				if (subscription) {
-					subscription.unsubscribe();
-					subscription = null;
-				}
-			});
-
-			return () => {
-				subscription?.unsubscribe();
-				unsubscribeFromStatusChanges();
-			};
-		},
-		() => {
-			const user = userCollection.state.values().take(1).next().value;
-
-			if (user) {
-				return user.language;
-			}
-
-			return null;
-		},
-		() => null,
-	);
-
-	return language;
-};
 
 export const preloadUserData = async () => userCollection.preload();

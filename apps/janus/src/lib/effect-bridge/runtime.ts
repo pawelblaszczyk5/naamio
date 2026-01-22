@@ -9,4 +9,18 @@ const EnvironmentLive = Layer.mergeAll(NaamioHttpClient.Live, NaamioApiClient.Li
 	Layer.provide([Logger.pretty, ObservabilityLive]),
 );
 
-export const runtime = ManagedRuntime.make(EnvironmentLive);
+const symbol = Symbol.for("@naamio/janus/RuntimeContainer");
+
+const createRuntimeWithHmrDisposing = () => {
+	const globalThisExtended = globalThis as typeof globalThis & { [symbol]?: ManagedRuntime.ManagedRuntime<any, any> };
+
+	const existingRuntime = globalThisExtended[symbol];
+
+	if (existingRuntime) {
+		void existingRuntime.dispose();
+	}
+
+	return (globalThisExtended[symbol] = ManagedRuntime.make(EnvironmentLive));
+};
+
+export const runtime = createRuntimeWithHmrDisposing();

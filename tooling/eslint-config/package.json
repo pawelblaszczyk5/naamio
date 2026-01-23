@@ -28,7 +28,7 @@
 		"@eslint/markdown": "^7.5.1",
 		"@naamio/eslint-plugin": "workspace:*",
 		"@stylexjs/eslint-plugin": "catalog:",
-		"@stylistic/eslint-plugin": "^5.7.0",
+		"@stylistic/eslint-plugin": "^5.7.1",
 		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.1.0",
 		"eslint-import-resolver-typescript": "^4.4.4",
@@ -41,7 +41,7 @@
 		"eslint-plugin-lingui": "^0.11.0",
 		"eslint-plugin-n": "^17.23.2",
 		"eslint-plugin-no-secrets": "^2.2.1",
-		"eslint-plugin-perfectionist": "^5.3.1",
+		"eslint-plugin-perfectionist": "^5.4.0",
 		"eslint-plugin-prefer-arrow-functions": "^3.9.1",
 		"eslint-plugin-promise": "^7.2.1",
 		"eslint-plugin-react-dom": "^2.7.2",
@@ -51,7 +51,7 @@
 		"eslint-plugin-react-refresh": "^0.4.26",
 		"eslint-plugin-react-web-api": "^2.7.2",
 		"eslint-plugin-react-x": "^2.7.2",
-		"eslint-plugin-regexp": "^2.10.0",
+		"eslint-plugin-regexp": "^3.0.0",
 		"eslint-plugin-unicorn": "^62.0.0",
 		"typescript-eslint": "^8.53.1"
 	}

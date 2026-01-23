@@ -8,6 +8,6 @@ export const ObservabilityLive = Layer.unwrapEffect(
 		const BASE_URL = yield* Config.string("OBSERVABILITY_BASE_URL");
 		const SERVICE_NAME = yield* Config.string("OBSERVABILITY_SERVICE_NAME");
 
-		return Otlp.layer({ baseUrl: BASE_URL, resource: { serviceName: SERVICE_NAME } });
+		return Otlp.layerJson({ baseUrl: BASE_URL, resource: { serviceName: SERVICE_NAME } });
 	}),
 ).pipe(Layer.provide(FetchHttpClient.layer));

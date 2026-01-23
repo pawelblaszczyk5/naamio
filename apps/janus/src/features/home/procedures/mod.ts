@@ -15,7 +15,7 @@ export const getPreferredLanguage = createServerFn({ method: "GET" }).handler(as
 			return "en-US";
 		}
 
-		const acceptLanguage = new AcceptLanguage(header);
+		const acceptLanguage = AcceptLanguage.from(header);
 		const preferred = acceptLanguage.getPreferred(["en-US", "pl-PL"]) ?? "en-US";
 
 		return preferred;

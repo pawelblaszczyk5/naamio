@@ -1,5 +1,6 @@
-import { assert } from "@effect/vitest";
 import { eq, useLiveQuery } from "@tanstack/react-db";
+
+import { assert } from "@naamio/assert";
 
 import type { Session } from "#src/features/auth/data/session.js";
 

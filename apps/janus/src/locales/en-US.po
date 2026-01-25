@@ -29,27 +29,27 @@ msgid "App"
 msgstr "App"
 
 #: src/features/app/ui/app-layout.tsx:40
-#: src/features/user/ui/settings-page.tsx:16
+#: src/features/user/ui/settings-page.tsx:29
 msgid "Settings"
 msgstr "Settings"
 
-#: src/features/auth/ui/sign-in-form.tsx:44
+#: src/features/auth/ui/sign-in-form.tsx:41
 msgid "Email"
 msgstr "Email"
 
-#: src/features/auth/ui/sign-in-form.tsx:57
+#: src/features/auth/ui/sign-in-form.tsx:54
 msgid "Start challenge"
 msgstr "Start challenge"
 
-#: src/features/auth/ui/sign-in-form.tsx:91
+#: src/features/auth/ui/sign-in-form.tsx:88
 msgid "OTP"
 msgstr "OTP"
 
-#: src/features/auth/ui/sign-in-form.tsx:107
+#: src/features/auth/ui/sign-in-form.tsx:104
 msgid "Complete challenge"
 msgstr "Complete challenge"
 
-#: src/features/auth/ui/sign-in-form.tsx:121
+#: src/features/auth/ui/sign-in-form.tsx:118
 msgid "Sign in page"
 msgstr "Sign in page"
 
@@ -77,30 +77,46 @@ msgstr "Unfortunately, it looks like you're lost :("
 msgid "Home page"
 msgstr "Home page"
 
-#: src/features/user/ui/settings-page.tsx:19
+#: src/features/user/ui/settings-page.tsx:32
 msgid "Your email address: {email}"
 msgstr "Your email address: {email}"
 
-#: src/features/user/ui/settings-page.tsx:22
+#: src/features/user/ui/settings-page.tsx:35
 msgid "Your language: {language}"
 msgstr "Your language: {language}"
 
-#: src/features/user/ui/settings-page.tsx:25
+#: src/features/user/ui/settings-page.tsx:42
+msgid "Change language"
+msgstr "Change language"
+
+#: src/features/user/ui/settings-page.tsx:46
 msgid "Your user ID: {id}"
 msgstr "Your user ID: {id}"
 
-#: src/features/user/ui/settings-page.tsx:28
+#: src/features/user/ui/settings-page.tsx:49
 msgid "Sessions"
 msgstr "Sessions"
 
-#: src/features/user/ui/settings-page.tsx:33
+#: src/features/user/ui/settings-page.tsx:56
+msgid "Revoke all sessions"
+msgstr "Revoke all sessions"
+
+#: src/features/user/ui/settings-page.tsx:62
 msgid "Session for device \"{label}\", expires at {date}"
 msgstr "Session for device \"{label}\", expires at {date}"
 
-#: src/features/user/ui/settings-page.tsx:34
+#: src/features/user/ui/settings-page.tsx:63
 msgid "Unknown device"
 msgstr "Unknown device"
 
-#: src/features/user/ui/settings-page.tsx:37
+#: src/features/user/ui/settings-page.tsx:79
+msgid "Sign out"
+msgstr "Sign out"
+
+#: src/features/user/ui/settings-page.tsx:80
+msgid "Revoke session"
+msgstr "Revoke session"
+
+#: src/features/user/ui/settings-page.tsx:82
 msgid "Current session"
 msgstr "Current session"

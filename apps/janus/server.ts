@@ -12,8 +12,8 @@ const PORT = 6_200;
 
 const addCacheHeaders =
 	({ immutable, seconds }: { immutable: boolean; seconds: number }) =>
-	(_: unknown, ctx: Context) => {
-		ctx.res.headers.set("cache-control", `public, max-age=${seconds.toString()}${immutable ? ", immutable" : ""}`);
+	(_: unknown, context: Context) => {
+		context.res.headers.set("cache-control", `public, max-age=${seconds.toString()}${immutable ? ", immutable" : ""}`);
 	};
 
 const app = new Hono();
@@ -28,7 +28,7 @@ app.use(
 	serveStatic({ root: "./dist/client", onFound: addCacheHeaders({ immutable: false, seconds: ONE_HOUR_IN_SECONDS }) }),
 );
 
-app.use("*", async (ctx) => handler.fetch(ctx.req.raw) as Promise<Response>);
+app.use("*", async (context) => handler.fetch(context.req.raw) as Promise<Response>);
 
 serve({ fetch: app.fetch, port: PORT }, (info) => {
 	console.log(`Listening on http://0.0.0.0:${info.port}`);

@@ -3,7 +3,7 @@ import { Link, Outlet } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
-import { useSessionVerificationPoller } from "#src/features/auth/data/session-verification.js";
+import { useSessionVerificationPoller } from "#src/features/user/data/session-verification.js";
 import { useLanguage } from "#src/lib/shell/use-language.js";
 
 const styles = stylex.create({

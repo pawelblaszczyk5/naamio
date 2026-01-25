@@ -7,10 +7,7 @@ import { useId, useState } from "react";
 import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
-import {
-	initializeAuthenticationChallenge,
-	solveAuthenticationChallenge,
-} from "#src/features/auth/procedures/unauthenticated.js";
+import { initializeAuthenticationChallenge, solveAuthenticationChallenge } from "#src/features/auth/procedures/mod.js";
 import { useLanguage } from "#src/lib/shell/use-language.js";
 
 const initializeFormStyles = stylex.create({

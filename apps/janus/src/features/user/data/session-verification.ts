@@ -4,9 +4,9 @@ import { useEffect } from "react";
 
 import { assert } from "@naamio/assert";
 
-import { useSessionById, useSessionId } from "#src/features/auth/data/queries.js";
-import { sessionCacheCollection } from "#src/features/auth/data/session-cache.js";
-import { verifySession } from "#src/features/auth/procedures/authenticated.js";
+import { useSessionById, useSessionId } from "#src/features/user/data/queries.js";
+import { sessionCacheCollection } from "#src/features/user/data/session-cache.js";
+import { verifySession } from "#src/features/user/procedures/mod.js";
 
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
 const SESSION_STALE_AGE = Duration.unsafeDivide(SESSION_VERIFICATION_POLLING_INTERVAL, 2);

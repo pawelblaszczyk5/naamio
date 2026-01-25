@@ -1,7 +1,6 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 
-import { useSessionId, useSessions } from "#src/features/auth/data/queries.js";
-import { useUser } from "#src/features/user/data/queries.js";
+import { useSessionId, useSessions, useUser } from "#src/features/user/data/queries.js";
 
 export const SettingsPage = () => {
 	const user = useUser();

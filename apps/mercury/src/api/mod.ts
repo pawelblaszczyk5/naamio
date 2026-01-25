@@ -168,7 +168,7 @@ const SessionGroupLive = HttpApiBuilder.group(
 				"revoke",
 				Effect.fn("@naamio/mercury/SessionGroup#revoke")(function* (context) {
 					return yield* session.viewer
-						.revoke(context.path.sessionId)
+						.revoke(context.path.id)
 						.pipe(
 							Effect.catchTags({
 								MissingSessionError: () => new HttpApiError.NotFound(),

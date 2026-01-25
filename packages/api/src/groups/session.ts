@@ -7,7 +7,7 @@ import { SessionModel, TransactionId } from "@naamio/schema/domain";
 import { BadGateway } from "#src/errors/mod.js";
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
 
-const sessionIdParam = HttpApiSchema.param("sessionId", SessionModel.json.fields.id);
+const sessionIdParam = HttpApiSchema.param("id", SessionModel.json.fields.id);
 
 export class Session extends HttpApiGroup.make("Session")
 	.add(

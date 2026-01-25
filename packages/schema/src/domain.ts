@@ -1,6 +1,10 @@
 import { Model } from "@effect/sql";
 import { Redacted, Schema } from "effect";
 
+export const TransactionId = Schema.NumberFromString.pipe(Schema.brand("TransactionId"));
+
+export type TransactionId = (typeof TransactionId)["Type"];
+
 const Id = Schema.Trimmed.pipe(Schema.length(16));
 
 const DateTimeFromDate = Model.Field({

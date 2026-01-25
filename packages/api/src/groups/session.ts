@@ -2,7 +2,7 @@ import { HttpApiEndpoint, HttpApiError, HttpApiGroup, HttpApiSchema, OpenApi } f
 import { Schema } from "effect";
 
 import { ElectricProtocolUrlParams } from "@naamio/schema/api";
-import { SessionModel } from "@naamio/schema/domain";
+import { SessionModel, TransactionId } from "@naamio/schema/domain";
 
 import { BadGateway } from "#src/errors/mod.js";
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
@@ -25,24 +25,27 @@ export class Session extends HttpApiGroup.make("Session")
 	)
 	.add(
 		HttpApiEndpoint.post("revoke")`/${sessionIdParam}/revoke`
+			.addSuccess(Schema.Struct({ transactionId: TransactionId }))
 			.addError(HttpApiError.BadRequest)
 			.addError(HttpApiError.NotFound)
 			.annotateContext(
 				OpenApi.annotations({
 					description:
-						"Revokes given session, it may be used to revoke session provided with the current request. It should be used as a security measure if user detects suspicious activity within their sessions.",
+						"Revokes given session, it may be used to revoke session provided with the current request. It should be used as a security measure if user detects suspicious activity within their sessions. It can also be used for sign out functionality if used with current session id. Returns Postgres transaction id for Electric sync purposes.",
 					summary: "Revoke provided session by its id.",
 				}),
 			),
 	)
 	.add(
-		HttpApiEndpoint.post("revokeAll", "/revoke-all").annotateContext(
-			OpenApi.annotations({
-				description:
-					"Revokes all sessions for currently authenticated user, including the one provided with the current request. It should be used as a security measure if something concerning happens - e.g. user loses access to their email address.",
-				summary: "Revokes all sessions for current user.",
-			}),
-		),
+		HttpApiEndpoint.post("revokeAll", "/revoke-all")
+			.addSuccess(Schema.Struct({ transactionId: TransactionId }))
+			.annotateContext(
+				OpenApi.annotations({
+					description:
+						"Revokes all sessions for currently authenticated user, including the one provided with the current request. It should be used as a security measure if something concerning happens - e.g. user loses access to their email address. Returns Postgres transaction id for Electric sync purposes.",
+					summary: "Revokes all sessions for current user.",
+				}),
+			),
 	)
 	.add(
 		HttpApiEndpoint.get("shape", "/shape")

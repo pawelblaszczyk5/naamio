@@ -167,7 +167,7 @@ const SessionGroupLive = HttpApiBuilder.group(
 			.handle(
 				"revoke",
 				Effect.fn("@naamio/mercury/SessionGroup#revoke")(function* (context) {
-					yield* session.viewer
+					return yield* session.viewer
 						.revoke(context.path.sessionId)
 						.pipe(
 							Effect.catchTags({
@@ -180,14 +180,14 @@ const SessionGroupLive = HttpApiBuilder.group(
 			.handle(
 				"revokeAll",
 				Effect.fn("@naamio/mercury/SessionGroup#revokeAll")(function* () {
-					yield* session.viewer.revokeAll();
+					return yield* session.viewer.revokeAll();
 				}),
 			)
 			.handleRaw(
 				"shape",
-				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (ctx) {
+				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (context) {
 					return yield* electric.viewer
-						.sessionShape(ctx.urlParams)
+						.sessionShape(context.urlParams)
 						.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
 				}),
 			);
@@ -198,16 +198,24 @@ const UserGroupLive = HttpApiBuilder.group(
 	NaamioApi,
 	"User",
 	Effect.fn(function* (handlers) {
+		const user = yield* User;
 		const electric = yield* Electric;
 
-		return handlers.handleRaw(
-			"shape",
-			Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (ctx) {
-				return yield* electric.viewer
-					.userShape(ctx.urlParams)
-					.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
-			}),
-		);
+		return handlers
+			.handle(
+				"updateLanguage",
+				Effect.fn("@naamio/mercury/UserGroup#updateLanguage")(function* (context) {
+					return yield* user.viewer.updateLanguage(context.payload.language);
+				}),
+			)
+			.handleRaw(
+				"shape",
+				Effect.fn("@naamio/mercury/UserGroup#shape")(function* (context) {
+					return yield* electric.viewer
+						.userShape(context.urlParams)
+						.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+				}),
+			);
 	}),
 ).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
 

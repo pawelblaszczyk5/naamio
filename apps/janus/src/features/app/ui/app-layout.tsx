@@ -4,7 +4,7 @@ import { Link, Outlet } from "@tanstack/react-router";
 import stylex from "@naamio/stylex";
 
 import { useSessionVerificationPoller } from "#src/features/user/data/session-verification.js";
-import { useLanguage } from "#src/lib/shell/use-language.js";
+import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
 	main: { padding: 32 },

@@ -7,7 +7,7 @@ import {
 	useUpdateLanguage,
 } from "#src/features/user/data/mutations.js";
 import { useSessionId, useSessions, useUser } from "#src/features/user/data/queries.js";
-import { useLanguage } from "#src/lib/shell/use-language.js";
+import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 export const SettingsPage = () => {
 	const user = useUser();

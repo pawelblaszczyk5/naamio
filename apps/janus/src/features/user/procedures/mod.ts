@@ -3,8 +3,8 @@ import { Effect, Option, Schema } from "effect";
 
 import { SessionModel, UserModel } from "@naamio/schema/domain";
 
-import { deleteSessionCookie, setSessionCookie } from "#src/features/auth/utilities/cookies.js";
 import { NaamioApiClient } from "#src/lib/api-client/mod.js";
+import { deleteSessionCookie, setSessionCookie } from "#src/lib/cookies/mod.js";
 import { SessionToken } from "#src/lib/effect-bridge/context.js";
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";

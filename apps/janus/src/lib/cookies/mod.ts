@@ -3,7 +3,7 @@ import { Config, DateTime, Effect, Option, Schema } from "effect";
 
 import { EmailChallengeModel } from "@naamio/schema/domain";
 
-import { CookieSigner } from "#src/features/auth/utilities/cookie-signer.js";
+import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
 const COOKIE_DOMAIN = Config.string("AUTH_COOKIE_DOMAIN");
 const SESSION_COOKIE_NAME = "ses";

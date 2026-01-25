@@ -1,7 +1,7 @@
 import { createMiddleware } from "@tanstack/react-start";
 import { Effect, Option } from "effect";
 
-import { getDecodedSessionTokenFromSessionCookie } from "#src/features/auth/utilities/cookies.js";
+import { getDecodedSessionTokenFromSessionCookie } from "#src/lib/cookies/mod.js";
 import { runtime } from "#src/lib/effect-bridge/runtime.js";
 
 export const sessionTokenMiddleware = createMiddleware().server(async (ctx) => {

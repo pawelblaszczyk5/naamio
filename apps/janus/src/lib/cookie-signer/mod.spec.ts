@@ -1,7 +1,7 @@
 import { expect, it } from "@effect/vitest";
 import { Array, Effect, Option, Redacted, Schema } from "effect";
 
-import { CookieSigner } from "#src/features/auth/utilities/cookie-signer.js";
+import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
 const ExampleSchema = Schema.Struct({ bar: Schema.String, foo: Schema.Number });
 const ExampleSchemaDifferent = Schema.Struct({ bar: Schema.String, foo: Schema.String });

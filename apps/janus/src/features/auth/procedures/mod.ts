@@ -5,14 +5,14 @@ import { DateTime, Effect, Option, Schema } from "effect";
 
 import { EmailChallengeCode, EmailChallengeModel } from "@naamio/schema/domain";
 
+import { extractDeviceLabel } from "#src/features/auth/utilities/device-label.js";
+import { NaamioApiClient } from "#src/lib/api-client/mod.js";
 import {
 	deleteChallengeCookie,
 	getDecodedStateFromChallengeCookie,
 	setChallengeCookie,
 	setSessionCookie,
-} from "#src/features/auth/utilities/cookies.js";
-import { extractDeviceLabel } from "#src/features/auth/utilities/device-label.js";
-import { NaamioApiClient } from "#src/lib/api-client/mod.js";
+} from "#src/lib/cookies/mod.js";
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runServerFn } from "#src/lib/effect-bridge/mod.js";
 

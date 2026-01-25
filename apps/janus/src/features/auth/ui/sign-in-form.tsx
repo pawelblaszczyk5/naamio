@@ -8,7 +8,7 @@ import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
 import { initializeAuthenticationChallenge, solveAuthenticationChallenge } from "#src/features/auth/procedures/mod.js";
-import { useLanguage } from "#src/lib/shell/use-language.js";
+import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const initializeFormStyles = stylex.create({
 	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },

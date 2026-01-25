@@ -3,7 +3,7 @@ import { Link, Outlet, useLoaderData } from "@tanstack/react-router";
 
 import stylex from "@naamio/stylex";
 
-import { useLanguage } from "#src/lib/shell/use-language.js";
+import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
 	main: { padding: 32 },

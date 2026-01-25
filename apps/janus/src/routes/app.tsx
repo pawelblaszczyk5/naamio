@@ -9,6 +9,7 @@ import {
 } from "#src/features/user/data/session-verification.js";
 import { preloadSessionData } from "#src/features/user/data/session.js";
 import { preloadUserData } from "#src/features/user/data/user.js";
+import { initializePool } from "#src/lib/id-pool/mod.js";
 
 export const Route = createFileRoute("/app")({
 	beforeLoad: async () => {
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/app")({
 	},
 	component: AppLayout,
 	loader: async () => {
-		await Promise.all([preloadUserData(), preloadSessionData()]);
+		await Promise.all([preloadUserData(), preloadSessionData(), initializePool()]);
 	},
 	ssr: false,
 });

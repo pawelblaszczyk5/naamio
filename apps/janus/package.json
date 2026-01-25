@@ -30,6 +30,7 @@
 		"@naamio/assert": "workspace:*",
 		"@naamio/design-system": "workspace:*",
 		"@naamio/hmac": "workspace:*",
+		"@naamio/id-generator": "workspace:*",
 		"@naamio/observability": "workspace:*",
 		"@naamio/schema": "workspace:*",
 		"@naamio/stylex": "workspace:*",

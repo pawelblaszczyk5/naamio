@@ -35,7 +35,7 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 					const headersWithVary = Headers.set(headers, "Vary", newVaryHeaderValue);
 
 					return new Response(body, { headers: headersWithVary, status: response.status });
-				}).pipe(runAuthenticatedOnlyServerFn(ctx)),
+				}).pipe(Effect.withSpan(`@naamio/janus/shape/${ctx.params.shapeName}`), runAuthenticatedOnlyServerFn(ctx)),
 		},
 		middleware: [sessionTokenMiddleware],
 	},

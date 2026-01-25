@@ -37,7 +37,7 @@ export const getAuthenticationChallengeMetadata = createServerFn({ method: "GET"
 			refreshAvailableAt: result.refreshAvailableAt.pipe(DateTime.formatIso),
 			remainingAttempts: result.remainingAttempts,
 		};
-	}).pipe(Effect.withSpan("@naamio/janus/session/getAuthenticationChallengeMetadata"), runServerFn),
+	}).pipe(Effect.withSpan("@naamio/janus/auth/getAuthenticationChallengeMetadata"), runServerFn),
 );
 
 const InitializeAuthenticationChallengePayload = EmailChallengeModel.json.pick("email", "language");
@@ -53,7 +53,7 @@ export const initializeAuthenticationChallenge = createServerFn({ method: "POST"
 			});
 
 			yield* setChallengeCookie({ state: result.state }, result.expiresAt);
-		}).pipe(Effect.withSpan("@naamio/janus/session/initializeAuthenticationChallenge"), runServerFn),
+		}).pipe(Effect.withSpan("@naamio/janus/auth/initializeAuthenticationChallenge"), runServerFn),
 	);
 
 const SolveAuthenticationChallengePayload = Schema.Struct({ code: EmailChallengeCode });
@@ -78,7 +78,7 @@ export const solveAuthenticationChallenge = createServerFn({ method: "POST" })
 			yield* deleteChallengeCookie();
 
 			redirect({ replace: true, to: "/app" });
-		}).pipe(Effect.withSpan("@naamio/janus/session/solveAuthenticationChallenge"), runServerFn),
+		}).pipe(Effect.withSpan("@naamio/janus/auth/solveAuthenticationChallenge"), runServerFn),
 	);
 
 export const refreshAuthenticationChallenge = createServerFn({ method: "POST" }).handler(async () =>
@@ -98,5 +98,5 @@ export const checkHasSessionToken = createServerFn({ method: "GET" })
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			return ctx.context.sessionToken !== null;
-		}).pipe(Effect.withSpan("@naamio/janus/session/checkHasSessionToken"), runServerFn),
+		}).pipe(Effect.withSpan("@naamio/janus/auth/checkHasSessionToken"), runServerFn),
 	);

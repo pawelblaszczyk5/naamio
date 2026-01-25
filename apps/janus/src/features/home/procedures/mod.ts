@@ -19,5 +19,9 @@ export const getPreferredLanguage = createServerFn({ method: "GET" }).handler(as
 		const preferred = acceptLanguage.getPreferred(["en-US", "pl-PL"]) ?? "en-US";
 
 		return preferred;
-	}).pipe(Effect.ensureSuccessType<UserModel["language"]>(), runServerFn),
+	}).pipe(
+		Effect.withSpan("@naamio/janus/home/getPreferredLanguage"),
+		Effect.ensureSuccessType<UserModel["language"]>(),
+		runServerFn,
+	),
 );

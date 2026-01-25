@@ -34,7 +34,7 @@ export const verifySession = createServerFn({ method: "POST" })
 			yield* setSessionCookie({ token: sessionToken }, maybeSessionResult.value.expiresAt);
 
 			return { id: maybeSessionResult.value.id };
-		}).pipe(runAuthenticatedOnlyServerFn(ctx)),
+		}).pipe(Effect.withSpan("@naamio/janus/user/verifySession"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
 const UpdateLanguagePayload = UserModel.jsonUpdate.pick("language");
@@ -49,7 +49,7 @@ export const updateLanguage = createServerFn({ method: "POST" })
 			const result = yield* naamioApiClient.User.updateLanguage({ payload: { language: ctx.data.language } });
 
 			return result;
-		}).pipe(runAuthenticatedOnlyServerFn(ctx)),
+		}).pipe(Effect.withSpan("@naamio/janus/user/updateLanguage"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
 const RevokeSessionPayload = SessionModel.json.pick("id");
@@ -64,7 +64,7 @@ export const revokeSession = createServerFn({ method: "POST" })
 			const result = yield* naamioApiClient.Session.revoke({ path: { id: ctx.data.id } });
 
 			return result;
-		}).pipe(runAuthenticatedOnlyServerFn(ctx)),
+		}).pipe(Effect.withSpan("@naamio/janus/user/revokeSession"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
 export const revokeAllSessions = createServerFn({ method: "POST" })
@@ -74,5 +74,5 @@ export const revokeAllSessions = createServerFn({ method: "POST" })
 			const naamioApiClient = yield* NaamioApiClient;
 
 			yield* naamioApiClient.Session.revokeAll();
-		}).pipe(runAuthenticatedOnlyServerFn(ctx)),
+		}).pipe(Effect.withSpan("@naamio/janus/user/revokeAllSessions"), runAuthenticatedOnlyServerFn(ctx)),
 	);

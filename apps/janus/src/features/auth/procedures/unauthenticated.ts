@@ -40,10 +40,10 @@ export const getAuthenticationChallengeMetadata = createServerFn({ method: "GET"
 	}).pipe(Effect.withSpan("@naamio/janus/session/getAuthenticationChallengeMetadata"), runServerFn),
 );
 
-const InitializeAuthenticationChallengeData = EmailChallengeModel.json.pick("email", "language");
+const InitializeAuthenticationChallengePayload = EmailChallengeModel.json.pick("email", "language");
 
 export const initializeAuthenticationChallenge = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(InitializeAuthenticationChallengeData))
+	.inputValidator(Schema.standardSchemaV1(InitializeAuthenticationChallengePayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -56,10 +56,10 @@ export const initializeAuthenticationChallenge = createServerFn({ method: "POST"
 		}).pipe(Effect.withSpan("@naamio/janus/session/initializeAuthenticationChallenge"), runServerFn),
 	);
 
-const SolveAuthenticationChallengeData = Schema.Struct({ code: EmailChallengeCode });
+const SolveAuthenticationChallengePayload = Schema.Struct({ code: EmailChallengeCode });
 
 export const solveAuthenticationChallenge = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(SolveAuthenticationChallengeData))
+	.inputValidator(Schema.standardSchemaV1(SolveAuthenticationChallengePayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;

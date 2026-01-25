@@ -217,7 +217,7 @@ const UserGroupLive = HttpApiBuilder.group(
 				}),
 			);
 	}),
-).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
+).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
 
 export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
 	Layer.provide([AuthenticationGroupLive, SessionGroupLive, UserGroupLive]),

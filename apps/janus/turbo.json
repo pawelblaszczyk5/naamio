@@ -2,8 +2,8 @@
 	"$schema": "../../node_modules/turbo/schema.json",
 	"extends": ["//"],
 	"tasks": {
-		"dev": { "persistent": true },
-		"preview": { "persistent": true },
+		"dev": { "persistent": true, "with": ["@naamio/mercury#dev", "@naamio/environment#dev"] },
+		"preview": { "persistent": true,  "with": ["@naamio/mercury#preview", "@naamio/environment#preview"] },
 		"typecheck": { "outputs": ["node_modules/.cache/tsbuildinfo/"] },
 		"codegen": { "outputs": ["src/locales/"], "inputs": ["$TURBO_DEFAULT$", "!app/locales/"] }
 	}

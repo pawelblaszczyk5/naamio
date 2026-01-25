@@ -2,8 +2,8 @@
 	"$schema": "../../node_modules/turbo/schema.json",
 	"extends": ["//"],
 	"tasks": {
-		"dev": { "persistent": true },
-		"preview": { "persistent": true },
+		"dev": { "persistent": true, "with": ["@naamio/environment#dev"] },
+		"preview": { "persistent": true, "with": ["@naamio/environment#preview"] },
 		"typecheck": { "outputs": ["node_modules/.cache/tsbuildinfo/"] }
 	}
 }

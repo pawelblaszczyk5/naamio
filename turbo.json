@@ -6,7 +6,7 @@
 		"lint:fix": { "dependsOn": ["^build"], "cache": false },
 		"build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
 		"typecheck": { "dependsOn": ["^build"] },
-		"dev": { "dependsOn": [], "cache": false },
+		"dev": { "dependsOn": ["^dev"], "cache": false },
 		"preview": { "dependsOn": ["build"], "cache": false },
 		"codegen": { "dependsOn": [] },
 		"test": { "dependsOn": ["^build"] },

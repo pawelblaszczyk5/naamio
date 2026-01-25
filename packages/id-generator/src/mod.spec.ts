@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Either, Schema } from "effect";
 
-import { generateId as generateIdEffect, verifyId as verifyIdEffect } from "#src/effect.js";
+import { generateId as generateIdEffect, validId, verifyId as verifyIdEffect } from "#src/effect.js";
 import { generateId as generateIdPromise, verifyId as verifyIdPromise } from "#src/promise.js";
 
 const EMPTY_ID = "";
@@ -48,6 +48,25 @@ describe("Effect API", () => {
 					expect(yield* verifyIdEffect(id)).toBe(true);
 				}),
 			);
+		}),
+	);
+
+	it.effect(
+		"Should properly work when composing exposed filter with custom schema",
+		Effect.fn(function* () {
+			const schema = Schema.compose(validId, Schema.String.pipe(Schema.brand("ExampleId"), Schema.length(16)));
+			const decode = Schema.decode(schema);
+
+			const isDecodingSuccessful = Effect.fn(function* (value: string) {
+				const result = yield* decode(value).pipe(Effect.either);
+
+				return Either.isRight(result);
+			});
+
+			expect(yield* isDecodingSuccessful(yield* generateIdEffect())).toBe(true);
+			expect(yield* isDecodingSuccessful(EMPTY_ID)).toBe(false);
+			expect(yield* isDecodingSuccessful(INVALID_HASH_ID)).toBe(false);
+			expect(yield* isDecodingSuccessful(INVALID_LENGTH_ID)).toBe(false);
 		}),
 	);
 });

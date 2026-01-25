@@ -12,8 +12,7 @@ const migration = Effect.gen(function* () {
 			${sql("id")} TEXT PRIMARY KEY,
 			${sql("title")} TEXT NULL,
 			${sql("updatedAt")} TIMESTAMPTZ NOT NULL,
-			${sql("userId")} TEXT NOT NULL,
-			FOREIGN KEY (${sql("userId")}) REFERENCES ${sql("user")} (${sql("id")})
+			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
 
@@ -23,12 +22,9 @@ const migration = Effect.gen(function* () {
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("role")} TEXT NOT NULL,
 			${sql("status")} TEXT NULL,
-			${sql("parentId")} TEXT NULL,
-			${sql("conversationId")} TEXT NOT NULL,
-			${sql("userId")} TEXT NOT NULL,
-			FOREIGN KEY (${sql("parentId")}) REFERENCES ${sql("message")} (${sql("id")}),
-			FOREIGN KEY (${sql("conversationId")}) REFERENCES ${sql("conversation")} (${sql("id")}),
-			FOREIGN KEY (${sql("userId")}) REFERENCES ${sql("user")} (${sql("id")})
+			${sql("parentId")} TEXT NULL REFERENCES ${sql("message")} (${sql("id")}),
+			${sql("conversationId")} TEXT NOT NULL REFERENCES ${sql("conversation")} (${sql("id")}),
+			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
 
@@ -36,12 +32,10 @@ const migration = Effect.gen(function* () {
 		CREATE TABLE ${sql("messagePart")} (
 			${sql("id")} TEXT PRIMARY KEY,
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
-			${sql("messageId")} TEXT NOT NULL,
+			${sql("messageId")} TEXT NOT NULL REFERENCES ${sql("message")} (${sql("id")}),
 			${sql("type")} TEXT NOT NULL,
 			${sql("data")} JSONB NOT NULL,
-			${sql("userId")} TEXT NOT NULL,
-			FOREIGN KEY (${sql("messageId")}) REFERENCES ${sql("message")} (${sql("id")}),
-			FOREIGN KEY (${sql("userId")}) REFERENCES ${sql("user")} (${sql("id")})
+			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
 });

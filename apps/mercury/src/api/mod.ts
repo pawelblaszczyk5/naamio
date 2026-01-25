@@ -180,7 +180,7 @@ const SessionGroupLive = HttpApiBuilder.group(
 			.handle(
 				"revokeAll",
 				Effect.fn("@naamio/mercury/SessionGroup#revokeAll")(function* () {
-					return yield* session.viewer.revokeAll();
+					yield* session.viewer.revokeAll();
 				}),
 			)
 			.handleRaw(

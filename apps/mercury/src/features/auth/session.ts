@@ -44,7 +44,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				MissingSessionError | UnavailableSessionError,
 				CurrentSession
 			>;
-			revokeAll: () => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
+			revokeAll: () => Effect.Effect<void, never, CurrentSession>;
 			verify: () => Effect.Effect<
 				Pick<SessionModel, "expiresAt" | "id"> & { refreshed: boolean },
 				never,
@@ -232,22 +232,14 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						sql.withTransaction,
 						Effect.catchTag("SqlError", (error) => Effect.die(error)),
 					),
-					revokeAll: Effect.fn("@naamio/mercury/Session#revokeAll")(
-						function* () {
-							const currentSession = yield* CurrentSession;
+					revokeAll: Effect.fn("@naamio/mercury/Session#revokeAll")(function* () {
+						const currentSession = yield* CurrentSession;
 
-							yield* revokeAllSessions({
-								revokedAt: Option.some(yield* DateTime.now),
-								userId: currentSession.userId,
-							}).pipe(Effect.orDie);
-
-							const transactionId = yield* getTransactionId().pipe(Effect.orDie);
-
-							return { transactionId };
-						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
-					),
+						yield* revokeAllSessions({
+							revokedAt: Option.some(yield* DateTime.now),
+							userId: currentSession.userId,
+						}).pipe(Effect.orDie);
+					}),
 					verify: Effect.fn("@naamio/mercury/Session#verify")(function* () {
 						const currentSession = yield* CurrentSession;
 

@@ -15,7 +15,7 @@
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"eslint": "catalog:",
-		"oxc-minify": "^0.110.0",
+		"oxc-minify": "^0.111.0",
 		"vitepress": "2.0.0-alpha.15"
 	}
 }

@@ -53,6 +53,6 @@
 		"eslint-plugin-react-x": "^2.7.4",
 		"eslint-plugin-regexp": "^3.0.0",
 		"eslint-plugin-unicorn": "^62.0.0",
-		"typescript-eslint": "^8.53.1"
+		"typescript-eslint": "^8.54.0"
 	}
 }

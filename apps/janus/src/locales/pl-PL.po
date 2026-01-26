@@ -33,26 +33,6 @@ msgstr "Aplikacja"
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: src/features/auth/ui/sign-in-form.tsx:41
-msgid "Email"
-msgstr "Email"
-
-#: src/features/auth/ui/sign-in-form.tsx:54
-msgid "Start challenge"
-msgstr "Zacznij challenge"
-
-#: src/features/auth/ui/sign-in-form.tsx:88
-msgid "OTP"
-msgstr "OTP"
-
-#: src/features/auth/ui/sign-in-form.tsx:104
-msgid "Complete challenge"
-msgstr "Ukończ challenge"
-
-#: src/features/auth/ui/sign-in-form.tsx:118
-msgid "Sign in page"
-msgstr "Strona logowania"
-
 #: src/features/chat/ui/chat-page.tsx:5
 msgid "Chat page"
 msgstr "Strona chatu"
@@ -76,6 +56,26 @@ msgstr "Niestety, wygląda na to, że jesteś zagubiony :("
 #: src/features/home/ui/home-page.tsx:5
 msgid "Home page"
 msgstr "Strona główna"
+
+#: src/features/home/ui/sign-in-page.tsx:41
+msgid "Email"
+msgstr "Email"
+
+#: src/features/home/ui/sign-in-page.tsx:54
+msgid "Start challenge"
+msgstr "Zacznij challenge"
+
+#: src/features/home/ui/sign-in-page.tsx:88
+msgid "OTP"
+msgstr "OTP"
+
+#: src/features/home/ui/sign-in-page.tsx:104
+msgid "Complete challenge"
+msgstr "Ukończ challenge"
+
+#: src/features/home/ui/sign-in-page.tsx:118
+msgid "Sign in page"
+msgstr "Strona logowania"
 
 #: src/features/user/ui/settings-page.tsx:32
 msgid "Your email address: {email}"

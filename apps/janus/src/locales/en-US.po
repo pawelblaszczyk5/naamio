@@ -33,26 +33,6 @@ msgstr "App"
 msgid "Settings"
 msgstr "Settings"
 
-#: src/features/auth/ui/sign-in-form.tsx:41
-msgid "Email"
-msgstr "Email"
-
-#: src/features/auth/ui/sign-in-form.tsx:54
-msgid "Start challenge"
-msgstr "Start challenge"
-
-#: src/features/auth/ui/sign-in-form.tsx:88
-msgid "OTP"
-msgstr "OTP"
-
-#: src/features/auth/ui/sign-in-form.tsx:104
-msgid "Complete challenge"
-msgstr "Complete challenge"
-
-#: src/features/auth/ui/sign-in-form.tsx:118
-msgid "Sign in page"
-msgstr "Sign in page"
-
 #: src/features/chat/ui/chat-page.tsx:5
 msgid "Chat page"
 msgstr "Chat page"
@@ -76,6 +56,26 @@ msgstr "Unfortunately, it looks like you're lost :("
 #: src/features/home/ui/home-page.tsx:5
 msgid "Home page"
 msgstr "Home page"
+
+#: src/features/home/ui/sign-in-page.tsx:41
+msgid "Email"
+msgstr "Email"
+
+#: src/features/home/ui/sign-in-page.tsx:54
+msgid "Start challenge"
+msgstr "Start challenge"
+
+#: src/features/home/ui/sign-in-page.tsx:88
+msgid "OTP"
+msgstr "OTP"
+
+#: src/features/home/ui/sign-in-page.tsx:104
+msgid "Complete challenge"
+msgstr "Complete challenge"
+
+#: src/features/home/ui/sign-in-page.tsx:118
+msgid "Sign in page"
+msgstr "Sign in page"
 
 #: src/features/user/ui/settings-page.tsx:32
 msgid "Your email address: {email}"

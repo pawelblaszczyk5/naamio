@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { checkHasSessionToken } from "#src/features/auth/procedures/mod.js";
+import { checkHasSessionToken } from "#src/features/home/procedures/mod.js";
 import { HomeLayout } from "#src/features/home/ui/home-layout.js";
 import { HomeNotFound } from "#src/features/home/ui/home-not-found.js";
 

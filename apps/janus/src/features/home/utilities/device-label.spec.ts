@@ -1,7 +1,7 @@
 import { expect, it } from "@effect/vitest";
 import { Effect, Option } from "effect";
 
-import { extractDeviceLabel } from "#src/features/auth/utilities/device-label.js";
+import { extractDeviceLabel } from "#src/features/home/utilities/device-label.js";
 
 // cspell:ignore KHTML, Edgi
 

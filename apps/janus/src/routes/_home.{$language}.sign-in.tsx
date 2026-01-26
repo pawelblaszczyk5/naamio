@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { checkHasSessionToken, getAuthenticationChallengeMetadata } from "#src/features/auth/procedures/mod.js";
+import { checkHasSessionToken, getAuthenticationChallengeMetadata } from "#src/features/home/procedures/mod.js";
 import { SignInPage } from "#src/features/home/ui/sign-in-page.js";
 
 export const Route = createFileRoute("/_home/{$language}/sign-in")({

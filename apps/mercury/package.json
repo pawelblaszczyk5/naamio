@@ -32,7 +32,7 @@
 		"@node-rs/argon2": "^2.0.2",
 		"effect": "catalog:",
 		"nanoid": "^5.1.6",
-		"nodemailer": "^7.0.12",
+		"nodemailer": "^7.0.13",
 		"tsx": "^4.21.0"
 	},
 	"devDependencies": {
@@ -40,7 +40,7 @@
 		"@naamio/eslint-config": "workspace:*",
 		"@naamio/typescript-config": "workspace:*",
 		"@types/node": "catalog:",
-		"@types/nodemailer": "^7.0.5",
+		"@types/nodemailer": "^7.0.9",
 		"eslint": "catalog:",
 		"wait-on": "catalog:"
 	}

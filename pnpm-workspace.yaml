@@ -21,9 +21,9 @@ catalog:
   "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
   effect: ^3.19.15
-  "@electric-sql/client": ^1.4.1
+  "@electric-sql/client": ^1.5.0
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
-  "@types/node": ^25.0.10
+  "@types/node": ^25.1.0
   eslint: ^9.39.2
   fontaine: ^0.8.0
   babel-plugin-react-compiler: 19.1.0-rc.3
@@ -32,7 +32,7 @@ catalog:
   vitest: ^4.0.18
   vite-plugin-inspect: ^11.3.3
   "@vitejs/plugin-react": ^5.1.2
-  "@types/react": ^19.2.9
+  "@types/react": ^19.2.10
   "@types/react-dom": ^19.2.3
   "@stylexjs/babel-plugin": ^0.17.5
   "@stylexjs/eslint-plugin": ^0.17.5

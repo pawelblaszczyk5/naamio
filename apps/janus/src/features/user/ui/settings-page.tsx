@@ -29,7 +29,7 @@ export const SettingsPage = () => {
 				<Trans>Settings</Trans>
 			</h1>
 			<p>
-				<Trans>Your email address: {{ email: user.email }}</Trans>
+				<Trans>Your username: {{ username: user.username }}</Trans>
 			</p>
 			<p>
 				<Trans>Your language: {{ language: user.language }}</Trans>{" "}

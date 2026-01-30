@@ -1,24 +1,21 @@
 import { Schema } from "effect";
 
-export class PublicKeyCredentialRpEntity extends Schema.Class<PublicKeyCredentialRpEntity>(
-	"PublicKeyCredentialRpEntity",
-)({ id: Schema.String.pipe(Schema.optionalWith({ exact: true })), name: Schema.String }) {}
+export const PublicKeyCredentialRpEntity = Schema.Struct({
+	id: Schema.String.pipe(Schema.optionalWith({ exact: true })),
+	name: Schema.String,
+});
 
 export const PublicKeyCredentialType = Schema.Literal("public-key");
 
-export class PublicKeyCredentialParameters extends Schema.Class<PublicKeyCredentialParameters>(
-	"PublicKeyCredentialParameters",
-)({ alg: Schema.Number, type: PublicKeyCredentialType }) {}
+export const PublicKeyCredentialParameters = Schema.Struct({ alg: Schema.Number, type: PublicKeyCredentialType });
 
 export const AuthenticatorTransport = Schema.Literal("ble", "cable", "hybrid", "internal", "nfc", "smart-card", "usb");
 
-export class PublicKeyCredentialDescriptor extends Schema.Class<PublicKeyCredentialDescriptor>(
-	"PublicKeyCredentialDescriptor",
-)({
+export const PublicKeyCredentialDescriptor = Schema.Struct({
 	id: Schema.String,
-	transports: Schema.Array(AuthenticatorTransport).pipe(Schema.optionalWith({ exact: true })),
+	transports: Schema.Array(AuthenticatorTransport).pipe(Schema.mutable, Schema.optionalWith({ exact: true })),
 	type: PublicKeyCredentialType,
-}) {}
+});
 
 export const AuthenticatorAttachment = Schema.Literal("cross-platform", "platform");
 
@@ -26,14 +23,12 @@ export const ResidentKeyRequirement = Schema.Literal("discouraged", "preferred",
 
 export const UserVerificationRequirement = Schema.Literal("discouraged", "preferred", "required");
 
-export class AuthenticatorSelectionCriteria extends Schema.Class<AuthenticatorSelectionCriteria>(
-	"AuthenticatorSelectionCriteria",
-)({
+export const AuthenticatorSelectionCriteria = Schema.Struct({
 	authenticatorAttachment: AuthenticatorAttachment.pipe(Schema.optionalWith({ exact: true })),
 	requireResidentKey: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
 	residentKey: ResidentKeyRequirement.pipe(Schema.optionalWith({ exact: true })),
 	userVerification: UserVerificationRequirement.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+});
 
 export const PublicKeyCredentialHint = Schema.Literal("hybrid", "security-key", "client-device");
 
@@ -49,47 +44,41 @@ export const AttestationFormat = Schema.Literal(
 	"apple",
 );
 
-export class AuthenticationExtensionsClientInputs extends Schema.Class<AuthenticationExtensionsClientInputs>(
-	"AuthenticationExtensionsClientInputs",
-)({
+export const AuthenticationExtensionsClientInputs = Schema.Struct({
 	appid: Schema.String.pipe(Schema.optionalWith({ exact: true })),
 	credProps: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
 	hmacCreateSecret: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
 	minPinLength: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+});
 
-export class PublicKeyCredentialUserEntity extends Schema.Class<PublicKeyCredentialUserEntity>(
-	"PublicKeyCredentialUserEntity",
-)({ displayName: Schema.String, id: Schema.String, name: Schema.String }) {}
+export const PublicKeyCredentialUserEntity = Schema.Struct({
+	displayName: Schema.String,
+	id: Schema.String,
+	name: Schema.String,
+});
 
-export class AuthenticatorAttestationResponse extends Schema.Class<AuthenticatorAttestationResponse>(
-	"AuthenticatorAttestationResponse",
-)({
+export const AuthenticatorAttestationResponse = Schema.Struct({
 	attestationObject: Schema.String,
 	authenticatorData: Schema.String.pipe(Schema.optionalWith({ exact: true })),
 	clientDataJSON: Schema.String,
 	publicKey: Schema.String.pipe(Schema.optionalWith({ exact: true })),
 	publicKeyAlgorithm: Schema.Number.pipe(Schema.optionalWith({ exact: true })),
 	transports: Schema.Array(AuthenticatorTransport).pipe(Schema.mutable, Schema.optionalWith({ exact: true })),
-}) {}
+});
 
-export class CredentialPropertiesOutput extends Schema.Class<CredentialPropertiesOutput>("CredentialPropertiesOutput")({
+export const CredentialPropertiesOutput = Schema.Struct({
 	rk: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+});
 
-export class AuthenticationExtensionsClientOutputs extends Schema.Class<AuthenticationExtensionsClientOutputs>(
-	"AuthenticationExtensionsClientOutputs",
-)({
+export const AuthenticationExtensionsClientOutputs = Schema.Struct({
 	appid: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
 	credProps: CredentialPropertiesOutput.pipe(Schema.optionalWith({ exact: true })),
 	hmacCreateSecret: Schema.Boolean.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+});
 
-export class AuthenticatorAssertionResponse extends Schema.Class<AuthenticatorAssertionResponse>(
-	"AuthenticatorAssertionResponse",
-)({
+export const AuthenticatorAssertionResponse = Schema.Struct({
 	authenticatorData: Schema.String,
 	clientDataJSON: Schema.String,
 	signature: Schema.String,
 	userHandle: Schema.String.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+});

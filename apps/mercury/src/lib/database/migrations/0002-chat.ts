@@ -1,4 +1,4 @@
-import type { ResolvedMigration } from "@effect/sql/Migrator";
+import type { Migrator } from "@effect/sql";
 
 import { PgClient } from "@effect/sql-pg";
 import { Effect } from "effect";
@@ -40,4 +40,4 @@ const migration = Effect.gen(function* () {
 	`;
 });
 
-export const chatMigration = [2, "chat", Effect.succeed(migration)] satisfies ResolvedMigration;
+export const chatMigration = [2, "chat", Effect.succeed(migration)] satisfies Migrator.ResolvedMigration;

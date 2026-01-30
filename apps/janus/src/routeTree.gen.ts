@@ -16,6 +16,7 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings.tsx'
 import { Route as HomeChar123languageChar125RouteImport } from './routes/_home.{$language}.tsx'
 import { Route as HomeChar123languageChar125IndexRouteImport } from './routes/_home.{$language}.index.tsx'
 import { Route as ApiShapeChar123shapeNameChar125RouteImport } from './routes/api.shape.{$shapeName}.tsx'
+import { Route as HomeChar123languageChar125SignUpRouteImport } from './routes/_home.{$language}.sign-up.tsx'
 import { Route as HomeChar123languageChar125SignInRouteImport } from './routes/_home.{$language}.sign-in.tsx'
 
 const AppRoute = AppRouteImport.update({
@@ -56,6 +57,12 @@ const ApiShapeChar123shapeNameChar125Route =
     path: '/api/shape/{$shapeName}',
     getParentRoute: () => rootRouteImport,
   } as any)
+const HomeChar123languageChar125SignUpRoute =
+  HomeChar123languageChar125SignUpRouteImport.update({
+    id: '/sign-up',
+    path: '/sign-up',
+    getParentRoute: () => HomeChar123languageChar125Route,
+  } as any)
 const HomeChar123languageChar125SignInRoute =
   HomeChar123languageChar125SignInRouteImport.update({
     id: '/sign-in',
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
   '/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AppSettingsRoute
   '/app': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
   '/{$language}': typeof HomeChar123languageChar125IndexRoute
 }
@@ -89,6 +98,7 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/app/': typeof AppIndexRoute
   '/_home/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
+  '/_home/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
   '/_home/{$language}/': typeof HomeChar123languageChar125IndexRoute
 }
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/'
     | '/{$language}/sign-in'
+    | '/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
     | '/{$language}/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app'
     | '/{$language}/sign-in'
+    | '/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
     | '/{$language}'
   id:
@@ -119,6 +131,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/'
     | '/_home/{$language}/sign-in'
+    | '/_home/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
     | '/_home/{$language}/'
   fileRoutesById: FileRoutesById
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiShapeChar123shapeNameChar125RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_home/{$language}/sign-up': {
+      id: '/_home/{$language}/sign-up'
+      path: '/sign-up'
+      fullPath: '/{$language}/sign-up'
+      preLoaderRoute: typeof HomeChar123languageChar125SignUpRouteImport
+      parentRoute: typeof HomeChar123languageChar125Route
+    }
     '/_home/{$language}/sign-in': {
       id: '/_home/{$language}/sign-in'
       path: '/sign-in'
@@ -205,6 +225,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface HomeChar123languageChar125RouteChildren {
   HomeChar123languageChar125SignInRoute: typeof HomeChar123languageChar125SignInRoute
+  HomeChar123languageChar125SignUpRoute: typeof HomeChar123languageChar125SignUpRoute
   HomeChar123languageChar125IndexRoute: typeof HomeChar123languageChar125IndexRoute
 }
 
@@ -212,6 +233,8 @@ const HomeChar123languageChar125RouteChildren: HomeChar123languageChar125RouteCh
   {
     HomeChar123languageChar125SignInRoute:
       HomeChar123languageChar125SignInRoute,
+    HomeChar123languageChar125SignUpRoute:
+      HomeChar123languageChar125SignUpRoute,
     HomeChar123languageChar125IndexRoute: HomeChar123languageChar125IndexRoute,
   }
 

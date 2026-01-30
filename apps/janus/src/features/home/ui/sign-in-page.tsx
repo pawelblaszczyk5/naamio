@@ -1,127 +1,90 @@
 import { Trans } from "@lingui/react/macro";
-import { useLoaderData, useRouter } from "@tanstack/react-router";
+import { startAuthentication } from "@simplewebauthn/browser";
 import { useServerFn } from "@tanstack/react-start";
-import { Match } from "effect";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
-import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
-import { initializeAuthenticationChallenge, solveAuthenticationChallenge } from "#src/features/home/procedures/mod.js";
-import { useLanguage } from "#src/lib/i18n/use-language.js";
+import { generateAuthenticationOptions, verifyAuthentication } from "#src/features/home/procedures/mod.js";
 
-const initializeFormStyles = stylex.create({
+const styles = stylex.create({
 	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
 	input: { borderColor: "black", borderStyle: "solid", borderWidth: 1 },
 });
 
-const InitializeForm = () => {
-	const id = useId();
-	const router = useRouter();
-	const callInitializeAuthenticationChallenge = useServerFn(initializeAuthenticationChallenge);
-	const language = useLanguage();
-
-	const [email, setEmail] = useState("");
-
-	const emailFieldId = `email-field-${id}`;
-
-	return (
-		<form
-			onSubmit={async (event) => {
-				event.preventDefault();
-
-				await callInitializeAuthenticationChallenge({ data: { email: email as never, language } });
-
-				void router.invalidate();
-			}}
-			method="POST"
-			{...stylex.props(initializeFormStyles.form)}
-		>
-			<label htmlFor={emailFieldId}>
-				<Trans>Email</Trans>
-			</label>
-			<input
-				onChange={(event) => {
-					setEmail(event.currentTarget.value);
-				}}
-				id={emailFieldId}
-				type="email"
-				value={email}
-				required
-				{...stylex.props(initializeFormStyles.input)}
-			/>
-			<button type="submit">
-				<Trans>Start challenge</Trans>
-			</button>
-		</form>
-	);
-};
-
-const completeFormStyles = stylex.create({
-	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
-});
-
-const CompleteForm = () => {
-	const id = useId();
-	const router = useRouter();
-	const authenticationChallengeMetadata = useLoaderData({ from: "/_home/{$language}/sign-in" });
-	const callSolveAuthenticationChallenge = useServerFn(solveAuthenticationChallenge);
-
-	assert(authenticationChallengeMetadata, "Complete form should only be rendered when challenge is started");
-
-	const [code, setCode] = useState("");
-
-	const codeFieldId = `code-field-${id}`;
-
-	return (
-		<form
-			onSubmit={async (event) => {
-				event.preventDefault();
-
-				await callSolveAuthenticationChallenge({ data: { code } });
-
-				void router.invalidate();
-			}}
-			{...stylex.props(completeFormStyles.form)}
-		>
-			<label htmlFor={codeFieldId}>
-				<Trans>OTP</Trans>
-			</label>
-			<input
-				onChange={(event) => {
-					setCode(event.currentTarget.value);
-				}}
-				autoComplete="one-time-code"
-				id={codeFieldId}
-				maxLength={6}
-				minLength={6}
-				type="text"
-				value={code}
-				required
-				{...stylex.props(initializeFormStyles.input)}
-			/>
-			<button type="submit">
-				<Trans>Complete challenge</Trans>
-			</button>
-		</form>
-	);
-};
-
 export const SignInPage = () => {
-	const authenticationChallengeMetadata = useLoaderData({ from: "/_home/{$language}/sign-in" });
+	const id = useId();
 
-	const hasChallenge = Boolean(authenticationChallengeMetadata);
+	const [username, setUsername] = useState("");
+
+	const usernameFieldId = `username-field-${id}`;
+
+	const callGenerateAuthenticationOptions = useServerFn(generateAuthenticationOptions);
+	const callVerifyAuthentication = useServerFn(verifyAuthentication);
+
+	useEffect(() => {
+		const abortController = new AbortController();
+
+		void (async () => {
+			const result = await callGenerateAuthenticationOptions({ data: {} });
+
+			if (abortController.signal.aborted) {
+				return;
+			}
+
+			const authenticationResponse = await startAuthentication({
+				optionsJSON: result.authenticationOptions,
+				useBrowserAutofill: true,
+			});
+
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- that's not true
+			if (abortController.signal.aborted) {
+				return;
+			}
+
+			await callVerifyAuthentication({ data: { authenticationResponse } });
+		})();
+
+		return () => {
+			abortController.abort();
+		};
+	}, [callGenerateAuthenticationOptions, callVerifyAuthentication]);
 
 	return (
 		<div>
 			<h1>
 				<Trans>Sign in page</Trans>
 			</h1>
-			{Match.value(hasChallenge).pipe(
-				Match.when(false, () => <InitializeForm />),
-				Match.when(true, () => <CompleteForm />),
-				Match.exhaustive,
-			)}
+			<form
+				onSubmit={async (event) => {
+					event.preventDefault();
+
+					const result = await callGenerateAuthenticationOptions({ data: { username } });
+
+					const authenticationResponse = await startAuthentication({ optionsJSON: result.authenticationOptions });
+
+					await callVerifyAuthentication({ data: { authenticationResponse } });
+				}}
+				{...stylex.props(styles.form)}
+			>
+				<label htmlFor={usernameFieldId}>
+					<Trans>Username</Trans>
+				</label>
+				<input
+					onChange={(event) => {
+						setUsername(event.currentTarget.value);
+					}}
+					autoComplete="username webauthn"
+					id={usernameFieldId}
+					type="text"
+					value={username}
+					autoFocus
+					{...stylex.props(styles.input)}
+				/>
+				<button type="submit">
+					<Trans>Sign in</Trans>
+				</button>
+			</form>
 		</div>
 	);
 };

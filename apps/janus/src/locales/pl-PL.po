@@ -37,15 +37,21 @@ msgstr "Ustawienia"
 msgid "Chat page"
 msgstr "Strona chatu"
 
-#: src/features/home/ui/home-layout.tsx:41
+#: src/features/home/ui/home-layout.tsx:42
+#: src/features/home/ui/sign-in-page.tsx:85
 msgid "Sign in"
 msgstr "Zaloguj się"
 
 #: src/features/home/ui/home-layout.tsx:45
+#: src/features/home/ui/sign-up-page.tsx:78
+msgid "Sign up"
+msgstr "Zarejestruj się"
+
+#: src/features/home/ui/home-layout.tsx:50
 msgid "English"
 msgstr "Angielski"
 
-#: src/features/home/ui/home-layout.tsx:48
+#: src/features/home/ui/home-layout.tsx:53
 msgid "Polish"
 msgstr "Polski"
 
@@ -57,29 +63,26 @@ msgstr "Niestety, wygląda na to, że jesteś zagubiony :("
 msgid "Home page"
 msgstr "Strona główna"
 
-#: src/features/home/ui/sign-in-page.tsx:41
-msgid "Email"
-msgstr "Email"
-
-#: src/features/home/ui/sign-in-page.tsx:54
-msgid "Start challenge"
-msgstr "Zacznij challenge"
-
-#: src/features/home/ui/sign-in-page.tsx:88
-msgid "OTP"
-msgstr "OTP"
-
-#: src/features/home/ui/sign-in-page.tsx:104
-msgid "Complete challenge"
-msgstr "Ukończ challenge"
-
-#: src/features/home/ui/sign-in-page.tsx:118
+#: src/features/home/ui/sign-in-page.tsx:56
 msgid "Sign in page"
 msgstr "Strona logowania"
 
+#: src/features/home/ui/sign-in-page.tsx:71
+#: src/features/home/ui/sign-up-page.tsx:48
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: src/features/home/ui/sign-up-page.tsx:33
+msgid "Sign up page"
+msgstr "Strona rejestracji"
+
+#: src/features/home/ui/sign-up-page.tsx:63
+msgid "Display name"
+msgstr "Nazwa wyświetlana"
+
 #: src/features/user/ui/settings-page.tsx:32
-msgid "Your email address: {email}"
-msgstr "Twój adres email: {email}"
+msgid "Your username: {username}"
+msgstr "Twoja nazwa użytkownika: {username}"
 
 #: src/features/user/ui/settings-page.tsx:35
 msgid "Your language: {language}"

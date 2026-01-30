@@ -30,7 +30,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 	{
 		system: {
 			create: (
-				data: Pick<SessionModel, "deviceLabel" | "userId">,
+				data: Pick<SessionModel, "deviceLabel" | "passkeyId" | "userId">,
 			) => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; token: Redacted.Redacted }>;
 			retrieveFromToken: (
 				token: Redacted.Redacted,
@@ -156,6 +156,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							deviceLabel: data.deviceLabel,
 							expiresAt,
 							id,
+							passkeyId: data.passkeyId,
 							revokedAt: Option.none(),
 							signature,
 							userId: data.userId,

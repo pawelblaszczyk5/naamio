@@ -1,5 +1,5 @@
 import { ELECTRIC_PROTOCOL_QUERY_PARAMS } from "@electric-sql/client";
-import { Schema } from "effect";
+import { Option, Schema } from "effect";
 
 import {
 	AttestationConveyancePreference,
@@ -24,52 +24,70 @@ export const ElectricProtocolUrlParams = Schema.Record({
 	value: Schema.String,
 }).pipe(Schema.partial, Schema.brand("ElectricProtocolUrlParams"));
 
-export class WebAuthnRegistrationOptions extends Schema.Class<WebAuthnRegistrationOptions>(
-	"WebAuthnRegistrationOptions",
-)({
-	attestation: AttestationConveyancePreference.pipe(Schema.optionalWith({ exact: true })),
-	attestationFormats: Schema.Array(AttestationFormat).pipe(Schema.optionalWith({ exact: true })),
-	authenticatorSelection: AuthenticatorSelectionCriteria.pipe(Schema.optionalWith({ exact: true })),
-	challenge: Schema.String,
-	excludeCredentials: Schema.Array(PublicKeyCredentialDescriptor).pipe(Schema.optionalWith({ exact: true })),
-	extensions: AuthenticationExtensionsClientInputs.pipe(Schema.optionalWith({ exact: true })),
-	hints: Schema.Array(PublicKeyCredentialHint).pipe(Schema.optionalWith({ exact: true })),
-	pubKeyCredParams: Schema.Array(PublicKeyCredentialParameters).pipe(Schema.optionalWith({ exact: true })),
-	rp: PublicKeyCredentialRpEntity,
-	timeout: Schema.Number.pipe(Schema.optionalWith({ exact: true })),
-	user: PublicKeyCredentialUserEntity,
-}) {}
+const compat = <T>(schema: Schema.Schema<T>) =>
+	Schema.optionalToOptional(Schema.Union(Schema.Undefined, schema), schema, {
+		decode: (option) => {
+			if (Option.isNone(option)) {
+				return Option.none();
+			}
 
-export class WebAuthnRegistrationResponse extends Schema.Class<WebAuthnRegistrationResponse>(
-	"WebAuthnRegistrationResponse",
-)({
-	authenticatorAttachment: AuthenticatorAttachment.pipe(Schema.optionalWith({ exact: true })),
+			const value = option.value;
+
+			if (value === undefined) {
+				return Option.none();
+			}
+
+			return Option.some(value);
+		},
+		encode: (option) => option,
+	});
+
+export const WebAuthnRegistrationOptions = Schema.Struct({
+	attestation: AttestationConveyancePreference.pipe(compat),
+	attestationFormats: Schema.Array(AttestationFormat).pipe(Schema.mutable, compat),
+	authenticatorSelection: AuthenticatorSelectionCriteria.pipe(compat),
+	challenge: Schema.String,
+	excludeCredentials: Schema.Array(PublicKeyCredentialDescriptor).pipe(Schema.mutable, compat),
+	extensions: AuthenticationExtensionsClientInputs.pipe(compat),
+	hints: Schema.Array(PublicKeyCredentialHint).pipe(Schema.mutable, compat),
+	pubKeyCredParams: Schema.Array(PublicKeyCredentialParameters).pipe(Schema.mutable),
+	rp: PublicKeyCredentialRpEntity,
+	timeout: Schema.Number.pipe(compat),
+	user: PublicKeyCredentialUserEntity,
+});
+
+export type WebAuthnRegistrationOptions = (typeof WebAuthnRegistrationOptions)["Type"];
+
+export const WebAuthnRegistrationResponse = Schema.Struct({
+	authenticatorAttachment: AuthenticatorAttachment.pipe(compat),
 	clientExtensionResults: AuthenticationExtensionsClientOutputs,
 	id: Schema.String,
 	rawId: Schema.String,
 	response: AuthenticatorAttestationResponse,
 	type: PublicKeyCredentialType,
-}) {}
+});
 
-export class WebAuthnAuthenticationOptions extends Schema.Class<WebAuthnAuthenticationOptions>(
-	"WebAuthnAuthenticationOptions",
-)({
-	allowCredentials: Schema.Array(PublicKeyCredentialDescriptor).pipe(Schema.optionalWith({ exact: true })),
+export type WebAuthnRegistrationResponse = (typeof WebAuthnRegistrationResponse)["Type"];
+
+export const WebAuthnAuthenticationOptions = Schema.Struct({
+	allowCredentials: Schema.Array(PublicKeyCredentialDescriptor).pipe(Schema.mutable, compat),
 	challenge: Schema.String,
-	extensions: AuthenticationExtensionsClientInputs.pipe(Schema.optionalWith({ exact: true })),
-	hints: Schema.Array(PublicKeyCredentialHint).pipe(Schema.optionalWith({ exact: true })),
+	extensions: AuthenticationExtensionsClientInputs.pipe(compat),
+	hints: Schema.Array(PublicKeyCredentialHint).pipe(Schema.mutable, compat),
 	rpId: PublicKeyCredentialRpEntity.fields.id,
-	timeout: Schema.Number.pipe(Schema.optionalWith({ exact: true })),
-	userVerification: UserVerificationRequirement.pipe(Schema.optionalWith({ exact: true })),
-}) {}
+	timeout: Schema.Number.pipe(compat),
+	userVerification: UserVerificationRequirement.pipe(compat),
+});
 
-export class WebAuthnAuthenticationResponse extends Schema.Class<WebAuthnAuthenticationResponse>(
-	"WebAuthnAuthenticationResponse",
-)({
-	authenticatorAttachment: AuthenticatorAttachment.pipe(Schema.optionalWith({ exact: true })),
+export type WebAuthnAuthenticationOptions = (typeof WebAuthnAuthenticationOptions)["Type"];
+
+export const WebAuthnAuthenticationResponse = Schema.Struct({
+	authenticatorAttachment: AuthenticatorAttachment.pipe(compat),
 	clientExtensionResults: AuthenticationExtensionsClientOutputs,
 	id: Schema.String,
 	rawId: Schema.String,
 	response: AuthenticatorAssertionResponse,
 	type: PublicKeyCredentialType,
-}) {}
+});
+
+export type WebAuthnAuthenticationResponse = (typeof WebAuthnAuthenticationResponse)["Type"];

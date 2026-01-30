@@ -117,7 +117,7 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
-							columns: [sql("id"), sql("email"), sql("language")],
+							columns: [sql("id"), sql("username"), sql("language")],
 							table: sql("user"),
 							where: sql`${sql("id")} = ${currentSession.userId}`,
 						};

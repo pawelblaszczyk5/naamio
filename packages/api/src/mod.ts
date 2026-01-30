@@ -1,11 +1,11 @@
 import { HttpApi, OpenApi } from "@effect/platform";
 
-import { Authentication } from "#src/groups/authentication.js";
 import { Session } from "#src/groups/session.js";
 import { User } from "#src/groups/user.js";
+import { WebAuthn } from "#src/groups/web-authn.js";
 
 export class NaamioApi extends HttpApi.make("NaamioApi")
-	.add(Authentication)
+	.add(WebAuthn)
 	.add(Session)
 	.add(User)
 	.prefix("/api")

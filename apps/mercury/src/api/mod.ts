@@ -2,12 +2,13 @@ import { HttpApiBuilder, HttpApiError } from "@effect/platform";
 import { Effect, Layer, Option, Redacted } from "effect";
 
 import { NaamioApi } from "@naamio/api";
-import { BadGateway, InsufficientStorage, TooManyRequests } from "@naamio/api/errors";
+import { BadGateway } from "@naamio/api/errors";
 import { AuthenticatedOnly } from "@naamio/api/middlewares/authenticated-only";
 
-import { Authenticator, AuthenticatorLive } from "#src/features/auth/authenticator.js";
-import { EmailChallenge } from "#src/features/auth/email-challenge.js";
+import type { UsernameTakenError } from "#src/features/user/mod.js";
+
 import { Session } from "#src/features/auth/session.js";
+import { WebAuthn } from "#src/features/auth/web-authn.js";
 import { Electric } from "#src/features/electric/mod.js";
 import { User } from "#src/features/user/mod.js";
 import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
@@ -41,114 +42,99 @@ const AuthenticatedOnlyLive = Layer.effect(
 	}),
 ).pipe(Layer.provide(Session.Live));
 
-const AuthenticationGroupLive = HttpApiBuilder.group(
+const WebAuthnGroupLive = HttpApiBuilder.group(
 	NaamioApi,
-	"Authentication",
+	"WebAuthn",
 	Effect.fn(function* (handlers) {
-		const emailChallenge = yield* EmailChallenge;
+		const webAuthn = yield* WebAuthn;
 		const session = yield* Session;
 		const user = yield* User;
 
-		const getAuthenticatorEntity = yield* Authenticator.client;
-
 		return handlers
 			.handle(
-				"getEmailChallengeMetadata",
-				Effect.fn("@naamio/mercury/AuthenticationGroup#getEmailChallengeMetadata")(function* (context) {
-					return yield* emailChallenge.system.findMetadata(context.path.state).pipe(
-						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
-						Effect.catchTag("NoSuchElementException", () => new HttpApiError.NotFound()),
-					);
+				"generateRegistrationOptions",
+				Effect.fn("@naamio/mercury/WebAuthnGroup#generateRegistrationOptions")(function* (context) {
+					const newUser = yield* user.system
+						.create({ language: context.payload.language, username: context.payload.username })
+						.pipe(
+							Effect.ensureErrorType<UsernameTakenError>(),
+							Effect.mapError(() => new HttpApiError.Conflict()),
+						);
+
+					return yield* webAuthn.system.generateRegistrationOptions({
+						displayName: context.payload.displayName,
+						id: newUser.id,
+						username: newUser.username,
+						webAuthnId: newUser.webAuthnId,
+					});
 				}),
 			)
 			.handle(
-				"initializeEmailChallenge",
-				Effect.fn("@naamio/mercury/AuthenticationGroup#initializeEmailChallenge")(function* (context) {
-					const authenticatorEntity = getAuthenticatorEntity(context.payload.email);
-
-					const result = yield* authenticatorEntity
-						.InitializeChallenge({ language: context.payload.language })
+				"verifyRegistration",
+				Effect.fn("@naamio/mercury/WebAuthnGroup#verifyRegistration")(function* (context) {
+					const createdPasskey = yield* webAuthn.system
+						.verifyRegistrationResponse({
+							challengeId: context.payload.challengeId,
+							registrationResponse: context.payload.registrationResponse,
+						})
 						.pipe(
 							Effect.catchTags({
-								AlreadyProcessingMessage: () => new InsufficientStorage(),
-								MailboxFull: () => new InsufficientStorage(),
-								PersistenceError: () => new InsufficientStorage(),
-								TooManyAuthenticatorRequestsError: () => new TooManyRequests(),
+								FailedVerificationError: () => new HttpApiError.BadRequest(),
+								UnavailableChallengeError: () => new HttpApiError.Gone(),
 							}),
 						);
 
-					return result;
+					yield* user.system.confirm(createdPasskey.userId);
+
+					return yield* session.system.create({
+						deviceLabel: context.payload.deviceLabel,
+						passkeyId: createdPasskey.id,
+						userId: createdPasskey.userId,
+					});
 				}),
 			)
 			.handle(
-				"refreshEmailChallenge",
-				Effect.fn("@naamio/mercury/AuthenticationGroup#refreshEmailChallenge")(function* (context) {
-					const challenge = yield* emailChallenge.system.findMetadata(context.path.state).pipe(
-						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
-						Effect.catchTag("NoSuchElementException", () => new HttpApiError.BadRequest()),
-					);
+				"generateAuthenticationOptions",
+				Effect.fn("@naamio/mercury/WebAuthnGroup#generateAuthenticationOptions")(function* (context) {
+					const maybeUserId = yield* Effect.transposeMapOption(
+						context.payload.username,
+						Effect.fn(function* (username) {
+							return yield* user.system.findIdByUsername(username);
+						}),
+					).pipe(Effect.map(Option.flatten));
 
-					const authenticatorEntity = getAuthenticatorEntity(challenge.email);
+					if (Option.isSome(context.payload.username) && Option.isNone(maybeUserId)) {
+						return yield* new HttpApiError.NotFound();
+					}
 
-					const result = yield* authenticatorEntity
-						.RefreshChallenge({ state: context.path.state })
-						.pipe(
-							Effect.catchTags({
-								AlreadyProcessingMessage: () => new InsufficientStorage(),
-								ChallengeRefreshUnavailableError: () => new HttpApiError.BadRequest(),
-								MailboxFull: () => new InsufficientStorage(),
-								MissingChallengeError: () => new HttpApiError.BadRequest(),
-								PersistenceError: () => new InsufficientStorage(),
-								TooManyAuthenticatorRequestsError: () => new TooManyRequests(),
-								UnavailableChallengeError: () => new HttpApiError.BadRequest(),
-							}),
-						);
-
-					return result;
+					return yield* webAuthn.system.generateAuthenticationOptions(maybeUserId);
 				}),
 			)
 			.handle(
-				"solveEmailChallenge",
-				Effect.fn("@naamio/mercury/AuthenticationGroup#solveEmailChallenge")(function* (context) {
-					const challenge = yield* emailChallenge.system.findMetadata(context.path.state).pipe(
-						Effect.flatMap((maybeEmailChallengeMetadata) => maybeEmailChallengeMetadata),
-						Effect.catchTag("NoSuchElementException", () => new HttpApiError.BadRequest()),
-					);
-
-					const authenticatorEntity = getAuthenticatorEntity(challenge.email);
-
-					yield* authenticatorEntity
-						.SolveChallenge({ code: context.payload.code, state: context.path.state })
+				"verifyAuthentication",
+				Effect.fn("@naamio/mercury/WebAuthnGroup#verifyAuthentication")(function* (context) {
+					const existingPasskey = yield* webAuthn.system
+						.verifyAuthenticationResponse({
+							authenticationResponse: context.payload.authenticationResponse,
+							challengeId: context.payload.challengeId,
+						})
 						.pipe(
 							Effect.catchTags({
-								AlreadyProcessingMessage: () => new InsufficientStorage(),
-								InvalidChallengeAttemptError: () => new HttpApiError.BadRequest(),
-								MailboxFull: () => new InsufficientStorage(),
-								MissingChallengeError: () => new HttpApiError.BadRequest(),
-								PersistenceError: () => new InsufficientStorage(),
-								TooManyChallengeAttemptsError: () => new HttpApiError.BadRequest(),
-								UnavailableChallengeError: () => new HttpApiError.BadRequest(),
+								FailedVerificationError: () => new HttpApiError.BadRequest(),
+								MissingPasskeyError: () => new HttpApiError.NotFound(),
+								UnavailableChallengeError: () => new HttpApiError.Gone(),
 							}),
 						);
 
-					const userId = yield* user.system
-						.findByEmail(challenge.email)
-						.pipe(
-							Effect.flatMap(
-								Option.match({
-									onNone: () => user.system.create({ email: challenge.email, language: challenge.language }),
-									onSome: (user) => Effect.succeed(user.id),
-								}),
-							),
-						);
-
-					const userSession = yield* session.system.create({ deviceLabel: context.payload.deviceLabel, userId });
-
-					return userSession;
+					return yield* session.system.create({
+						deviceLabel: context.payload.deviceLabel,
+						passkeyId: existingPasskey.id,
+						userId: existingPasskey.userId,
+					});
 				}),
 			);
 	}),
-).pipe(Layer.provide([Session.Live, EmailChallenge.Live, User.Live, AuthenticatorLive, ClusterRunnerLive]));
+).pipe(Layer.provide([WebAuthn.Live, Session.Live, User.Live, ClusterRunnerLive]));
 
 const SessionGroupLive = HttpApiBuilder.group(
 	NaamioApi,
@@ -220,5 +206,5 @@ const UserGroupLive = HttpApiBuilder.group(
 ).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
 
 export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
-	Layer.provide([AuthenticationGroupLive, SessionGroupLive, UserGroupLive]),
+	Layer.provide([WebAuthnGroupLive, SessionGroupLive, UserGroupLive]),
 );

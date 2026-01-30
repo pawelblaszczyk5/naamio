@@ -1,5 +1,7 @@
 import { Model } from "@effect/sql";
-import { Redacted, Schema } from "effect";
+import { Schema } from "effect";
+
+import { AuthenticatorTransport } from "#src/web-authn.js";
 
 export const TransactionId = Schema.NumberFromString.pipe(Schema.brand("TransactionId"));
 
@@ -17,12 +19,26 @@ const DateTimeFromDate = Model.Field({
 });
 
 export class UserModel extends Model.Class<UserModel>("@naamio/schema/UserModel")({
+	confirmedAt: Model.FieldOption(DateTimeFromDate),
 	createdAt: Model.DateTimeInsertFromDate,
-	email: Schema.TemplateLiteral(Schema.String, "@", Schema.String).pipe(
-		Schema.annotations({ examples: ["test@example.com"], jsonSchema: { format: "email" } }),
-	),
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("UserId"))),
 	language: Schema.Literal("en-US", "pl-PL"),
+	username: Schema.String.pipe(Schema.length({ max: 24, min: 5 }), Schema.brand("Username")),
+	webAuthnId: Model.GeneratedByApp(Id.pipe(Schema.brand("WebAuthnId"))),
+}) {}
+
+export class PasskeyModel extends Model.Class<PasskeyModel>("@naamio/schema/PasskeyModel")({
+	aaguid: Schema.String.pipe(Schema.brand("Aaguid")),
+	backedUp: Schema.Boolean,
+	counter: Schema.BigInt,
+	createdAt: Model.DateTimeInsertFromDate,
+	credentialId: Schema.String.pipe(Schema.brand("CredentialId")),
+	deviceType: Schema.Literal("SINGLE_DEVICE", "MULTI_DEVICE"),
+	displayName: Schema.String.pipe(Schema.length({ max: 50, min: 3 }), Schema.brand("DisplayName")),
+	id: Model.GeneratedByApp(Id.pipe(Schema.brand("PassKeyId"))),
+	publicKey: Schema.String.pipe(Schema.Redacted),
+	transports: Model.FieldOption(Schema.compose(Schema.split(","), Schema.Array(AuthenticatorTransport))),
+	userId: UserModel.fields.id,
 }) {}
 
 export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/SessionModel")({
@@ -30,30 +46,32 @@ export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Sess
 	deviceLabel: Model.FieldOption(Schema.NonEmptyTrimmedString.pipe(Schema.maxLength(64))),
 	expiresAt: DateTimeFromDate,
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("SessionId"))),
+	passkeyId: PasskeyModel.fields.id,
 	revokedAt: Model.FieldOption(DateTimeFromDate),
 	signature: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
 	userId: UserModel.fields.id,
 }) {}
 
-export class EmailChallengeModel extends Model.Class<EmailChallengeModel>("@naamio/schema/EmailChallengeModel")({
-	consumedAt: Model.FieldOption(DateTimeFromDate),
-	createdAt: Model.DateTimeInsertFromDate,
-	email: UserModel.fields.email,
-	expiresAt: DateTimeFromDate,
-	hash: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
-	id: Model.GeneratedByApp(Id.pipe(Schema.brand("EmailChallengeId"))),
-	language: UserModel.fields.language,
-	refreshAvailableAt: DateTimeFromDate,
-	remainingAttempts: Schema.Int.pipe(Schema.between(0, 3)),
-	revokedAt: Model.FieldOption(DateTimeFromDate),
-	state: Schema.Trimmed.pipe(Schema.length(32), Schema.Redacted),
+const BaseWebAuthnChallengeFields = { challengeValue: Schema.String, expiresAt: DateTimeFromDate };
+
+export class WebAuthnRegistrationChallengeModel extends Model.Class<WebAuthnRegistrationChallengeModel>(
+	"@naamio/schema/WebAuthnRegistrationChallengeModel",
+)({
+	...BaseWebAuthnChallengeFields,
+	displayName: PasskeyModel.fields.displayName,
+	id: Id.pipe(Schema.brand("WebAuthnRegistrationChallengeId")),
+	type: Schema.tag("REGISTRATION"),
+	userId: UserModel.fields.id,
 }) {}
 
-export const EmailChallengeCode = Schema.Trimmed.pipe(
-	Schema.length(6),
-	Schema.Redacted,
-	Schema.annotations({ examples: [Redacted.make("012345")] }),
-);
+export class WebAuthnAuthenticationChallengeModel extends Model.Class<WebAuthnAuthenticationChallengeModel>(
+	"@naamio/schema/WebAuthnAuthenticationChallengeModel",
+)({
+	...BaseWebAuthnChallengeFields,
+	id: Id.pipe(Schema.brand("WebAuthnAuthenticationChallengeId")),
+	type: Schema.tag("AUTHENTICATION"),
+	userId: Model.FieldOption(UserModel.fields.id),
+}) {}
 
 export class ConversationModel extends Model.Class<ConversationModel>("@naamio/schema/ConversationModel")({
 	createdAt: Model.DateTimeInsertFromDate,
@@ -76,14 +94,14 @@ export class UserMessageModel extends Model.Class<UserMessageModel>("@naamio/sch
 	...BaseMessageFields,
 	id: UserMessageId,
 	parentId: Model.FieldOption(AgentMessageId),
-	role: Schema.Literal("USER"),
+	role: Schema.tag("USER"),
 }) {}
 
 export class AgentMessageModel extends Model.Class<AgentMessageModel>("@naamio/schema/AgentMessageModel")({
 	...BaseMessageFields,
 	id: AgentMessageId,
 	parentId: UserMessageId,
-	role: Schema.Literal("AGENT"),
+	role: Schema.tag("AGENT"),
 	status: Schema.Literal("IN_PROGRESS", "STOPPED", "FINISHED", "ERROR"),
 }) {}
 
@@ -96,6 +114,6 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	data: Schema.Struct({ text: Schema.String }),
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
-	type: Schema.Literal("TEXT"),
+	type: Schema.tag("TEXT"),
 	userId: UserModel.fields.id,
 }) {}

@@ -5,9 +5,9 @@ import { Schema, String } from "effect";
 import { UserModel } from "@naamio/schema/domain";
 
 const User = Schema.Struct({
-	email: UserModel.json.fields.email,
 	id: UserModel.json.fields.id,
 	language: UserModel.json.fields.language,
+	username: UserModel.json.fields.username,
 });
 
 export type User = (typeof User)["Type"];

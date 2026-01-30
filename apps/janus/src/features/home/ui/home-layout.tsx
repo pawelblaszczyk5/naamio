@@ -37,9 +37,14 @@ export const HomeLayout = () => {
 					</Link>
 				)}
 				{!isLoggedIn && (
-					<Link params={{ language }} to="/{$language}/sign-in">
-						<Trans>Sign in</Trans>
-					</Link>
+					<>
+						<Link params={{ language }} to="/{$language}/sign-in">
+							<Trans>Sign in</Trans>
+						</Link>
+						<Link params={{ language }} to="/{$language}/sign-up">
+							<Trans>Sign up</Trans>
+						</Link>
+					</>
 				)}
 				<Link params={{ language: "en-US" }} to=".">
 					<Trans>English</Trans>

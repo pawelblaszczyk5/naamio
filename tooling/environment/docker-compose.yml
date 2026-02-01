@@ -21,14 +21,6 @@ services:
       - -c
       - wal_level=logical
 
-  mailpit:
-    image: axllent/mailpit:v1.28.0
-    restart: unless-stopped
-    environment:
-      MP_DATABASE: /data/mailpit.db
-    volumes:
-      - mailpit_data:/data
-
   electric:
     image: electricsql/electric:1.2.9
     restart: unless-stopped
@@ -54,5 +46,4 @@ services:
 
 volumes:
   postgres_data:
-  mailpit_data:
   otel_data:

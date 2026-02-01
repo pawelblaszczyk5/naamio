@@ -38,7 +38,7 @@ msgid "Chat page"
 msgstr "Chat page"
 
 #: src/features/home/ui/home-layout.tsx:42
-#: src/features/home/ui/sign-in-page.tsx:85
+#: src/features/home/ui/sign-in-page.tsx:84
 msgid "Sign in"
 msgstr "Sign in"
 
@@ -63,11 +63,11 @@ msgstr "Unfortunately, it looks like you're lost :("
 msgid "Home page"
 msgstr "Home page"
 
-#: src/features/home/ui/sign-in-page.tsx:56
+#: src/features/home/ui/sign-in-page.tsx:55
 msgid "Sign in page"
 msgstr "Sign in page"
 
-#: src/features/home/ui/sign-in-page.tsx:71
+#: src/features/home/ui/sign-in-page.tsx:70
 #: src/features/home/ui/sign-up-page.tsx:48
 msgid "Username"
 msgstr "Username"

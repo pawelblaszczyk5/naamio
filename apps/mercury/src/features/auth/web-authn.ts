@@ -209,7 +209,12 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 							const authenticationOptions = yield* Option.match(maybeUserId, {
 								onNone: Effect.fn(function* () {
 									return yield* Effect.promise(async () =>
-										generateAuthenticationOptions({ allowCredentials: [], rpID: RP_ID, userVerification: "preferred" }),
+										generateAuthenticationOptions({
+											allowCredentials: [],
+											rpID: RP_ID,
+											timeout: Duration.toMillis(CHALLENGE_TIMEOUT),
+											userVerification: "preferred",
+										}),
 									);
 								}),
 								onSome: Effect.fn(function* (userId) {
@@ -225,6 +230,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 												return { id: passkey.credentialId, transports: [...passkey.transports.value] };
 											}),
 											rpID: RP_ID,
+											timeout: Duration.toMillis(CHALLENGE_TIMEOUT),
 											userVerification: "preferred",
 										}),
 									);

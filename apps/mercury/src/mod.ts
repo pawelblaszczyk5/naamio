@@ -6,6 +6,10 @@ import { createServer } from "node:http";
 import { ObservabilityLive } from "@naamio/observability";
 
 import { NaamioApiServerLive } from "#src/api/mod.js";
+import { CleanupExpiredChallengesJob } from "#src/features/auth/web-authn.js";
+import { CleanupUnconfirmedUsersJob } from "#src/features/user/mod.js";
+
+const Jobs = Layer.mergeAll(CleanupExpiredChallengesJob, CleanupUnconfirmedUsersJob);
 
 const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	HttpServer.withLogAddress,
@@ -22,6 +26,6 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	),
 );
 
-const EnvironmentLive = HttpLive.pipe(Layer.provide(ObservabilityLive));
+const EnvironmentLive = HttpLive.pipe(Layer.provide(ObservabilityLive), Layer.merge(Jobs));
 
 EnvironmentLive.pipe(Layer.launch, NodeRuntime.runMain);

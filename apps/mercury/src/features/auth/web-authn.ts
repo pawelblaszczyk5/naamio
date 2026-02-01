@@ -1,6 +1,7 @@
 import type { WebAuthnCredential } from "@simplewebauthn/server";
 import type { ParseResult } from "effect";
 
+import { ClusterCron } from "@effect/cluster";
 import { SqlSchema } from "@effect/sql";
 import { PgClient } from "@effect/sql-pg";
 import {
@@ -9,7 +10,20 @@ import {
 	verifyAuthenticationResponse,
 	verifyRegistrationResponse,
 } from "@simplewebauthn/server";
-import { Config, Context, DateTime, Duration, Effect, Encoding, Layer, Match, Option, Redacted, Schema } from "effect";
+import {
+	Config,
+	Context,
+	Cron,
+	DateTime,
+	Duration,
+	Effect,
+	Encoding,
+	Layer,
+	Match,
+	Option,
+	Redacted,
+	Schema,
+} from "effect";
 
 import type { WebAuthnAuthenticationResponse, WebAuthnRegistrationResponse } from "@naamio/schema/api";
 import type { UserModel } from "@naamio/schema/domain";
@@ -22,6 +36,7 @@ import {
 	WebAuthnRegistrationChallengeModel,
 } from "@naamio/schema/domain";
 
+import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
 import { DatabaseLive } from "#src/lib/database/mod.js";
 
 export class UnavailableChallengeError extends Schema.TaggedError<UnavailableChallengeError>(
@@ -36,12 +51,11 @@ export class MissingPasskeyError extends Schema.TaggedError<MissingPasskeyError>
 	"@naamio/mercury/WebAuthn/MissingPasskeyError",
 )("MissingPasskeyError", {}) {}
 
-// TODO[2026-02-01] Implement expired challenges cleanup
-
 export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 	WebAuthn,
 	{
 		system: {
+			deleteExpiredChallenges: () => Effect.Effect<void>;
 			generateAuthenticationOptions: (
 				maybeUserId: Option.Option<UserModel["id"]>,
 			) => Effect.Effect<{
@@ -151,6 +165,18 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				Result: WebAuthnAuthenticationChallengeModel.select.pick("challengeValue", "expiresAt", "userId"),
 			});
 
+			const deleteChallengesExpiredBefore = SqlSchema.void({
+				execute: (request) => sql`
+					DELETE FROM ${sql("webAuthnChallenge")}
+					WHERE
+						${sql("expiresAt")} < ${request}
+				`,
+				Request: Schema.Union(
+					WebAuthnAuthenticationChallengeModel.select.fields.expiresAt,
+					WebAuthnRegistrationChallengeModel.select.fields.expiresAt,
+				),
+			});
+
 			const insertPasskey = SqlSchema.void({
 				execute: (request) => sql`
 					INSERT INTO
@@ -204,6 +230,11 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 
 			return WebAuthn.of({
 				system: {
+					deleteExpiredChallenges: Effect.fn("@naamio/mercury/WebAuthn#deleteExpiredChallenges")(function* () {
+						const now = yield* DateTime.now;
+
+						yield* deleteChallengesExpiredBefore(now).pipe(Effect.orDie);
+					}),
 					generateAuthenticationOptions: Effect.fn("@naamio/mercury/WebAuthn#generateAuthenticationOptions")(
 						function* (maybeUserId) {
 							const authenticationOptions = yield* Option.match(maybeUserId, {
@@ -433,3 +464,13 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 		}),
 	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<WebAuthn, unknown>;
 }
+
+export const CleanupExpiredChallengesJob = ClusterCron.make({
+	cron: Cron.unsafeParse("*/15 * * * *"),
+	execute: Effect.gen(function* () {
+		const webAuthn = yield* WebAuthn;
+
+		yield* webAuthn.system.deleteExpiredChallenges();
+	}),
+	name: "CleanupExpiredChallengesJob",
+}).pipe(Layer.provide([ClusterRunnerLive, WebAuthn.Live]));

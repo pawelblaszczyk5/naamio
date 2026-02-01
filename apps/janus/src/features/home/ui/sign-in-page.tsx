@@ -73,7 +73,7 @@ export const SignInPage = () => {
 					onChange={(event) => {
 						setUsername(event.currentTarget.value);
 					}}
-					autoComplete="username webauthn"
+					autoComplete="username webauthn" // cspell:ignore webauthn
 					id={usernameFieldId}
 					type="text"
 					value={username}

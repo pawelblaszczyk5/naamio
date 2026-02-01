@@ -1,5 +1,6 @@
 import { Trans } from "@lingui/react/macro";
 import { startAuthentication } from "@simplewebauthn/browser";
+import { useLoaderData } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useId, useState } from "react";
 
@@ -15,6 +16,11 @@ const styles = stylex.create({
 export const SignInPage = () => {
 	const id = useId();
 
+	const authenticationOptions = useLoaderData({
+		from: "/_home/{$language}/sign-in",
+		select: (result) => result.authenticationOptions,
+	});
+
 	const [username, setUsername] = useState("");
 
 	const usernameFieldId = `username-field-${id}`;
@@ -26,18 +32,11 @@ export const SignInPage = () => {
 		const abortController = new AbortController();
 
 		void (async () => {
-			const result = await callGenerateAuthenticationOptions({ data: {} });
-
-			if (abortController.signal.aborted) {
-				return;
-			}
-
 			const authenticationResponse = await startAuthentication({
-				optionsJSON: result.authenticationOptions,
+				optionsJSON: authenticationOptions,
 				useBrowserAutofill: true,
 			});
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- that's not true
 			if (abortController.signal.aborted) {
 				return;
 			}
@@ -48,7 +47,7 @@ export const SignInPage = () => {
 		return () => {
 			abortController.abort();
 		};
-	}, [callGenerateAuthenticationOptions, callVerifyAuthentication]);
+	}, [authenticationOptions, callVerifyAuthentication]);
 
 	return (
 		<div>

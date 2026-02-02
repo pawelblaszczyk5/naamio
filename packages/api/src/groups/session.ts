@@ -40,7 +40,7 @@ export class Session extends HttpApiGroup.make("Session")
 		HttpApiEndpoint.post("revokeAll", "/revoke-all").annotateContext(
 			OpenApi.annotations({
 				description:
-					"Revokes all sessions for currently authenticated user, including the one provided with the current request. It should be used as a security measure if something concerning happens - e.g. user loses access to their email address.",
+					"Revokes all sessions for currently authenticated user, including the one provided with the current request. It should be used as a security measure if something concerning happens - e.g. user loses access to their device which has passkey on it.",
 				summary: "Revokes all sessions for current user.",
 			}),
 		),

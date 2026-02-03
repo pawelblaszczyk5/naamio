@@ -11,7 +11,7 @@ catalog:
   "@babel/preset-typescript": ^7.28.5
   "@effect/cluster": ^0.56.1
   "@effect/experimental": ^0.58.0
-  "@effect/language-service": ^0.72.0
+  "@effect/language-service": ^0.72.1
   "@effect/opentelemetry": ^0.61.0
   "@effect/platform": ^0.94.2
   "@effect/platform-node": ^0.104.1

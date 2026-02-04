@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Function, Match } from "effect";
 
 import { AppLayout } from "#src/features/app/ui/app-layout.js";
+import { preloadPasskeyData } from "#src/features/user/data/passkey.js";
 import {
 	checkSessionCacheStatus,
 	hydrateSessionCache,
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/app")({
 	},
 	component: AppLayout,
 	loader: async () => {
-		await Promise.all([preloadUserData(), preloadSessionData(), initializePool()]);
+		await Promise.all([preloadUserData(), preloadSessionData(), preloadPasskeyData(), initializePool()]);
 	},
 	ssr: false,
 });

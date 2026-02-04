@@ -5,6 +5,7 @@ import { assert } from "@naamio/assert";
 
 import type { Session } from "#src/features/user/data/session.js";
 
+import { passkeyCollection } from "#src/features/user/data/passkey.js";
 import { sessionCacheCollection } from "#src/features/user/data/session-cache.js";
 import { sessionCollection } from "#src/features/user/data/session.js";
 import { userCollection } from "#src/features/user/data/user.js";
@@ -29,6 +30,9 @@ export const useSessionById = (id: Session["id"]) =>
 
 export const useSessions = () =>
 	useLiveQuery((q) => q.from({ session: sessionCollection }).orderBy(({ session }) => session.expiresAt, "desc")).data;
+
+export const usePasskeys = () =>
+	useLiveQuery((q) => q.from({ passkey: passkeyCollection }).orderBy(({ passkey }) => passkey.createdAt, "desc")).data;
 
 export const useUserLanguageSsrSafe = () => {
 	const language = useSyncExternalStore(

@@ -7,7 +7,7 @@ import { NaamioHttpClient } from "#src/lib/api-client/mod.js";
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";
 
-const allowedShapeNames = new Set(["session", "user"]);
+const allowedShapeNames = new Set(["passkey", "session", "user"]);
 
 export const Route = createFileRoute("/api/shape/{$shapeName}")({
 	server: {

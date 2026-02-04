@@ -6,13 +6,14 @@ import {
 	useSignOut,
 	useUpdateLanguage,
 } from "#src/features/user/data/mutations.js";
-import { useSessionId, useSessions, useUser } from "#src/features/user/data/queries.js";
+import { usePasskeys, useSessionId, useSessions, useUser } from "#src/features/user/data/queries.js";
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 export const SettingsPage = () => {
 	const user = useUser();
 	const sessionId = useSessionId();
 	const sessions = useSessions();
+	const passkeys = usePasskeys();
 
 	const { i18n, t } = useLingui();
 
@@ -80,6 +81,22 @@ export const SettingsPage = () => {
 							:	<Trans>Revoke session</Trans>}
 						</button>{" "}
 						{session.id === sessionId && <Trans>Current session</Trans>}
+					</li>
+				))}
+			</ul>
+			<h2>
+				<Trans>Passkeys</Trans>
+			</h2>
+			<ul>
+				{passkeys.map((passkey) => (
+					<li key={passkey.id}>
+						<Trans>
+							Passkey named "{{ displayName: passkey.displayName }}", created at{" "}
+							{{ date: i18n.date(passkey.createdAt) }}.
+						</Trans>{" "}
+						{passkey.backedUp ?
+							<Trans>This passkey is backed up.</Trans>
+						:	<Trans>This passkey isn't backed up</Trans>}
 					</li>
 				))}
 			</ul>

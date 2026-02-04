@@ -205,6 +205,23 @@ const UserGroupLive = HttpApiBuilder.group(
 	}),
 ).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
 
+const PasskeyGroupLive = HttpApiBuilder.group(
+	NaamioApi,
+	"Passkey",
+	Effect.fn(function* (handlers) {
+		const electric = yield* Electric;
+
+		return handlers.handleRaw(
+			"shape",
+			Effect.fn("@naamio/mercury/PasskeyGroup#shape")(function* (context) {
+				return yield* electric.viewer
+					.passkeyShape(context.urlParams)
+					.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+			}),
+		);
+	}),
+).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
+
 export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
-	Layer.provide([WebAuthnGroupLive, SessionGroupLive, UserGroupLive]),
+	Layer.provide([WebAuthnGroupLive, SessionGroupLive, UserGroupLive, PasskeyGroupLive]),
 );

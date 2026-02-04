@@ -25,6 +25,9 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 	Electric,
 	{
 		viewer: {
+			passkeyShape: (
+				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			sessionShape: (
 				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
@@ -98,6 +101,26 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 
 			return Electric.of({
 				viewer: {
+					passkeyShape: Effect.fn("@naamio/mercury/Electric#passkeyShape")(function* (electricUrlParams) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [
+								sql("id"),
+								sql("aaguid"),
+								sql("backedUp"),
+								sql("createdAt"),
+								sql("deviceType"),
+								sql("displayName"),
+							],
+							table: sql("passkey"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
+
+						return yield* proxy(request);
+					}),
 					sessionShape: Effect.fn("@naamio/mercury/Electric#sessionShape")(function* (electricUrlParams) {
 						const currentSession = yield* CurrentSession;
 

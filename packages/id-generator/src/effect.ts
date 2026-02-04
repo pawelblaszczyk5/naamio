@@ -10,7 +10,7 @@ export const verifyId = Effect.fn(function* (id: string) {
 	return yield* Effect.promise(async () => verifyIdPromise(id));
 });
 
-export const validId = Schema.filterEffect(
+export const ValidId = Schema.filterEffect(
 	Schema.String.pipe(Schema.length(16)),
 	Effect.fn(function* (value) {
 		const valid = yield* verifyId(value);

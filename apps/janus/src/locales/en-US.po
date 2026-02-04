@@ -29,7 +29,7 @@ msgid "App"
 msgstr "App"
 
 #: src/features/app/ui/app-layout.tsx:40
-#: src/features/user/ui/settings-page.tsx:29
+#: src/features/user/ui/settings-page.tsx:30
 msgid "Settings"
 msgstr "Settings"
 
@@ -80,46 +80,62 @@ msgstr "Sign up page"
 msgid "Display name"
 msgstr "Display name"
 
-#: src/features/user/ui/settings-page.tsx:32
+#: src/features/user/ui/settings-page.tsx:33
 msgid "Your username: {username}"
 msgstr "Your username: {username}"
 
-#: src/features/user/ui/settings-page.tsx:35
+#: src/features/user/ui/settings-page.tsx:36
 msgid "Your language: {language}"
 msgstr "Your language: {language}"
 
-#: src/features/user/ui/settings-page.tsx:42
+#: src/features/user/ui/settings-page.tsx:43
 msgid "Change language"
 msgstr "Change language"
 
-#: src/features/user/ui/settings-page.tsx:46
+#: src/features/user/ui/settings-page.tsx:47
 msgid "Your user ID: {id}"
 msgstr "Your user ID: {id}"
 
-#: src/features/user/ui/settings-page.tsx:49
+#: src/features/user/ui/settings-page.tsx:50
 msgid "Sessions"
 msgstr "Sessions"
 
-#: src/features/user/ui/settings-page.tsx:56
+#: src/features/user/ui/settings-page.tsx:57
 msgid "Revoke all sessions"
 msgstr "Revoke all sessions"
 
-#: src/features/user/ui/settings-page.tsx:62
+#: src/features/user/ui/settings-page.tsx:63
 msgid "Session for device \"{label}\", expires at {date}"
 msgstr "Session for device \"{label}\", expires at {date}"
 
-#: src/features/user/ui/settings-page.tsx:63
+#: src/features/user/ui/settings-page.tsx:64
 msgid "Unknown device"
 msgstr "Unknown device"
 
-#: src/features/user/ui/settings-page.tsx:79
+#: src/features/user/ui/settings-page.tsx:80
 msgid "Sign out"
 msgstr "Sign out"
 
-#: src/features/user/ui/settings-page.tsx:80
+#: src/features/user/ui/settings-page.tsx:81
 msgid "Revoke session"
 msgstr "Revoke session"
 
-#: src/features/user/ui/settings-page.tsx:82
+#: src/features/user/ui/settings-page.tsx:83
 msgid "Current session"
 msgstr "Current session"
+
+#: src/features/user/ui/settings-page.tsx:88
+msgid "Passkeys"
+msgstr "Passkeys"
+
+#: src/features/user/ui/settings-page.tsx:93
+msgid "Passkey named \"{displayName}\", created at {date}."
+msgstr "Passkey named \"{displayName}\", created at {date}."
+
+#: src/features/user/ui/settings-page.tsx:98
+msgid "This passkey is backed up."
+msgstr "This passkey is backed up."
+
+#: src/features/user/ui/settings-page.tsx:99
+msgid "This passkey isn't backed up."
+msgstr "This passkey isn't backed up."

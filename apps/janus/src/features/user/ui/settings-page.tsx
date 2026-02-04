@@ -96,7 +96,7 @@ export const SettingsPage = () => {
 						</Trans>{" "}
 						{passkey.backedUp ?
 							<Trans>This passkey is backed up.</Trans>
-						:	<Trans>This passkey isn't backed up</Trans>}
+						:	<Trans>This passkey isn't backed up.</Trans>}
 					</li>
 				))}
 			</ul>

@@ -58,7 +58,6 @@ export default defineConfig({
 	name: "naamio/core",
 	files: ["**/*.{ts,tsx,js,jsx}"],
 	linterOptions: { reportUnusedDisableDirectives: "error", reportUnusedInlineConfigs: "error" },
-	ignores: ["eslint.config.js"],
 	plugins: {
 		canonical,
 		"prefer-arrow-functions": preferArrowFunctions,

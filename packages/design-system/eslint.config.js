@@ -7,4 +7,5 @@ import stylex from "@naamio/eslint-config/stylex";
 export default defineConfig({
 	languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	extends: [core, react, stylex],
+	ignores: ["eslint.config.js"],
 });

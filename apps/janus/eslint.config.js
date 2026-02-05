@@ -9,7 +9,7 @@ import lingui from "@naamio/eslint-config/lingui";
 export default defineConfig(
 	{
 		extends: [core, react, node, stylex, lingui],
-		ignores: ["src/routeTree.gen.ts", "server.ts"],
+		ignores: ["eslint.config.js", "src/routeTree.gen.ts", "server.ts"],
 		languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	},
 	{ rules: { "@typescript-eslint/only-throw-error": "off" } },

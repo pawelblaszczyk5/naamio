@@ -8,6 +8,7 @@ export default defineConfig(
 	{
 		extends: [core, react, stylex],
 		languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
+		ignores: ["eslint.config.js"],
 	},
 	{ files: ["vite.config.ts", ".storybook/*"], rules: { "import-x/no-default-export": "off" } },
 );

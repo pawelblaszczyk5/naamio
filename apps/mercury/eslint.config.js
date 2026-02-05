@@ -6,4 +6,5 @@ import node from "@naamio/eslint-config/node";
 export default defineConfig({
 	languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	extends: [core, node],
+	ignores: ["eslint.config.js"],
 });

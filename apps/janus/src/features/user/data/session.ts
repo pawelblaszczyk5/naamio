@@ -8,6 +8,7 @@ const Session = Schema.Struct({
 	deviceLabel: Schema.NullOr(SessionModel.json.fields.deviceLabel.from),
 	expiresAt: Schema.DateFromSelf,
 	id: SessionModel.json.fields.id,
+	passkeyId: SessionModel.json.fields.passkeyId,
 });
 
 export type Session = (typeof Session)["Type"];

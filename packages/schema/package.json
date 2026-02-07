@@ -32,8 +32,8 @@
 	},
 	"devDependencies": {
 		"@effect/language-service": "catalog:",
-		"@naamio/eslint-config": "workspace:*",
-		"@naamio/typescript-config": "workspace:*",
+		"@naamio/eslint-config": "workspace:",
+		"@naamio/typescript-config": "workspace:",
 		"eslint": "catalog:",
 		"tsc-alias": "catalog:",
 		"typescript": "catalog:"

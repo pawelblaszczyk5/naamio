@@ -176,28 +176,28 @@ importers:
         specifier: ^5.9.0
         version: 5.9.0(@lingui/babel-plugin-lingui-macro@5.9.0(typescript@5.9.3))(react@19.3.0-canary-65db1000-20260206)
       '@naamio/api':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/api
       '@naamio/assert':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/assert
       '@naamio/design-system':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/design-system
       '@naamio/hmac':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/hmac
       '@naamio/id-generator':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/id-generator
       '@naamio/observability':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/observability
       '@naamio/schema':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/schema
       '@naamio/stylex':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/stylex
       '@remix-run/headers':
         specifier: ^0.19.0
@@ -264,10 +264,10 @@ importers:
         specifier: ^5.9.0
         version: 5.9.0(rolldown-vite@7.3.1(@types/node@25.2.1)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))(typescript@5.9.3)
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@stylexjs/babel-plugin':
         specifier: 'catalog:'
@@ -342,19 +342,19 @@ importers:
         specifier: 'catalog:'
         version: 1.5.1
       '@naamio/api':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/api
       '@naamio/hmac':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/hmac
       '@naamio/id-generator':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/id-generator
       '@naamio/observability':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/observability
       '@naamio/schema':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/schema
       '@node-rs/argon2':
         specifier: ^2.0.2
@@ -376,10 +376,10 @@ importers:
         specifier: 'catalog:'
         version: 0.73.0
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@types/node':
         specifier: 'catalog:'
@@ -394,10 +394,10 @@ importers:
   apps/minerva:
     devDependencies:
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -412,10 +412,10 @@ importers:
   apps/vulcan:
     dependencies:
       '@naamio/design-system':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/design-system
       '@naamio/stylex':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../packages/stylex
       react:
         specifier: 19.3.0-canary-65db1000-20260206
@@ -434,10 +434,10 @@ importers:
         specifier: 'catalog:'
         version: 5.2.8
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@storybook/addon-a11y':
         specifier: ^10.2.7
@@ -491,7 +491,7 @@ importers:
         specifier: 'catalog:'
         version: 0.94.3(effect@3.19.16)
       '@naamio/schema':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../schema
       effect:
         specifier: 'catalog:'
@@ -501,10 +501,10 @@ importers:
         specifier: 'catalog:'
         version: 0.73.0
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -519,10 +519,10 @@ importers:
   packages/assert:
     devDependencies:
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -537,10 +537,10 @@ importers:
   packages/design-system:
     dependencies:
       '@naamio/assert':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../assert
       '@naamio/stylex':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../stylex
       react:
         specifier: 19.3.0-canary-65db1000-20260206
@@ -550,10 +550,10 @@ importers:
         version: 19.3.0-canary-65db1000-20260206(react@19.3.0-canary-65db1000-20260206)
     devDependencies:
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@types/react':
         specifier: 'catalog:'
@@ -584,10 +584,10 @@ importers:
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.16)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@types/node':
         specifier: 'catalog:'
@@ -611,7 +611,7 @@ importers:
   packages/id-generator:
     dependencies:
       '@naamio/assert':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../assert
       effect:
         specifier: 'catalog:'
@@ -624,10 +624,10 @@ importers:
         specifier: 'catalog:'
         version: 0.27.0(effect@3.19.16)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.1)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       '@types/node':
         specifier: 'catalog:'
@@ -664,10 +664,10 @@ importers:
         specifier: 'catalog:'
         version: 0.73.0
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -698,10 +698,10 @@ importers:
         specifier: 'catalog:'
         version: 0.73.0
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -720,10 +720,10 @@ importers:
         version: 0.17.5
     devDependencies:
       '@naamio/eslint-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/eslint-config
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../../tooling/typescript-config
       eslint:
         specifier: 'catalog:'
@@ -749,7 +749,7 @@ importers:
         specifier: ^7.5.1
         version: 7.5.1
       '@naamio/eslint-plugin':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../eslint-plugin
       '@stylexjs/eslint-plugin':
         specifier: 'catalog:'
@@ -840,7 +840,7 @@ importers:
         version: 8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
     devDependencies:
       '@naamio/typescript-config':
-        specifier: workspace:*
+        specifier: 'workspace:'
         version: link:../typescript-config
       eslint:
         specifier: 'catalog:'

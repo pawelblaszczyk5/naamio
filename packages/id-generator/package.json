@@ -27,14 +27,14 @@
 		"typecheck": "tsc --build"
 	},
 	"dependencies": {
-		"@naamio/assert": "workspace:*",
+		"@naamio/assert": "workspace:",
 		"effect": "catalog:"
 	},
 	"devDependencies": {
 		"@effect/language-service": "catalog:",
 		"@effect/vitest": "catalog:",
-		"@naamio/eslint-config": "workspace:*",
-		"@naamio/typescript-config": "workspace:*",
+		"@naamio/eslint-config": "workspace:",
+		"@naamio/typescript-config": "workspace:",
 		"@types/node": "catalog:",
 		"eslint": "catalog:",
 		"tsc-alias": "catalog:",

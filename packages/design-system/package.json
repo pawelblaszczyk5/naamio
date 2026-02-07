@@ -30,14 +30,14 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@naamio/assert": "workspace:*",
-		"@naamio/stylex": "workspace:*",
+		"@naamio/assert": "workspace:",
+		"@naamio/stylex": "workspace:",
 		"react": "catalog:",
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@naamio/eslint-config": "workspace:*",
-		"@naamio/typescript-config": "workspace:*",
+		"@naamio/eslint-config": "workspace:",
+		"@naamio/typescript-config": "workspace:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"eslint": "catalog:",

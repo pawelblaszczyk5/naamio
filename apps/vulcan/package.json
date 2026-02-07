@@ -16,8 +16,8 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@naamio/design-system": "workspace:*",
-		"@naamio/stylex": "workspace:*",
+		"@naamio/design-system": "workspace:",
+		"@naamio/stylex": "workspace:",
 		"react": "catalog:",
 		"react-dom": "catalog:"
 	},
@@ -25,8 +25,8 @@
 		"@babel/plugin-syntax-jsx": "catalog:",
 		"@babel/preset-typescript": "catalog:",
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
-		"@naamio/eslint-config": "workspace:*",
-		"@naamio/typescript-config": "workspace:*",
+		"@naamio/eslint-config": "workspace:",
+		"@naamio/typescript-config": "workspace:",
 		"@storybook/addon-a11y": "^10.2.7",
 		"@storybook/addon-docs": "^10.2.7",
 		"@storybook/react-vite": "^10.2.7",

@@ -38,8 +38,8 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.17.5
   "@stylexjs/postcss-plugin": ^0.17.5
   "@stylexjs/stylex": ^0.17.5
-  react: 19.3.0-canary-f93b9fd4-20251217
-  react-dom: 19.3.0-canary-f93b9fd4-20251217
+  react: 19.3.0-canary-65db1000-20260206
+  react-dom: 19.3.0-canary-65db1000-20260206
   tsc-alias: ^1.8.16
   wait-on: ^9.0.3
 

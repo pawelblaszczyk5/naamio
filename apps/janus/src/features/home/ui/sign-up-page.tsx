@@ -60,7 +60,7 @@ export const SignUpPage = () => {
 					{...stylex.props(styles.input)}
 				/>
 				<label htmlFor={displayNameFieldId}>
-					<Trans>Display name</Trans>
+					<Trans>Device name</Trans>
 				</label>
 				<input
 					onChange={(event) => {

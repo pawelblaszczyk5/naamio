@@ -77,8 +77,8 @@ msgid "Sign up page"
 msgstr "Sign up page"
 
 #: src/features/home/ui/sign-up-page.tsx:63
-msgid "Display name"
-msgstr "Display name"
+msgid "Device name"
+msgstr "Device name"
 
 #: src/features/user/ui/settings-page.tsx:33
 msgid "Your username: {username}"

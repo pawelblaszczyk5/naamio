@@ -11,7 +11,13 @@ import type {
 	UserMessageModel,
 } from "@naamio/schema/domain";
 
-type UserMessageParts = Pick<TextMessagePartModel, "data" | "id" | "type">;
+interface TextMessagePart {
+	data: TextMessagePartModel["data"];
+	id: TextMessagePartModel["id"];
+	type: TextMessagePartModel["type"];
+}
+
+type UserMessageParts = TextMessagePart;
 
 interface RootUserMessage {
 	id: UserMessageModel["id"];
@@ -24,7 +30,9 @@ interface UserMessage {
 	parts: Array<UserMessageParts>;
 }
 
-type AgentMessage = Pick<AgentMessageModel, "id">;
+interface AgentMessage {
+	id: AgentMessageModel["id"];
+}
 
 export class Chat extends Context.Tag("@naamio/mercury/Chat")<
 	Chat,

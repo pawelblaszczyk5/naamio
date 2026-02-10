@@ -58,6 +58,14 @@ export class Chat extends Context.Tag("@naamio/mercury/Chat")<
 				EmptyUserMessageError | MissingConversationError,
 				CurrentSession
 			>;
+			interruptGeneration: (data: {
+				conversationId: ConversationModel["id"];
+				messageId: AgentMessageModel["id"];
+			}) => Effect.Effect<
+				{ transactionId: TransactionId },
+				MissingConversationError | MissingMessageError,
+				CurrentSession
+			>;
 			regenerateAnswer: (data: {
 				conversationId: ConversationModel["id"];
 				messageId: UserMessageModel["id"];

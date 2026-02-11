@@ -102,7 +102,7 @@ export class AgentMessageModel extends Model.Class<AgentMessageModel>("@naamio/s
 	id: AgentMessageId,
 	parentId: UserMessageId,
 	role: Schema.tag("AGENT"),
-	status: Schema.Literal("IN_PROGRESS", "STOPPED", "FINISHED", "ERROR"),
+	status: Schema.Literal("IN_PROGRESS", "INTERRUPTED", "FINISHED", "ERROR"),
 }) {}
 
 const BaseMessagePartFields = { createdAt: Model.DateTimeInsertFromDate };

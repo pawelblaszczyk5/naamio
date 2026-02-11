@@ -1,6 +1,6 @@
 import type { Effect } from "effect";
 
-import { Context, Schema } from "effect";
+import { Context } from "effect";
 
 import type { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 import type {
@@ -10,6 +10,12 @@ import type {
 	TransactionId,
 	UserMessageModel,
 } from "@naamio/schema/domain";
+
+import type {
+	EmptyUserMessageError,
+	MissingConversationError,
+	MissingMessageError,
+} from "#src/features/chat/errors.js";
 
 interface TextMessagePart {
 	data: TextMessagePartModel["data"];
@@ -33,18 +39,6 @@ interface UserMessage {
 interface AgentMessage {
 	id: AgentMessageModel["id"];
 }
-
-export class MissingConversationError extends Schema.TaggedError<MissingConversationError>(
-	"@naamio/mercury/Chat/MissingConversationError",
-)("MissingConversationError", {}) {}
-
-export class MissingMessageError extends Schema.TaggedError<MissingMessageError>(
-	"@naamio/mercury/Chat/MissingMessageError",
-)("MissingMessageError", {}) {}
-
-export class EmptyUserMessageError extends Schema.TaggedError<EmptyUserMessageError>(
-	"@naamio/mercury/Chat/EmptyUserMessageError",
-)("EmptyUserMessageError", {}) {}
 
 export class Chat extends Context.Tag("@naamio/mercury/Chat")<
 	Chat,

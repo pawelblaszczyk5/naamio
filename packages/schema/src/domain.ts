@@ -38,7 +38,7 @@ export class PasskeyModel extends Model.Class<PasskeyModel>("@naamio/schema/Pass
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("PassKeyId"))),
 	publicKey: Schema.String.pipe(Schema.Redacted),
 	transports: Model.FieldOption(Schema.compose(Schema.split(","), Schema.Array(AuthenticatorTransport))),
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 }) {}
 
 export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/SessionModel")({
@@ -46,10 +46,10 @@ export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Sess
 	deviceLabel: Model.FieldOption(Schema.NonEmptyTrimmedString.pipe(Schema.maxLength(64))),
 	expiresAt: DateTimeFromDate,
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("SessionId"))),
-	passkeyId: PasskeyModel.fields.id,
+	passkeyId: PasskeyModel.select.fields.id,
 	revokedAt: Model.FieldOption(DateTimeFromDate),
 	signature: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 }) {}
 
 const BaseWebAuthnChallengeFields = { challengeValue: Schema.String, expiresAt: DateTimeFromDate };
@@ -58,10 +58,10 @@ export class WebAuthnRegistrationChallengeModel extends Model.Class<WebAuthnRegi
 	"@naamio/schema/WebAuthnRegistrationChallengeModel",
 )({
 	...BaseWebAuthnChallengeFields,
-	displayName: PasskeyModel.fields.displayName,
+	displayName: PasskeyModel.select.fields.displayName,
 	id: Id.pipe(Schema.brand("WebAuthnRegistrationChallengeId")),
 	type: Schema.tag("REGISTRATION"),
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 }) {}
 
 export class WebAuthnAuthenticationChallengeModel extends Model.Class<WebAuthnAuthenticationChallengeModel>(
@@ -70,7 +70,7 @@ export class WebAuthnAuthenticationChallengeModel extends Model.Class<WebAuthnAu
 	...BaseWebAuthnChallengeFields,
 	id: Id.pipe(Schema.brand("WebAuthnAuthenticationChallengeId")),
 	type: Schema.tag("AUTHENTICATION"),
-	userId: Model.FieldOption(UserModel.fields.id),
+	userId: Model.FieldOption(UserModel.select.fields.id),
 }) {}
 
 export class ConversationModel extends Model.Class<ConversationModel>("@naamio/schema/ConversationModel")({
@@ -78,13 +78,13 @@ export class ConversationModel extends Model.Class<ConversationModel>("@naamio/s
 	id: Id.pipe(Schema.brand("ConversationId")),
 	title: Model.FieldOption(Schema.NonEmptyTrimmedString.pipe(Schema.length({ max: 50, min: 3 }))),
 	updatedAt: DateTimeFromDate,
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 }) {}
 
 const BaseMessageFields = {
-	conversationId: ConversationModel.fields.id,
+	conversationId: ConversationModel.select.fields.id,
 	createdAt: Model.DateTimeInsertFromDate,
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 };
 
 const UserMessageId = Id.pipe(Schema.brand("UserMessageId"));
@@ -115,7 +115,7 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
 	type: Schema.tag("TEXT"),
-	userId: UserModel.fields.id,
+	userId: UserModel.select.fields.id,
 }) {}
 
 export class MessagePartChunkModel extends Model.Class<MessagePartChunkModel>("@naamio/schema/MessagePartChunkModel")({

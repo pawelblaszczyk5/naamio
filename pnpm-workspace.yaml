@@ -21,7 +21,7 @@ catalog:
   "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
   effect: ^3.19.16
-  "@electric-sql/client": ^1.5.3
+  "@electric-sql/client": ^1.5.4
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.2.3
   eslint: ^9.39.2
@@ -41,7 +41,7 @@ catalog:
   react: 19.3.0-canary-b07aa7d6-20260209
   react-dom: 19.3.0-canary-b07aa7d6-20260209
   tsc-alias: ^1.8.16
-  wait-on: ^9.0.3
+  wait-on: ^9.0.4
 
 allowBuilds:
   "@parcel/watcher": true

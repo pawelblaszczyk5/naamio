@@ -46,8 +46,8 @@ catalogs:
       specifier: ^0.16.0
       version: 0.16.0
     '@electric-sql/client':
-      specifier: ^1.5.3
-      version: 1.5.3
+      specifier: ^1.5.4
+      version: 1.5.4
     '@fontsource-variable/ibm-plex-sans':
       specifier: ^5.2.8
       version: 5.2.8
@@ -103,8 +103,8 @@ catalogs:
       specifier: ^4.0.18
       version: 4.0.18
     wait-on:
-      specifier: ^9.0.3
-      version: 9.0.3
+      specifier: ^9.0.4
+      version: 9.0.4
 
 overrides:
   '@effect/vitest>vitest': ^4.0.18
@@ -165,7 +165,7 @@ importers:
         version: 0.104.1(@effect/cluster@0.56.3(@effect/platform@0.94.4(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/workflow@0.16.0(@effect/experimental@0.58.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/sql@0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(effect@3.19.16)
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.3
+        version: 1.5.4
       '@hono/node-server':
         specifier: ^1.19.9
         version: 1.19.9(hono@4.11.9)
@@ -209,11 +209,11 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@tanstack/electric-db-collection':
-        specifier: ^0.2.31
-        version: 0.2.31(typescript@5.9.3)
+        specifier: ^0.2.33
+        version: 0.2.33(typescript@5.9.3)
       '@tanstack/react-db':
-        specifier: ^0.1.69
-        version: 0.1.69(react@19.3.0-canary-b07aa7d6-20260209)(typescript@5.9.3)
+        specifier: ^0.1.70
+        version: 0.1.70(react@19.3.0-canary-b07aa7d6-20260209)(typescript@5.9.3)
       '@tanstack/react-router':
         specifier: ^1.159.5
         version: 1.159.5(react-dom@19.3.0-canary-b07aa7d6-20260209(react@19.3.0-canary-b07aa7d6-20260209))(react@19.3.0-canary-b07aa7d6-20260209)
@@ -310,7 +310,7 @@ importers:
         version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.2.3)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)
       wait-on:
         specifier: 'catalog:'
-        version: 9.0.3
+        version: 9.0.4
 
   apps/mercury:
     dependencies:
@@ -340,7 +340,7 @@ importers:
         version: 0.16.0(@effect/experimental@0.58.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(@effect/rpc@0.73.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(effect@3.19.16)
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.3
+        version: 1.5.4
       '@naamio/api':
         specifier: 'workspace:'
         version: link:../../packages/api
@@ -389,7 +389,7 @@ importers:
         version: 9.39.2(jiti@2.6.1)
       wait-on:
         specifier: 'catalog:'
-        version: 9.0.3
+        version: 9.0.4
 
   apps/minerva:
     devDependencies:
@@ -407,7 +407,7 @@ importers:
         version: 0.112.0
       vitepress:
         specifier: 2.0.0-alpha.16
-        version: 2.0.0-alpha.16(@types/node@25.2.3)(axios@1.13.2)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.30.2)(oxc-minify@0.112.0)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
+        version: 2.0.0-alpha.16(@types/node@25.2.3)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.30.2)(oxc-minify@0.112.0)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
 
   apps/vulcan:
     dependencies:
@@ -689,7 +689,7 @@ importers:
         version: 0.49.0(@effect/experimental@0.58.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16))(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16)
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.3
+        version: 1.5.4
       effect:
         specifier: 'catalog:'
         version: 3.19.16
@@ -1418,8 +1418,8 @@ packages:
       '@effect/rpc': ^0.73.0
       effect: ^3.19.13
 
-  '@electric-sql/client@1.5.3':
-    resolution: {integrity: sha512-hIF7Weuh5z68twXMxDW6nWGPZoSCdWc3/UI+tFM2AEiPAq1NRgO2YgF9bZEp4U2ZJ8TREnL0u3fIDDx9rltDsw==}
+  '@electric-sql/client@1.5.4':
+    resolution: {integrity: sha512-+ehU+js7M0XCMhV6tm+Uwg4NGPQcPXyC+9bQfmRqAgWeOYNIJZOEgj25yS4z9yJ5jkedq/Xb4BbjDR7PqxchBw==}
 
   '@emnapi/core@1.7.1':
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
@@ -2863,13 +2863,13 @@ packages:
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/db@0.5.25':
-    resolution: {integrity: sha512-VqVchs6Mm4rw2GyiOkaoD+PJw6lCJT8EI/TzPu8KWZy3QxyOlilpMvEuDTCl0LZdp1iLYlQT1NdgDg0gimV3kQ==}
+  '@tanstack/db@0.5.26':
+    resolution: {integrity: sha512-W8h4P/7Qm8URl9gk6AI/FQi4k9e713SViG4kZJAmiTzFRJRAlodApZAOb35VB9U/eORgyTfNs4gdUtyv3iBjbA==}
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/electric-db-collection@0.2.31':
-    resolution: {integrity: sha512-QQeMrl3Go+nq99Gj/X0kN7uC8nYbZkIEbPhwMnCCE/w03q2h1iNkbRY3X1sjWxP+CPvlsitlExd3djKGm2gapg==}
+  '@tanstack/electric-db-collection@0.2.33':
+    resolution: {integrity: sha512-lkBIt+fIL/AF7Ytq0naHHFe1lDqotQwj3Zv++kOOEKGy/sOSonuWHsqhWqgbjag4ItpaCYCx5U/fNJdDUPcylQ==}
 
   '@tanstack/history@1.154.14':
     resolution: {integrity: sha512-xyIfof8eHBuub1CkBnbKNKQXeRZC4dClhmzePHVOEel4G7lk/dW+TQ16da7CFdeNLv6u6Owf5VoBQxoo6DFTSA==}
@@ -2879,8 +2879,8 @@ packages:
     resolution: {integrity: sha512-3PouiFjR4B6x1c969/Pl4ZIJleof1M0n6fNX8NRiC9Sqv1g06CVDlEaXUR4212ycGFyfq4q+t8Gi37Xy+z34iQ==}
     engines: {node: '>=18'}
 
-  '@tanstack/react-db@0.1.69':
-    resolution: {integrity: sha512-rqhajRK5InIEKT9RABE9zNbYZL5NGkySjGNVANyilu/ADFHV8rhtkMEnhHcbrzv0grIKpcSlx1AvTgJNbbzjkw==}
+  '@tanstack/react-db@0.1.70':
+    resolution: {integrity: sha512-OISznZtrjkbyktbAoj/2KyFf9Xv9vr7JfkQO4od4eH76X+vQXYZkVgs2IV5sM27YNatOyf1Or4BEELIbyYB4xA==}
     peerDependencies:
       react: 19.3.0-canary-b07aa7d6-20260209
 
@@ -3611,8 +3611,8 @@ packages:
     resolution: {integrity: sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==}
     engines: {node: '>=4'}
 
-  axios@1.13.2:
-    resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -5250,6 +5250,9 @@ packages:
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
@@ -6860,8 +6863,8 @@ packages:
       typescript:
         optional: true
 
-  wait-on@9.0.3:
-    resolution: {integrity: sha512-13zBnyYvFDW1rBvWiJ6Av3ymAaq8EDQuvxZnPIw3g04UqGi4TyoIJABmfJ6zrvKo9yeFQExNkOk7idQbDJcuKA==}
+  wait-on@9.0.4:
+    resolution: {integrity: sha512-k8qrgfwrPVJXTeFY8tl6BxVHiclK11u72DVKhpybHfUL/K6KM4bdyK9EhIVYGytB5MJe/3lq4Tf0hrjM+pvJZQ==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -7636,7 +7639,7 @@ snapshots:
       '@effect/rpc': 0.73.0(@effect/platform@0.94.4(effect@3.19.16))(effect@3.19.16)
       effect: 3.19.16
 
-  '@electric-sql/client@1.5.3':
+  '@electric-sql/client@1.5.4':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
     optionalDependencies:
@@ -8896,18 +8899,18 @@ snapshots:
       sorted-btree: 1.8.1
       typescript: 5.9.3
 
-  '@tanstack/db@0.5.25(typescript@5.9.3)':
+  '@tanstack/db@0.5.26(typescript@5.9.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@tanstack/db-ivm': 0.1.17(typescript@5.9.3)
       '@tanstack/pacer-lite': 0.2.1
       typescript: 5.9.3
 
-  '@tanstack/electric-db-collection@0.2.31(typescript@5.9.3)':
+  '@tanstack/electric-db-collection@0.2.33(typescript@5.9.3)':
     dependencies:
-      '@electric-sql/client': 1.5.3
+      '@electric-sql/client': 1.5.4
       '@standard-schema/spec': 1.1.0
-      '@tanstack/db': 0.5.25(typescript@5.9.3)
+      '@tanstack/db': 0.5.26(typescript@5.9.3)
       '@tanstack/store': 0.8.0
       debug: 4.4.3
     transitivePeerDependencies:
@@ -8918,9 +8921,9 @@ snapshots:
 
   '@tanstack/pacer-lite@0.2.1': {}
 
-  '@tanstack/react-db@0.1.69(react@19.3.0-canary-b07aa7d6-20260209)(typescript@5.9.3)':
+  '@tanstack/react-db@0.1.70(react@19.3.0-canary-b07aa7d6-20260209)(typescript@5.9.3)':
     dependencies:
-      '@tanstack/db': 0.5.25(typescript@5.9.3)
+      '@tanstack/db': 0.5.26(typescript@5.9.3)
       react: 19.3.0-canary-b07aa7d6-20260209
       use-sync-external-store: 1.6.0(react@19.3.0-canary-b07aa7d6-20260209)
     transitivePeerDependencies:
@@ -9643,13 +9646,13 @@ snapshots:
       '@vueuse/shared': 14.1.0(vue@3.5.27(typescript@5.9.3))
       vue: 3.5.27(typescript@5.9.3)
 
-  '@vueuse/integrations@14.1.0(axios@1.13.2)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.27(typescript@5.9.3))':
+  '@vueuse/integrations@14.1.0(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@vueuse/core': 14.1.0(vue@3.5.27(typescript@5.9.3))
       '@vueuse/shared': 14.1.0(vue@3.5.27(typescript@5.9.3))
       vue: 3.5.27(typescript@5.9.3)
     optionalDependencies:
-      axios: 1.13.2
+      axios: 1.13.5
       change-case: 5.4.4
       focus-trap: 7.8.0
 
@@ -9799,7 +9802,7 @@ snapshots:
 
   axe-core@4.11.0: {}
 
-  axios@1.13.2:
+  axios@1.13.5:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
@@ -11643,6 +11646,8 @@ snapshots:
 
   lodash@4.17.21: {}
 
+  lodash@4.17.23: {}
+
   log-symbols@4.1.0:
     dependencies:
       chalk: 4.1.2
@@ -13442,7 +13447,7 @@ snapshots:
     optionalDependencies:
       vite: rolldown-vite@7.3.1(@types/node@25.2.3)(esbuild@0.27.2)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2)
 
-  vitepress@2.0.0-alpha.16(@types/node@25.2.3)(axios@1.13.2)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.30.2)(oxc-minify@0.112.0)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2):
+  vitepress@2.0.0-alpha.16(@types/node@25.2.3)(axios@1.13.5)(change-case@5.4.4)(jiti@2.6.1)(lightningcss@1.30.2)(oxc-minify@0.112.0)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2):
     dependencies:
       '@docsearch/css': 4.5.3
       '@docsearch/js': 4.5.3
@@ -13456,7 +13461,7 @@ snapshots:
       '@vue/devtools-api': 8.0.5
       '@vue/shared': 3.5.27
       '@vueuse/core': 14.1.0(vue@3.5.27(typescript@5.9.3))
-      '@vueuse/integrations': 14.1.0(axios@1.13.2)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.27(typescript@5.9.3))
+      '@vueuse/integrations': 14.1.0(axios@1.13.5)(change-case@5.4.4)(focus-trap@7.8.0)(vue@3.5.27(typescript@5.9.3))
       focus-trap: 7.8.0
       mark.js: 8.11.1
       minisearch: 7.2.0
@@ -13543,11 +13548,11 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  wait-on@9.0.3:
+  wait-on@9.0.4:
     dependencies:
-      axios: 1.13.2
+      axios: 1.13.5
       joi: 18.0.2
-      lodash: 4.17.21
+      lodash: 4.17.23
       minimist: 1.2.8
       rxjs: 7.8.2
     transitivePeerDependencies:

@@ -111,9 +111,17 @@ const SharedMessageId = Schema.Union(UserMessageId, AgentMessageId);
 
 export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@naamio/schema/TextMessagePartModel")({
 	...BaseMessagePartFields,
-	data: Schema.Struct({ text: Schema.String }),
+	data: Schema.Struct({ text: Schema.String.pipe(Schema.optionalWith({ as: "Option", exact: true })) }),
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
 	type: Schema.tag("TEXT"),
 	userId: UserModel.fields.id,
+}) {}
+
+export class MessagePartChunkModel extends Model.Class<MessagePartChunkModel>("@naamio/schema/MessagePartChunkModel")({
+	content: Schema.String,
+	id: Id.pipe(Schema.brand("MessagePartChunkId")),
+	messagePartId: Schema.Union(TextMessagePartModel.select.fields.id),
+	sequence: Schema.Int,
+	userId: UserModel.select.fields.id,
 }) {}

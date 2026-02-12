@@ -38,6 +38,16 @@ const migration = Effect.gen(function* () {
 			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
+
+	yield* sql`
+		CREATE TABLE ${sql("messagePartChunk")} (
+			${sql("id")} TEXT PRIMARY KEY,
+			${sql("messagePartId")} TEXT NOT NULL REFERENCES ${sql("messagePart")} (${sql("id")}),
+			${sql("content")} TEXT NOT NULL,
+			${sql("sequence")} SMALLINT NOT NULL,
+			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
+		);
+	`;
 });
 
 export const chatMigration = [2, "chat", Effect.succeed(migration)] satisfies Migrator.ResolvedMigration;

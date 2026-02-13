@@ -2,7 +2,6 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
-		"effectful-tech.effect-vscode",
 		"mrorz.language-gettext",
 		"streetsidesoftware.code-spell-checker",
 		"antfu.pnpm-catalog-lens"

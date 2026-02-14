@@ -1,4 +1,4 @@
-# Chat
+# Overview
 
 Naturally, the main focus of the app that allows talking to models via text is the chat module. Because of this I have a lot of ideas to make the experience here the best possible. There're some more novel things I'd like to try and see how they turn out working.
 

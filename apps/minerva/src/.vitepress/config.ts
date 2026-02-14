@@ -31,7 +31,16 @@ export default defineConfig({
 					{ link: "/development/intro", text: "Intro" },
 					{ link: "/development/architecture", text: "Architecture" },
 					{ link: "/development/auth", text: "Auth" },
-					{ link: "/development/chat", text: "Chat" },
+					{
+						collapsed: false,
+						items: [
+							{ link: "/development/chat/overview", text: "Overview" },
+							{ link: "/development/chat/flow", text: "Flow" },
+							{ link: "/development/chat/routing", text: "Routing" },
+							{ link: "/development/chat/context-compaction", text: "Context compaction" },
+						],
+						text: "Chat",
+					},
 				],
 				text: "Development",
 			},

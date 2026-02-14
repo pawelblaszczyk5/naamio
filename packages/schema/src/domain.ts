@@ -118,12 +118,10 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	userId: UserModel.select.fields.id,
 }) {}
 
-export class InflightMessagePartChunkModel extends Model.Class<InflightMessagePartChunkModel>(
-	"@naamio/schema/InflightMessagePartChunkModel",
-)({
-	content: Schema.String,
-	id: Id.pipe(Schema.brand("InflightMessagePartChunkId")),
+export class InflightChunkModel extends Model.Class<InflightChunkModel>("@naamio/schema/InflightChunkModel")({
+	id: Id.pipe(Schema.brand("InflightChunkId")),
 	messagePartId: Schema.Union(TextMessagePartModel.select.fields.id),
 	sequence: Schema.Int.pipe(Schema.positive()),
+	text: Schema.String,
 	userId: UserModel.select.fields.id,
 }) {}

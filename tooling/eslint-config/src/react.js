@@ -107,6 +107,7 @@ export default defineConfig({
 		"react-naming-convention/use-state": "error",
 		"react-naming-convention/ref-name": "error",
 		"react-naming-convention/context-name": "error",
+		"react-naming-convention/id-name": "error",
 
 		// stylistic
 		"stylistic/jsx-curly-brace-presence": ["error", { propElementValues: "always", children: "never", props: "never" }],

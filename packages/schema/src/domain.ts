@@ -118,11 +118,11 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	userId: UserModel.select.fields.id,
 }) {}
 
-export class StreamedMessagePartChunkModel extends Model.Class<StreamedMessagePartChunkModel>(
-	"@naamio/schema/StreamedMessagePartChunkModel",
+export class InflightMessagePartChunkModel extends Model.Class<InflightMessagePartChunkModel>(
+	"@naamio/schema/InflightMessagePartChunkModel",
 )({
 	content: Schema.String,
-	id: Id.pipe(Schema.brand("StreamedMessagePartChunkId")),
+	id: Id.pipe(Schema.brand("InflightMessagePartChunkId")),
 	messagePartId: Schema.Union(TextMessagePartModel.select.fields.id),
 	sequence: Schema.Int.pipe(Schema.positive()),
 	userId: UserModel.select.fields.id,

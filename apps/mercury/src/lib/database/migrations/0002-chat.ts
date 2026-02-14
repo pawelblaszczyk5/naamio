@@ -40,7 +40,7 @@ const migration = Effect.gen(function* () {
 	`;
 
 	yield* sql`
-		CREATE TABLE ${sql("streamedMessagePartChunk")} (
+		CREATE TABLE ${sql("inflightMessagePartChunk")} (
 			${sql("id")} TEXT PRIMARY KEY,
 			${sql("messagePartId")} TEXT NOT NULL REFERENCES ${sql("messagePart")} (${sql("id")}),
 			${sql("content")} TEXT NOT NULL,

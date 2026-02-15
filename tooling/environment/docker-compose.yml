@@ -27,6 +27,9 @@ services:
     environment:
       DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
       ELECTRIC_SECRET: example_electric_secret_123
+      ELECTRIC_STORAGE_DIR: /var/lib/electric/persistent
+    volumes:
+      - electric_data:/var/lib/electric/persistent
     depends_on:
       - postgres
 
@@ -47,3 +50,4 @@ services:
 volumes:
   postgres_data:
   otel_data:
+  electric_data:

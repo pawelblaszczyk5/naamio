@@ -54,14 +54,14 @@ export interface InterruptGenerationInput {
 }
 
 export interface UserMessageForGeneration {
-	id: UserMessageModel['id'];
+	id: UserMessageModel["id"];
 	parentId: UserMessageModel["parentId"];
 	parts: Array<DistributedPick<TextMessagePartModel, "createdAt" | "data" | "type">>;
 	role: UserMessageModel["role"];
 }
 
 export interface AgentMessageForGeneration {
-	id: AgentMessageModel['id'];
+	id: AgentMessageModel["id"];
 	parentId: AgentMessageModel["parentId"];
 	parts: Array<DistributedPick<StepCompletionPartModel | TextMessagePartModel, "createdAt" | "data" | "type">>;
 	role: AgentMessageModel["role"];

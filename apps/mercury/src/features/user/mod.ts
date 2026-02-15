@@ -99,10 +99,14 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 			return User.of({
 				system: {
 					confirm: Effect.fn("@naamio/mercury/User#confirm")(function* (id) {
-						yield* updateConfirmedAtForUserId({ confirmedAt: Option.some(yield* DateTime.now), id }).pipe(Effect.orDie);
+						yield* updateConfirmedAtForUserId({ confirmedAt: Option.some(yield* DateTime.now), id }).pipe(
+							Effect.catchTag("ParseError", "SqlError", Effect.die),
+						);
 					}),
 					create: Effect.fn("@naamio/mercury/User#create")(function* (data) {
-						const maybeExistingUserWithUsername = yield* findUserByUsername(data.username).pipe(Effect.orDie);
+						const maybeExistingUserWithUsername = yield* findUserByUsername(data.username).pipe(
+							Effect.catchTag("ParseError", "SqlError", Effect.die),
+						);
 
 						if (Option.isSome(maybeExistingUserWithUsername)) {
 							return yield* new UsernameTakenError();
@@ -118,7 +122,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 							language: data.language,
 							username: data.username,
 							webAuthnId,
-						}).pipe(Effect.orDie);
+						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 						return { id, username: data.username, webAuthnId };
 					}),
@@ -127,10 +131,15 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 							Effect.map(DateTime.subtractDuration(UNCONFIRMED_USERS_DELETION_CUTOFF)),
 						);
 
-						yield* deleteUnconfirmedUsersCreatedBefore(cutoff).pipe(Effect.orDie);
+						yield* deleteUnconfirmedUsersCreatedBefore(cutoff).pipe(
+							Effect.catchTag("ParseError", "SqlError", Effect.die),
+						);
 					}),
 					findIdByUsername: Effect.fn("@naamio/mercury/User#findIdByUsername")(function* (username) {
-						return yield* findUserByUsername(username).pipe(Effect.map(Option.map((user) => user.id)), Effect.orDie);
+						return yield* findUserByUsername(username).pipe(
+							Effect.map(Option.map((user) => user.id)),
+							Effect.catchTag("ParseError", "SqlError", Effect.die),
+						);
 					}),
 				},
 				viewer: {
@@ -138,9 +147,11 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 						function* (language) {
 							const currentSession = yield* CurrentSession;
 
-							yield* updateLanguageForUserId({ id: currentSession.userId, language }).pipe(Effect.orDie);
+							yield* updateLanguageForUserId({ id: currentSession.userId, language }).pipe(
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
+							);
 
-							const transactionId = yield* getTransactionId().pipe(Effect.orDie);
+							const transactionId = yield* getTransactionId();
 
 							return { transactionId };
 						},

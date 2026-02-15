@@ -160,7 +160,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							revokedAt: Option.none(),
 							signature,
 							userId: data.userId,
-						}).pipe(Effect.orDie);
+						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 						return { expiresAt, token };
 					}),
@@ -174,7 +174,9 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							return Option.none();
 						}
 
-						const maybeSession = yield* findByIdForRetrievalFromToken(maybeId.value).pipe(Effect.orDie);
+						const maybeSession = yield* findByIdForRetrievalFromToken(maybeId.value).pipe(
+							Effect.catchTag("ParseError", "SqlError", Effect.die),
+						);
 
 						if (Option.isNone(maybeSession)) {
 							return Option.none();
@@ -206,7 +208,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							const currentSession = yield* CurrentSession;
 
 							const maybeSession = yield* findByIdForRevocation({ id, userId: currentSession.userId }).pipe(
-								Effect.orDie,
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 
 							if (Option.isNone(maybeSession)) {
@@ -224,9 +226,9 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 								id: maybeSession.value.id,
 								revokedAt: Option.some(yield* DateTime.now),
 								userId: currentSession.userId,
-							}).pipe(Effect.orDie);
+							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
-							const transactionId = yield* getTransactionId().pipe(Effect.orDie);
+							const transactionId = yield* getTransactionId();
 
 							return { transactionId };
 						},
@@ -239,7 +241,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						yield* revokeAllSessions({
 							revokedAt: Option.some(yield* DateTime.now),
 							userId: currentSession.userId,
-						}).pipe(Effect.orDie);
+						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 					}),
 					verify: Effect.fn("@naamio/mercury/Session#verify")(function* () {
 						const currentSession = yield* CurrentSession;
@@ -262,7 +264,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							expiresAt: newExpiration,
 							id: currentSession.id,
 							userId: currentSession.userId,
-						}).pipe(Effect.orDie);
+						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 						return { expiresAt: newExpiration, id: currentSession.id, refreshed: true };
 					}),

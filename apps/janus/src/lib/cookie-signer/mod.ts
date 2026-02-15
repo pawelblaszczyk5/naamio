@@ -49,7 +49,7 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 					return value;
 				}),
 				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* (schema, value, secrets) {
-					const stringifiedValue = yield* Schema.encode(schema)(value).pipe(Effect.orDie);
+					const stringifiedValue = yield* Schema.encode(schema)(value).pipe(Effect.catchTag("ParseError", Effect.die));
 					const base64Value = Encoding.encodeBase64Url(stringifiedValue);
 					const secretToUse = Array.isArray(secrets) ? Array.lastNonEmpty(secrets) : secrets;
 

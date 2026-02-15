@@ -1,5 +1,4 @@
 import type { WebAuthnCredential } from "@simplewebauthn/server";
-import type { ParseResult } from "effect";
 
 import { ClusterCron } from "@effect/cluster";
 import { SqlSchema } from "@effect/sql";
@@ -246,7 +245,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					deleteExpiredChallenges: Effect.fn("@naamio/mercury/WebAuthn#deleteExpiredChallenges")(function* () {
 						const now = yield* DateTime.now;
 
-						yield* deleteChallengesExpiredBefore(now).pipe(Effect.orDie);
+						yield* deleteChallengesExpiredBefore(now).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 					}),
 					generateAuthenticationOptions: Effect.fn("@naamio/mercury/WebAuthn#generateAuthenticationOptions")(
 						function* (maybeUserId) {
@@ -262,7 +261,9 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 									);
 								}),
 								onSome: Effect.fn(function* (userId) {
-									const passkeys = yield* findPasskeysByUserIdForAuthentication(userId).pipe(Effect.orDie);
+									const passkeys = yield* findPasskeysByUserIdForAuthentication(userId).pipe(
+										Effect.catchTag("ParseError", "SqlError", Effect.die),
+									);
 
 									return yield* Effect.promise(async () =>
 										generateAuthenticationOptions({
@@ -281,8 +282,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 								}),
 							}).pipe(
 								Effect.flatMap(Schema.decode(WebAuthnAuthenticationOptions)),
-								Effect.ensureErrorType<ParseResult.ParseError>(),
-								Effect.orDie,
+								Effect.catchTag("ParseError", Effect.die),
 							);
 
 							const challengeId = WebAuthnAuthenticationChallengeModel.fields.id.make(yield* generateId());
@@ -297,7 +297,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 								id: challengeId,
 								type: "AUTHENTICATION",
 								userId: maybeUserId,
-							}).pipe(Effect.orDie);
+							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 							return { authenticationOptions, challengeId, expiresAt: challengeExpiration };
 						},
@@ -316,8 +316,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 								}),
 							).pipe(
 								Effect.flatMap(Schema.decode(WebAuthnRegistrationOptions)),
-								Effect.ensureErrorType<ParseResult.ParseError>(),
-								Effect.orDie,
+								Effect.catchTag("ParseError", Effect.die),
 							);
 
 							const challengeId = WebAuthnRegistrationChallengeModel.fields.id.make(yield* generateId());
@@ -333,7 +332,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 								id: challengeId,
 								type: "REGISTRATION",
 								userId: data.id,
-							}).pipe(Effect.orDie);
+							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 							return { challengeId, expiresAt: challengeExpiration, registrationOptions };
 						},
@@ -341,14 +340,16 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					verifyAuthenticationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyAuthenticationResponse")(
 						function* (data) {
 							const maybeAuthenticationChallenge = yield* findAuthenticationChallengeById(data.challengeId).pipe(
-								Effect.orDie,
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 
 							if (Option.isNone(maybeAuthenticationChallenge)) {
 								return yield* new UnavailableChallengeError();
 							}
 
-							yield* deleteAuthenticationChallenge(data.challengeId).pipe(Effect.orDie);
+							yield* deleteAuthenticationChallenge(data.challengeId).pipe(
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
+							);
 
 							if (yield* DateTime.isPast(maybeAuthenticationChallenge.value.expiresAt)) {
 								return yield* new UnavailableChallengeError();
@@ -356,7 +357,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 
 							const maybePasskey = yield* findPassKeyByCredentialIdForVerification(
 								PasskeyModel.fields.credentialId.make(data.authenticationResponse.id),
-							).pipe(Effect.orDie);
+							).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 							if (Option.isNone(maybePasskey)) {
 								return yield* new MissingPasskeyError();
@@ -370,7 +371,9 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 							}
 
 							const encodedPublicKey = Uint8Array.from(
-								yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey)).pipe(Effect.orDie),
+								yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey)).pipe(
+									Effect.catchTag("DecodeException", Effect.die),
+								),
 							);
 
 							const credential: WebAuthnCredential = Option.match(maybePasskey.value.transports, {
@@ -407,7 +410,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 							yield* updatePasskeyCounter({
 								counter: BigInt(result.authenticationInfo.newCounter),
 								id: maybePasskey.value.id,
-							}).pipe(Effect.orDie);
+							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 							return { id: maybePasskey.value.id, userId: maybePasskey.value.userId };
 						},
@@ -417,14 +420,16 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					verifyRegistrationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyRegistrationResponse")(
 						function* (data) {
 							const maybeRegistrationChallenge = yield* findRegistrationChallengeById(data.challengeId).pipe(
-								Effect.orDie,
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 
 							if (Option.isNone(maybeRegistrationChallenge)) {
 								return yield* new UnavailableChallengeError();
 							}
 
-							yield* deleteRegistrationChallenge(data.challengeId).pipe(Effect.orDie);
+							yield* deleteRegistrationChallenge(data.challengeId).pipe(
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
+							);
 
 							if (yield* DateTime.isPast(maybeRegistrationChallenge.value.expiresAt)) {
 								return yield* new UnavailableChallengeError();
@@ -465,7 +470,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 								publicKey: Redacted.make(encodedPublicKey),
 								transports: Option.fromNullable(result.registrationInfo.credential.transports),
 								userId: maybeRegistrationChallenge.value.userId,
-							}).pipe(Effect.orDie);
+							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
 							return { id: passkeyId, userId: maybeRegistrationChallenge.value.userId };
 						},

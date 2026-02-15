@@ -52,6 +52,11 @@ export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Sess
 	userId: UserModel.select.fields.id,
 }) {}
 
+export const WebAuthnChallengeType = Schema.Enums({
+	AUTHENTICATION: "AUTHENTICATION" as const,
+	REGISTRATION: "REGISTRATION" as const,
+});
+
 const BaseWebAuthnChallengeFields = { challengeValue: Schema.String, expiresAt: DateTimeFromDate };
 
 export class WebAuthnRegistrationChallengeModel extends Model.Class<WebAuthnRegistrationChallengeModel>(
@@ -60,7 +65,7 @@ export class WebAuthnRegistrationChallengeModel extends Model.Class<WebAuthnRegi
 	...BaseWebAuthnChallengeFields,
 	displayName: PasskeyModel.select.fields.displayName,
 	id: Id.pipe(Schema.brand("WebAuthnRegistrationChallengeId")),
-	type: Schema.tag("REGISTRATION"),
+	type: Schema.tag(WebAuthnChallengeType.enums.REGISTRATION),
 	userId: UserModel.select.fields.id,
 }) {}
 
@@ -69,7 +74,7 @@ export class WebAuthnAuthenticationChallengeModel extends Model.Class<WebAuthnAu
 )({
 	...BaseWebAuthnChallengeFields,
 	id: Id.pipe(Schema.brand("WebAuthnAuthenticationChallengeId")),
-	type: Schema.tag("AUTHENTICATION"),
+	type: Schema.tag(WebAuthnChallengeType.enums.AUTHENTICATION),
 	userId: Model.FieldOption(UserModel.select.fields.id),
 }) {}
 
@@ -81,6 +86,15 @@ export class ConversationModel extends Model.Class<ConversationModel>("@naamio/s
 	updatedAt: DateTimeFromDate,
 	userId: UserModel.select.fields.id,
 }) {}
+
+export const MessageRole = Schema.Enums({ AGENT: "AGENT" as const, USER: "USER" as const });
+
+export const MessageStatus = Schema.Enums({
+	ERROR: "ERROR" as const,
+	FINISHED: "FINISHED" as const,
+	IN_PROGRESS: "IN_PROGRESS" as const,
+	INTERRUPTED: "INTERRUPTED" as const,
+});
 
 const BaseMessageFields = {
 	conversationId: ConversationModel.select.fields.id,
@@ -95,16 +109,18 @@ export class UserMessageModel extends Model.Class<UserMessageModel>("@naamio/sch
 	...BaseMessageFields,
 	id: UserMessageId,
 	parentId: Model.FieldOption(AgentMessageId),
-	role: Schema.tag("USER"),
+	role: Schema.tag(MessageRole.enums.USER),
 }) {}
 
 export class AgentMessageModel extends Model.Class<AgentMessageModel>("@naamio/schema/AgentMessageModel")({
 	...BaseMessageFields,
 	id: AgentMessageId,
 	parentId: UserMessageId,
-	role: Schema.tag("AGENT"),
-	status: Schema.Literal("IN_PROGRESS", "INTERRUPTED", "FINISHED", "ERROR"),
+	role: Schema.tag(MessageRole.enums.AGENT),
+	status: MessageStatus,
 }) {}
+
+export const MessagePartType = Schema.Enums({ STEP_COMPLETION: "STEP_COMPLETION" as const, TEXT: "TEXT" as const });
 
 const BaseMessagePartFields = { createdAt: Model.DateTimeInsertFromDate };
 
@@ -115,7 +131,7 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	data: Schema.Struct({ content: Schema.String.pipe(Schema.optionalWith({ as: "Option", exact: true })) }),
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
-	type: Schema.tag("TEXT"),
+	type: Schema.tag(MessagePartType.enums.TEXT),
 	userId: UserModel.select.fields.id,
 }) {}
 
@@ -133,7 +149,7 @@ export class StepCompletionPartModel extends Model.Class<StepCompletionPartModel
 	}),
 	id: Id.pipe(Schema.brand("StepCompletionMessagePartId")),
 	messageId: AgentMessageId,
-	type: Schema.tag("STEP_COMPLETION"),
+	type: Schema.tag(MessagePartType.enums.STEP_COMPLETION),
 	userId: UserModel.select.fields.id,
 }) {}
 

@@ -33,6 +33,7 @@ import { WebAuthnAuthenticationOptions, WebAuthnRegistrationOptions } from "@naa
 import {
 	PasskeyModel,
 	WebAuthnAuthenticationChallengeModel,
+	WebAuthnChallengeType,
 	WebAuthnRegistrationChallengeModel,
 } from "@naamio/schema/domain";
 
@@ -110,7 +111,10 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				execute: (request) => sql`
 					DELETE FROM ${sql("webAuthnChallenge")}
 					WHERE
-						${sql.and([sql`${sql("id")} = ${request}`, sql`${sql("type")} = ${"REGISTRATION"}`])};
+						${sql.and([
+							sql`${sql("id")} = ${request}`,
+							sql`${sql("type")} = ${WebAuthnChallengeType.enums.REGISTRATION}`,
+						])};
 				`,
 				Request: WebAuthnRegistrationChallengeModel.select.fields.id,
 			});
@@ -125,7 +129,10 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					FROM
 						${sql("webAuthnChallenge")}
 					WHERE
-						${sql.and([sql`${sql("id")} = ${request}`, sql`${sql("type")} = ${"REGISTRATION"}`])}
+						${sql.and([
+							sql`${sql("id")} = ${request}`,
+							sql`${sql("type")} = ${WebAuthnChallengeType.enums.REGISTRATION}`,
+						])}
 					FOR UPDATE;
 				`,
 				Request: WebAuthnRegistrationChallengeModel.select.fields.id,
@@ -144,7 +151,10 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				execute: (request) => sql`
 					DELETE FROM ${sql("webAuthnChallenge")}
 					WHERE
-						${sql.and([sql`${sql("id")} = ${request}`, sql`${sql("type")} = ${"AUTHENTICATION"}`])};
+						${sql.and([
+							sql`${sql("id")} = ${request}`,
+							sql`${sql("type")} = ${WebAuthnChallengeType.enums.AUTHENTICATION}`,
+						])};
 				`,
 				Request: WebAuthnAuthenticationChallengeModel.select.fields.id,
 			});
@@ -158,7 +168,10 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					FROM
 						${sql("webAuthnChallenge")}
 					WHERE
-						${sql.and([sql`${sql("id")} = ${request}`, sql`${sql("type")} = ${"AUTHENTICATION"}`])}
+						${sql.and([
+							sql`${sql("id")} = ${request}`,
+							sql`${sql("type")} = ${WebAuthnChallengeType.enums.AUTHENTICATION}`,
+						])}
 					FOR UPDATE;
 				`,
 				Request: WebAuthnAuthenticationChallengeModel.select.fields.id,

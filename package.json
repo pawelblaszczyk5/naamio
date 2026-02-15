@@ -7,6 +7,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "turbo run build",
+		"check-loc": "tokei --exclude pnpm-lock.yaml",
 		"ci": "turbo run build lint typecheck sort-package-json spellcheck format test effect-diagnostics --continue && turbo boundaries",
 		"ci:fix": "turbo run lint:fix sort-package-json:fix format:fix --continue",
 		"clean": "find . -type d \\( -name \".turbo\" -o -name \"node_modules\" -o -name \"dist\" \\) -prune -exec rm -rf {} +",

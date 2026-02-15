@@ -26,6 +26,6 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	),
 );
 
-const EnvironmentLive = HttpLive.pipe(Layer.provide(ObservabilityLive), Layer.merge(Jobs));
+const EnvironmentLive = HttpLive.pipe(Layer.merge(Jobs), Layer.provide(ObservabilityLive));
 
 EnvironmentLive.pipe(Layer.launch, NodeRuntime.runMain);

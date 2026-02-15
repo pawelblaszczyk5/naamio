@@ -203,8 +203,8 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					}),
 				},
 				viewer: {
-					revoke: Effect.fn("@naamio/mercury/Session#revoke")(
-						function* (id) {
+					revoke: Effect.fn("@naamio/mercury/Session#revoke")(function* (id) {
+						const transactionId = yield* Effect.gen(function* () {
 							const currentSession = yield* CurrentSession;
 
 							const maybeSession = yield* findByIdForRevocation({ id, userId: currentSession.userId }).pipe(
@@ -228,13 +228,11 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
-							const transactionId = yield* getTransactionId();
+							return yield* getTransactionId();
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
-							return { transactionId };
-						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
-					),
+						return { transactionId };
+					}),
 					revokeAll: Effect.fn("@naamio/mercury/Session#revokeAll")(function* () {
 						const currentSession = yield* CurrentSession;
 

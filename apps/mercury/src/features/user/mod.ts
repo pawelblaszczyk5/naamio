@@ -143,21 +143,19 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 					}),
 				},
 				viewer: {
-					updateLanguage: Effect.fn("@naamio/mercury/User#updateLanguage")(
-						function* (language) {
-							const currentSession = yield* CurrentSession;
+					updateLanguage: Effect.fn("@naamio/mercury/User#updateLanguage")(function* (language) {
+						const currentSession = yield* CurrentSession;
 
+						const transactionId = yield* Effect.gen(function* () {
 							yield* updateLanguageForUserId({ id: currentSession.userId, language }).pipe(
 								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 
-							const transactionId = yield* getTransactionId();
+							return yield* getTransactionId();
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
-							return { transactionId };
-						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
-					),
+						return { transactionId };
+					}),
 				},
 			});
 		}),

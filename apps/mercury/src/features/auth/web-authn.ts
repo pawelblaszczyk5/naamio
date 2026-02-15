@@ -221,6 +221,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 						${sql("passkey")}
 					WHERE
 						${sql("credentialId")} = ${request}
+					FOR UPDATE;
 				`,
 				Request: PasskeyModel.select.fields.credentialId,
 				Result: PasskeyModel.select.pick("credentialId", "publicKey", "counter", "transports", "id", "userId"),
@@ -339,143 +340,151 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					),
 					verifyAuthenticationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyAuthenticationResponse")(
 						function* (data) {
-							const maybeAuthenticationChallenge = yield* findAuthenticationChallengeById(data.challengeId).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
-							);
+							const result = yield* Effect.gen(function* () {
+								const maybeAuthenticationChallenge = yield* findAuthenticationChallengeById(data.challengeId).pipe(
+									Effect.catchTag("ParseError", "SqlError", Effect.die),
+								);
 
-							if (Option.isNone(maybeAuthenticationChallenge)) {
-								return yield* new UnavailableChallengeError();
-							}
+								if (Option.isNone(maybeAuthenticationChallenge)) {
+									return yield* new UnavailableChallengeError();
+								}
 
-							yield* deleteAuthenticationChallenge(data.challengeId).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
-							);
+								yield* deleteAuthenticationChallenge(data.challengeId).pipe(
+									Effect.catchTag("ParseError", "SqlError", Effect.die),
+								);
 
-							if (yield* DateTime.isPast(maybeAuthenticationChallenge.value.expiresAt)) {
-								return yield* new UnavailableChallengeError();
-							}
+								if (yield* DateTime.isPast(maybeAuthenticationChallenge.value.expiresAt)) {
+									return yield* new UnavailableChallengeError();
+								}
 
-							const maybePasskey = yield* findPassKeyByCredentialIdForVerification(
-								PasskeyModel.fields.credentialId.make(data.authenticationResponse.id),
-							).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+								const maybePasskey = yield* findPassKeyByCredentialIdForVerification(
+									PasskeyModel.fields.credentialId.make(data.authenticationResponse.id),
+								).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
-							if (Option.isNone(maybePasskey)) {
-								return yield* new MissingPasskeyError();
-							}
+								if (Option.isNone(maybePasskey)) {
+									return yield* new MissingPasskeyError();
+								}
 
-							if (
-								Option.isSome(maybeAuthenticationChallenge.value.userId)
-								&& maybePasskey.value.userId !== maybeAuthenticationChallenge.value.userId.value
-							) {
-								return yield* new FailedVerificationError();
-							}
+								if (
+									Option.isSome(maybeAuthenticationChallenge.value.userId)
+									&& maybePasskey.value.userId !== maybeAuthenticationChallenge.value.userId.value
+								) {
+									return yield* new FailedVerificationError();
+								}
 
-							const encodedPublicKey = Uint8Array.from(
-								yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey)).pipe(
-									Effect.catchTag("DecodeException", Effect.die),
-								),
-							);
+								const encodedPublicKey = Uint8Array.from(
+									yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey)).pipe(
+										Effect.catchTag("DecodeException", Effect.die),
+									),
+								);
 
-							const credential: WebAuthnCredential = Option.match(maybePasskey.value.transports, {
-								onNone: () => ({
-									counter: Number(maybePasskey.value.counter),
-									id: maybePasskey.value.credentialId,
-									publicKey: encodedPublicKey,
-								}),
-								onSome: (transports) => ({
-									counter: Number(maybePasskey.value.counter),
-									id: maybePasskey.value.credentialId,
-									publicKey: encodedPublicKey,
-									transports: [...transports],
-								}),
-							});
-
-							const result = yield* Effect.tryPromise({
-								catch: () => new FailedVerificationError(),
-								try: async () =>
-									verifyAuthenticationResponse({
-										credential,
-										expectedChallenge: maybeAuthenticationChallenge.value.challengeValue,
-										expectedOrigin: ORIGIN,
-										expectedRPID: RP_ID, // cspell:disable-line
-										requireUserVerification: false,
-										response: data.authenticationResponse,
+								const credential: WebAuthnCredential = Option.match(maybePasskey.value.transports, {
+									onNone: () => ({
+										counter: Number(maybePasskey.value.counter),
+										id: maybePasskey.value.credentialId,
+										publicKey: encodedPublicKey,
 									}),
-							});
+									onSome: (transports) => ({
+										counter: Number(maybePasskey.value.counter),
+										id: maybePasskey.value.credentialId,
+										publicKey: encodedPublicKey,
+										transports: [...transports],
+									}),
+								});
 
-							if (!result.verified) {
-								return yield* new FailedVerificationError();
-							}
+								const verificationResult = yield* Effect.tryPromise({
+									catch: () => new FailedVerificationError(),
+									try: async () =>
+										verifyAuthenticationResponse({
+											credential,
+											expectedChallenge: maybeAuthenticationChallenge.value.challengeValue,
+											expectedOrigin: ORIGIN,
+											expectedRPID: RP_ID, // cspell:disable-line
+											requireUserVerification: false,
+											response: data.authenticationResponse,
+										}),
+								});
 
-							yield* updatePasskeyCounter({
-								counter: BigInt(result.authenticationInfo.newCounter),
-								id: maybePasskey.value.id,
-							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+								if (!verificationResult.verified) {
+									return yield* new FailedVerificationError();
+								}
 
-							return { id: maybePasskey.value.id, userId: maybePasskey.value.userId };
+								yield* updatePasskeyCounter({
+									counter: BigInt(verificationResult.authenticationInfo.newCounter),
+									id: maybePasskey.value.id,
+								}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+
+								return { id: maybePasskey.value.id, userId: maybePasskey.value.userId };
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+
+							return result;
 						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
 					),
 					verifyRegistrationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyRegistrationResponse")(
 						function* (data) {
-							const maybeRegistrationChallenge = yield* findRegistrationChallengeById(data.challengeId).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
-							);
+							const result = yield* Effect.gen(function* () {
+								const maybeRegistrationChallenge = yield* findRegistrationChallengeById(data.challengeId).pipe(
+									Effect.catchTag("ParseError", "SqlError", Effect.die),
+								);
 
-							if (Option.isNone(maybeRegistrationChallenge)) {
-								return yield* new UnavailableChallengeError();
-							}
+								if (Option.isNone(maybeRegistrationChallenge)) {
+									return yield* new UnavailableChallengeError();
+								}
 
-							yield* deleteRegistrationChallenge(data.challengeId).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
-							);
+								yield* deleteRegistrationChallenge(data.challengeId).pipe(
+									Effect.catchTag("ParseError", "SqlError", Effect.die),
+								);
 
-							if (yield* DateTime.isPast(maybeRegistrationChallenge.value.expiresAt)) {
-								return yield* new UnavailableChallengeError();
-							}
+								if (yield* DateTime.isPast(maybeRegistrationChallenge.value.expiresAt)) {
+									return yield* new UnavailableChallengeError();
+								}
 
-							const result = yield* Effect.tryPromise({
-								catch: () => new FailedVerificationError(),
-								try: async () =>
-									verifyRegistrationResponse({
-										expectedChallenge: maybeRegistrationChallenge.value.challengeValue,
-										expectedOrigin: ORIGIN,
-										expectedRPID: RP_ID, // cspell:disable-line
-										requireUserVerification: false,
-										response: data.registrationResponse,
-									}),
-							});
+								const verificationResult = yield* Effect.tryPromise({
+									catch: () => new FailedVerificationError(),
+									try: async () =>
+										verifyRegistrationResponse({
+											expectedChallenge: maybeRegistrationChallenge.value.challengeValue,
+											expectedOrigin: ORIGIN,
+											expectedRPID: RP_ID, // cspell:disable-line
+											requireUserVerification: false,
+											response: data.registrationResponse,
+										}),
+								});
 
-							if (!result.verified) {
-								return yield* new FailedVerificationError();
-							}
+								if (!verificationResult.verified) {
+									return yield* new FailedVerificationError();
+								}
 
-							const passkeyId = PasskeyModel.fields.id.make(yield* generateId());
-							const encodedPublicKey = Encoding.encodeBase64(result.registrationInfo.credential.publicKey);
+								const passkeyId = PasskeyModel.fields.id.make(yield* generateId());
+								const encodedPublicKey = Encoding.encodeBase64(
+									verificationResult.registrationInfo.credential.publicKey,
+								);
 
-							yield* insertPasskey({
-								aaguid: PasskeyModel.fields.aaguid.make(result.registrationInfo.aaguid),
-								backedUp: result.registrationInfo.credentialBackedUp,
-								counter: BigInt(result.registrationInfo.credential.counter),
-								createdAt: undefined,
-								credentialId: PasskeyModel.fields.credentialId.make(result.registrationInfo.credential.id),
-								deviceType: Match.value(result.registrationInfo.credentialDeviceType).pipe(
-									Match.when("singleDevice", () => "SINGLE_DEVICE" as const),
-									Match.when("multiDevice", () => "MULTI_DEVICE" as const),
-									Match.exhaustive,
-								),
-								displayName: maybeRegistrationChallenge.value.displayName,
-								id: passkeyId,
-								publicKey: Redacted.make(encodedPublicKey),
-								transports: Option.fromNullable(result.registrationInfo.credential.transports),
-								userId: maybeRegistrationChallenge.value.userId,
-							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+								yield* insertPasskey({
+									aaguid: PasskeyModel.fields.aaguid.make(verificationResult.registrationInfo.aaguid),
+									backedUp: verificationResult.registrationInfo.credentialBackedUp,
+									counter: BigInt(verificationResult.registrationInfo.credential.counter),
+									createdAt: undefined,
+									credentialId: PasskeyModel.fields.credentialId.make(
+										verificationResult.registrationInfo.credential.id,
+									),
+									deviceType: Match.value(verificationResult.registrationInfo.credentialDeviceType).pipe(
+										Match.when("singleDevice", () => "SINGLE_DEVICE" as const),
+										Match.when("multiDevice", () => "MULTI_DEVICE" as const),
+										Match.exhaustive,
+									),
+									displayName: maybeRegistrationChallenge.value.displayName,
+									id: passkeyId,
+									publicKey: Redacted.make(encodedPublicKey),
+									transports: Option.fromNullable(verificationResult.registrationInfo.credential.transports),
+									userId: maybeRegistrationChallenge.value.userId,
+								}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
-							return { id: passkeyId, userId: maybeRegistrationChallenge.value.userId };
+								return { id: passkeyId, userId: maybeRegistrationChallenge.value.userId };
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+
+							return result;
 						},
-						sql.withTransaction,
-						Effect.catchTag("SqlError", (error) => Effect.die(error)),
 					),
 				},
 			});

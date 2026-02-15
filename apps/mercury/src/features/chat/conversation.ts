@@ -332,8 +332,12 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					compactInflightChunks: Effect.fn("@naamio/mercury/Conversation#compactInflightChunks")(function* (part) {
 						yield* Effect.gen(function* () {
 							const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
-								findInflightChunksForMessagePart({ messagePartId: part.id, userId: part.userId }),
-								findStreamedMessagePart({ id: part.id, userId: part.userId }),
+								findInflightChunksForMessagePart({ messagePartId: part.id, userId: part.userId }).pipe(
+									Effect.catchTag("SqlError", "ParseError", Effect.die),
+								),
+								findStreamedMessagePart({ id: part.id, userId: part.userId }).pipe(
+									Effect.catchTag("SqlError", "ParseError", Effect.die),
+								),
 							]);
 
 							if (
@@ -355,8 +359,8 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
 								id: maybeStreamedMessagePart.value.id,
 								userId: maybeStreamedMessagePart.value.userId,
-							});
-						}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 					}),
 					deleteInflightChunks: Effect.fn("@naamio/mercury/Conversation#deleteInflightChunks")(function* (part) {
 						yield* deleteInflightChunksForMessagePart({ messagePartId: part.id, userId: part.userId }).pipe(
@@ -369,7 +373,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								const maybeConversationMetadata = yield* findConversationMetadata({
 									id: conversation.id,
 									userId: conversation.userId,
-								});
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 								if (Option.isNone(maybeConversationMetadata)) {
 									return Option.none();
@@ -379,11 +383,11 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									findAllMessagesForConversation({
 										conversationId: maybeConversationMetadata.value.id,
 										userId: maybeConversationMetadata.value.userId,
-									}),
+									}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die)),
 									findAllMessagePartsForConversation({
 										conversationId: maybeConversationMetadata.value.id,
 										userId: maybeConversationMetadata.value.userId,
-									}),
+									}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die)),
 								]);
 
 								if (!Array.isNonEmptyReadonlyArray(messages) || !Array.isNonEmptyReadonlyArray(messageParts)) {
@@ -437,7 +441,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								});
 
 								return Option.some(conversationForGeneration);
-							}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 							return conversationForGeneration;
 						},
@@ -487,7 +491,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								const maybeAgentMessageMetadata = yield* findAgentMessageMetadata({
 									id: message.id,
 									userId: message.userId,
-								});
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 								if (Option.isNone(maybeAgentMessageMetadata)) {
 									return yield* new MissingMessageError();
@@ -501,8 +505,8 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									id: maybeAgentMessageMetadata.value.id,
 									status: "ERROR",
 									userId: maybeAgentMessageMetadata.value.userId,
-								});
-							}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},
 					),
 					transitionMessageToFinished: Effect.fn("@naamio/mercury/Conversation#transitionMessageToFinished")(
@@ -511,7 +515,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								const maybeAgentMessageMetadata = yield* findAgentMessageMetadata({
 									id: message.id,
 									userId: message.userId,
-								});
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 								if (Option.isNone(maybeAgentMessageMetadata)) {
 									return yield* new MissingMessageError();
@@ -525,8 +529,8 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									id: maybeAgentMessageMetadata.value.id,
 									status: "FINISHED",
 									userId: maybeAgentMessageMetadata.value.userId,
-								});
-							}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},
 					),
 				},
@@ -542,7 +546,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								title: Option.none(),
 								updatedAt: yield* DateTime.now,
 								userId: currentSession.userId,
-							});
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
@@ -565,16 +569,16 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									status: "IN_PROGRESS",
 									userId: currentSession.userId,
 								},
-							]);
+							]).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
 									mapMessagePartForInsert({ ...part, messageId: userMessageInput.id, userId: currentSession.userId }),
 								),
-							);
+							).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							return yield* getTransactionId();
-						}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 						return { transactionId };
 					}),
@@ -587,7 +591,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 							const maybeConversationMetadata = yield* findConversationMetadata({
 								id: input.conversationId,
 								userId: currentSession.userId,
-							});
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							if (Option.isNone(maybeConversationMetadata)) {
 								return yield* new MissingConversationError();
@@ -597,7 +601,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								id: maybeConversationMetadata.value.id,
 								updatedAt: yield* DateTime.now,
 								userId: currentSession.userId,
-							});
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
@@ -620,16 +624,16 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									status: "IN_PROGRESS",
 									userId: currentSession.userId,
 								},
-							]);
+							]).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
 									mapMessagePartForInsert({ ...part, messageId: userMessageInput.id, userId: currentSession.userId }),
 								),
-							);
+							).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							return yield* getTransactionId();
-						}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 						return { transactionId };
 					}),
@@ -642,7 +646,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 							const maybeConversationMetadata = yield* findConversationMetadata({
 								id: input.conversationId,
 								userId: currentSession.userId,
-							});
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							if (Option.isNone(maybeConversationMetadata)) {
 								return yield* new MissingConversationError();
@@ -652,7 +656,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 								id: maybeConversationMetadata.value.id,
 								updatedAt: yield* DateTime.now,
 								userId: currentSession.userId,
-							});
+							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							yield* insertMessages([
 								{
@@ -664,10 +668,10 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									status: "IN_PROGRESS",
 									userId: currentSession.userId,
 								},
-							]);
+							]).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 							return yield* getTransactionId();
-						}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 						return { transactionId };
 					}),
@@ -677,8 +681,12 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 
 							const transactionId = yield* Effect.gen(function* () {
 								const [maybeConversationMetadata, maybeAgentMessageMetadata] = yield* Effect.all([
-									findConversationMetadata({ id: input.conversationId, userId: currentSession.userId }),
-									findAgentMessageMetadata({ id: input.messageId, userId: currentSession.userId }),
+									findConversationMetadata({ id: input.conversationId, userId: currentSession.userId }).pipe(
+										Effect.catchTag("SqlError", "ParseError", Effect.die),
+									),
+									findAgentMessageMetadata({ id: input.messageId, userId: currentSession.userId }).pipe(
+										Effect.catchTag("SqlError", "ParseError", Effect.die),
+									),
 								]);
 
 								if (Option.isNone(maybeConversationMetadata)) {
@@ -692,8 +700,10 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									return yield* new MissingMessageError();
 								}
 
+								const transactionId = yield* getTransactionId();
+
 								if (maybeAgentMessageMetadata.value.status === "INTERRUPTED") {
-									return yield* getTransactionId();
+									return transactionId;
 								}
 
 								if (
@@ -707,10 +717,10 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 									id: maybeAgentMessageMetadata.value.id,
 									status: "INTERRUPTED",
 									userId: currentSession.userId,
-								});
+								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
-								return yield* getTransactionId();
-							}).pipe(sql.withTransaction, Effect.catchTag("ParseError", "SqlError", Effect.die));
+								return transactionId;
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 							return { transactionId };
 						},

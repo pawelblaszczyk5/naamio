@@ -12,6 +12,7 @@ const migration = Effect.gen(function* () {
 			${sql("id")} TEXT PRIMARY KEY,
 			${sql("title")} TEXT NULL,
 			${sql("updatedAt")} TIMESTAMPTZ NOT NULL,
+			${sql("accessedAt")} TIMESTAMPTZ NOT NULL,
 			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);
 	`;
@@ -43,7 +44,7 @@ const migration = Effect.gen(function* () {
 		CREATE TABLE ${sql("inflightChunk")} (
 			${sql("id")} TEXT PRIMARY KEY,
 			${sql("messagePartId")} TEXT NOT NULL REFERENCES ${sql("messagePart")} (${sql("id")}),
-			${sql("text")} TEXT NOT NULL,
+			${sql("content")} TEXT NOT NULL,
 			${sql("sequence")} SMALLINT NOT NULL,
 			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})
 		);

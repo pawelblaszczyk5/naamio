@@ -74,6 +74,7 @@ export class WebAuthnAuthenticationChallengeModel extends Model.Class<WebAuthnAu
 }) {}
 
 export class ConversationModel extends Model.Class<ConversationModel>("@naamio/schema/ConversationModel")({
+	accessedAt: DateTimeFromDate,
 	createdAt: Model.DateTimeInsertFromDate,
 	id: Id.pipe(Schema.brand("ConversationId")),
 	title: Model.FieldOption(Schema.NonEmptyTrimmedString.pipe(Schema.length({ max: 50, min: 3 }))),
@@ -111,17 +112,35 @@ const SharedMessageId = Schema.Union(UserMessageId, AgentMessageId);
 
 export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@naamio/schema/TextMessagePartModel")({
 	...BaseMessagePartFields,
-	data: Schema.Struct({ text: Schema.String.pipe(Schema.optionalWith({ as: "Option", exact: true })) }),
+	data: Schema.Struct({ content: Schema.String.pipe(Schema.optionalWith({ as: "Option", exact: true })) }),
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
 	type: Schema.tag("TEXT"),
 	userId: UserModel.select.fields.id,
 }) {}
 
+export class StepCompletionPartModel extends Model.Class<StepCompletionPartModel>(
+	"@naamio/schema/StepCompletionPartModel",
+)({
+	...BaseMessagePartFields,
+	data: Schema.Struct({
+		usage: Schema.Struct({
+			cachedInputTokens: Schema.Int.pipe(Schema.positive()),
+			inputTokens: Schema.Int.pipe(Schema.positive()),
+			outputTokens: Schema.Int.pipe(Schema.positive()),
+			totalTokens: Schema.Int.pipe(Schema.positive()),
+		}),
+	}),
+	id: Id.pipe(Schema.brand("StepCompletionMessagePartId")),
+	messageId: AgentMessageId,
+	type: Schema.tag("STEP_COMPLETION"),
+	userId: UserModel.select.fields.id,
+}) {}
+
 export class InflightChunkModel extends Model.Class<InflightChunkModel>("@naamio/schema/InflightChunkModel")({
+	content: Schema.String,
 	id: Id.pipe(Schema.brand("InflightChunkId")),
 	messagePartId: Schema.Union(TextMessagePartModel.select.fields.id),
 	sequence: Schema.Int.pipe(Schema.positive()),
-	text: Schema.String,
 	userId: UserModel.select.fields.id,
 }) {}

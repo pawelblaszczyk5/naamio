@@ -17,7 +17,9 @@ export const createGetTransactionId = Effect.fn(function* () {
 	});
 
 	return Effect.fn(function* () {
-		const result = yield* schema();
+		const result = yield* schema().pipe(
+			Effect.catchTag("NoSuchElementException", "SqlError", "ParseError", Effect.die),
+		);
 
 		return result.transactionId;
 	});

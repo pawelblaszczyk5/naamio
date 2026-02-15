@@ -90,6 +90,9 @@ catalogs:
     tsc-alias:
       specifier: ^1.8.16
       version: 1.8.16
+    type-fest:
+      specifier: ^5.4.4
+      version: 5.4.4
     typescript:
       specifier: ^5.9.3
       version: 5.9.3
@@ -387,6 +390,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
+      type-fest:
+        specifier: 'catalog:'
+        version: 5.4.4
       wait-on:
         specifier: 'catalog:'
         version: 9.0.4
@@ -6579,6 +6585,10 @@ packages:
 
   type-fest@5.3.1:
     resolution: {integrity: sha512-VCn+LMHbd4t6sF3wfU/+HKT63C9OoyrSIf4b+vtWHpt2U7/4InZG467YDNMFMR70DdHjAdpPWmw2lzRdg0Xqqg==}
+    engines: {node: '>=20'}
+
+  type-fest@5.4.4:
+    resolution: {integrity: sha512-JnTrzGu+zPV3aXIUhnyWJj4z/wigMsdYajGLIYakqyOW1nPllzXEJee0QQbHj+CTIQtXGlAjuK0UY+2xTyjVAw==}
     engines: {node: '>=20'}
 
   type-level-regexp@0.1.17:
@@ -13215,6 +13225,10 @@ snapshots:
   type-fest@2.19.0: {}
 
   type-fest@5.3.1:
+    dependencies:
+      tagged-tag: 1.0.0
+
+  type-fest@5.4.4:
     dependencies:
       tagged-tag: 1.0.0
 

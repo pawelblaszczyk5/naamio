@@ -41,6 +41,7 @@ catalog:
   react: 19.3.0-canary-b07aa7d6-20260209
   react-dom: 19.3.0-canary-b07aa7d6-20260209
   tsc-alias: ^1.8.16
+  type-fest: ^5.4.4
   wait-on: ^9.0.4
 
 allowBuilds:

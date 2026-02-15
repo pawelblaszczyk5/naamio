@@ -1,15 +1,17 @@
 import type { Array } from "effect";
+import type { DistributedPick } from "type-fest";
 
 import type {
 	AgentMessageModel,
 	ConversationModel,
+	StepCompletionPartModel,
 	TextMessagePartModel,
 	UserMessageModel,
 } from "@naamio/schema/domain";
 
 type TextMessagePartInput = Pick<TextMessagePartModel, "data" | "id" | "type">;
 
-type UserMessagePartInput = TextMessagePartInput;
+export type UserMessagePartInput = TextMessagePartInput;
 
 interface RootUserMessageInput {
 	id: UserMessageModel["id"];
@@ -49,4 +51,23 @@ export interface RegenerateAnswerInput {
 export interface InterruptGenerationInput {
 	conversationId: ConversationModel["id"];
 	messageId: AgentMessageModel["id"];
+}
+
+export interface UserMessageForGeneration {
+	id: UserMessageModel['id'];
+	parentId: UserMessageModel["parentId"];
+	parts: Array<DistributedPick<TextMessagePartModel, "createdAt" | "data" | "type">>;
+	role: UserMessageModel["role"];
+}
+
+export interface AgentMessageForGeneration {
+	id: AgentMessageModel['id'];
+	parentId: AgentMessageModel["parentId"];
+	parts: Array<DistributedPick<StepCompletionPartModel | TextMessagePartModel, "createdAt" | "data" | "type">>;
+	role: AgentMessageModel["role"];
+	status: AgentMessageModel["status"];
+}
+
+export interface ConversationForGeneration {
+	messages: Array<AgentMessageForGeneration | UserMessageForGeneration>;
 }

@@ -41,6 +41,7 @@
 		"@naamio/typescript-config": "workspace:",
 		"@types/node": "catalog:",
 		"eslint": "catalog:",
+		"type-fest": "catalog:",
 		"wait-on": "catalog:"
 	}
 }

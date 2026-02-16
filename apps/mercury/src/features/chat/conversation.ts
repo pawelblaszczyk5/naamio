@@ -41,18 +41,13 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 	Conversation,
 	{
 		system: {
-			compactInflightChunks: (part: {
-				id: InflightChunkModel["messagePartId"];
-				userId: InflightChunkModel["userId"];
-			}) => Effect.Effect<void, CompactionDataError>;
-			deleteInflightChunks: (part: {
-				id: InflightChunkModel["messagePartId"];
-				userId: InflightChunkModel["userId"];
-			}) => Effect.Effect<void>;
-			findConversationForGeneration: (conversation: {
-				id: ConversationModel["id"];
-				userId: ConversationModel["userId"];
-			}) => Effect.Effect<Option.Option<ConversationForGeneration>>;
+			compactInflightChunks: (
+				messagePartId: InflightChunkModel["messagePartId"],
+			) => Effect.Effect<void, CompactionDataError>;
+			deleteInflightChunks: (messagePartId: InflightChunkModel["messagePartId"]) => Effect.Effect<void>;
+			findConversationForGeneration: (
+				id: ConversationModel["id"],
+			) => Effect.Effect<Option.Option<ConversationForGeneration>>;
 			insertInflightChunk: (
 				inflightChunk: Pick<InflightChunkModel, "content" | "messagePartId" | "sequence" | "userId">,
 			) => Effect.Effect<void>;
@@ -172,19 +167,16 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 				Request: Schema.Union(TextMessagePartModel.select.pick("id", "userId", "data")),
 			});
 
-			const deleteInflightChunksForMessagePart = SqlSchema.void({
+			const deleteInflightChunksByMessagePart = SqlSchema.void({
 				execute: (request) => sql`
 					DELETE FROM ${sql("inflightChunk")}
 					WHERE
-						${sql.and([
-							sql`${sql("userId")} = ${request.userId}`,
-							sql`${sql("messagePartId")} = ${request.messagePartId}`,
-						])}
+						${sql("messagePartId")} = ${request.messagePartId};
 				`,
-				Request: InflightChunkModel.select.pick("messagePartId", "userId"),
+				Request: InflightChunkModel.select.pick("messagePartId"),
 			});
 
-			const findInflightChunksForMessagePart = SqlSchema.findAll({
+			const findInflightChunksByMessagePartForCompaction = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -194,17 +186,14 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					FROM
 						${sql("inflightChunk")}
 					WHERE
-						${sql.and([
-							sql`${sql("userId")} = ${request.userId}`,
-							sql`${sql("messagePartId")} = ${request.messagePartId}`,
-						])}
+						${sql("messagePartId")} = ${request.messagePartId}
 					FOR UPDATE;
 				`,
-				Request: InflightChunkModel.select.pick("messagePartId", "userId"),
+				Request: InflightChunkModel.select.pick("messagePartId"),
 				Result: InflightChunkModel.select.pick("id", "sequence", "content", "userId"),
 			});
 
-			const findStreamedMessagePart = SqlSchema.findOne({
+			const findStreamedMessagePartForCompaction = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -214,18 +203,14 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					FROM
 						${sql("messagePart")}
 					WHERE
-						${sql.and([
-							sql`${sql("id")} = ${request.id}`,
-							sql`${sql("userId")} = ${request.userId}`,
-							sql`${sql.in("type", [MessagePartType.enums.TEXT])}`,
-						])}
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql.in("type", [MessagePartType.enums.TEXT])}`])}
 					FOR UPDATE;
 				`,
-				Request: Schema.Union(TextMessagePartModel.select.pick("id", "userId")),
+				Request: Schema.Union(TextMessagePartModel.select.pick("id")),
 				Result: Schema.Union(TextMessagePartModel.select.pick("id", "userId", "type", "data")),
 			});
 
-			const findConversationMetadata = SqlSchema.findOne({
+			const findConversationMetadataForUpdate = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -233,14 +218,14 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					FROM
 						${sql("conversation")}
 					WHERE
-						${sql("id")} = ${request.id}
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])}
 					FOR UPDATE;
 				`,
 				Request: ConversationModel.select.pick("id", "userId"),
 				Result: ConversationModel.select.pick("id", "userId"),
 			});
 
-			const findAgentMessageMetadata = SqlSchema.findOne({
+			const findAgentMessageMetadataForStatusUpdate = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -261,7 +246,21 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 				Result: AgentMessageModel.select.pick("id", "userId", "status", "conversationId"),
 			});
 
-			const findAllMessagesForConversation = SqlSchema.findAll({
+			const findConversationForGeneration = SqlSchema.findOne({
+				execute: (request) => sql`
+					SELECT
+						${sql("id")},
+						${sql("userId")}
+					FROM
+						${sql("conversation")}
+					WHERE
+						${sql("id")} = ${request.id};
+				`,
+				Request: ConversationModel.select.pick("id"),
+				Result: ConversationModel.select.pick("id", "userId"),
+			});
+
+			const findAllMessagesByConversationForGeneration = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -271,14 +270,11 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					FROM
 						${sql("message")}
 					WHERE
-						${sql.and([
-							sql`${sql("userId")} = ${request.userId}`,
-							sql`${sql("conversationId")} = ${request.conversationId}`,
-						])}
+						${sql("conversationId")} = ${request.conversationId};
 				`,
 				Request: Schema.Union(
-					AgentMessageModel.select.pick("conversationId", "userId"),
-					UserMessageModel.select.pick("conversationId", "userId"),
+					AgentMessageModel.select.pick("conversationId"),
+					UserMessageModel.select.pick("conversationId"),
 				),
 				Result: Schema.Union(
 					AgentMessageModel.select.pick("id", "parentId", "role", "status"),
@@ -286,7 +282,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 				),
 			});
 
-			const findAllMessagePartsForConversation = SqlSchema.findAll({
+			const findAllMessagePartsByConversationForGeneration = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("messagePart")}.${sql("type")},
@@ -297,14 +293,11 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 						${sql("messagePart")}
 						JOIN ${sql("message")} ON ${sql("messagePart")}.${sql("messageId")} = ${sql("message")}.${sql("id")}
 					WHERE
-						${sql.and([
-							sql`${sql("message")}.${sql("conversationId")} = ${request.conversationId}`,
-							sql`${sql("message")}.${sql("userId")} = ${request.userId}`,
-						])}
+						${sql("message")}.${sql("conversationId")} = ${request.conversationId};
 				`,
 				Request: Schema.Union(
-					AgentMessageModel.select.pick("conversationId", "userId"),
-					UserMessageModel.select.pick("conversationId", "userId"),
+					AgentMessageModel.select.pick("conversationId"),
+					UserMessageModel.select.pick("conversationId"),
 				),
 				Result: Schema.Union(
 					TextMessagePartModel.select.pick("type", "createdAt", "data", "messageId"),
@@ -329,66 +322,60 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 
 			return Conversation.of({
 				system: {
-					compactInflightChunks: Effect.fn("@naamio/mercury/Conversation#compactInflightChunks")(function* (part) {
-						yield* Effect.gen(function* () {
-							const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
-								findInflightChunksForMessagePart({ messagePartId: part.id, userId: part.userId }).pipe(
-									Effect.catchTag("SqlError", "ParseError", Effect.die),
-								),
-								findStreamedMessagePart({ id: part.id, userId: part.userId }).pipe(
-									Effect.catchTag("SqlError", "ParseError", Effect.die),
-								),
-							]);
+					compactInflightChunks: Effect.fn("@naamio/mercury/Conversation#compactInflightChunks")(
+						function* (messagePartId) {
+							yield* Effect.gen(function* () {
+								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
+									findInflightChunksByMessagePartForCompaction({ messagePartId }).pipe(
+										Effect.catchTag("SqlError", "ParseError", Effect.die),
+									),
+									findStreamedMessagePartForCompaction({ id: messagePartId }).pipe(
+										Effect.catchTag("SqlError", "ParseError", Effect.die),
+									),
+								]);
 
-							if (
-								Option.isNone(maybeStreamedMessagePart)
-								|| !Array.isNonEmptyReadonlyArray(inflightChunks)
-								|| Option.isSome(maybeStreamedMessagePart.value.data.content)
-							) {
-								return yield* new CompactionDataError();
-							}
+								if (
+									Option.isNone(maybeStreamedMessagePart)
+									|| !Array.isNonEmptyReadonlyArray(inflightChunks)
+									|| Option.isSome(maybeStreamedMessagePart.value.data.content)
+								) {
+									return yield* new CompactionDataError();
+								}
 
-							const finalContent = pipe(
-								inflightChunks,
-								Array.sortWith((chunk) => chunk.sequence, Order.number),
-								Array.map((chunk) => chunk.content),
-								Array.join(""),
-							);
+								const finalContent = pipe(
+									inflightChunks,
+									Array.sortWith((chunk) => chunk.sequence, Order.number),
+									Array.map((chunk) => chunk.content),
+									Array.join(""),
+								);
 
-							yield* updateStreamedMessagePartData({
-								data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
-								id: maybeStreamedMessagePart.value.id,
-								userId: maybeStreamedMessagePart.value.userId,
-							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
-						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
-					}),
-					deleteInflightChunks: Effect.fn("@naamio/mercury/Conversation#deleteInflightChunks")(function* (part) {
-						yield* deleteInflightChunksForMessagePart({ messagePartId: part.id, userId: part.userId }).pipe(
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
-						);
-					}),
-					findConversationForGeneration: Effect.fn("@naamio/mercury/Conversation#findConversationForGeneration")(
-						function* (conversation) {
-							const conversationForGeneration = yield* Effect.gen(function* () {
-								const maybeConversationMetadata = yield* findConversationMetadata({
-									id: conversation.id,
-									userId: conversation.userId,
+								yield* updateStreamedMessagePartData({
+									data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
+									id: maybeStreamedMessagePart.value.id,
+									userId: maybeStreamedMessagePart.value.userId,
 								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+						},
+					),
+					deleteInflightChunks: Effect.fn("@naamio/mercury/Conversation#deleteInflightChunks")(
+						function* (messagePartId) {
+							yield* deleteInflightChunksByMessagePart({ messagePartId }).pipe(
+								Effect.catchTag("ParseError", "SqlError", Effect.die),
+							);
+						},
+					),
+					findConversationForGeneration: Effect.fn("@naamio/mercury/Conversation#findConversationForGeneration")(
+						function* (conversationId) {
+							const conversationForGeneration = yield* Effect.gen(function* () {
+								const [maybeConversationMetadata, messages, messageParts] = yield* Effect.all([
+									findConversationForGeneration({ id: conversationId }),
+									findAllMessagesByConversationForGeneration({ conversationId }),
+									findAllMessagePartsByConversationForGeneration({ conversationId }),
+								]).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
 
 								if (Option.isNone(maybeConversationMetadata)) {
 									return Option.none();
 								}
-
-								const [messages, messageParts] = yield* Effect.all([
-									findAllMessagesForConversation({
-										conversationId: maybeConversationMetadata.value.id,
-										userId: maybeConversationMetadata.value.userId,
-									}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die)),
-									findAllMessagePartsForConversation({
-										conversationId: maybeConversationMetadata.value.id,
-										userId: maybeConversationMetadata.value.userId,
-									}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die)),
-								]);
 
 								if (!Array.isNonEmptyReadonlyArray(messages) || !Array.isNonEmptyReadonlyArray(messageParts)) {
 									return Option.none();
@@ -434,6 +421,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 
 								const conversationForGeneration: ConversationForGeneration = {
 									messages: Array.appendAll(agentMessagesById.values(), userMessagesById.values()),
+									userId: maybeConversationMetadata.value.userId,
 								};
 
 								Array.forEach(conversationForGeneration.messages, (message) => {
@@ -488,7 +476,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					transitionMessageToError: Effect.fn("@naamio/mercury/Conversation#transitionMessageToError")(
 						function* (message) {
 							yield* Effect.gen(function* () {
-								const maybeAgentMessageMetadata = yield* findAgentMessageMetadata({
+								const maybeAgentMessageMetadata = yield* findAgentMessageMetadataForStatusUpdate({
 									id: message.id,
 									userId: message.userId,
 								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
@@ -512,7 +500,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 					transitionMessageToFinished: Effect.fn("@naamio/mercury/Conversation#transitionMessageToFinished")(
 						function* (message) {
 							yield* Effect.gen(function* () {
-								const maybeAgentMessageMetadata = yield* findAgentMessageMetadata({
+								const maybeAgentMessageMetadata = yield* findAgentMessageMetadataForStatusUpdate({
 									id: message.id,
 									userId: message.userId,
 								}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
@@ -588,7 +576,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadata({
+							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
 								id: input.conversationId,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
@@ -643,7 +631,7 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadata({
+							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
 								id: input.conversationId,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag("SqlError", "ParseError", Effect.die));
@@ -681,10 +669,10 @@ export class Conversation extends Context.Tag("@naamio/mercury/Conversation")<
 
 							const transactionId = yield* Effect.gen(function* () {
 								const [maybeConversationMetadata, maybeAgentMessageMetadata] = yield* Effect.all([
-									findConversationMetadata({ id: input.conversationId, userId: currentSession.userId }).pipe(
+									findConversationMetadataForUpdate({ id: input.conversationId, userId: currentSession.userId }).pipe(
 										Effect.catchTag("SqlError", "ParseError", Effect.die),
 									),
-									findAgentMessageMetadata({ id: input.messageId, userId: currentSession.userId }).pipe(
+									findAgentMessageMetadataForStatusUpdate({ id: input.messageId, userId: currentSession.userId }).pipe(
 										Effect.catchTag("SqlError", "ParseError", Effect.die),
 									),
 								]);

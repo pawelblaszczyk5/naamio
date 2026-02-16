@@ -70,4 +70,5 @@ export interface AgentMessageForGeneration {
 
 export interface ConversationForGeneration {
 	messages: Array<AgentMessageForGeneration | UserMessageForGeneration>;
+	userId: ConversationModel["userId"];
 }

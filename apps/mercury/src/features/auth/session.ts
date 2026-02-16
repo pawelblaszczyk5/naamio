@@ -72,7 +72,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 				Request: SessionModel.insert,
 			});
 
-			const findByIdForRetrievalFromToken = SqlSchema.findOne({
+			const findForRetrievalFromToken = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -83,13 +83,13 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					FROM
 						${sql("session")}
 					WHERE
-						${sql("id")} = ${request};
+						${sql("id")} = ${request.id};
 				`,
-				Request: SessionModel.fields.id,
+				Request: SessionModel.select.pick("id"),
 				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
 			});
 
-			const findByIdForRevocation = SqlSchema.findOne({
+			const findForRevocation = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -174,7 +174,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							return Option.none();
 						}
 
-						const maybeSession = yield* findByIdForRetrievalFromToken(maybeId.value).pipe(
+						const maybeSession = yield* findForRetrievalFromToken({ id: maybeId.value }).pipe(
 							Effect.catchTag("ParseError", "SqlError", Effect.die),
 						);
 
@@ -207,7 +207,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						const transactionId = yield* Effect.gen(function* () {
 							const currentSession = yield* CurrentSession;
 
-							const maybeSession = yield* findByIdForRevocation({ id, userId: currentSession.userId }).pipe(
+							const maybeSession = yield* findForRevocation({ id, userId: currentSession.userId }).pipe(
 								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 

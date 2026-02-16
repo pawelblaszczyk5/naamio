@@ -65,7 +65,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				Result: UserModel.select.pick("id"),
 			});
 
-			const updateConfirmedAtForUserId = SqlSchema.void({
+			const markUserAsConfirmed = SqlSchema.void({
 				execute: (request) => sql`
 					UPDATE ${sql("user")}
 					SET
@@ -76,7 +76,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				Request: UserModel.update.pick("id", "confirmedAt"),
 			});
 
-			const updateLanguageForUserId = SqlSchema.void({
+			const updateUserLanguage = SqlSchema.void({
 				execute: (request) => sql`
 					UPDATE ${sql("user")}
 					SET
@@ -99,7 +99,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 			return User.of({
 				system: {
 					confirm: Effect.fn("@naamio/mercury/User#confirm")(function* (id) {
-						yield* updateConfirmedAtForUserId({ confirmedAt: Option.some(yield* DateTime.now), id }).pipe(
+						yield* markUserAsConfirmed({ confirmedAt: Option.some(yield* DateTime.now), id }).pipe(
 							Effect.catchTag("ParseError", "SqlError", Effect.die),
 						);
 					}),
@@ -147,7 +147,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							yield* updateLanguageForUserId({ id: currentSession.userId, language }).pipe(
+							yield* updateUserLanguage({ id: currentSession.userId, language }).pipe(
 								Effect.catchTag("ParseError", "SqlError", Effect.die),
 							);
 

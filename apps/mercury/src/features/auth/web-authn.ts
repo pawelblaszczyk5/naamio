@@ -118,7 +118,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				Request: WebAuthnRegistrationChallengeModel.select.fields.id,
 			});
 
-			const findRegistrationChallengeById = SqlSchema.findOne({
+			const findRegistrationChallenge = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("challengeValue")},
@@ -158,7 +158,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				Request: WebAuthnAuthenticationChallengeModel.select.fields.id,
 			});
 
-			const findAuthenticationChallengeById = SqlSchema.findOne({
+			const findAuthenticationChallenge = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("challengeValue")},
@@ -208,7 +208,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 				Request: PasskeyModel.update.pick("id", "counter"),
 			});
 
-			const findPassKeyByCredentialIdForVerification = SqlSchema.findOne({
+			const findPasskeyByCredentialIdForVerification = SqlSchema.findOne({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -341,7 +341,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					verifyAuthenticationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyAuthenticationResponse")(
 						function* (data) {
 							const result = yield* Effect.gen(function* () {
-								const maybeAuthenticationChallenge = yield* findAuthenticationChallengeById(data.challengeId).pipe(
+								const maybeAuthenticationChallenge = yield* findAuthenticationChallenge(data.challengeId).pipe(
 									Effect.catchTag("ParseError", "SqlError", Effect.die),
 								);
 
@@ -357,7 +357,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 									return yield* new UnavailableChallengeError();
 								}
 
-								const maybePasskey = yield* findPassKeyByCredentialIdForVerification(
+								const maybePasskey = yield* findPasskeyByCredentialIdForVerification(
 									PasskeyModel.fields.credentialId.make(data.authenticationResponse.id),
 								).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
 
@@ -423,7 +423,7 @@ export class WebAuthn extends Context.Tag("@naamio/mercury/WebAuthn")<
 					verifyRegistrationResponse: Effect.fn("@naamio/mercury/WebAuthn#verifyRegistrationResponse")(
 						function* (data) {
 							const result = yield* Effect.gen(function* () {
-								const maybeRegistrationChallenge = yield* findRegistrationChallengeById(data.challengeId).pipe(
+								const maybeRegistrationChallenge = yield* findRegistrationChallenge(data.challengeId).pipe(
 									Effect.catchTag("ParseError", "SqlError", Effect.die),
 								);
 

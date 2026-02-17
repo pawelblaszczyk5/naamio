@@ -11,16 +11,16 @@ catalog:
   "@babel/preset-typescript": ^7.28.5
   "@effect/cluster": ^0.56.4
   "@effect/experimental": ^0.58.0
-  "@effect/language-service": ^0.73.1
+  "@effect/language-service": ^0.74.0
   "@effect/opentelemetry": ^0.61.0
   "@effect/platform": ^0.94.5
   "@effect/platform-node": ^0.104.1
-  "@effect/rpc": ^0.73.1
+  "@effect/rpc": ^0.73.2
   "@effect/sql": ^0.49.0
   "@effect/sql-pg": ^0.50.3
   "@effect/workflow": ^0.16.0
   "@effect/vitest": ^0.27.0
-  effect: ^3.19.17
+  effect: ^3.19.18
   "@electric-sql/client": ^1.5.5
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.2.3
@@ -38,8 +38,8 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.17.5
   "@stylexjs/postcss-plugin": ^0.17.5
   "@stylexjs/stylex": ^0.17.5
-  react: 19.3.0-canary-03ca38e6-20260213
-  react-dom: 19.3.0-canary-03ca38e6-20260213
+  react: 19.3.0-canary-47d1ad14-20260216
+  react-dom: 19.3.0-canary-47d1ad14-20260216
   tsc-alias: ^1.8.16
   type-fest: ^5.4.4
   wait-on: ^9.0.4

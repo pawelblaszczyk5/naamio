@@ -18,7 +18,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@typescript-eslint/utils": "^8.55.0"
+		"@typescript-eslint/utils": "^8.56.0"
 	},
 	"devDependencies": {
 		"@naamio/typescript-config": "workspace:",

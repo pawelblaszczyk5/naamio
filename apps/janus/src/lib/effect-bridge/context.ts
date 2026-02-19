@@ -1,5 +1,5 @@
 import type { Redacted } from "effect";
 
-import { Context } from "effect";
+import { ServiceMap } from "effect";
 
-export class SessionToken extends Context.Tag("@naamio/janus/SessionToken")<SessionToken, Redacted.Redacted>() {}
+export class SessionToken extends ServiceMap.Service<SessionToken, Redacted.Redacted>()("@naamio/janus/SessionToken") {}

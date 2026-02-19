@@ -1,4 +1,4 @@
-import type { Migrator } from "@effect/sql";
+import type { Migrator } from "effect/unstable/sql";
 
 import { PgClient } from "@effect/sql-pg";
 import { Effect } from "effect";

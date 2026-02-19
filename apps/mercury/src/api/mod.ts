@@ -1,48 +1,52 @@
-import { HttpApiBuilder, HttpApiError } from "@effect/platform";
 import { Effect, Layer, Option, Redacted } from "effect";
+import { HttpApiBuilder, HttpApiError } from "effect/unstable/httpapi";
 
 import { NaamioApi } from "@naamio/api";
 import { BadGateway } from "@naamio/api/errors";
-import { AuthenticatedOnly } from "@naamio/api/middlewares/authenticated-only";
-
-import type { UsernameTakenError } from "#src/features/user/mod.js";
+import { AuthenticatedOnly, CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 
 import { Session } from "#src/features/auth/session.js";
 import { WebAuthn } from "#src/features/auth/web-authn.js";
 import { Electric } from "#src/features/electric/mod.js";
 import { User } from "#src/features/user/mod.js";
-import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
+import { ClusterRunnerLayer } from "#src/lib/cluster/mod.js";
 
-const AuthenticatedOnlyLive = Layer.effect(
+const AuthenticatedOnlyLayer = Layer.effect(
 	AuthenticatedOnly,
 	Effect.gen(function* () {
 		const session = yield* Session;
 
 		return AuthenticatedOnly.of({
-			sessionToken: Effect.fn("@naamio/mercury/AuthenticatedOnly#sessionToken")(function* (token) {
-				const isEmptyToken = yield* Effect.gen(function* () {
-					const rawToken = Redacted.value(token);
+			sessionToken: Effect.fn("@naamio/mercury/AuthenticatedOnly#sessionToken")(function* (effect, options) {
+				return yield* Effect.provideServiceEffect(
+					effect,
+					CurrentSession,
+					Effect.gen(function* () {
+						const isEmptyToken = yield* Effect.gen(function* () {
+							const rawToken = Redacted.value(options.credential);
 
-					return rawToken.length === 0;
-				});
+							return rawToken.length === 0;
+						});
 
-				if (isEmptyToken) {
-					return yield* new HttpApiError.Unauthorized();
-				}
+						if (isEmptyToken) {
+							return yield* new HttpApiError.Unauthorized({});
+						}
 
-				const maybeUserSession = yield* session.system.retrieveFromToken(token);
+						const maybeUserSession = yield* session.system.retrieveFromToken(options.credential);
 
-				if (Option.isNone(maybeUserSession)) {
-					return yield* new HttpApiError.Unauthorized();
-				}
+						if (Option.isNone(maybeUserSession)) {
+							return yield* new HttpApiError.Unauthorized({});
+						}
 
-				return maybeUserSession.value;
+						return maybeUserSession.value;
+					}),
+				);
 			}),
 		});
 	}),
-).pipe(Layer.provide(Session.Live));
+).pipe(Layer.provide(Session.layer));
 
-const WebAuthnGroupLive = HttpApiBuilder.group(
+const WebAuthnGroupLayer = HttpApiBuilder.group(
 	NaamioApi,
 	"WebAuthn",
 	Effect.fn(function* (handlers) {
@@ -56,10 +60,7 @@ const WebAuthnGroupLive = HttpApiBuilder.group(
 				Effect.fn("@naamio/mercury/WebAuthnGroup#generateRegistrationOptions")(function* (context) {
 					const newUser = yield* user.system
 						.create({ language: context.payload.language, username: context.payload.username })
-						.pipe(
-							Effect.ensureErrorType<UsernameTakenError>(),
-							Effect.mapError(() => new HttpApiError.Conflict()),
-						);
+						.pipe(Effect.catchTag("UsernameTakenError", () => Effect.fail(new HttpApiError.Conflict({}))));
 
 					return yield* webAuthn.system.generateRegistrationOptions({
 						displayName: context.payload.displayName,
@@ -79,8 +80,8 @@ const WebAuthnGroupLive = HttpApiBuilder.group(
 						})
 						.pipe(
 							Effect.catchTags({
-								FailedVerificationError: () => new HttpApiError.BadRequest(),
-								UnavailableChallengeError: () => new HttpApiError.Gone(),
+								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest({})),
+								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone({})),
 							}),
 						);
 
@@ -96,16 +97,13 @@ const WebAuthnGroupLive = HttpApiBuilder.group(
 			.handle(
 				"generateAuthenticationOptions",
 				Effect.fn("@naamio/mercury/WebAuthnGroup#generateAuthenticationOptions")(function* (context) {
-					const maybeUserId = yield* Effect.transposeMapOption(
-						context.payload.username,
-						Effect.fn(function* (username) {
-							return yield* user.system.findIdByUsername(username);
-						}),
-					).pipe(Effect.map(Option.flatten));
+					const maybeUserId = yield* Effect.gen(function* () {
+						const username = yield* context.payload.username;
 
-					if (Option.isSome(context.payload.username) && Option.isNone(maybeUserId)) {
-						return yield* new HttpApiError.NotFound();
-					}
+						return yield* user.system
+							.findIdByUsername(username)
+							.pipe(Effect.flatMap((maybeUserId) => maybeUserId.asEffect()));
+					}).pipe(Effect.catchNoSuchElement);
 
 					return yield* webAuthn.system.generateAuthenticationOptions(maybeUserId);
 				}),
@@ -120,9 +118,9 @@ const WebAuthnGroupLive = HttpApiBuilder.group(
 						})
 						.pipe(
 							Effect.catchTags({
-								FailedVerificationError: () => new HttpApiError.BadRequest(),
-								MissingPasskeyError: () => new HttpApiError.NotFound(),
-								UnavailableChallengeError: () => new HttpApiError.Gone(),
+								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest({})),
+								MissingPasskeyError: () => Effect.fail(new HttpApiError.NotFound({})),
+								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone({})),
 							}),
 						);
 
@@ -134,9 +132,9 @@ const WebAuthnGroupLive = HttpApiBuilder.group(
 				}),
 			);
 	}),
-).pipe(Layer.provide([WebAuthn.Live, Session.Live, User.Live, ClusterRunnerLive]));
+).pipe(Layer.provide([WebAuthn.layer, Session.layer, User.layer, ClusterRunnerLayer]));
 
-const SessionGroupLive = HttpApiBuilder.group(
+const SessionGroupLayer = HttpApiBuilder.group(
 	NaamioApi,
 	"Session",
 	Effect.fn(function* (handlers) {
@@ -154,11 +152,11 @@ const SessionGroupLive = HttpApiBuilder.group(
 				"revoke",
 				Effect.fn("@naamio/mercury/SessionGroup#revoke")(function* (context) {
 					return yield* session.viewer
-						.revoke(context.path.id)
+						.revoke(context.params.sessionId)
 						.pipe(
 							Effect.catchTags({
-								MissingSessionError: () => new HttpApiError.NotFound(),
-								UnavailableSessionError: () => new HttpApiError.BadRequest(),
+								MissingSessionError: () => Effect.fail(new HttpApiError.NotFound({})),
+								UnavailableSessionError: () => Effect.fail(new HttpApiError.BadRequest({})),
 							}),
 						);
 				}),
@@ -173,14 +171,14 @@ const SessionGroupLive = HttpApiBuilder.group(
 				"shape",
 				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (context) {
 					return yield* electric.viewer
-						.sessionShape(context.urlParams)
-						.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+						.sessionShape(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
 				}),
 			);
 	}),
-).pipe(Layer.provide([Session.Live, Electric.Live, AuthenticatedOnlyLive]));
+).pipe(Layer.provide([Session.layer, Electric.layer, AuthenticatedOnlyLayer]));
 
-const UserGroupLive = HttpApiBuilder.group(
+const UserGroupLayer = HttpApiBuilder.group(
 	NaamioApi,
 	"User",
 	Effect.fn(function* (handlers) {
@@ -198,14 +196,14 @@ const UserGroupLive = HttpApiBuilder.group(
 				"shape",
 				Effect.fn("@naamio/mercury/UserGroup#shape")(function* (context) {
 					return yield* electric.viewer
-						.userShape(context.urlParams)
-						.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+						.userShape(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
 				}),
 			);
 	}),
-).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
+).pipe(Layer.provide([Session.layer, Electric.layer, User.layer, AuthenticatedOnlyLayer]));
 
-const PasskeyGroupLive = HttpApiBuilder.group(
+const PasskeyGroupLayer = HttpApiBuilder.group(
 	NaamioApi,
 	"Passkey",
 	Effect.fn(function* (handlers) {
@@ -215,13 +213,13 @@ const PasskeyGroupLive = HttpApiBuilder.group(
 			"shape",
 			Effect.fn("@naamio/mercury/PasskeyGroup#shape")(function* (context) {
 				return yield* electric.viewer
-					.passkeyShape(context.urlParams)
-					.pipe(Effect.catchTag("ShapeProxyError", () => new BadGateway()));
+					.passkeyShape(context.query)
+					.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
 			}),
 		);
 	}),
-).pipe(Layer.provide([Session.Live, Electric.Live, User.Live, AuthenticatedOnlyLive]));
+).pipe(Layer.provide([Session.layer, Electric.layer, User.layer, AuthenticatedOnlyLayer]));
 
-export const NaamioApiServerLive = HttpApiBuilder.api(NaamioApi).pipe(
-	Layer.provide([WebAuthnGroupLive, SessionGroupLive, UserGroupLive, PasskeyGroupLive]),
+export const NaamioApiServerLayer = HttpApiBuilder.layer(NaamioApi).pipe(
+	Layer.provide([WebAuthnGroupLayer, SessionGroupLayer, UserGroupLayer, PasskeyGroupLayer]),
 );

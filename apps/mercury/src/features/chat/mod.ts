@@ -1,6 +1,6 @@
 import type { Effect } from "effect";
 
-import { Context } from "effect";
+import { ServiceMap } from "effect";
 
 import type { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 import type { TransactionId } from "@naamio/schema/domain";
@@ -13,7 +13,7 @@ import type {
 	StartConversationInput,
 } from "#src/features/chat/types.js";
 
-export class Chat extends Context.Tag("@naamio/mercury/Chat")<
+export class Chat extends ServiceMap.Service<
 	Chat,
 	{
 		viewer: {
@@ -35,4 +35,4 @@ export class Chat extends Context.Tag("@naamio/mercury/Chat")<
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
 		};
 	}
->() {}
+>()("@naamio/mercury/Chat") {}

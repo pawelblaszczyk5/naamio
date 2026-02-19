@@ -2,7 +2,7 @@ import { AcceptLanguage } from "@remix-run/headers";
 import { redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
-import { Effect, Option, Schema } from "effect";
+import { Effect, Option, Schema, Struct } from "effect";
 
 import { WebAuthnAuthenticationResponse, WebAuthnRegistrationResponse } from "@naamio/schema/api";
 import { UserModel, WebAuthnRegistrationChallengeModel } from "@naamio/schema/domain";
@@ -18,13 +18,12 @@ import {
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runServerFn } from "#src/lib/effect-bridge/mod.js";
 
-const GenerateRegistrationOptionsPayload = Schema.extend(
-	UserModel.jsonCreate.pick("username", "language"),
-	WebAuthnRegistrationChallengeModel.jsonCreate.pick("displayName"),
-);
+const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
+	.mapFields(Struct.pick(["username", "language"]))
+	.pipe(Schema.fieldsAssign({ displayName: WebAuthnRegistrationChallengeModel.jsonCreate.fields.displayName }));
 
 export const generateRegistrationOptions = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(GenerateRegistrationOptionsPayload))
+	.inputValidator(Schema.toStandardSchemaV1(GenerateRegistrationOptionsPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -42,7 +41,7 @@ export const generateRegistrationOptions = createServerFn({ method: "POST" })
 const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: WebAuthnRegistrationResponse });
 
 export const verifyRegistration = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(VerifyRegistrationPayload))
+	.inputValidator(Schema.toStandardSchemaV1(VerifyRegistrationPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -68,7 +67,7 @@ export const verifyRegistration = createServerFn({ method: "POST" })
 				},
 			});
 
-			yield* setSessionCookie({ token: result.token }, result.expiresAt);
+			yield* setSessionCookie(result.token, result.expiresAt);
 			yield* deleteWebAuthnChallengeCookie();
 
 			return redirect({ replace: true, to: "/app" });
@@ -76,11 +75,11 @@ export const verifyRegistration = createServerFn({ method: "POST" })
 	);
 
 const GenerateAuthenticationOptionsPayload = Schema.Struct({
-	username: UserModel.json.fields.username.pipe(Schema.optionalWith({ as: "Option", exact: true })),
+	username: UserModel.json.fields.username.pipe(Schema.OptionFromOptionalKey),
 });
 
 export const generateAuthenticationOptions = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(GenerateAuthenticationOptionsPayload))
+	.inputValidator(Schema.toStandardSchemaV1(GenerateAuthenticationOptionsPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -98,7 +97,7 @@ export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 const VerifyAuthenticationPayload = Schema.Struct({ authenticationResponse: WebAuthnAuthenticationResponse });
 
 export const verifyAuthentication = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(VerifyAuthenticationPayload))
+	.inputValidator(Schema.toStandardSchemaV1(VerifyAuthenticationPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -124,7 +123,7 @@ export const verifyAuthentication = createServerFn({ method: "POST" })
 				},
 			});
 
-			yield* setSessionCookie({ token: result.token }, result.expiresAt);
+			yield* setSessionCookie(result.token, result.expiresAt);
 			yield* deleteWebAuthnChallengeCookie();
 
 			return redirect({ replace: true, to: "/app" });
@@ -153,7 +152,7 @@ export const getPreferredLanguage = createServerFn({ method: "GET" }).handler(as
 		return preferred;
 	}).pipe(
 		Effect.withSpan("@naamio/janus/home/getPreferredLanguage"),
-		Effect.ensureSuccessType<UserModel["language"]>(),
+		Effect.satisfiesSuccessType<UserModel["language"]>(),
 		runServerFn,
 	),
 );

@@ -7,7 +7,7 @@ import { PasskeyModel } from "@naamio/schema/domain";
 const Passkey = Schema.Struct({
 	aaguid: PasskeyModel.json.fields.aaguid,
 	backedUp: PasskeyModel.json.fields.backedUp,
-	createdAt: Schema.DateFromSelf,
+	createdAt: Schema.Date,
 	deviceType: PasskeyModel.json.fields.deviceType,
 	displayName: PasskeyModel.json.fields.displayName,
 	id: PasskeyModel.json.fields.id,
@@ -18,7 +18,7 @@ export type Passkey = (typeof Passkey)["Type"];
 export const passkeyCollection = createCollection(
 	electricCollectionOptions({
 		getKey: (item) => item.id,
-		schema: Schema.standardSchemaV1(Passkey),
+		schema: Schema.toStandardSchemaV1(Passkey),
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
 			liveSse: true,

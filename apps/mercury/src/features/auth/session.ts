@@ -1,6 +1,6 @@
-import { SqlSchema } from "@effect/sql";
 import { PgClient } from "@effect/sql-pg";
-import { Config, Context, DateTime, Duration, Effect, Layer, Option, Redacted, Schema } from "effect";
+import { Config, DateTime, Duration, Effect, Layer, Option, Redacted, Schema, ServiceMap, Struct } from "effect";
+import { SqlSchema } from "effect/unstable/sql";
 import { customAlphabet } from "nanoid";
 
 import type { TransactionId } from "@naamio/schema/domain";
@@ -11,21 +11,21 @@ import { generateId } from "@naamio/id-generator/effect";
 import { SessionModel } from "@naamio/schema/domain";
 
 import { STANDARD_ID_ALPHABET } from "#src/features/auth/constants.js";
-import { DatabaseLive } from "#src/lib/database/mod.js";
+import { DatabaseLayer } from "#src/lib/database/mod.js";
 import { createGetTransactionId } from "#src/lib/database/utilities.js";
 
 const SESSION_EXPIRATION_DURATION = Duration.days(30);
-const SESSION_EXTENSION_CUTOFF_DURATION = Duration.unsafeDivide(SESSION_EXPIRATION_DURATION, 2);
+const SESSION_EXTENSION_CUTOFF_DURATION = Duration.divideUnsafe(SESSION_EXPIRATION_DURATION, 2);
 
-export class UnavailableSessionError extends Schema.TaggedError<UnavailableSessionError>(
+export class UnavailableSessionError extends Schema.TaggedErrorClass<UnavailableSessionError>(
 	"@naamio/mercury/Session/UnavailableSessionError",
 )("UnavailableSessionError", {}) {}
 
-export class MissingSessionError extends Schema.TaggedError<MissingSessionError>(
+export class MissingSessionError extends Schema.TaggedErrorClass<MissingSessionError>(
 	"@naamio/mercury/Session/MissingSessionError",
 )("MissingSessionError", {}) {}
 
-export class Session extends Context.Tag("@naamio/mercury/Session")<
+export class Session extends ServiceMap.Service<
 	Session,
 	{
 		system: {
@@ -52,8 +52,8 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 			>;
 		};
 	}
->() {
-	static Live = Layer.effect(
+>()("@naamio/mercury/Session") {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const SESSION_VALUE_SECRET = yield* Config.redacted("AUTH_SESSION_VALUE_SECRET");
@@ -85,8 +85,8 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					WHERE
 						${sql("id")} = ${request.id};
 				`,
-				Request: SessionModel.select.pick("id"),
-				Result: SessionModel.select.pick("id", "userId", "signature", "expiresAt", "revokedAt"),
+				Request: SessionModel.select.mapFields(Struct.pick(["id"])),
+				Result: SessionModel.select.mapFields(Struct.pick(["id", "userId", "signature", "expiresAt", "revokedAt"])),
 			});
 
 			const findForRevocation = SqlSchema.findOne({
@@ -101,8 +101,8 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])}
 					FOR UPDATE;
 				`,
-				Request: SessionModel.update.pick("userId", "id"),
-				Result: SessionModel.select.pick("id", "expiresAt", "revokedAt"),
+				Request: SessionModel.update.mapFields(Struct.pick(["userId", "id"])),
+				Result: SessionModel.select.mapFields(Struct.pick(["id", "expiresAt", "revokedAt"])),
 			});
 
 			const revokeSession = SqlSchema.void({
@@ -113,7 +113,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					WHERE
 						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
 				`,
-				Request: SessionModel.update.pick("userId", "id", "revokedAt"),
+				Request: SessionModel.update.mapFields(Struct.pick(["userId", "id", "revokedAt"])),
 			});
 
 			const revokeAllSessions = SqlSchema.void({
@@ -128,7 +128,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							sql`${sql("expiresAt")} > NOW()`,
 						])};
 				`,
-				Request: SessionModel.update.pick("userId", "revokedAt"),
+				Request: SessionModel.update.mapFields(Struct.pick(["userId", "revokedAt"])),
 			});
 
 			const updateSessionExpiration = SqlSchema.void({
@@ -139,13 +139,13 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 					WHERE
 						${sql.and([sql`${sql("userId")} = ${request.userId}`, sql`${sql("id")} = ${request.id}`])};
 				`,
-				Request: SessionModel.update.pick("userId", "expiresAt", "id"),
+				Request: SessionModel.update.mapFields(Struct.pick(["userId", "expiresAt", "id"])),
 			});
 
 			return Session.of({
 				system: {
 					create: Effect.fn("@naamio/mercury/Session#create")(function* (data) {
-						const id = SessionModel.fields.id.make(yield* generateId());
+						const id = SessionModel.fields.id.makeUnsafe(yield* generateId());
 						const expiresAt = yield* DateTime.now.pipe(Effect.map(DateTime.addDuration(SESSION_EXPIRATION_DURATION)));
 						const value = generateSessionValue();
 						const signature = yield* generateHmacSignature(value, SESSION_VALUE_SECRET);
@@ -160,7 +160,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							revokedAt: Option.none(),
 							signature,
 							userId: data.userId,
-						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 						return { expiresAt, token };
 					}),
@@ -175,7 +175,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						}
 
 						const maybeSession = yield* findForRetrievalFromToken({ id: maybeId.value }).pipe(
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
+							Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
 						);
 
 						if (Option.isNone(maybeSession)) {
@@ -208,25 +208,25 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							const currentSession = yield* CurrentSession;
 
 							const maybeSession = yield* findForRevocation({ id, userId: currentSession.userId }).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
+								Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 							);
 
 							if (Option.isNone(maybeSession)) {
-								return yield* new MissingSessionError();
+								return yield* new MissingSessionError({});
 							}
 
 							const isRevoked = Option.isSome(maybeSession.value.revokedAt);
 							const isExpired = yield* DateTime.isPast(maybeSession.value.expiresAt);
 
 							if (isRevoked || isExpired) {
-								return yield* new UnavailableSessionError();
+								return yield* new UnavailableSessionError({});
 							}
 
 							yield* revokeSession({
 								id: maybeSession.value.id,
 								revokedAt: Option.some(yield* DateTime.now),
 								userId: currentSession.userId,
-							}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+							}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
@@ -239,7 +239,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 						yield* revokeAllSessions({
 							revokedAt: Option.some(yield* DateTime.now),
 							userId: currentSession.userId,
-						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 					}),
 					verify: Effect.fn("@naamio/mercury/Session#verify")(function* () {
 						const currentSession = yield* CurrentSession;
@@ -248,7 +248,7 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							Effect.map(DateTime.addDuration(SESSION_EXTENSION_CUTOFF_DURATION)),
 						);
 
-						const isWithinExtensionCutoff = DateTime.lessThanOrEqualTo(currentSession.expiresAt, extensionCutoff);
+						const isWithinExtensionCutoff = DateTime.isLessThanOrEqualTo(currentSession.expiresAt, extensionCutoff);
 
 						if (!isWithinExtensionCutoff) {
 							return { expiresAt: currentSession.expiresAt, id: currentSession.id, refreshed: false };
@@ -262,12 +262,12 @@ export class Session extends Context.Tag("@naamio/mercury/Session")<
 							expiresAt: newExpiration,
 							id: currentSession.id,
 							userId: currentSession.userId,
-						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 						return { expiresAt: newExpiration, id: currentSession.id, refreshed: true };
 					}),
 				},
 			});
 		}),
-	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<Session, unknown>;
+	).pipe(Layer.provide(DatabaseLayer)) satisfies Layer.Layer<Session, unknown>;
 }

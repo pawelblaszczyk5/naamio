@@ -15,7 +15,7 @@ export type User = (typeof User)["Type"];
 export const userCollection = createCollection(
 	electricCollectionOptions({
 		getKey: (item) => item.id,
-		schema: Schema.standardSchemaV1(User),
+		schema: Schema.toStandardSchemaV1(User),
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
 			liveSse: true,

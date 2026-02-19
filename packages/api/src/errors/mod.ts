@@ -1,8 +1,7 @@
-import { HttpApiSchema } from "@effect/platform";
 import { Schema } from "effect";
 
-export class BadGateway extends Schema.TaggedError<BadGateway>("@naamio/api/BadGateway")(
+export class BadGateway extends Schema.TaggedErrorClass<BadGateway>("@naamio/api/BadGateway")(
 	"BadGateway",
 	{},
-	HttpApiSchema.annotations({ status: 502 }),
+	{ httpApiStatus: 502 },
 ) {}

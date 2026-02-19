@@ -1,7 +1,8 @@
 import { deleteCookie, getCookie, setCookie } from "@tanstack/react-start/server";
-import { Config, DateTime, Effect, Option, Schema } from "effect";
+import { Config, DateTime, Effect, Option, Schema, Struct } from "effect";
 
 import { WebAuthnAuthenticationChallengeModel, WebAuthnRegistrationChallengeModel } from "@naamio/schema/domain";
+import { UnsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
 
 import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
@@ -11,14 +12,14 @@ const SHARED_COOKIE_OPTIONS = { httpOnly: true, path: "/", priority: "high", sam
 const WEB_AUTHN_CHALLENGE_COOKIE_NAME = "cha";
 const WEB_AUTHN_CHALLENGE_COOKIE_SECRET = Config.redacted("AUTH_WEB_AUTHN_CHALLENGE_COOKIE_SECRET");
 
-const WebAuthnChallengeCookie = Schema.Union(
-	WebAuthnAuthenticationChallengeModel.json.pick("id", "type"),
-	WebAuthnRegistrationChallengeModel.json.pick("id", "type"),
-);
+const WebAuthnChallengeCookie = Schema.Union([
+	WebAuthnAuthenticationChallengeModel.json.mapFields(Struct.pick(["id", "type"])),
+	WebAuthnRegistrationChallengeModel.json.mapFields(Struct.pick(["id", "type"])),
+]);
 
 type WebAuthnChallengeCookie = (typeof WebAuthnChallengeCookie)["Type"];
 
-const WebAuthnChallengeCookieJson = Schema.parseJson(WebAuthnChallengeCookie);
+const WebAuthnChallengeCookieJson = Schema.fromJsonString(WebAuthnChallengeCookie);
 
 export const setWebAuthnChallengeCookie = Effect.fn(function* (
 	data: WebAuthnChallengeCookie,
@@ -59,15 +60,19 @@ const SESSION_COOKIE_NAME = "ses";
 const SESSION_COOKIE_SECRET = Config.redacted("AUTH_SESSION_COOKIE_SECRET");
 
 class SessionCookie extends Schema.Class<SessionCookie>("@naamio/janus/SessionCookie")({
-	token: Schema.NonEmptyTrimmedString.pipe(Schema.Redacted),
+	token: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(UnsafeEncodableRedactedFromValue),
 }) {}
 
-const SessionCookieJson = Schema.parseJson(SessionCookie);
+const SessionCookieJson = Schema.fromJsonString(SessionCookie);
 
-export const setSessionCookie = Effect.fn(function* (data: SessionCookie, expiresAt: DateTime.DateTime) {
+export const setSessionCookie = Effect.fn(function* (token: SessionCookie["token"], expiresAt: DateTime.DateTime) {
 	const cookieSigner = yield* CookieSigner;
 
-	const signedEncodedData = yield* cookieSigner.encode(SessionCookieJson, data, yield* SESSION_COOKIE_SECRET);
+	const signedEncodedData = yield* cookieSigner.encode(
+		SessionCookieJson,
+		SessionCookie.makeUnsafe({ token }),
+		yield* SESSION_COOKIE_SECRET,
+	);
 
 	setCookie(SESSION_COOKIE_NAME, signedEncodedData, {
 		domain: yield* COOKIE_DOMAIN,

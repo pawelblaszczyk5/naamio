@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { Effect, Option, Schema } from "effect";
+import { Effect, Option, Schema, Struct } from "effect";
 
 import { SessionModel, UserModel } from "@naamio/schema/domain";
 
@@ -31,16 +31,16 @@ export const verifySession = createServerFn({ method: "POST" })
 				return { id: maybeSessionResult.value.id };
 			}
 
-			yield* setSessionCookie({ token: sessionToken }, maybeSessionResult.value.expiresAt);
+			yield* setSessionCookie(sessionToken, maybeSessionResult.value.expiresAt);
 
 			return { id: maybeSessionResult.value.id };
 		}).pipe(Effect.withSpan("@naamio/janus/user/verifySession"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
-const UpdateLanguagePayload = UserModel.jsonUpdate.pick("language");
+const UpdateLanguagePayload = UserModel.jsonUpdate.mapFields(Struct.pick(["language"]));
 
 export const updateLanguage = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(UpdateLanguagePayload))
+	.inputValidator(Schema.toStandardSchemaV1(UpdateLanguagePayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -52,16 +52,16 @@ export const updateLanguage = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/user/updateLanguage"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
-const RevokeSessionPayload = SessionModel.json.pick("id");
+const RevokeSessionPayload = SessionModel.json.mapFields(Struct.pick(["id"]));
 
 export const revokeSession = createServerFn({ method: "POST" })
-	.inputValidator(Schema.standardSchemaV1(RevokeSessionPayload))
+	.inputValidator(Schema.toStandardSchemaV1(RevokeSessionPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
 
-			const result = yield* naamioApiClient.Session.revoke({ path: { id: ctx.data.id } });
+			const result = yield* naamioApiClient.Session.revoke({ params: { sessionId: ctx.data.id } });
 
 			return result;
 		}).pipe(Effect.withSpan("@naamio/janus/user/revokeSession"), runAuthenticatedOnlyServerFn(ctx)),

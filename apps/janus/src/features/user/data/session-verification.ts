@@ -9,7 +9,7 @@ import { sessionCacheCollection } from "#src/features/user/data/session-cache.js
 import { verifySession } from "#src/features/user/procedures/mod.js";
 
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
-const SESSION_STALE_AGE = Duration.unsafeDivide(SESSION_VERIFICATION_POLLING_INTERVAL, 2);
+const SESSION_STALE_AGE = Duration.divideUnsafe(SESSION_VERIFICATION_POLLING_INTERVAL, 2);
 
 const getSessionCacheEntry = () => sessionCacheCollection.state.values().take(1).next().value;
 
@@ -20,10 +20,10 @@ export const checkSessionCacheStatus = () => {
 		return "MISSING";
 	}
 
-	const nowDateTime = DateTime.unsafeMake(new Date());
-	const entryStaleCutoff = DateTime.unsafeMake(entry.refreshedAt).pipe(DateTime.addDuration(SESSION_STALE_AGE));
+	const nowDateTime = DateTime.makeUnsafe(new Date());
+	const entryStaleCutoff = DateTime.makeUnsafe(entry.refreshedAt).pipe(DateTime.addDuration(SESSION_STALE_AGE));
 
-	const isStale = DateTime.greaterThanOrEqualTo(nowDateTime, entryStaleCutoff);
+	const isStale = DateTime.isGreaterThanOrEqualTo(nowDateTime, entryStaleCutoff);
 
 	if (isStale) {
 		return "STALE";

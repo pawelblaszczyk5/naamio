@@ -1,14 +1,15 @@
-import type { Statement } from "@effect/sql";
+import type { Statement } from "effect/unstable/sql";
 
-import { FetchHttpClient, Headers, HttpClient, HttpClientRequest, HttpServerResponse } from "@effect/platform";
+import { NodeHttpClient } from "@effect/platform-node";
 import { PgClient } from "@effect/sql-pg";
-import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
+import { Config, Effect, Layer, pipe, Redacted, Schema, ServiceMap } from "effect";
+import { Headers, HttpClient, HttpClientRequest, HttpServerResponse } from "effect/unstable/http";
 
-import type { ElectricProtocolUrlParams } from "@naamio/schema/api";
+import type { ElectricProtocolQuery } from "@naamio/schema/api";
 
 import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 
-import { DatabaseLive } from "#src/lib/database/mod.js";
+import { DatabaseLayer } from "#src/lib/database/mod.js";
 
 interface ShapeDefinition {
 	columns: Array<Statement.Identifier>;
@@ -16,28 +17,27 @@ interface ShapeDefinition {
 	where: Statement.Statement<unknown>;
 }
 
-export class ShapeProxyError extends Schema.TaggedError<ShapeProxyError>("@naamio/mercury/Electric/ShapeProxyError")(
-	"ShapeProxyError",
-	{},
-) {}
+export class ShapeProxyError extends Schema.TaggedErrorClass<ShapeProxyError>(
+	"@naamio/mercury/Electric/ShapeProxyError",
+)("ShapeProxyError", {}) {}
 
-export class Electric extends Context.Tag("@naamio/mercury/Electric")<
+export class Electric extends ServiceMap.Service<
 	Electric,
 	{
 		viewer: {
 			passkeyShape: (
-				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+				electricUrlParams: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			sessionShape: (
-				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+				electricUrlParams: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			userShape: (
-				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+				electricUrlParams: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 		};
 	}
->() {
-	static Live = Layer.effect(
+>()("@naamio/mercury/Electric") {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const BASE_URL = yield* Config.string("ELECTRIC_BASE_URL");
@@ -79,15 +79,15 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 			});
 
 			const proxy = Effect.fn(function* (request: HttpClientRequest.HttpClientRequest) {
-				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError()));
-				const headers = Headers.remove(response.headers, ["Content-Encoding", "Content-Length"]);
+				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError({})));
+				const headers = pipe(response.headers, Headers.remove("Content-Encoding"), Headers.remove("Content-Length"));
 
-				return yield* HttpServerResponse.stream(response.stream, { headers, status: response.status });
+				return HttpServerResponse.stream(response.stream, { headers, status: response.status });
 			});
 
 			const mapShapeDefinitionIntoRequest = Effect.fn(function* (
 				shapeDefinition: ShapeDefinition,
-				electricUrlParams: (typeof ElectricProtocolUrlParams)["Type"],
+				electricUrlParams: ElectricProtocolQuery,
 			) {
 				return HttpClientRequest.get("/v1/shape", {
 					urlParams: {
@@ -152,5 +152,5 @@ export class Electric extends Context.Tag("@naamio/mercury/Electric")<
 				},
 			});
 		}),
-	).pipe(Layer.provide([DatabaseLive, FetchHttpClient.layer]));
+	).pipe(Layer.provide([DatabaseLayer, NodeHttpClient.layerNodeHttp]));
 }

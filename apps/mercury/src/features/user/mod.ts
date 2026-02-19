@@ -1,7 +1,7 @@
-import { ClusterCron } from "@effect/cluster";
-import { SqlSchema } from "@effect/sql";
 import { PgClient } from "@effect/sql-pg";
-import { Context, Cron, DateTime, Duration, Effect, Layer, Option, Schema } from "effect";
+import { Cron, DateTime, Duration, Effect, Layer, Option, Schema, ServiceMap, Struct } from "effect";
+import { ClusterCron } from "effect/unstable/cluster";
+import { SqlSchema } from "effect/unstable/sql";
 
 import type { TransactionId } from "@naamio/schema/domain";
 
@@ -9,15 +9,15 @@ import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 import { generateId } from "@naamio/id-generator/effect";
 import { UserModel } from "@naamio/schema/domain";
 
-import { ClusterRunnerLive } from "#src/lib/cluster/mod.js";
-import { DatabaseLive } from "#src/lib/database/mod.js";
+import { ClusterRunnerLayer } from "#src/lib/cluster/mod.js";
+import { DatabaseLayer } from "#src/lib/database/mod.js";
 import { createGetTransactionId } from "#src/lib/database/utilities.js";
 
-export class UsernameTakenError extends Schema.TaggedError<UsernameTakenError>(
+export class UsernameTakenError extends Schema.TaggedErrorClass<UsernameTakenError>(
 	"@naamio/mercury/User/UsernameTakenError",
 )("UsernameTakenError", {}) {}
 
-export class User extends Context.Tag("@naamio/mercury/User")<
+export class User extends ServiceMap.Service<
 	User,
 	{
 		system: {
@@ -34,8 +34,8 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
 		};
 	}
->() {
-	static Live = Layer.effect(
+>()("@naamio/mercury/User") {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const UNCONFIRMED_USERS_DELETION_CUTOFF = Duration.minutes(5);
@@ -62,7 +62,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 						${sql("username")} = ${request}
 				`,
 				Request: UserModel.select.fields.username,
-				Result: UserModel.select.pick("id"),
+				Result: UserModel.select.mapFields(Struct.pick(["id"])),
 			});
 
 			const markUserAsConfirmed = SqlSchema.void({
@@ -73,7 +73,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 					WHERE
 						${sql("id")} = ${request.id};
 				`,
-				Request: UserModel.update.pick("id", "confirmedAt"),
+				Request: UserModel.update.mapFields(Struct.pick(["id", "confirmedAt"])),
 			});
 
 			const updateUserLanguage = SqlSchema.void({
@@ -84,7 +84,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 					WHERE
 						${sql("id")} = ${request.id};
 				`,
-				Request: UserModel.select.pick("id", "language"),
+				Request: UserModel.select.mapFields(Struct.pick(["id", "language"])),
 			});
 
 			const deleteUnconfirmedUsersCreatedBefore = SqlSchema.void({
@@ -100,20 +100,20 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				system: {
 					confirm: Effect.fn("@naamio/mercury/User#confirm")(function* (id) {
 						yield* markUserAsConfirmed({ confirmedAt: Option.some(yield* DateTime.now), id }).pipe(
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
+							Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 						);
 					}),
 					create: Effect.fn("@naamio/mercury/User#create")(function* (data) {
 						const maybeExistingUserWithUsername = yield* findUserByUsername(data.username).pipe(
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
+							Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 						);
 
 						if (Option.isSome(maybeExistingUserWithUsername)) {
-							return yield* new UsernameTakenError();
+							return yield* new UsernameTakenError({});
 						}
 
-						const id = UserModel.fields.id.make(yield* generateId());
-						const webAuthnId = UserModel.fields.webAuthnId.make(yield* generateId());
+						const id = UserModel.fields.id.makeUnsafe(yield* generateId());
+						const webAuthnId = UserModel.fields.webAuthnId.makeUnsafe(yield* generateId());
 
 						yield* insertUser({
 							confirmedAt: Option.none(),
@@ -122,7 +122,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 							language: data.language,
 							username: data.username,
 							webAuthnId,
-						}).pipe(Effect.catchTag("ParseError", "SqlError", Effect.die));
+						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 						return { id, username: data.username, webAuthnId };
 					}),
@@ -132,13 +132,13 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 						);
 
 						yield* deleteUnconfirmedUsersCreatedBefore(cutoff).pipe(
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
+							Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 						);
 					}),
 					findIdByUsername: Effect.fn("@naamio/mercury/User#findIdByUsername")(function* (username) {
 						return yield* findUserByUsername(username).pipe(
 							Effect.map(Option.map((user) => user.id)),
-							Effect.catchTag("ParseError", "SqlError", Effect.die),
+							Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 						);
 					}),
 				},
@@ -148,7 +148,7 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 
 						const transactionId = yield* Effect.gen(function* () {
 							yield* updateUserLanguage({ id: currentSession.userId, language }).pipe(
-								Effect.catchTag("ParseError", "SqlError", Effect.die),
+								Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
 							);
 
 							return yield* getTransactionId();
@@ -159,15 +159,15 @@ export class User extends Context.Tag("@naamio/mercury/User")<
 				},
 			});
 		}),
-	).pipe(Layer.provide(DatabaseLive)) satisfies Layer.Layer<User, unknown>;
+	).pipe(Layer.provide(DatabaseLayer)) satisfies Layer.Layer<User, unknown>;
 }
 
 export const CleanupUnconfirmedUsersJob = ClusterCron.make({
-	cron: Cron.unsafeParse("*/15 * * * *"),
+	cron: Cron.parseUnsafe("*/15 * * * *"),
 	execute: Effect.gen(function* () {
 		const user = yield* User;
 
 		yield* user.system.deleteUnconfirmedUsers();
 	}),
 	name: "CleanupUnconfirmedUsersJob",
-}).pipe(Layer.provide([ClusterRunnerLive, User.Live]));
+}).pipe(Layer.provide([ClusterRunnerLayer, User.layer]));

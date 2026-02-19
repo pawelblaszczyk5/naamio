@@ -5,8 +5,8 @@ import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
 const ExampleSchema = Schema.Struct({ bar: Schema.String, foo: Schema.Number });
 const ExampleSchemaDifferent = Schema.Struct({ bar: Schema.String, foo: Schema.String });
-const ExampleSchemaJson = Schema.parseJson(ExampleSchema);
-const ExampleSchemaDifferentJson = Schema.parseJson(ExampleSchemaDifferent);
+const ExampleSchemaJson = Schema.fromJsonString(ExampleSchema);
+const ExampleSchemaDifferentJson = Schema.fromJsonString(ExampleSchemaDifferent);
 
 const secret = Redacted.make("EXAMPLE_SUPER_SECURE_SECRET");
 
@@ -14,7 +14,7 @@ it.effect(
 	"Should support basic back and forth flow",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
@@ -26,14 +26,14 @@ it.effect(
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaJson, secret);
 
 		expect(decoded).toEqual(Option.some(data));
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
 	"Should work with multiple secrets",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
@@ -46,14 +46,14 @@ it.effect(
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaJson, secrets);
 
 		expect(decoded).toEqual(Option.some(data));
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
 	"Should always use latest secret for encoding",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
@@ -61,28 +61,28 @@ it.effect(
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaJson, Array.lastNonEmpty(secrets));
 
 		expect(decoded).toEqual(Option.some(data));
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
 	"Should not return data if signature does not match",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(`${encoded}-example`, ExampleSchemaJson, secret);
 
 		expect(decoded).toEqual(Option.none());
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
 	"Should not return data if different secret is used",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(
@@ -92,21 +92,21 @@ it.effect(
 		);
 
 		expect(decoded).toEqual(Option.none());
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
 	"Should not return data if schema does not match",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(encoded, ExampleSchemaDifferentJson, secret);
 
 		expect(decoded).toEqual(Option.none());
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );
 
 it.effect(
@@ -117,5 +117,5 @@ it.effect(
 		const decoded = yield* cookieSigner.decode("", ExampleSchemaJson, secret);
 
 		expect(decoded).toEqual(Option.none());
-	}, Effect.provide(CookieSigner.Live)),
+	}, Effect.provide(CookieSigner.layer)),
 );

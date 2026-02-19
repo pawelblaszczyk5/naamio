@@ -1,6 +1,6 @@
-import { Entity } from "@effect/cluster";
-import { Rpc } from "@effect/rpc";
 import { Schema } from "effect";
+import { Entity } from "effect/unstable/cluster";
+import { Rpc } from "effect/unstable/rpc";
 
 import { AgentMessageModel } from "@naamio/schema/domain";
 
@@ -12,11 +12,11 @@ import {
 
 export const ConversationMessageGenerator = Entity.make("ConversationMessageGenerator", [
 	Rpc.make("startGeneration", {
-		error: Schema.Union(GenerationAlreadyInProgressError, MissingMessageError, MissingConversationError),
+		error: Schema.Union([GenerationAlreadyInProgressError, MissingMessageError, MissingConversationError]),
 		payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }),
 	}),
 	Rpc.make("interruptGeneration", {
-		error: Schema.Union(MissingMessageError, MissingConversationError),
+		error: Schema.Union([MissingMessageError, MissingConversationError]),
 		payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }),
 	}),
 ]);

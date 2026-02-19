@@ -29,7 +29,6 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@effect/platform": "catalog:",
 		"@naamio/schema": "workspace:",
 		"effect": "catalog:"
 	},

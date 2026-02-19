@@ -21,8 +21,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@effect/opentelemetry": "catalog:",
-		"@effect/platform": "catalog:",
+		"@effect/platform-node": "catalog:",
 		"effect": "catalog:"
 	},
 	"devDependencies": {

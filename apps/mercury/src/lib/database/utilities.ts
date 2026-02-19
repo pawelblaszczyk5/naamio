@@ -1,10 +1,11 @@
-import { SqlClient, SqlSchema } from "@effect/sql";
+import { PgClient } from "@effect/sql-pg";
 import { Effect, Schema } from "effect";
+import { SqlSchema } from "effect/unstable/sql";
 
 import { TransactionId } from "@naamio/schema/domain";
 
 export const createGetTransactionId = Effect.fn(function* () {
-	const sql = yield* SqlClient.SqlClient;
+	const sql = yield* PgClient.PgClient;
 
 	const schema = SqlSchema.single({
 		// cspell:ignore xact
@@ -17,9 +18,7 @@ export const createGetTransactionId = Effect.fn(function* () {
 	});
 
 	return Effect.fn(function* () {
-		const result = yield* schema().pipe(
-			Effect.catchTag("NoSuchElementException", "SqlError", "ParseError", Effect.die),
-		);
+		const result = yield* schema().pipe(Effect.catchTag(["NoSuchElementError", "SqlError", "SchemaError"], Effect.die));
 
 		return result.transactionId;
 	});

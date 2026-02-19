@@ -1,22 +1,23 @@
-import { HttpApiBuilder, HttpApiSwagger, HttpMiddleware, HttpServer } from "@effect/platform";
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
-import { Config, Effect, Layer } from "effect";
+import { Config, Effect, Layer, Logger } from "effect";
+import { HttpRouter } from "effect/unstable/http";
+import { HttpApiSwagger } from "effect/unstable/httpapi";
 import { createServer } from "node:http";
 
-import { ObservabilityLive } from "@naamio/observability";
+import { NaamioApi } from "@naamio/api";
+import { ObservabilityLayer } from "@naamio/observability";
 
-import { NaamioApiServerLive } from "#src/api/mod.js";
+import { NaamioApiServerLayer } from "#src/api/mod.js";
 import { CleanupExpiredChallengesJob } from "#src/features/auth/web-authn.js";
 import { CleanupUnconfirmedUsersJob } from "#src/features/user/mod.js";
 
 const Jobs = Layer.mergeAll(CleanupExpiredChallengesJob, CleanupUnconfirmedUsersJob);
 
-const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
-	HttpServer.withLogAddress,
-	Layer.provide(HttpApiSwagger.layer({ path: "/docs" })),
-	Layer.provide(NaamioApiServerLive),
+const HttpLayer = NaamioApiServerLayer.pipe(
+	Layer.provide(HttpApiSwagger.layer(NaamioApi, { path: "/docs" })),
+	HttpRouter.serve,
 	Layer.provide(
-		Layer.unwrapEffect(
+		Layer.unwrap(
 			Effect.gen(function* () {
 				const PORT = yield* Config.number("PORT");
 
@@ -26,6 +27,9 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
 	),
 );
 
-const EnvironmentLive = HttpLive.pipe(Layer.merge(Jobs), Layer.provide(ObservabilityLive));
+const EnvironmentLayer = HttpLayer.pipe(
+	Layer.merge(Jobs),
+	Layer.provide([ObservabilityLayer, Logger.layer([Logger.consolePretty({ colors: true })])]),
+);
 
-EnvironmentLive.pipe(Layer.launch, NodeRuntime.runMain);
+EnvironmentLayer.pipe(Layer.launch, NodeRuntime.runMain);

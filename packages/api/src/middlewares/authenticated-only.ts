@@ -1,23 +1,25 @@
-import { HttpApiError, HttpApiMiddleware, HttpApiSecurity, OpenApi } from "@effect/platform";
-import { Context } from "effect";
+import { ServiceMap } from "effect";
+import { HttpApiError, HttpApiMiddleware, HttpApiSecurity, OpenApi } from "effect/unstable/httpapi";
 
 import type { SessionModel } from "@naamio/schema/domain";
 
-export class CurrentSession extends Context.Tag("@naamio/api/CurrentSession")<
+export class CurrentSession extends ServiceMap.Service<
 	CurrentSession,
 	Pick<SessionModel, "expiresAt" | "id" | "userId">
->() {}
+>()("@naamio/api/CurrentSession") {}
 
-export class AuthenticatedOnly extends HttpApiMiddleware.Tag<AuthenticatedOnly>()("AuthenticatedOnly", {
-	failure: HttpApiError.Unauthorized,
-	provides: CurrentSession,
-	security: {
-		sessionToken: HttpApiSecurity.bearer.pipe(
-			HttpApiSecurity.annotateContext(
-				OpenApi.annotations({
-					description: "Allows authentication via session token minted previously by completing challenge",
-				}),
+export class AuthenticatedOnly extends HttpApiMiddleware.Service<AuthenticatedOnly, { provides: CurrentSession }>()(
+	"AuthenticatedOnly",
+	{
+		error: HttpApiError.Unauthorized,
+		security: {
+			sessionToken: HttpApiSecurity.bearer.pipe(
+				HttpApiSecurity.annotateMerge(
+					OpenApi.annotations({
+						description: "Allows authentication via session token minted previously by completing challenge",
+					}),
+				),
 			),
-		),
+		},
 	},
-}) {}
+) {}

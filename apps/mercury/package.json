@@ -15,14 +15,8 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@effect/cluster": "catalog:",
-		"@effect/experimental": "catalog:",
-		"@effect/platform": "catalog:",
 		"@effect/platform-node": "catalog:",
-		"@effect/rpc": "catalog:",
-		"@effect/sql": "catalog:",
 		"@effect/sql-pg": "catalog:",
-		"@effect/workflow": "catalog:",
 		"@electric-sql/client": "catalog:",
 		"@naamio/api": "workspace:",
 		"@naamio/hmac": "workspace:",

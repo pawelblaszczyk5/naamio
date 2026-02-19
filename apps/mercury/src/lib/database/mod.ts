@@ -1,10 +1,9 @@
-import { NodeContext } from "@effect/platform-node";
 import { PgClient, PgMigrator } from "@effect/sql-pg";
 import { Config, Effect, Layer, String } from "effect";
 
 import { allMigrations } from "#src/lib/database/migrations/mod.js";
 
-const PostgresLive = PgClient.layerConfig({
+const PostgresLayer = PgClient.layerConfig({
 	database: Config.string("APP_POSTGRES_DATABASE"),
 	host: Config.string("APP_POSTGRES_HOST"),
 	password: Config.redacted("APP_POSTGRES_PASSWORD"),
@@ -14,9 +13,8 @@ const PostgresLive = PgClient.layerConfig({
 	username: Config.string("APP_POSTGRES_USERNAME"),
 });
 
-const MigratorLive = PgMigrator.layer({ loader: Effect.succeed(allMigrations) }).pipe(
-	Layer.provide(NodeContext.layer),
-	Layer.provideMerge(PostgresLive),
+const MigratorLayer = PgMigrator.layer({ loader: Effect.succeed(allMigrations) }).pipe(
+	Layer.provideMerge(PostgresLayer),
 );
 
-export const DatabaseLive = Layer.mergeAll(MigratorLive);
+export const DatabaseLayer = Layer.mergeAll(MigratorLayer);

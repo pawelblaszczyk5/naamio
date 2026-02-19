@@ -1,21 +1,23 @@
-import type { HttpApi } from "@effect/platform";
+import type { HttpApi } from "effect/unstable/httpapi";
 
-import { FetchHttpClient, HttpApiClient, HttpClient, HttpClientRequest } from "@effect/platform";
-import { Config, Context, Effect, Layer, Option } from "effect";
+import { NodeHttpClient } from "@effect/platform-node";
+import { Config, Effect, Layer, Option, ServiceMap } from "effect";
+import { HttpClient, HttpClientRequest } from "effect/unstable/http";
+import { HttpApiClient } from "effect/unstable/httpapi";
 
 import { NaamioApi } from "@naamio/api";
 
 import { SessionToken } from "#src/lib/effect-bridge/context.js";
 
-type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups, any, any> ? Groups : never;
-type Errors = typeof NaamioApi extends HttpApi.HttpApi<any, any, infer Errors, any> ? Errors : never;
-type Requirements = typeof NaamioApi extends HttpApi.HttpApi<any, any, any, infer Requirements> ? Requirements : never;
+type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups> ? Groups : never;
 
-export class NaamioHttpClient extends Context.Tag("@naamio/janus/NaamioHttpClient")<
-	NaamioHttpClient,
-	HttpClient.HttpClient
->() {
-	static Live = Layer.effect(
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- I need to have this here for proper inferring
+type ApiId = typeof NaamioApi extends HttpApi.HttpApi<infer Id, infer _> ? Id : never;
+
+export class NaamioHttpClient extends ServiceMap.Service<NaamioHttpClient, HttpClient.HttpClient>()(
+	"@naamio/janus/NaamioHttpClient",
+) {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const API_BASE_URL = yield* Config.string("API_BASE_URL");
@@ -37,19 +39,19 @@ export class NaamioHttpClient extends Context.Tag("@naamio/janus/NaamioHttpClien
 
 			return NaamioHttpClient.of(httpClient);
 		}),
-	).pipe(Layer.provide(FetchHttpClient.layer)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
+	).pipe(Layer.provide(NodeHttpClient.layerNodeHttp)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
 }
 
-export class NaamioApiClient extends Context.Tag("@naamio/janus/NaamioApiClient")<
+export class NaamioApiClient extends ServiceMap.Service<
 	NaamioApiClient,
-	HttpApiClient.Client<Groups, Errors, Requirements>
->() {
-	static Live = Layer.effect(
+	Effect.Success<ReturnType<typeof HttpApiClient.make<ApiId, Groups>>>
+>()("@naamio/janus/NaamioApiClient") {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			const httpClient = yield* NaamioHttpClient;
 
 			return NaamioApiClient.of(yield* HttpApiClient.makeWith(NaamioApi, { httpClient }));
 		}),
-	).pipe(Layer.provide(NaamioHttpClient.Live)) satisfies Layer.Layer<NaamioApiClient, unknown>;
+	).pipe(Layer.provide(NaamioHttpClient.layer)) satisfies Layer.Layer<NaamioApiClient, unknown>;
 }

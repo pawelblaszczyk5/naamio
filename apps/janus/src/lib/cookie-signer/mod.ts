@@ -1,10 +1,11 @@
-import { Array, Context, Effect, Either, Encoding, Layer, Option, Redacted, Schema } from "effect";
+import { Array, Effect, Layer, Option, Redacted, Result, Schema, ServiceMap } from "effect";
+import * as Encoding from "effect/encoding";
 
 import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 
-type SignedCookieSchema<T> = Schema.Schema<T, string>;
+type SignedCookieSchema<T> = Schema.Codec<T, string>;
 
-export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
+export class CookieSigner extends ServiceMap.Service<
 	CookieSigner,
 	{
 		decode: <T>(
@@ -18,39 +19,42 @@ export class CookieSigner extends Context.Tag("@naamio/janus/CookieSigner")<
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<string>;
 	}
->() {
-	static Live = Layer.effect(
+>()("@naamio/janus/CookieSigner") {
+	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
 			return CookieSigner.of({
 				decode: Effect.fn("@naamio/janus/CookieSigner#decode")(function* (cookie, schema, secrets) {
 					const lastDotIndex = cookie.lastIndexOf(".");
+
 					const base64Value = cookie.slice(0, lastDotIndex);
 					const digest = Redacted.make(cookie.slice(lastDotIndex + 1));
 
 					const allSecrets = Array.isArray(secrets) ? secrets : Array.make(secrets);
 
-					const maybeMatchingSecret = yield* Effect.findFirst(allSecrets, (secret) =>
-						verifyHmacSignature(base64Value, digest, secret),
+					const maybeMatchingSecret = Array.head(
+						yield* Effect.filter(allSecrets, (secret) => verifyHmacSignature(base64Value, digest, secret)),
 					);
 
 					if (Option.isNone(maybeMatchingSecret)) {
 						return Option.none();
 					}
 
-					const maybeStringifiedValue = Encoding.decodeBase64UrlString(base64Value);
+					const maybeStringifiedValue = Encoding.Base64Url.decodeString(base64Value);
 
-					if (Either.isLeft(maybeStringifiedValue)) {
+					if (Result.isFailure(maybeStringifiedValue)) {
 						return Option.none();
 					}
 
-					const value = Schema.decodeOption(schema)(maybeStringifiedValue.right);
+					const value = Schema.decodeOption(schema)(maybeStringifiedValue.success);
 
 					return value;
 				}),
 				encode: Effect.fn("@naamio/janus/CookieSigner#encode")(function* (schema, value, secrets) {
-					const stringifiedValue = yield* Schema.encode(schema)(value).pipe(Effect.catchTag("ParseError", Effect.die));
-					const base64Value = Encoding.encodeBase64Url(stringifiedValue);
+					const stringifiedValue = yield* Schema.encodeEffect(schema)(value).pipe(
+						Effect.catchTag("SchemaError", Effect.die),
+					);
+					const base64Value = Encoding.Base64Url.encode(stringifiedValue);
 					const secretToUse = Array.isArray(secrets) ? Array.lastNonEmpty(secrets) : secrets;
 
 					const signature = yield* generateHmacSignature(base64Value, secretToUse);

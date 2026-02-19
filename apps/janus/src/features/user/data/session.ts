@@ -6,7 +6,7 @@ import { SessionModel } from "@naamio/schema/domain";
 
 const Session = Schema.Struct({
 	deviceLabel: Schema.NullOr(SessionModel.json.fields.deviceLabel.from),
-	expiresAt: Schema.DateFromSelf,
+	expiresAt: Schema.Date,
 	id: SessionModel.json.fields.id,
 	passkeyId: SessionModel.json.fields.passkeyId,
 });
@@ -16,7 +16,7 @@ export type Session = (typeof Session)["Type"];
 export const sessionCollection = createCollection(
 	electricCollectionOptions({
 		getKey: (item) => item.id,
-		schema: Schema.standardSchemaV1(Session),
+		schema: Schema.toStandardSchemaV1(Session),
 		shapeOptions: {
 			columnMapper: { decode: String.snakeToCamel, encode: String.camelToSnake },
 			liveSse: true,

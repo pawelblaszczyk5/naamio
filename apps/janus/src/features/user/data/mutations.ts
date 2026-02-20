@@ -1,5 +1,3 @@
-import type { ElectricCollectionUtils } from "@tanstack/electric-db-collection";
-
 import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 
@@ -20,7 +18,7 @@ export const useUpdateLanguage = () => {
 		mutationFn: async (data) => {
 			const result = await callUpdateLanguage({ data: { language: data.language } });
 
-			return (userCollection.utils as ElectricCollectionUtils).awaitTxId(result.transactionId);
+			return userCollection.utils.awaitTxId(result.transactionId);
 		},
 		onMutate: (data: { language: User["language"] }) => {
 			userCollection.update(userId, (draft) => {
@@ -51,7 +49,7 @@ export const useRevokeSession = () => {
 		mutationFn: async (data) => {
 			const result = await callRevokeSession({ data: { id: data.id } });
 
-			return (sessionCollection.utils as ElectricCollectionUtils).awaitTxId(result.transactionId);
+			return sessionCollection.utils.awaitTxId(result.transactionId);
 		},
 		onMutate: (data: { id: Session["id"] }) => {
 			sessionCollection.delete(data.id);

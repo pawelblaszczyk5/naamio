@@ -53,7 +53,7 @@ The first three of above actions have similar functionality. They do some busine
 
 That service will act as a kind of repository for the one above. To better separate the logic and have the Chat service slim we'll expose a few helpful methods that'll work with the data structure and will be responsible just for managing database entities.
 
-## Conversation Message Generator
+## Conversation Generation manager
 
 That's the part responsible for handling the background generation process. It needs to be stateful, hence we're using Cluster Entity for it. Why it needs to be stateful? Because when it's processed in the background user may want to interrupt it. That would "just" work in a simple world, but when we scale our app horizontally - that assumption breaks. Cluster entity enables the location transparency pattern, we just have a stateful entity - we don't care where it is and how is it managed from the consumer POV.
 

@@ -10,7 +10,7 @@ import {
 	MissingMessageError,
 } from "#src/features/chat/errors.js";
 
-export const ConversationMessageGenerator = Entity.make("ConversationMessageGenerator", [
+export const ConversationGenerationManagerEntity = Entity.make("ConversationMessageGenerator", [
 	Rpc.make("startGeneration", {
 		error: Schema.Union([GenerationAlreadyInProgressError, MissingMessageError, MissingConversationError]),
 		payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }),

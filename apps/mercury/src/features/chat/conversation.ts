@@ -261,7 +261,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
-			const findMessagesByConversationIdForGeneration = SqlSchema.findNonEmpty({
+			const findMessagesByConversationIdForGeneration = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -283,7 +283,7 @@ export class Conversation extends ServiceMap.Service<
 				]),
 			});
 
-			const findMessagePartsByConversationIdForGeneration = SqlSchema.findNonEmpty({
+			const findMessagePartsByConversationIdForGeneration = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("messagePart")}.${sql("type")},
@@ -370,21 +370,21 @@ export class Conversation extends ServiceMap.Service<
 							const conversationForGeneration = yield* Effect.gen(function* () {
 								const [maybeConversationMetadata, messages, messageParts] = yield* Effect.all([
 									findConversationForGeneration({ id: conversationId }),
-									findMessagesByConversationIdForGeneration({ conversationId }).pipe(Effect.catchNoSuchElement),
-									findMessagePartsByConversationIdForGeneration({ conversationId }).pipe(Effect.catchNoSuchElement),
+									findMessagesByConversationIdForGeneration({ conversationId }),
+									findMessagePartsByConversationIdForGeneration({ conversationId }),
 								]).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 								if (Option.isNone(maybeConversationMetadata)) {
 									return Option.none();
 								}
 
-								if (Option.isNone(messages) || Option.isNone(messageParts)) {
+								if (!Array.isReadonlyArrayNonEmpty(messages) || !Array.isReadonlyArrayNonEmpty(messageParts)) {
 									return Option.none();
 								}
 
 								const agentMessagesById = new Map<AgentMessageForGeneration["id"], AgentMessageForGeneration>(
 									pipe(
-										messages.value,
+										messages,
 										Array.filter((message) => message.role === "AGENT"),
 										Array.map((message) => [message.id, { ...message, parts: [] }]),
 									),
@@ -392,14 +392,14 @@ export class Conversation extends ServiceMap.Service<
 
 								const userMessagesById = new Map<UserMessageForGeneration["id"], UserMessageForGeneration>(
 									pipe(
-										messages.value,
+										messages,
 										Array.filter((message) => message.role === "USER"),
 										Array.map((message) => [message.id, { ...message, parts: [] }]),
 									),
 								);
 
 								yield* Effect.forEach(
-									messageParts.value,
+									messageParts,
 									Effect.fn(function* (messagePart) {
 										if (messagePart.type === "STEP_COMPLETION") {
 											const maybeMessage = yield* Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId));

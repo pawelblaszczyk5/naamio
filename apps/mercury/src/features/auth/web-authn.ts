@@ -273,7 +273,6 @@ export class WebAuthn extends ServiceMap.Service<
 								onSome: Effect.fn(function* (userId) {
 									const passkeys = yield* findPasskeysByUserIdForAuthentication(userId).pipe(
 										Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
-										Effect.catchTag("NoSuchElementError", () => Effect.succeed([])),
 									);
 
 									return yield* Effect.promise(async () =>

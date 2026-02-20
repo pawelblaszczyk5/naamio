@@ -10,10 +10,10 @@ catalog:
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
   "@effect/language-service": ^0.75.1
-  "@effect/platform-node": 4.0.0-beta.7
-  "@effect/sql-pg": 4.0.0-beta.7
-  "@effect/vitest": 4.0.0-beta.7
-  effect: 4.0.0-beta.7
+  "@effect/platform-node": 4.0.0-beta.8
+  "@effect/sql-pg": 4.0.0-beta.8
+  "@effect/vitest": 4.0.0-beta.8
+  effect: 4.0.0-beta.8
   "@electric-sql/client": ^1.5.7
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.3.0

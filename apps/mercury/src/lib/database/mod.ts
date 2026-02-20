@@ -1,3 +1,4 @@
+import { NodeServices } from "@effect/platform-node";
 import { PgClient, PgMigrator } from "@effect/sql-pg";
 import { Config, Effect, Layer, String } from "effect";
 
@@ -14,6 +15,7 @@ const PostgresLayer = PgClient.layerConfig({
 });
 
 const MigratorLayer = PgMigrator.layer({ loader: Effect.succeed(allMigrations) }).pipe(
+	Layer.provide(NodeServices.layer),
 	Layer.provideMerge(PostgresLayer),
 );
 

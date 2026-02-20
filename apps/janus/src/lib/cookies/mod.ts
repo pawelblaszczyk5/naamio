@@ -2,7 +2,7 @@ import { deleteCookie, getCookie, setCookie } from "@tanstack/react-start/server
 import { Config, DateTime, Effect, Option, Schema, Struct } from "effect";
 
 import { WebAuthnAuthenticationChallengeModel, WebAuthnRegistrationChallengeModel } from "@naamio/schema/domain";
-import { UnsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
+import { unsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
 
 import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
@@ -62,7 +62,7 @@ const SESSION_COOKIE_NAME = "ses";
 const SESSION_COOKIE_SECRET = Config.redacted("AUTH_SESSION_COOKIE_SECRET");
 
 class SessionCookie extends Schema.Class<SessionCookie>("@naamio/janus/SessionCookie")({
-	token: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(UnsafeEncodableRedactedFromValue),
+	token: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(unsafeEncodableRedactedFromValue),
 }) {}
 
 const SessionCookieJson = Schema.fromJsonString(SessionCookie);

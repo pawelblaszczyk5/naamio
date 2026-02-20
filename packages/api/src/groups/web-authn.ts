@@ -13,12 +13,12 @@ import {
 	WebAuthnAuthenticationChallengeModel,
 	WebAuthnRegistrationChallengeModel,
 } from "@naamio/schema/domain";
-import { UnsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
+import { unsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
 
 const SessionCreationResponse = SessionModel.json
 	.mapFields(Struct.pick(["expiresAt"]))
 	.pipe(
-		Schema.fieldsAssign({ token: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(UnsafeEncodableRedactedFromValue) }),
+		Schema.fieldsAssign({ token: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(unsafeEncodableRedactedFromValue) }),
 	);
 
 export class WebAuthn extends HttpApiGroup.make("WebAuthn")

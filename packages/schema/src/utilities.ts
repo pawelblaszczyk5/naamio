@@ -9,7 +9,7 @@ export const optionalWithExactOptionalPropertyKeysCompat = <T extends Schema.Top
 		}),
 	);
 
-export const split = (separator?: string) =>
+export const ArrayFromString = (separator?: string) =>
 	Schema.String.pipe(
 		Schema.decodeTo(Schema.Array(Schema.String), {
 			decode: SchemaGetter.split({ separator }),
@@ -21,7 +21,7 @@ export const BigintFromString = Schema.String.pipe(
 	Schema.decodeTo(Schema.BigInt, SchemaTransformation.bigintFromString),
 );
 
-export const UnsafeEncodableRedactedFromValue = <T extends Schema.Top>(
+export const unsafeEncodableRedactedFromValue = <T extends Schema.Top>(
 	schema: T,
 	options?: { readonly label?: string | undefined },
 ) =>

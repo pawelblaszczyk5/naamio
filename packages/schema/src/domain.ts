@@ -1,7 +1,7 @@
 import { Schema, SchemaTransformation } from "effect";
 import { Model } from "effect/unstable/schema";
 
-import { BigintFromString, split, UnsafeEncodableRedactedFromValue } from "#src/utilities.js";
+import { ArrayFromString, BigintFromString, unsafeEncodableRedactedFromValue } from "#src/utilities.js";
 import { AuthenticatorTransport } from "#src/web-authn.js";
 
 export const TransactionId = Schema.NumberFromString.pipe(Schema.brand("TransactionId"));
@@ -37,9 +37,9 @@ export class PasskeyModel extends Model.Class<PasskeyModel>("@naamio/schema/Pass
 	deviceType: Schema.Literals(["SINGLE_DEVICE", "MULTI_DEVICE"]),
 	displayName: Schema.String.check(Schema.isLengthBetween(3, 50)).pipe(Schema.brand("DisplayName")),
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("PassKeyId"))),
-	publicKey: Schema.String.pipe(UnsafeEncodableRedactedFromValue),
+	publicKey: Schema.String.pipe(unsafeEncodableRedactedFromValue),
 	transports: Model.FieldOption(
-		split().pipe(
+		ArrayFromString().pipe(
 			Schema.decodeTo(Schema.UniqueArray(AuthenticatorTransport), SchemaTransformation.passthroughSupertype()),
 		),
 	),
@@ -53,7 +53,7 @@ export class SessionModel extends Model.Class<SessionModel>("@naamio/schema/Sess
 	id: Model.GeneratedByApp(Id.pipe(Schema.brand("SessionId"))),
 	passkeyId: PasskeyModel.select.fields.id,
 	revokedAt: Model.FieldOption(DateTimeFromDate),
-	signature: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(UnsafeEncodableRedactedFromValue),
+	signature: Schema.Trimmed.check(Schema.isNonEmpty()).pipe(unsafeEncodableRedactedFromValue),
 	userId: UserModel.select.fields.id,
 }) {}
 

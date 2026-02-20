@@ -1,7 +1,21 @@
 import { PgClient } from "@effect/sql-pg";
-import { Array, DateTime, Effect, Layer, Match, Option, Order, pipe, Schema, ServiceMap, Struct } from "effect";
+import {
+	Array,
+	DateTime,
+	Duration,
+	Effect,
+	Layer,
+	Match,
+	Option,
+	Order,
+	pipe,
+	Schema,
+	ServiceMap,
+	Struct,
+} from "effect";
 import { Model } from "effect/unstable/schema";
 import { SqlSchema } from "effect/unstable/sql";
+import { DurableClock, Workflow } from "effect/unstable/workflow";
 
 import type { TransactionId } from "@naamio/schema/domain";
 
@@ -36,6 +50,7 @@ import {
 	MissingConversationError,
 	MissingMessageError,
 } from "#src/features/chat/errors.js";
+import { WorkflowEngineLayer } from "#src/lib/cluster/mod.js";
 import { DatabaseLayer } from "#src/lib/database/mod.js";
 import { createGetTransactionId } from "#src/lib/database/utilities.js";
 
@@ -720,3 +735,19 @@ export class Conversation extends ServiceMap.Service<
 		}),
 	).pipe(Layer.provide([DatabaseLayer])) satisfies Layer.Layer<Conversation, unknown>;
 }
+
+export const InflightChunkCleanupWorkflow = Workflow.make({
+	idempotencyKey: (payload) => payload.messagePartId,
+	name: "InflightChunkCleanupWorkflow",
+	payload: { messagePartId: InflightChunkModel.select.fields.messagePartId },
+});
+
+export const InflightChunkCleanupWorkflowLayer = InflightChunkCleanupWorkflow.toLayer(
+	Effect.fn(function* (payload) {
+		const conversation = yield* Conversation;
+
+		yield* DurableClock.sleep({ duration: Duration.minutes(5), name: "AwaitInflightChunkCompactionSync" });
+
+		yield* conversation.system.deleteInflightChunks(payload.messagePartId);
+	}),
+).pipe(Layer.provide([WorkflowEngineLayer, Conversation.layer]));

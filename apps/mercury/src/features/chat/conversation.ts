@@ -36,6 +36,7 @@ import {
 	MissingConversationError,
 	MissingMessageError,
 } from "#src/features/chat/errors.js";
+import { DatabaseLayer } from "#src/lib/database/mod.js";
 import { createGetTransactionId } from "#src/lib/database/utilities.js";
 
 export class Conversation extends ServiceMap.Service<
@@ -717,5 +718,5 @@ export class Conversation extends ServiceMap.Service<
 				},
 			});
 		}),
-	);
+	).pipe(Layer.provide([DatabaseLayer])) satisfies Layer.Layer<Conversation, unknown>;
 }

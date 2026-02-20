@@ -1,5 +1,4 @@
-import { Array, Effect, Layer, Option, Redacted, Result, Schema, ServiceMap } from "effect";
-import * as Encoding from "effect/encoding";
+import { Array, Effect, Encoding, Layer, Option, Redacted, Result, Schema, ServiceMap } from "effect";
 
 import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 
@@ -40,7 +39,7 @@ export class CookieSigner extends ServiceMap.Service<
 						return Option.none();
 					}
 
-					const maybeStringifiedValue = Encoding.Base64Url.decodeString(base64Value);
+					const maybeStringifiedValue = Encoding.decodeBase64UrlString(base64Value);
 
 					if (Result.isFailure(maybeStringifiedValue)) {
 						return Option.none();
@@ -54,7 +53,7 @@ export class CookieSigner extends ServiceMap.Service<
 					const stringifiedValue = yield* Schema.encodeEffect(schema)(value).pipe(
 						Effect.catchTag("SchemaError", Effect.die),
 					);
-					const base64Value = Encoding.Base64Url.encode(stringifiedValue);
+					const base64Value = Encoding.encodeBase64Url(stringifiedValue);
 					const secretToUse = Array.isArray(secrets) ? Array.lastNonEmpty(secrets) : secrets;
 
 					const signature = yield* generateHmacSignature(base64Value, secretToUse);

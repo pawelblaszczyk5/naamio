@@ -52,7 +52,7 @@ export class User extends ServiceMap.Service<
 				Request: UserModel.insert,
 			});
 
-			const findUserByUsername = SqlSchema.findOne({
+			const findUserByUsername = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")}
@@ -109,7 +109,7 @@ export class User extends ServiceMap.Service<
 						);
 
 						if (Option.isSome(maybeExistingUserWithUsername)) {
-							return yield* new UsernameTakenError({});
+							return yield* new UsernameTakenError();
 						}
 
 						const id = UserModel.fields.id.makeUnsafe(yield* generateId());

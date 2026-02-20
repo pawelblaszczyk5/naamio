@@ -29,13 +29,13 @@ const AuthenticatedOnlyLayer = Layer.effect(
 						});
 
 						if (isEmptyToken) {
-							return yield* new HttpApiError.Unauthorized({});
+							return yield* new HttpApiError.Unauthorized();
 						}
 
 						const maybeUserSession = yield* session.system.retrieveFromToken(options.credential);
 
 						if (Option.isNone(maybeUserSession)) {
-							return yield* new HttpApiError.Unauthorized({});
+							return yield* new HttpApiError.Unauthorized();
 						}
 
 						return maybeUserSession.value;
@@ -60,7 +60,7 @@ const WebAuthnGroupLayer = HttpApiBuilder.group(
 				Effect.fn("@naamio/mercury/WebAuthnGroup#generateRegistrationOptions")(function* (context) {
 					const newUser = yield* user.system
 						.create({ language: context.payload.language, username: context.payload.username })
-						.pipe(Effect.catchTag("UsernameTakenError", () => Effect.fail(new HttpApiError.Conflict({}))));
+						.pipe(Effect.catchTag("UsernameTakenError", () => Effect.fail(new HttpApiError.Conflict())));
 
 					return yield* webAuthn.system.generateRegistrationOptions({
 						displayName: context.payload.displayName,
@@ -80,8 +80,8 @@ const WebAuthnGroupLayer = HttpApiBuilder.group(
 						})
 						.pipe(
 							Effect.catchTags({
-								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest({})),
-								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone({})),
+								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest()),
+								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone()),
 							}),
 						);
 
@@ -118,9 +118,9 @@ const WebAuthnGroupLayer = HttpApiBuilder.group(
 						})
 						.pipe(
 							Effect.catchTags({
-								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest({})),
-								MissingPasskeyError: () => Effect.fail(new HttpApiError.NotFound({})),
-								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone({})),
+								FailedVerificationError: () => Effect.fail(new HttpApiError.BadRequest()),
+								MissingPasskeyError: () => Effect.fail(new HttpApiError.NotFound()),
+								UnavailableChallengeError: () => Effect.fail(new HttpApiError.Gone()),
 							}),
 						);
 
@@ -155,8 +155,8 @@ const SessionGroupLayer = HttpApiBuilder.group(
 						.revoke(context.params.sessionId)
 						.pipe(
 							Effect.catchTags({
-								MissingSessionError: () => Effect.fail(new HttpApiError.NotFound({})),
-								UnavailableSessionError: () => Effect.fail(new HttpApiError.BadRequest({})),
+								MissingSessionError: () => Effect.fail(new HttpApiError.NotFound()),
+								UnavailableSessionError: () => Effect.fail(new HttpApiError.BadRequest()),
 							}),
 						);
 				}),
@@ -172,7 +172,7 @@ const SessionGroupLayer = HttpApiBuilder.group(
 				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (context) {
 					return yield* electric.viewer
 						.sessionShape(context.query)
-						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 				}),
 			);
 	}),
@@ -197,7 +197,7 @@ const UserGroupLayer = HttpApiBuilder.group(
 				Effect.fn("@naamio/mercury/UserGroup#shape")(function* (context) {
 					return yield* electric.viewer
 						.userShape(context.query)
-						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 				}),
 			);
 	}),
@@ -214,7 +214,7 @@ const PasskeyGroupLayer = HttpApiBuilder.group(
 			Effect.fn("@naamio/mercury/PasskeyGroup#shape")(function* (context) {
 				return yield* electric.viewer
 					.passkeyShape(context.query)
-					.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway({}))));
+					.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 			}),
 		);
 	}),

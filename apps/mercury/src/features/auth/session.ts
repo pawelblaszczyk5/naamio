@@ -72,7 +72,7 @@ export class Session extends ServiceMap.Service<
 				Request: SessionModel.insert,
 			});
 
-			const findForRetrievalFromToken = SqlSchema.findOne({
+			const findForRetrievalFromToken = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -89,7 +89,7 @@ export class Session extends ServiceMap.Service<
 				Result: SessionModel.select.mapFields(Struct.pick(["id", "userId", "signature", "expiresAt", "revokedAt"])),
 			});
 
-			const findForRevocation = SqlSchema.findOne({
+			const findForRevocation = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -212,14 +212,14 @@ export class Session extends ServiceMap.Service<
 							);
 
 							if (Option.isNone(maybeSession)) {
-								return yield* new MissingSessionError({});
+								return yield* new MissingSessionError();
 							}
 
 							const isRevoked = Option.isSome(maybeSession.value.revokedAt);
 							const isExpired = yield* DateTime.isPast(maybeSession.value.expiresAt);
 
 							if (isRevoked || isExpired) {
-								return yield* new UnavailableSessionError({});
+								return yield* new UnavailableSessionError();
 							}
 
 							yield* revokeSession({

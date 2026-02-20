@@ -13,6 +13,7 @@ import {
 	DateTime,
 	Duration,
 	Effect,
+	Encoding,
 	Layer,
 	Match,
 	Option,
@@ -21,7 +22,6 @@ import {
 	ServiceMap,
 	Struct,
 } from "effect";
-import * as Encoding from "effect/encoding";
 import { ClusterCron } from "effect/unstable/cluster";
 import { SqlSchema } from "effect/unstable/sql";
 
@@ -119,7 +119,7 @@ export class WebAuthn extends ServiceMap.Service<
 				Request: WebAuthnRegistrationChallengeModel.select.fields.id,
 			});
 
-			const findRegistrationChallenge = SqlSchema.findOne({
+			const findRegistrationChallenge = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("challengeValue")},
@@ -161,7 +161,7 @@ export class WebAuthn extends ServiceMap.Service<
 				Request: WebAuthnAuthenticationChallengeModel.select.fields.id,
 			});
 
-			const findAuthenticationChallenge = SqlSchema.findOne({
+			const findAuthenticationChallenge = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("challengeValue")},
@@ -213,7 +213,7 @@ export class WebAuthn extends ServiceMap.Service<
 				Request: PasskeyModel.update.mapFields(Struct.pick(["id", "counter"])),
 			});
 
-			const findPasskeyByCredentialIdForVerification = SqlSchema.findOne({
+			const findPasskeyByCredentialIdForVerification = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -234,7 +234,7 @@ export class WebAuthn extends ServiceMap.Service<
 				),
 			});
 
-			const findPasskeysByUserIdForAuthentication = SqlSchema.findMany({
+			const findPasskeysByUserIdForAuthentication = SqlSchema.findAll({
 				execute: (request) => sql`
 					SELECT
 						${sql("credentialId")},
@@ -358,7 +358,7 @@ export class WebAuthn extends ServiceMap.Service<
 								);
 
 								if (Option.isNone(maybeAuthenticationChallenge)) {
-									return yield* new UnavailableChallengeError({});
+									return yield* new UnavailableChallengeError();
 								}
 
 								yield* deleteAuthenticationChallenge(data.challengeId).pipe(
@@ -366,7 +366,7 @@ export class WebAuthn extends ServiceMap.Service<
 								);
 
 								if (yield* DateTime.isPast(maybeAuthenticationChallenge.value.expiresAt)) {
-									return yield* new UnavailableChallengeError({});
+									return yield* new UnavailableChallengeError();
 								}
 
 								const maybePasskey = yield* findPasskeyByCredentialIdForVerification(
@@ -374,18 +374,18 @@ export class WebAuthn extends ServiceMap.Service<
 								).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 								if (Option.isNone(maybePasskey)) {
-									return yield* new MissingPasskeyError({});
+									return yield* new MissingPasskeyError();
 								}
 
 								if (
 									Option.isSome(maybeAuthenticationChallenge.value.userId)
 									&& maybePasskey.value.userId !== maybeAuthenticationChallenge.value.userId.value
 								) {
-									return yield* new FailedVerificationError({});
+									return yield* new FailedVerificationError();
 								}
 
 								const encodedPublicKey = Uint8Array.from(
-									yield* Encoding.Base64.decode(Redacted.value(maybePasskey.value.publicKey))
+									yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey))
 										.asEffect()
 										.pipe(Effect.catchTag("EncodingError", Effect.die)),
 								);
@@ -405,7 +405,7 @@ export class WebAuthn extends ServiceMap.Service<
 								});
 
 								const verificationResult = yield* Effect.tryPromise({
-									catch: () => new FailedVerificationError({}),
+									catch: () => new FailedVerificationError(),
 									try: async () =>
 										verifyAuthenticationResponse({
 											credential,
@@ -418,7 +418,7 @@ export class WebAuthn extends ServiceMap.Service<
 								});
 
 								if (!verificationResult.verified) {
-									return yield* new FailedVerificationError({});
+									return yield* new FailedVerificationError();
 								}
 
 								yield* updatePasskeyCounter({
@@ -440,7 +440,7 @@ export class WebAuthn extends ServiceMap.Service<
 								);
 
 								if (Option.isNone(maybeRegistrationChallenge)) {
-									return yield* new UnavailableChallengeError({});
+									return yield* new UnavailableChallengeError();
 								}
 
 								yield* deleteRegistrationChallenge(data.challengeId).pipe(
@@ -448,11 +448,11 @@ export class WebAuthn extends ServiceMap.Service<
 								);
 
 								if (yield* DateTime.isPast(maybeRegistrationChallenge.value.expiresAt)) {
-									return yield* new UnavailableChallengeError({});
+									return yield* new UnavailableChallengeError();
 								}
 
 								const verificationResult = yield* Effect.tryPromise({
-									catch: () => new FailedVerificationError({}),
+									catch: () => new FailedVerificationError(),
 									try: async () =>
 										verifyRegistrationResponse({
 											expectedChallenge: maybeRegistrationChallenge.value.challengeValue,
@@ -464,11 +464,11 @@ export class WebAuthn extends ServiceMap.Service<
 								});
 
 								if (!verificationResult.verified) {
-									return yield* new FailedVerificationError({});
+									return yield* new FailedVerificationError();
 								}
 
 								const passkeyId = PasskeyModel.fields.id.makeUnsafe(yield* generateId());
-								const encodedPublicKey = Encoding.Base64.encode(
+								const encodedPublicKey = Encoding.encodeBase64(
 									verificationResult.registrationInfo.credential.publicKey,
 								);
 

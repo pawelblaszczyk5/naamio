@@ -16,14 +16,14 @@ catalogs:
       specifier: ^0.75.1
       version: 0.75.1
     '@effect/platform-node':
-      specifier: 4.0.0-beta.5
-      version: 4.0.0-beta.5
+      specifier: 4.0.0-beta.7
+      version: 4.0.0-beta.7
     '@effect/sql-pg':
-      specifier: 4.0.0-beta.5
-      version: 4.0.0-beta.5
+      specifier: 4.0.0-beta.7
+      version: 4.0.0-beta.7
     '@effect/vitest':
-      specifier: 4.0.0-beta.5
-      version: 4.0.0-beta.5
+      specifier: 4.0.0-beta.7
+      version: 4.0.0-beta.7
     '@electric-sql/client':
       specifier: ^1.5.6
       version: 1.5.6
@@ -58,8 +58,8 @@ catalogs:
       specifier: 19.1.0-rc.3
       version: 19.1.0-rc.3
     effect:
-      specifier: 4.0.0-beta.5
-      version: 4.0.0-beta.5
+      specifier: 4.0.0-beta.7
+      version: 4.0.0-beta.7
     eslint:
       specifier: ^9.39.2
       version: 9.39.2
@@ -141,7 +141,7 @@ importers:
     dependencies:
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(ioredis@5.9.3)
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(ioredis@5.9.3)
       '@electric-sql/client':
         specifier: 'catalog:'
         version: 1.5.6
@@ -204,7 +204,7 @@ importers:
         version: 0.0.5
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
       hono:
         specifier: ^4.12.0
         version: 4.12.0
@@ -226,7 +226,7 @@ importers:
         version: 0.75.1
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       '@fontsource-variable/ibm-plex-sans':
         specifier: 'catalog:'
         version: 5.2.8
@@ -295,10 +295,10 @@ importers:
     dependencies:
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(ioredis@5.9.3)
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(ioredis@5.9.3)
       '@effect/sql-pg':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)
       '@electric-sql/client':
         specifier: 'catalog:'
         version: 1.5.6
@@ -322,7 +322,7 @@ importers:
         version: 13.2.2
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -453,7 +453,7 @@ importers:
         version: link:../schema
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
@@ -533,14 +533,14 @@ importers:
     dependencies:
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
         version: 0.75.1
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -573,14 +573,14 @@ importers:
         version: link:../assert
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
         version: 0.75.1
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -610,10 +610,10 @@ importers:
     dependencies:
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.5(effect@4.0.0-beta.5)(ioredis@5.9.3)
+        version: 4.0.0-beta.7(effect@4.0.0-beta.7)(ioredis@5.9.3)
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
@@ -641,7 +641,7 @@ importers:
         version: 1.5.6
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.5
+        version: 4.0.0-beta.7
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
@@ -1273,28 +1273,28 @@ packages:
     resolution: {integrity: sha512-g9xD2tAQgRFpYC2YgpZq02VeSL5fBbFJ0B/g1o+14NuNmwtaYJc7SjiLWAA9eyhJHosNrn6h1Ye+Kx6j5mN0AA==}
     hasBin: true
 
-  '@effect/platform-node-shared@4.0.0-beta.5':
-    resolution: {integrity: sha512-tXgq+qQ/6Zk8MdQ2H4Xu2ui1SZDkkbnuoxMv4MTFgnZwZsALCcgDtP5mtl6t4T0nJncqqvbIsaotFAQXs0TEWA==}
+  '@effect/platform-node-shared@4.0.0-beta.7':
+    resolution: {integrity: sha512-vUPd6UdT5IhlmlxgGLxkfky+sBk2VO8sQH3JrGG3UxALbOknUVA3BSKxuAx6QdkMUOOS3QXzlNaHCIdIqpWRcw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.0-beta.5
+      effect: ^4.0.0-beta.7
 
-  '@effect/platform-node@4.0.0-beta.5':
-    resolution: {integrity: sha512-quaHbE5sYsNbkvw//cWynWGf1AhnvwTZKVlciv+atyJlA9ISSMzf46SH8Z4f9MhoR97GWBe4vr5Bj6cx696ZIA==}
+  '@effect/platform-node@4.0.0-beta.7':
+    resolution: {integrity: sha512-cPuYxwEyz/ZymXf6Kkr4hH/t6W4x5cpOqNT437rGs5TIsdWSGACYQbpaV9r7Qj6Vb1XPBggQVy8jW6vr12jEKA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.0-beta.5
+      effect: ^4.0.0-beta.7
       ioredis: ^5.7.0
 
-  '@effect/sql-pg@4.0.0-beta.5':
-    resolution: {integrity: sha512-l9BaAE/7UyMxA6d24XkECR5vUV82OGDE3JrJlGnjg7BavECWm1MfkHTx9AC+m51SXcAkhKLeTLMn4st2O8zWGA==}
+  '@effect/sql-pg@4.0.0-beta.7':
+    resolution: {integrity: sha512-Hty93XvzM6dz+K+9W1/jMggqJQIJIERsbkjhG7R3kJ7NOxcWVFiGuBBY4R52TDtYigRXlGnF1+kQp5Hp+yg84w==}
     peerDependencies:
-      effect: ^4.0.0-beta.5
+      effect: ^4.0.0-beta.7
 
-  '@effect/vitest@4.0.0-beta.5':
-    resolution: {integrity: sha512-76rWM0dbvBfuSuyd8sVKoLmSMwayk99CSqmdGftjMHB4o1y4EAtZk8vkvEL0Euq+WUbvDLIPfoLMEGWcXvuRww==}
+  '@effect/vitest@4.0.0-beta.7':
+    resolution: {integrity: sha512-r60Aufcph+exqbWjePygfifxQ2d+DNkTZk2uqtISRM6k+kLZoVPGWu6EdvoPEunVeDakMvrzyBTCI40dDua2wQ==}
     peerDependencies:
-      effect: ^4.0.0-beta.5
+      effect: ^4.0.0-beta.7
       vitest: ^4.0.18
 
   '@electric-sql/client@1.5.6':
@@ -3802,8 +3802,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  effect@4.0.0-beta.5:
-    resolution: {integrity: sha512-M78LYkzjnfUgYvdNF/CoLF9gK74zEORHd0pSoSa/p2BQNJhe7fuOyksddBaZULfJeajzTEOKyRfymsBdaxKA7w==}
+  effect@4.0.0-beta.7:
+    resolution: {integrity: sha512-RWVtCYlRqMQzNdLXXnOjICf7yDrQEwlyw49+DBh08YPPEBjquHo0N8n6zxLg0yl2FHCFgTJAqKel/zDQ8MVi4Q==}
 
   electron-to-chromium@1.5.267:
     resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
@@ -7243,19 +7243,19 @@ snapshots:
 
   '@effect/language-service@0.75.1': {}
 
-  '@effect/platform-node-shared@4.0.0-beta.5(effect@4.0.0-beta.5)':
+  '@effect/platform-node-shared@4.0.0-beta.7(effect@4.0.0-beta.7)':
     dependencies:
       '@types/ws': 8.18.1
-      effect: 4.0.0-beta.5
+      effect: 4.0.0-beta.7
       ws: 8.19.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform-node@4.0.0-beta.5(effect@4.0.0-beta.5)(ioredis@5.9.3)':
+  '@effect/platform-node@4.0.0-beta.7(effect@4.0.0-beta.7)(ioredis@5.9.3)':
     dependencies:
-      '@effect/platform-node-shared': 4.0.0-beta.5(effect@4.0.0-beta.5)
-      effect: 4.0.0-beta.5
+      '@effect/platform-node-shared': 4.0.0-beta.7(effect@4.0.0-beta.7)
+      effect: 4.0.0-beta.7
       ioredis: 5.9.3
       mime: 4.1.0
       undici: 7.22.0
@@ -7263,9 +7263,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@effect/sql-pg@4.0.0-beta.5(effect@4.0.0-beta.5)':
+  '@effect/sql-pg@4.0.0-beta.7(effect@4.0.0-beta.7)':
     dependencies:
-      effect: 4.0.0-beta.5
+      effect: 4.0.0-beta.7
       pg: 8.18.0
       pg-connection-string: 2.11.0
       pg-cursor: 2.17.0(pg@8.18.0)
@@ -7274,9 +7274,9 @@ snapshots:
     transitivePeerDependencies:
       - pg-native
 
-  '@effect/vitest@4.0.0-beta.5(effect@4.0.0-beta.5)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))':
+  '@effect/vitest@4.0.0-beta.7(effect@4.0.0-beta.7)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
-      effect: 4.0.0-beta.5
+      effect: 4.0.0-beta.7
       vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)
 
   '@electric-sql/client@1.5.6':
@@ -9854,7 +9854,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  effect@4.0.0-beta.5:
+  effect@4.0.0-beta.7:
     dependencies:
       '@standard-schema/spec': 1.1.0
       fast-check: 4.5.3

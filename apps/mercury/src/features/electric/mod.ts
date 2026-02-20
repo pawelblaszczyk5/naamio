@@ -79,7 +79,7 @@ export class Electric extends ServiceMap.Service<
 			});
 
 			const proxy = Effect.fn(function* (request: HttpClientRequest.HttpClientRequest) {
-				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError({})));
+				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError()));
 				const headers = pipe(response.headers, Headers.remove("Content-Encoding"), Headers.remove("Content-Length"));
 
 				return HttpServerResponse.stream(response.stream, { headers, status: response.status });

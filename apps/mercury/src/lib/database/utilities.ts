@@ -7,7 +7,7 @@ import { TransactionId } from "@naamio/schema/domain";
 export const createGetTransactionId = Effect.fn(function* () {
 	const sql = yield* PgClient.PgClient;
 
-	const schema = SqlSchema.single({
+	const schema = SqlSchema.findOne({
 		// cspell:ignore xact
 		execute: () => sql`
 			SELECT

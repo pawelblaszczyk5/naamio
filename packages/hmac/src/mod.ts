@@ -1,5 +1,4 @@
-import { Effect, Redacted, Result } from "effect";
-import { Base64Url } from "effect/encoding";
+import { Effect, Encoding, Redacted, Result } from "effect";
 
 const encoder = new TextEncoder();
 
@@ -21,7 +20,7 @@ export const generateHmacSignature = Effect.fn(function* (value: string, secret:
 
 	const signature = yield* Effect.promise(async () => crypto.subtle.sign("HMAC", key, data));
 
-	const encodedSignature = Base64Url.encode(new Uint8Array(signature));
+	const encodedSignature = Encoding.encodeBase64Url(new Uint8Array(signature));
 
 	return Redacted.make(encodedSignature);
 });
@@ -34,7 +33,7 @@ export const verifyHmacSignature = Effect.fn(function* (
 	const data = encoder.encode(value);
 	const key = yield* createKey(secret, "verify");
 
-	const maybeSignature = Base64Url.decode(Redacted.value(signature));
+	const maybeSignature = Encoding.decodeBase64Url(Redacted.value(signature));
 
 	if (Result.isFailure(maybeSignature)) {
 		return false;

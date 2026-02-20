@@ -177,7 +177,7 @@ export class Conversation extends ServiceMap.Service<
 				Request: InflightChunkModel.select.mapFields(Struct.pick(["messagePartId"])),
 			});
 
-			const findInflightChunksByMessagePartIdForCompaction = SqlSchema.findMany({
+			const findInflightChunksByMessagePartIdForCompaction = SqlSchema.findNonEmpty({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -194,7 +194,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: InflightChunkModel.select.mapFields(Struct.pick(["id", "sequence", "content", "userId"])),
 			});
 
-			const findStreamedMessagePartForCompaction = SqlSchema.findOne({
+			const findStreamedMessagePartForCompaction = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -211,7 +211,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: Schema.Union([TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"]))]),
 			});
 
-			const findConversationMetadataForUpdate = SqlSchema.findOne({
+			const findConversationMetadataForUpdate = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -226,7 +226,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
-			const findAgentMessageMetadataForStatusUpdate = SqlSchema.findOne({
+			const findAgentMessageMetadataForStatusUpdate = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -247,7 +247,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: AgentMessageModel.select.mapFields(Struct.pick(["id", "userId", "status", "conversationId"])),
 			});
 
-			const findConversationForGeneration = SqlSchema.findOne({
+			const findConversationForGeneration = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -261,7 +261,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
-			const findMessagesByConversationIdForGeneration = SqlSchema.findMany({
+			const findMessagesByConversationIdForGeneration = SqlSchema.findNonEmpty({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -283,7 +283,7 @@ export class Conversation extends ServiceMap.Service<
 				]),
 			});
 
-			const findMessagePartsByConversationIdForGeneration = SqlSchema.findMany({
+			const findMessagePartsByConversationIdForGeneration = SqlSchema.findNonEmpty({
 				execute: (request) => sql`
 					SELECT
 						${sql("messagePart")}.${sql("type")},
@@ -329,7 +329,7 @@ export class Conversation extends ServiceMap.Service<
 								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
 									findInflightChunksByMessagePartIdForCompaction({ messagePartId }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
-										Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError({}))),
+										Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError())),
 									),
 									findStreamedMessagePartForCompaction({ id: messagePartId }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
@@ -340,7 +340,7 @@ export class Conversation extends ServiceMap.Service<
 									Option.isNone(maybeStreamedMessagePart)
 									|| Option.isSome(maybeStreamedMessagePart.value.data.content)
 								) {
-									return yield* new CompactionDataError({});
+									return yield* new CompactionDataError();
 								}
 
 								const finalContent = pipe(
@@ -483,11 +483,11 @@ export class Conversation extends ServiceMap.Service<
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 								if (Option.isNone(maybeAgentMessageMetadata)) {
-									return yield* new MissingMessageError({});
+									return yield* new MissingMessageError();
 								}
 
 								if (maybeAgentMessageMetadata.value.status !== "IN_PROGRESS") {
-									return yield* new MessageAlreadyTransitionedError({});
+									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatus({
@@ -507,11 +507,11 @@ export class Conversation extends ServiceMap.Service<
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 								if (Option.isNone(maybeAgentMessageMetadata)) {
-									return yield* new MissingMessageError({});
+									return yield* new MissingMessageError();
 								}
 
 								if (maybeAgentMessageMetadata.value.status !== "IN_PROGRESS") {
-									return yield* new MessageAlreadyTransitionedError({});
+									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatus({
@@ -583,7 +583,7 @@ export class Conversation extends ServiceMap.Service<
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							if (Option.isNone(maybeConversationMetadata)) {
-								return yield* new MissingConversationError({});
+								return yield* new MissingConversationError();
 							}
 
 							yield* updateConversationUpdatedAt({
@@ -638,7 +638,7 @@ export class Conversation extends ServiceMap.Service<
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							if (Option.isNone(maybeConversationMetadata)) {
-								return yield* new MissingConversationError({});
+								return yield* new MissingConversationError();
 							}
 
 							yield* updateConversationUpdatedAt({
@@ -679,14 +679,14 @@ export class Conversation extends ServiceMap.Service<
 								]);
 
 								if (Option.isNone(maybeConversationMetadata)) {
-									return yield* new MissingConversationError({});
+									return yield* new MissingConversationError();
 								}
 
 								if (
 									Option.isNone(maybeAgentMessageMetadata)
 									|| maybeAgentMessageMetadata.value.conversationId !== maybeConversationMetadata.value.id
 								) {
-									return yield* new MissingMessageError({});
+									return yield* new MissingMessageError();
 								}
 
 								const transactionId = yield* getTransactionId();
@@ -699,7 +699,7 @@ export class Conversation extends ServiceMap.Service<
 									maybeAgentMessageMetadata.value.status === "ERROR"
 									|| maybeAgentMessageMetadata.value.status === "FINISHED"
 								) {
-									return yield* new MessageAlreadyTransitionedError({});
+									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatus({

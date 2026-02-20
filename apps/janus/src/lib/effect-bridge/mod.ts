@@ -6,6 +6,8 @@ import { Effect } from "effect";
 import { SessionToken } from "#src/lib/effect-bridge/context.js";
 import { runtime } from "#src/lib/effect-bridge/runtime.js";
 
+import "@tanstack/react-start/server-only";
+
 type RuntimeContext = typeof runtime extends ManagedRuntime.ManagedRuntime<infer Context, any> ? Context : never;
 
 export const runServerFn = async <A, E, R extends RuntimeContext>(effect: Effect.Effect<A, E, R>) =>

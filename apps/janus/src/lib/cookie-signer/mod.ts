@@ -2,6 +2,8 @@ import { Array, Effect, Encoding, Layer, Option, Redacted, Result, Schema, Servi
 
 import { generateHmacSignature, verifyHmacSignature } from "@naamio/hmac";
 
+import "@tanstack/react-start/server-only";
+
 type SignedCookieSchema<T> = Schema.Codec<T, string>;
 
 export class CookieSigner extends ServiceMap.Service<

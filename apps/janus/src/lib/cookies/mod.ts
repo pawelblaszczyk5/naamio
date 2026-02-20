@@ -6,6 +6,8 @@ import { UnsafeEncodableRedactedFromValue } from "@naamio/schema/utilities";
 
 import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
+import "@tanstack/react-start/server-only";
+
 const COOKIE_DOMAIN = Config.string("AUTH_COOKIE_DOMAIN");
 const SHARED_COOKIE_OPTIONS = { httpOnly: true, path: "/", priority: "high", sameSite: "lax", secure: true } as const;
 

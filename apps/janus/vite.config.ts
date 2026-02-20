@@ -100,7 +100,7 @@ export default defineConfig((environment) => {
 		},
 		plugins: [
 			inspect(),
-			tanstackStart({ router: { addExtensions: true } }),
+			tanstackStart({ importProtection: { behavior: "error" }, router: { addExtensions: true } }),
 			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
 			lingui({ failOnCompileError: true, failOnMissing: true }),
 			FontaineTransform.vite({ fallbacks: {} }),

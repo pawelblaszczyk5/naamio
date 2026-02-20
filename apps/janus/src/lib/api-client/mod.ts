@@ -9,6 +9,8 @@ import { NaamioApi } from "@naamio/api";
 
 import { SessionToken } from "#src/lib/effect-bridge/context.js";
 
+import "@tanstack/react-start/server-only";
+
 type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups> ? Groups : never;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- I need to have this here for proper inferring

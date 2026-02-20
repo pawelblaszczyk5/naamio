@@ -14,7 +14,7 @@ catalog:
   "@effect/sql-pg": 4.0.0-beta.7
   "@effect/vitest": 4.0.0-beta.7
   effect: 4.0.0-beta.7
-  "@electric-sql/client": ^1.5.6
+  "@electric-sql/client": ^1.5.7
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.3.0
   eslint: ^9.39.2
@@ -31,8 +31,8 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.17.5
   "@stylexjs/postcss-plugin": ^0.17.5
   "@stylexjs/stylex": ^0.17.5
-  react: 19.3.0-canary-47d1ad14-20260216
-  react-dom: 19.3.0-canary-47d1ad14-20260216
+  react: v19.3.0-canary-2ba30655-20260219
+  react-dom: v19.3.0-canary-2ba30655-20260219
   tsc-alias: ^1.8.16
   type-fest: ^5.4.4
   wait-on: ^9.0.4

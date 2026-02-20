@@ -162,12 +162,12 @@ export class User extends ServiceMap.Service<
 	).pipe(Layer.provide(DatabaseLayer)) satisfies Layer.Layer<User, unknown>;
 }
 
-export const CleanupUnconfirmedUsersJob = ClusterCron.make({
+export const CleanupUnconfirmedUsersCron = ClusterCron.make({
 	cron: Cron.parseUnsafe("*/15 * * * *"),
 	execute: Effect.gen(function* () {
 		const user = yield* User;
 
 		yield* user.system.deleteUnconfirmedUsers();
 	}),
-	name: "CleanupUnconfirmedUsersJob",
+	name: "CleanupUnconfirmedUsersCron",
 }).pipe(Layer.provide([ClusterRunnerLayer, User.layer]));

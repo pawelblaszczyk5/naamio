@@ -503,12 +503,12 @@ export class WebAuthn extends ServiceMap.Service<
 	).pipe(Layer.provide(DatabaseLayer)) satisfies Layer.Layer<WebAuthn, unknown>;
 }
 
-export const CleanupExpiredChallengesJob = ClusterCron.make({
+export const CleanupExpiredChallengesCron = ClusterCron.make({
 	cron: Cron.parseUnsafe("*/15 * * * *"),
 	execute: Effect.gen(function* () {
 		const webAuthn = yield* WebAuthn;
 
 		yield* webAuthn.system.deleteExpiredChallenges();
 	}),
-	name: "CleanupExpiredChallengesJob",
+	name: "CleanupExpiredChallengesCron",
 }).pipe(Layer.provide([ClusterRunnerLayer, WebAuthn.layer]));

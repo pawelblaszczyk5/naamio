@@ -8,10 +8,10 @@ import { NaamioApi } from "@naamio/api";
 import { ObservabilityLayer } from "@naamio/observability";
 
 import { NaamioApiServerLayer } from "#src/api/mod.js";
-import { CleanupExpiredChallengesJob } from "#src/features/auth/web-authn.js";
-import { CleanupUnconfirmedUsersJob } from "#src/features/user/mod.js";
+import { CleanupExpiredChallengesCron } from "#src/features/auth/web-authn.js";
+import { CleanupUnconfirmedUsersCron } from "#src/features/user/mod.js";
 
-const Jobs = Layer.mergeAll(CleanupExpiredChallengesJob, CleanupUnconfirmedUsersJob);
+const Jobs = Layer.mergeAll(CleanupExpiredChallengesCron, CleanupUnconfirmedUsersCron);
 
 const HttpLayer = NaamioApiServerLayer.pipe(
 	Layer.provide(HttpApiSwagger.layer(NaamioApi, { path: "/docs" })),

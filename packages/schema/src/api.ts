@@ -20,11 +20,12 @@ import {
 	UserVerificationRequirement,
 } from "#src/web-authn.js";
 
-export const ElectricProtocolQuery = Object.fromEntries(
-	ELECTRIC_PROTOCOL_QUERY_PARAMS.map((key) => [key, Schema.optionalKey(Schema.String)]),
-);
+export const ElectricProtocolQuery = Schema.Record(
+	Schema.Literals(ELECTRIC_PROTOCOL_QUERY_PARAMS),
+	Schema.optionalKey(Schema.String),
+).pipe(Schema.brand("ElectricProtocolUrlParams"));
 
-export type ElectricProtocolQuery = Record<string, string | undefined>;
+export type ElectricProtocolQuery = (typeof ElectricProtocolQuery)["Type"];
 
 export const WebAuthnRegistrationOptions = Schema.Struct({
 	attestation: AttestationConveyancePreference.pipe(optionalWithExactOptionalPropertyKeysCompat),

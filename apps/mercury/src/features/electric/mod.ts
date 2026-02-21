@@ -26,13 +26,13 @@ export class Electric extends ServiceMap.Service<
 	{
 		viewer: {
 			passkeyShape: (
-				electricUrlParams: ElectricProtocolQuery,
+				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			sessionShape: (
-				electricUrlParams: ElectricProtocolQuery,
+				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			userShape: (
-				electricUrlParams: ElectricProtocolQuery,
+				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 		};
 	}
@@ -87,11 +87,11 @@ export class Electric extends ServiceMap.Service<
 
 			const mapShapeDefinitionIntoRequest = Effect.fn(function* (
 				shapeDefinition: ShapeDefinition,
-				electricUrlParams: ElectricProtocolQuery,
+				electricQuery: ElectricProtocolQuery,
 			) {
 				return HttpClientRequest.get("/v1/shape", {
 					urlParams: {
-						...electricUrlParams,
+						...electricQuery,
 						columns: yield* mapColumns(shapeDefinition.columns),
 						table: yield* compileIdentifier(shapeDefinition.table),
 						...(yield* mapWhereClause(shapeDefinition.where)),
@@ -101,7 +101,7 @@ export class Electric extends ServiceMap.Service<
 
 			return Electric.of({
 				viewer: {
-					passkeyShape: Effect.fn("@naamio/mercury/Electric#passkeyShape")(function* (electricUrlParams) {
+					passkeyShape: Effect.fn("@naamio/mercury/Electric#passkeyShape")(function* (electricQuery) {
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
@@ -117,11 +117,11 @@ export class Electric extends ServiceMap.Service<
 							where: sql`${sql("userId")} = ${currentSession.userId}`,
 						};
 
-						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
 
 						return yield* proxy(request);
 					}),
-					sessionShape: Effect.fn("@naamio/mercury/Electric#sessionShape")(function* (electricUrlParams) {
+					sessionShape: Effect.fn("@naamio/mercury/Electric#sessionShape")(function* (electricQuery) {
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
@@ -132,11 +132,11 @@ export class Electric extends ServiceMap.Service<
 							`,
 						};
 
-						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
 
 						return yield* proxy(request);
 					}),
-					userShape: Effect.fn("@naamio/mercury/Electric#userShape")(function* (electricUrlParams) {
+					userShape: Effect.fn("@naamio/mercury/Electric#userShape")(function* (electricQuery) {
 						const currentSession = yield* CurrentSession;
 
 						const shapeDefinition: ShapeDefinition = {
@@ -145,7 +145,7 @@ export class Electric extends ServiceMap.Service<
 							where: sql`${sql("id")} = ${currentSession.userId}`,
 						};
 
-						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricUrlParams);
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
 
 						return yield* proxy(request);
 					}),

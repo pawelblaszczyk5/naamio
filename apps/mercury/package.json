@@ -23,7 +23,7 @@
 		"@naamio/id-generator": "workspace:",
 		"@naamio/observability": "workspace:",
 		"@naamio/schema": "workspace:",
-		"@simplewebauthn/server": "^13.2.2",
+		"@simplewebauthn/server": "^13.2.3",
 		"effect": "catalog:",
 		"nanoid": "^5.1.6",
 		"tsx": "^4.21.0"

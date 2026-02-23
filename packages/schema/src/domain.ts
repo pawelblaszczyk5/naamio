@@ -1,7 +1,7 @@
 import { Schema, SchemaTransformation } from "effect";
 import { Model } from "effect/unstable/schema";
 
-import { ArrayFromString, BigintFromString, unsafeEncodableRedactedFromValue } from "#src/utilities.js";
+import { ArrayFromString, unsafeEncodableRedactedFromValue } from "#src/utilities.js";
 import { AuthenticatorTransport } from "#src/web-authn.js";
 
 export const TransactionId = Schema.NumberFromString.pipe(Schema.brand("TransactionId"));
@@ -31,7 +31,7 @@ export class UserModel extends Model.Class<UserModel>("@naamio/schema/UserModel"
 export class PasskeyModel extends Model.Class<PasskeyModel>("@naamio/schema/PasskeyModel")({
 	aaguid: Schema.String.pipe(Schema.brand("Aaguid")),
 	backedUp: Schema.Boolean,
-	counter: BigintFromString,
+	counter: Schema.Int.check(Schema.isGreaterThanOrEqualTo(0)),
 	createdAt: Model.DateTimeInsertFromDate,
 	credentialId: Schema.String.pipe(Schema.brand("CredentialId")),
 	deviceType: Schema.Literals(["SINGLE_DEVICE", "MULTI_DEVICE"]),

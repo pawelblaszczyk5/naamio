@@ -23,7 +23,7 @@ const migration = Effect.gen(function* () {
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("credentialId")} TEXT NOT NULL UNIQUE,
 			${sql("publicKey")} TEXT NOT NULL,
-			${sql("counter")} BIGINT NOT NULL,
+			${sql("counter")} INTEGER NOT NULL,
 			${sql("deviceType")} TEXT NOT NULL,
 			${sql("displayName")} TEXT NOT NULL,
 			${sql("backedUp")} BOOLEAN NOT NULL,

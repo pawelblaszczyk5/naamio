@@ -1,4 +1,4 @@
-import { Option, Redacted, Schema, SchemaGetter, SchemaTransformation } from "effect";
+import { Option, Redacted, Schema, SchemaGetter } from "effect";
 
 // NOTE this is used for objects returned from 3rd party code that doesn't differentiate between optionality and nullability, that's a bit of a workaround
 export const optionalWithExactOptionalPropertyKeysCompat = <T extends Schema.Top>(schema: T) =>
@@ -16,10 +16,6 @@ export const ArrayFromString = (separator?: string) =>
 			encode: SchemaGetter.transform((value) => value.join(separator)),
 		}),
 	);
-
-export const BigintFromString = Schema.String.pipe(
-	Schema.decodeTo(Schema.BigInt, SchemaTransformation.bigintFromString),
-);
 
 export const unsafeEncodableRedactedFromValue = <T extends Schema.Top>(
 	schema: T,

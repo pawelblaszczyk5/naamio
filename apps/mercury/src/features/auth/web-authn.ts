@@ -421,7 +421,7 @@ export class WebAuthn extends ServiceMap.Service<
 								}
 
 								yield* updatePasskeyCounter({
-									counter: BigInt(verificationResult.authenticationInfo.newCounter),
+									counter: verificationResult.authenticationInfo.newCounter,
 									id: maybePasskey.value.id,
 								}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
@@ -474,7 +474,7 @@ export class WebAuthn extends ServiceMap.Service<
 								yield* insertPasskey({
 									aaguid: PasskeyModel.fields.aaguid.makeUnsafe(verificationResult.registrationInfo.aaguid),
 									backedUp: verificationResult.registrationInfo.credentialBackedUp,
-									counter: BigInt(verificationResult.registrationInfo.credential.counter),
+									counter: verificationResult.registrationInfo.credential.counter,
 									createdAt: undefined,
 									credentialId: PasskeyModel.fields.credentialId.makeUnsafe(
 										verificationResult.registrationInfo.credential.id,

@@ -9,12 +9,12 @@ type SignedCookieSchema<T> = Schema.Codec<T, string>;
 export class CookieSigner extends ServiceMap.Service<
 	CookieSigner,
 	{
-		decode: <T>(
+		readonly decode: <T>(
 			cookie: string,
 			schema: SignedCookieSchema<T>,
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,
 		) => Effect.Effect<Option.Option<T>>;
-		encode: <T>(
+		readonly encode: <T>(
 			schema: SignedCookieSchema<T>,
 			value: NoInfer<T>,
 			secrets: Array.NonEmptyArray<Redacted.Redacted> | Redacted.Redacted,

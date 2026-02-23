@@ -55,16 +55,16 @@ export class MissingPasskeyError extends Schema.TaggedErrorClass<MissingPasskeyE
 export class WebAuthn extends ServiceMap.Service<
 	WebAuthn,
 	{
-		system: {
-			deleteExpiredChallenges: () => Effect.Effect<void>;
-			generateAuthenticationOptions: (
+		readonly system: {
+			readonly deleteExpiredChallenges: () => Effect.Effect<void>;
+			readonly generateAuthenticationOptions: (
 				maybeUserId: Option.Option<UserModel["id"]>,
 			) => Effect.Effect<{
 				authenticationOptions: WebAuthnAuthenticationOptions;
 				challengeId: WebAuthnAuthenticationChallengeModel["id"];
 				expiresAt: WebAuthnAuthenticationChallengeModel["expiresAt"];
 			}>;
-			generateRegistrationOptions: (
+			readonly generateRegistrationOptions: (
 				user: Pick<UserModel, "id" | "username" | "webAuthnId">
 					& Pick<WebAuthnRegistrationChallengeModel, "displayName">,
 			) => Effect.Effect<{
@@ -72,14 +72,14 @@ export class WebAuthn extends ServiceMap.Service<
 				expiresAt: WebAuthnRegistrationChallengeModel["expiresAt"];
 				registrationOptions: WebAuthnRegistrationOptions;
 			}>;
-			verifyAuthenticationResponse: (data: {
+			readonly verifyAuthenticationResponse: (data: {
 				authenticationResponse: WebAuthnAuthenticationResponse;
 				challengeId: WebAuthnAuthenticationChallengeModel["id"];
 			}) => Effect.Effect<
 				Pick<PasskeyModel, "id" | "userId">,
 				FailedVerificationError | MissingPasskeyError | UnavailableChallengeError
 			>;
-			verifyRegistrationResponse: (data: {
+			readonly verifyRegistrationResponse: (data: {
 				challengeId: WebAuthnRegistrationChallengeModel["id"];
 				registrationResponse: WebAuthnRegistrationResponse;
 			}) => Effect.Effect<Pick<PasskeyModel, "id" | "userId">, FailedVerificationError | UnavailableChallengeError>;

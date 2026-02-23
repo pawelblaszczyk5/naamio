@@ -24,14 +24,14 @@ export class ShapeProxyError extends Schema.TaggedErrorClass<ShapeProxyError>(
 export class Electric extends ServiceMap.Service<
 	Electric,
 	{
-		viewer: {
-			passkeyShape: (
+		readonly viewer: {
+			readonly passkeyShape: (
 				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
-			sessionShape: (
+			readonly sessionShape: (
 				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
-			userShape: (
+			readonly userShape: (
 				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 		};

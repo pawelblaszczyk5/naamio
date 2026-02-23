@@ -28,24 +28,24 @@ export class MissingSessionError extends Schema.TaggedErrorClass<MissingSessionE
 export class Session extends ServiceMap.Service<
 	Session,
 	{
-		system: {
-			create: (
+		readonly system: {
+			readonly create: (
 				data: Pick<SessionModel, "deviceLabel" | "passkeyId" | "userId">,
 			) => Effect.Effect<{ expiresAt: SessionModel["expiresAt"]; token: Redacted.Redacted }>;
-			retrieveFromToken: (
+			readonly retrieveFromToken: (
 				token: Redacted.Redacted,
 			) => Effect.Effect<Option.Option<Pick<SessionModel, "expiresAt" | "id" | "userId">>>;
 		};
-		viewer: {
-			revoke: (
+		readonly viewer: {
+			readonly revoke: (
 				id: SessionModel["id"],
 			) => Effect.Effect<
 				{ transactionId: TransactionId },
 				MissingSessionError | UnavailableSessionError,
 				CurrentSession
 			>;
-			revokeAll: () => Effect.Effect<void, never, CurrentSession>;
-			verify: () => Effect.Effect<
+			readonly revokeAll: () => Effect.Effect<void, never, CurrentSession>;
+			readonly verify: () => Effect.Effect<
 				Pick<SessionModel, "expiresAt" | "id"> & { refreshed: boolean },
 				never,
 				CurrentSession

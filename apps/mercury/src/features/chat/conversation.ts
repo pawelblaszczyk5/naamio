@@ -57,41 +57,41 @@ import { createGetTransactionId } from "#src/lib/database/utilities.js";
 export class Conversation extends ServiceMap.Service<
 	Conversation,
 	{
-		system: {
-			compactInflightChunks: (
+		readonly system: {
+			readonly compactInflightChunks: (
 				messagePartId: InflightChunkModel["messagePartId"],
 			) => Effect.Effect<void, CompactionDataError>;
-			deleteInflightChunks: (messagePartId: InflightChunkModel["messagePartId"]) => Effect.Effect<void>;
-			findConversationForGeneration: (
+			readonly deleteInflightChunks: (messagePartId: InflightChunkModel["messagePartId"]) => Effect.Effect<void>;
+			readonly findConversationForGeneration: (
 				id: ConversationModel["id"],
 			) => Effect.Effect<Option.Option<ConversationForGeneration>>;
-			insertInflightChunk: (
+			readonly insertInflightChunk: (
 				inflightChunk: Pick<InflightChunkModel, "content" | "messagePartId" | "sequence" | "userId">,
 			) => Effect.Effect<void>;
-			insertStepCompletionPart: (
+			readonly insertStepCompletionPart: (
 				part: Pick<StepCompletionPartModel, "data" | "messageId" | "userId">,
 			) => Effect.Effect<void>;
-			insertTextMessagePart: (
+			readonly insertTextMessagePart: (
 				part: Pick<TextMessagePartModel, "data" | "messageId" | "userId">,
 			) => Effect.Effect<Pick<TextMessagePartModel, "id">>;
-			transitionMessageToError: (
+			readonly transitionMessageToError: (
 				message: Pick<AgentMessageModel, "id" | "userId">,
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
-			transitionMessageToFinished: (
+			readonly transitionMessageToFinished: (
 				message: Pick<AgentMessageModel, "id" | "userId">,
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
 		};
-		viewer: {
-			createConversation: (
+		readonly viewer: {
+			readonly createConversation: (
 				input: StartConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
-			updateConversationWithContinuation: (
+			readonly updateConversationWithContinuation: (
 				input: ContinueConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
-			updateConversationWithRegeneration: (
+			readonly updateConversationWithRegeneration: (
 				input: RegenerateAnswerInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
-			updateMessageWithInterruption: (
+			readonly updateMessageWithInterruption: (
 				input: InterruptGenerationInput,
 			) => Effect.Effect<
 				{ transactionId: TransactionId },

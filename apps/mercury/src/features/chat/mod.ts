@@ -16,21 +16,21 @@ import type {
 export class Chat extends ServiceMap.Service<
 	Chat,
 	{
-		viewer: {
-			continueConversation: (
+		readonly viewer: {
+			readonly continueConversation: (
 				input: ContinueConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
-			interruptGeneration: (
+			readonly interruptGeneration: (
 				input: InterruptGenerationInput,
 			) => Effect.Effect<
 				{ transactionId: TransactionId },
 				MissingConversationError | MissingMessageError,
 				CurrentSession
 			>;
-			regenerateAnswer: (
+			readonly regenerateAnswer: (
 				input: RegenerateAnswerInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
-			startConversation: (
+			readonly startConversation: (
 				input: StartConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
 		};

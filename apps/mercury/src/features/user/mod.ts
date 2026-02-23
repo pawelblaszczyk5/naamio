@@ -20,16 +20,16 @@ export class UsernameTakenError extends Schema.TaggedErrorClass<UsernameTakenErr
 export class User extends ServiceMap.Service<
 	User,
 	{
-		system: {
-			confirm: (id: UserModel["id"]) => Effect.Effect<void>;
-			create: (
+		readonly system: {
+			readonly confirm: (id: UserModel["id"]) => Effect.Effect<void>;
+			readonly create: (
 				data: Pick<UserModel, "language" | "username">,
 			) => Effect.Effect<Pick<UserModel, "id" | "username" | "webAuthnId">, UsernameTakenError>;
-			deleteUnconfirmedUsers: () => Effect.Effect<void>;
-			findIdByUsername: (username: UserModel["username"]) => Effect.Effect<Option.Option<UserModel["id"]>>;
+			readonly deleteUnconfirmedUsers: () => Effect.Effect<void>;
+			readonly findIdByUsername: (username: UserModel["username"]) => Effect.Effect<Option.Option<UserModel["id"]>>;
 		};
-		viewer: {
-			updateLanguage: (
+		readonly viewer: {
+			readonly updateLanguage: (
 				language: UserModel["language"],
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
 		};

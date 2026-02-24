@@ -391,12 +391,12 @@ export class WebAuthn extends ServiceMap.Service<
 
 								const credential: WebAuthnCredential = Option.match(maybePasskey.value.transports, {
 									onNone: () => ({
-										counter: Number(maybePasskey.value.counter),
+										counter: maybePasskey.value.counter,
 										id: maybePasskey.value.credentialId,
 										publicKey: encodedPublicKey,
 									}),
 									onSome: (transports) => ({
-										counter: Number(maybePasskey.value.counter),
+										counter: maybePasskey.value.counter,
 										id: maybePasskey.value.credentialId,
 										publicKey: encodedPublicKey,
 										transports: [...transports],

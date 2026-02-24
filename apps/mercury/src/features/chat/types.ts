@@ -1,4 +1,4 @@
-import type { Array } from "effect";
+import type { Array, Option } from "effect";
 import type { DistributedPick } from "type-fest";
 
 import type {
@@ -51,6 +51,11 @@ export interface RegenerateAnswerInput {
 export interface InterruptGenerationInput {
 	conversationId: ConversationModel["id"];
 	messageId: AgentMessageModel["id"];
+}
+
+export interface EditConversationTitleInput {
+	conversationId: ConversationModel["id"];
+	title: Option.Option.Value<ConversationModel["title"]>;
 }
 
 export interface UserMessageForGeneration {

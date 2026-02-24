@@ -11,12 +11,10 @@ import {
 } from "#src/features/chat/errors.js";
 
 export const ConversationGenerationManagerEntity = Entity.make("ConversationMessageGenerator", [
-	Rpc.make("startGeneration", {
+	Rpc.make("StartGeneration", {
 		error: Schema.Union([GenerationAlreadyInProgressError, MissingMessageError, MissingConversationError]),
 		payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }),
 	}),
-	Rpc.make("interruptGeneration", {
-		error: Schema.Union([MissingMessageError, MissingConversationError]),
-		payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }),
-	}),
+	Rpc.make("InterruptGeneration", { payload: Schema.Struct({ messageId: AgentMessageModel.select.fields.id }) }),
+	Rpc.make("Cleanup"),
 ]);

@@ -37,6 +37,7 @@ import type {
 	AgentMessageForGeneration,
 	ContinueConversationInput,
 	ConversationForGeneration,
+	EditConversationTitleInput,
 	InterruptGenerationInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
@@ -88,6 +89,12 @@ export class Conversation extends ServiceMap.Service<
 			readonly createConversation: (
 				input: StartConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, never, CurrentSession>;
+			readonly deleteConversation: (
+				id: ConversationModel["id"],
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
+			readonly editConversationTitle: (
+				input: EditConversationTitleInput,
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly updateConversationWithContinuation: (
 				input: ContinueConversationInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
@@ -156,6 +163,17 @@ export class Conversation extends ServiceMap.Service<
 				Request: ConversationModel.update.mapFields(Struct.pick(["updatedAt", "id", "userId"])),
 			});
 
+			const updateConversationTitle = SqlSchema.void({
+				execute: (request) => sql`
+					UPDATE ${sql("conversation")}
+					SET
+						${sql.update(request, ["id", "userId"])}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
+				`,
+				Request: ConversationModel.update.mapFields(Struct.pick(["updatedAt", "id", "userId", "title"])),
+			});
+
 			const updateAgentMessageStatus = SqlSchema.void({
 				execute: (request) => sql`
 					UPDATE ${sql("message")}
@@ -212,6 +230,64 @@ export class Conversation extends ServiceMap.Service<
 						${sql("messagePartId")} = ${request.messagePartId};
 				`,
 				Request: InflightChunkModel.select.mapFields(Struct.pick(["messagePartId"])),
+			});
+
+			const deleteConversation = SqlSchema.void({
+				execute: (request) => sql`
+					DELETE FROM ${sql("conversation")}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
+				`,
+				Request: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
+			});
+
+			const deleteMessagesByConversationId = SqlSchema.void({
+				execute: (request) => sql`
+					DELETE FROM ${sql("message")}
+					WHERE
+						${sql.and([
+							sql`${sql("conversationId")} = ${request.conversationId}`,
+							sql`${sql("userId")} = ${request.userId}`,
+						])};
+				`,
+				Request: ConversationModel.select
+					.mapFields(Struct.pick(["id", "userId"]))
+					.mapFields(Struct.renameKeys({ id: "conversationId" })),
+			});
+
+			const deleteMessagePartsByConversationId = SqlSchema.void({
+				execute: (request) => sql`
+					DELETE FROM ${sql("messagePart")} USING ${sql("message")}
+					WHERE
+						${sql.and([
+							sql`${sql("messagePart")}.${sql("messageId")} = ${sql("message")}.${sql("id")}`,
+							sql`${sql("messagePart")}.${sql("userId")} = ${request.userId}`,
+							sql`${sql("message")}.${sql("conversationId")} = ${request.conversationId}`,
+							sql`${sql("message")}.${sql("userId")} = ${request.userId}`,
+						])};
+				`,
+				Request: ConversationModel.select
+					.mapFields(Struct.pick(["id", "userId"]))
+					.mapFields(Struct.renameKeys({ id: "conversationId" })),
+			});
+
+			const deleteInflightChunksByConversationId = SqlSchema.void({
+				execute: (request) => sql`
+					DELETE FROM ${sql("inflightChunk")} USING ${sql("messagePart")},
+					${sql("message")}
+					WHERE
+						${sql.and([
+							sql`${sql("inflightChunk")}.${sql("messagePartId")} = ${sql("messagePart")}.${sql("id")}`,
+							sql`${sql("inflightChunk")}.${sql("userId")} = ${request.userId}`,
+							sql`${sql("messagePart")}.${sql("messageId")} = ${sql("message")}.${sql("id")}`,
+							sql`${sql("messagePart")}.${sql("userId")} = ${request.userId}`,
+							sql`${sql("message")}.${sql("conversationId")} = ${request.conversationId}`,
+							sql`${sql("message")}.${sql("userId")} = ${request.userId}`,
+						])};
+				`,
+				Request: ConversationModel.select
+					.mapFields(Struct.pick(["id", "userId"]))
+					.mapFields(Struct.renameKeys({ id: "conversationId" })),
 			});
 
 			const findInflightChunksByMessagePartIdForCompaction = SqlSchema.findNonEmpty({
@@ -655,6 +731,62 @@ export class Conversation extends ServiceMap.Service<
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+
+						return { transactionId };
+					}),
+					deleteConversation: Effect.fn("@naamio/mercury/Conversation#deleteConversation")(function* (id) {
+						const currentSession = yield* CurrentSession;
+
+						const transactionId = yield* Effect.gen(function* () {
+							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
+								id,
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							if (Option.isNone(maybeConversationMetadata)) {
+								return yield* new MissingConversationError();
+							}
+
+							yield* deleteInflightChunksByConversationId({ conversationId: id, userId: currentSession.userId }).pipe(
+								Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+							);
+							yield* deleteMessagePartsByConversationId({ conversationId: id, userId: currentSession.userId }).pipe(
+								Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+							);
+							yield* deleteMessagesByConversationId({ conversationId: id, userId: currentSession.userId }).pipe(
+								Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+							);
+							yield* deleteConversation({ id, userId: currentSession.userId }).pipe(
+								Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+							);
+
+							return yield* getTransactionId();
+						});
+
+						return { transactionId };
+					}),
+					editConversationTitle: Effect.fn("@naamio/mercury/Conversation#editConversationTitle")(function* (input) {
+						const currentSession = yield* CurrentSession;
+
+						const transactionId = yield* Effect.gen(function* () {
+							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
+								id: input.conversationId,
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							if (Option.isNone(maybeConversationMetadata)) {
+								return yield* new MissingConversationError();
+							}
+
+							yield* updateConversationTitle({
+								id: input.conversationId,
+								title: Option.some(input.title),
+								updatedAt: yield* DateTime.now,
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							return yield* getTransactionId();
+						});
 
 						return { transactionId };
 					}),

@@ -3,11 +3,12 @@ import type { Effect } from "effect";
 import { ServiceMap } from "effect";
 
 import type { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
-import type { TransactionId } from "@naamio/schema/domain";
+import type { ConversationModel, TransactionId } from "@naamio/schema/domain";
 
 import type { MissingConversationError, MissingMessageError } from "#src/features/chat/errors.js";
 import type {
 	ContinueConversationInput,
+	EditConversationTitleInput,
 	InterruptGenerationInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
@@ -19,6 +20,12 @@ export class Chat extends ServiceMap.Service<
 		readonly viewer: {
 			readonly continueConversation: (
 				input: ContinueConversationInput,
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
+			readonly deleteConversation: (
+				id: ConversationModel["id"],
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
+			readonly editConversationTitle: (
+				input: EditConversationTitleInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly interruptGeneration: (
 				input: InterruptGenerationInput,

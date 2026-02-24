@@ -4,7 +4,7 @@ import type { DistributedPick } from "type-fest";
 import type {
 	AgentMessageModel,
 	ConversationModel,
-	StepCompletionPartModel,
+	ReasoningMessagePartModel,
 	TextMessagePartModel,
 	UserMessageModel,
 } from "@naamio/schema/domain";
@@ -63,7 +63,7 @@ export interface UserMessageForGeneration {
 export interface AgentMessageForGeneration {
 	id: AgentMessageModel["id"];
 	parentId: AgentMessageModel["parentId"];
-	parts: Array<DistributedPick<StepCompletionPartModel | TextMessagePartModel, "createdAt" | "data" | "type">>;
+	parts: Array<DistributedPick<ReasoningMessagePartModel | TextMessagePartModel, "createdAt" | "data" | "type">>;
 	role: AgentMessageModel["role"];
 	status: AgentMessageModel["status"];
 }

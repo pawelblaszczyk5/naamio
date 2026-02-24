@@ -23,6 +23,7 @@ const migration = Effect.gen(function* () {
 			${sql("createdAt")} TIMESTAMPTZ NOT NULL,
 			${sql("role")} TEXT NOT NULL,
 			${sql("status")} TEXT NULL,
+			${sql("metadata")} JSONB NULL,
 			${sql("parentId")} TEXT NULL REFERENCES ${sql("message")} (${sql("id")}),
 			${sql("conversationId")} TEXT NOT NULL REFERENCES ${sql("conversation")} (${sql("id")}),
 			${sql("userId")} TEXT NOT NULL REFERENCES ${sql("user")} (${sql("id")})

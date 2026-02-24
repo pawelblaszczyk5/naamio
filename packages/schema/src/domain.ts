@@ -120,14 +120,30 @@ export class UserMessageModel extends Model.Class<UserMessageModel>("@naamio/sch
 export class AgentMessageModel extends Model.Class<AgentMessageModel>("@naamio/schema/AgentMessageModel")({
 	...BaseMessageFields,
 	id: AgentMessageId,
+	metadata: Model.FieldOption(
+		Model.JsonFromString(
+			Schema.Struct({
+				performanceMetrics: Schema.Struct({
+					processingTime: Schema.Number.check(Schema.isGreaterThan(0)),
+					timeToFirstToken: Schema.Number.check(Schema.isGreaterThan(0)),
+				}),
+				usage: Schema.Struct({
+					cachedInputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+					inputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+					outputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+					totalTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+				}),
+			}),
+		),
+	),
 	parentId: UserMessageId,
 	role: Schema.tag(MessageRole.enums.AGENT),
 	status: MessageStatus,
 }) {}
 
-export const MessagePartType = Schema.Enum({ STEP_COMPLETION: "STEP_COMPLETION" as const, TEXT: "TEXT" as const });
+export const MessagePartType = Schema.Enum({ REASONING: "REASONING" as const, TEXT: "TEXT" as const });
 
-const BaseMessagePartFields = { createdAt: Model.DateTimeInsertFromDate };
+const BaseMessagePartFields = { createdAt: Model.DateTimeInsertFromDate, userId: UserModel.select.fields.id };
 
 const SharedMessageId = Schema.Union([UserMessageId, AgentMessageId]);
 
@@ -137,31 +153,22 @@ export class TextMessagePartModel extends Model.Class<TextMessagePartModel>("@na
 	id: Id.pipe(Schema.brand("TextMessagePartId")),
 	messageId: SharedMessageId,
 	type: Schema.tag(MessagePartType.enums.TEXT),
-	userId: UserModel.select.fields.id,
 }) {}
 
-export class StepCompletionPartModel extends Model.Class<StepCompletionPartModel>(
-	"@naamio/schema/StepCompletionPartModel",
+export class ReasoningMessagePartModel extends Model.Class<ReasoningMessagePartModel>(
+	"@naamio/schema/ReasoningMessagePartModel",
 )({
 	...BaseMessagePartFields,
-	data: Schema.Struct({
-		usage: Schema.Struct({
-			cachedInputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-			inputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-			outputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-			totalTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-		}),
-	}),
-	id: Id.pipe(Schema.brand("StepCompletionMessagePartId")),
+	data: Schema.Struct({ content: Schema.OptionFromOptionalKey(Schema.String) }),
+	id: Id.pipe(Schema.brand("ReasoningMessagePartId")),
 	messageId: AgentMessageId,
-	type: Schema.tag(MessagePartType.enums.STEP_COMPLETION),
-	userId: UserModel.select.fields.id,
+	type: Schema.tag(MessagePartType.enums.REASONING),
 }) {}
 
 export class InflightChunkModel extends Model.Class<InflightChunkModel>("@naamio/schema/InflightChunkModel")({
 	content: Schema.String,
 	id: Id.pipe(Schema.brand("InflightChunkId")),
-	messagePartId: Schema.Union([TextMessagePartModel.select.fields.id]),
+	messagePartId: Schema.Union([TextMessagePartModel.select.fields.id, ReasoningMessagePartModel.select.fields.id]),
 	sequence: Schema.Int.check(Schema.isGreaterThan(0)),
 	userId: UserModel.select.fields.id,
 }) {}

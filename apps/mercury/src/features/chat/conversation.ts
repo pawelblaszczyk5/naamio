@@ -28,7 +28,7 @@ import {
 	MessagePartType,
 	MessageRole,
 	MessageStatus,
-	StepCompletionPartModel,
+	ReasoningMessagePartModel,
 	TextMessagePartModel,
 	UserMessageModel,
 } from "@naamio/schema/domain";
@@ -58,9 +58,10 @@ export class Conversation extends ServiceMap.Service<
 	Conversation,
 	{
 		readonly system: {
-			readonly compactInflightChunks: (
-				messagePartId: InflightChunkModel["messagePartId"],
+			readonly compactReasoningMessagePart: (
+				id: ReasoningMessagePartModel["id"],
 			) => Effect.Effect<void, CompactionDataError>;
+			readonly compactTextMessagePart: (id: TextMessagePartModel["id"]) => Effect.Effect<void, CompactionDataError>;
 			readonly deleteInflightChunks: (messagePartId: InflightChunkModel["messagePartId"]) => Effect.Effect<void>;
 			readonly findConversationForGeneration: (
 				id: ConversationModel["id"],
@@ -68,8 +69,8 @@ export class Conversation extends ServiceMap.Service<
 			readonly insertInflightChunk: (
 				inflightChunk: Pick<InflightChunkModel, "content" | "messagePartId" | "sequence" | "userId">,
 			) => Effect.Effect<void>;
-			readonly insertStepCompletionPart: (
-				part: Pick<StepCompletionPartModel, "data" | "messageId" | "userId">,
+			readonly insertReasoningMessagePart: (
+				part: Pick<ReasoningMessagePartModel, "data" | "messageId" | "userId">,
 			) => Effect.Effect<void>;
 			readonly insertTextMessagePart: (
 				part: Pick<TextMessagePartModel, "data" | "messageId" | "userId">,
@@ -78,7 +79,9 @@ export class Conversation extends ServiceMap.Service<
 				message: Pick<AgentMessageModel, "id" | "userId">,
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
 			readonly transitionMessageToFinished: (
-				message: Pick<AgentMessageModel, "id" | "userId">,
+				message: Pick<AgentMessageModel, "id" | "userId"> & {
+					metadata: Option.Option.Value<AgentMessageModel["metadata"]>;
+				},
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
 		};
 		readonly viewer: {
@@ -131,7 +134,7 @@ export class Conversation extends ServiceMap.Service<
 							request.map((messagePart) => ({ ...messagePart, data: sql.json(messagePart.data) })),
 						)};
 				`,
-				Request: Schema.NonEmptyArray(Model.Union(TextMessagePartModel, StepCompletionPartModel).insert),
+				Request: Schema.NonEmptyArray(Model.Union(TextMessagePartModel, ReasoningMessagePartModel).insert),
 			});
 
 			const insertInflightChunk = SqlSchema.void({
@@ -169,6 +172,21 @@ export class Conversation extends ServiceMap.Service<
 				Request: AgentMessageModel.update.mapFields(Struct.pick(["id", "userId", "status"])),
 			});
 
+			const updateAgentMessageStatusWithMetadata = SqlSchema.void({
+				execute: (request) => sql`
+					UPDATE ${sql("message")}
+					SET
+						${sql.update(request, ["id", "userId"])}
+					WHERE
+						${sql.and([
+							sql`${sql("id")} = ${request.id}`,
+							sql`${sql("userId")} = ${request.userId}`,
+							sql`${sql("role")} = ${MessageRole.enums.AGENT}`,
+						])}
+				`,
+				Request: AgentMessageModel.update.mapFields(Struct.pick(["id", "userId", "status", "metadata"])),
+			});
+
 			const updateStreamedMessagePartData = SqlSchema.void({
 				execute: (request) => sql`
 					UPDATE ${sql("messagePart")}
@@ -178,10 +196,13 @@ export class Conversation extends ServiceMap.Service<
 						${sql.and([
 							sql`${sql("id")} = ${request.id}`,
 							sql`${sql("userId")} = ${request.userId}`,
-							sql`${sql.in("type", [MessagePartType.enums.TEXT])}`,
+							sql`${sql.in("type", [MessagePartType.enums.TEXT, MessagePartType.enums.REASONING])}`,
 						])}
 				`,
-				Request: Schema.Union([TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "data"]))]),
+				Request: Schema.Union([
+					TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "data"])),
+					ReasoningMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "data"])),
+				]),
 			});
 
 			const deleteInflightChunksByMessagePartId = SqlSchema.void({
@@ -210,7 +231,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: InflightChunkModel.select.mapFields(Struct.pick(["id", "sequence", "content", "userId"])),
 			});
 
-			const findStreamedMessagePartForCompaction = SqlSchema.findOneOption({
+			const findTextMessagePartForCompaction = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -220,11 +241,28 @@ export class Conversation extends ServiceMap.Service<
 					FROM
 						${sql("messagePart")}
 					WHERE
-						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql.in("type", [MessagePartType.enums.TEXT])}`])}
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("type")} = ${MessagePartType.enums.TEXT}`])}
 					FOR UPDATE;
 				`,
-				Request: Schema.Union([TextMessagePartModel.select.mapFields(Struct.pick(["id"]))]),
-				Result: Schema.Union([TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"]))]),
+				Request: TextMessagePartModel.select.mapFields(Struct.pick(["id"])),
+				Result: TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"])),
+			});
+
+			const findReasoningMessagePartForCompaction = SqlSchema.findOneOption({
+				execute: (request) => sql`
+					SELECT
+						${sql("id")},
+						${sql("data")},
+						${sql("type")},
+						${sql("userId")}
+					FROM
+						${sql("messagePart")}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("type")} = ${MessagePartType.enums.REASONING}`])}
+					FOR UPDATE;
+				`,
+				Request: ReasoningMessagePartModel.select.mapFields(Struct.pick(["id"])),
+				Result: ReasoningMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"])),
 			});
 
 			const findConversationMetadataForUpdate = SqlSchema.findOneOption({
@@ -318,7 +356,7 @@ export class Conversation extends ServiceMap.Service<
 				]),
 				Result: Schema.Union([
 					TextMessagePartModel.select.mapFields(Struct.pick(["type", "createdAt", "data", "messageId"])),
-					StepCompletionPartModel.select.mapFields(Struct.pick(["type", "createdAt", "data", "messageId"])),
+					ReasoningMessagePartModel.select.mapFields(Struct.pick(["type", "createdAt", "data", "messageId"])),
 				]),
 			});
 
@@ -339,15 +377,15 @@ export class Conversation extends ServiceMap.Service<
 
 			return Conversation.of({
 				system: {
-					compactInflightChunks: Effect.fn("@naamio/mercury/Conversation#compactInflightChunks")(
-						function* (messagePartId) {
+					compactReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#compactReasoningMessagePart")(
+						function* (id) {
 							yield* Effect.gen(function* () {
 								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
-									findInflightChunksByMessagePartIdForCompaction({ messagePartId }).pipe(
+									findInflightChunksByMessagePartIdForCompaction({ messagePartId: id }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
 										Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError())),
 									),
-									findStreamedMessagePartForCompaction({ id: messagePartId }).pipe(
+									findReasoningMessagePartForCompaction({ id }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
 									),
 								]);
@@ -374,6 +412,37 @@ export class Conversation extends ServiceMap.Service<
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},
 					),
+					compactTextMessagePart: Effect.fn("@naamio/mercury/Conversation#compactTextMessagePart")(function* (id) {
+						yield* Effect.gen(function* () {
+							const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
+								findInflightChunksByMessagePartIdForCompaction({ messagePartId: id }).pipe(
+									Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+									Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError())),
+								),
+								findTextMessagePartForCompaction({ id }).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die)),
+							]);
+
+							if (
+								Option.isNone(maybeStreamedMessagePart)
+								|| Option.isSome(maybeStreamedMessagePart.value.data.content)
+							) {
+								return yield* new CompactionDataError();
+							}
+
+							const finalContent = pipe(
+								inflightChunks,
+								Array.sortWith((chunk) => chunk.sequence, Order.Number),
+								Array.map((chunk) => chunk.content),
+								Array.join(""),
+							);
+
+							yield* updateStreamedMessagePartData({
+								data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
+								id: maybeStreamedMessagePart.value.id,
+								userId: maybeStreamedMessagePart.value.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+					}),
 					deleteInflightChunks: Effect.fn("@naamio/mercury/Conversation#deleteInflightChunks")(
 						function* (messagePartId) {
 							yield* deleteInflightChunksByMessagePartId({ messagePartId }).pipe(
@@ -417,7 +486,7 @@ export class Conversation extends ServiceMap.Service<
 								yield* Effect.forEach(
 									messageParts,
 									Effect.fn(function* (messagePart) {
-										if (messagePart.type === "STEP_COMPLETION") {
+										if (messagePart.type === "REASONING") {
 											const maybeMessage = yield* Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId));
 
 											maybeMessage.parts.push(messagePart);
@@ -460,15 +529,15 @@ export class Conversation extends ServiceMap.Service<
 							userId: inflightChunk.userId,
 						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 					}),
-					insertStepCompletionPart: Effect.fn("@naamio/mercury/Conversation#insertStepCompletionPart")(
+					insertReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#insertReasoningMessagePart")(
 						function* (part) {
 							yield* insertMessageParts([
 								{
 									createdAt: undefined,
 									data: part.data,
-									id: StepCompletionPartModel.fields.id.makeUnsafe(yield* generateId()),
+									id: ReasoningMessagePartModel.fields.id.makeUnsafe(yield* generateId()),
 									messageId: part.messageId,
-									type: "STEP_COMPLETION",
+									type: "REASONING",
 									userId: part.userId,
 								},
 							]).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
@@ -530,8 +599,9 @@ export class Conversation extends ServiceMap.Service<
 									return yield* new MessageAlreadyTransitionedError();
 								}
 
-								yield* updateAgentMessageStatus({
+								yield* updateAgentMessageStatusWithMetadata({
 									id: maybeAgentMessageMetadata.value.id,
+									metadata: Option.some(message.metadata),
 									status: "FINISHED",
 									userId: maybeAgentMessageMetadata.value.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
@@ -569,6 +639,7 @@ export class Conversation extends ServiceMap.Service<
 									conversationId: input.conversationId,
 									createdAt: undefined,
 									id: agentMessageInput.id,
+									metadata: Option.none(),
 									parentId: userMessageInput.id,
 									role: "AGENT",
 									status: "IN_PROGRESS",
@@ -624,6 +695,7 @@ export class Conversation extends ServiceMap.Service<
 									conversationId: maybeConversationMetadata.value.id,
 									createdAt: undefined,
 									id: agentMessageInput.id,
+									metadata: Option.none(),
 									parentId: userMessageInput.id,
 									role: "AGENT",
 									status: "IN_PROGRESS",
@@ -668,6 +740,7 @@ export class Conversation extends ServiceMap.Service<
 									conversationId: maybeConversationMetadata.value.id,
 									createdAt: undefined,
 									id: input.message.id,
+									metadata: Option.none(),
 									parentId: input.message.parentId,
 									role: "AGENT",
 									status: "IN_PROGRESS",

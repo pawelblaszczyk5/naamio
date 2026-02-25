@@ -27,9 +27,9 @@
 		"@fontsource-variable/ibm-plex-sans": "catalog:",
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
-		"@storybook/addon-a11y": "^10.2.11",
-		"@storybook/addon-docs": "^10.2.11",
-		"@storybook/react-vite": "^10.2.11",
+		"@storybook/addon-a11y": "^10.2.12",
+		"@storybook/addon-docs": "^10.2.12",
+		"@storybook/react-vite": "^10.2.12",
 		"@stylexjs/babel-plugin": "catalog:",
 		"@stylexjs/postcss-plugin": "catalog:",
 		"@types/react": "catalog:",
@@ -39,7 +39,7 @@
 		"eslint": "catalog:",
 		"fontaine": "catalog:",
 		"serve": "^14.2.5",
-		"storybook": "^10.2.11",
+		"storybook": "^10.2.12",
 		"typescript": "catalog:",
 		"vite": "catalog:"
 	}

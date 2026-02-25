@@ -131,7 +131,7 @@ export class Conversation extends ServiceMap.Service<
 					INSERT INTO
 						${sql("message")} ${sql.insert(request)};
 				`,
-				Request: Schema.NonEmptyArray(Model.Union(AgentMessageModel, UserMessageModel).insert),
+				Request: Schema.NonEmptyArray(Model.Union([AgentMessageModel, UserMessageModel]).insert),
 			});
 
 			const insertMessageParts = SqlSchema.void({
@@ -141,7 +141,7 @@ export class Conversation extends ServiceMap.Service<
 							request.map((messagePart) => ({ ...messagePart, data: sql.json(messagePart.data) })),
 						)};
 				`,
-				Request: Schema.NonEmptyArray(Model.Union(TextMessagePartModel, ReasoningMessagePartModel).insert),
+				Request: Schema.NonEmptyArray(Model.Union([TextMessagePartModel, ReasoningMessagePartModel]).insert),
 			});
 
 			const insertInflightChunk = SqlSchema.void({

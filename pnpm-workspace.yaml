@@ -9,12 +9,12 @@ allowUnusedPatches: false
 catalog:
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/language-service": ^0.75.1
-  "@effect/platform-node": 4.0.0-beta.10
-  "@effect/sql-pg": 4.0.0-beta.10
-  "@effect/vitest": 4.0.0-beta.10
-  effect: 4.0.0-beta.10
-  "@electric-sql/client": ^1.5.7
+  "@effect/language-service": ^0.76.0
+  "@effect/platform-node": 4.0.0-beta.14
+  "@effect/sql-pg": 4.0.0-beta.14
+  "@effect/vitest": 4.0.0-beta.14
+  effect: 4.0.0-beta.14
+  "@electric-sql/client": ^1.5.8
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.3.0
   eslint: ^9.39.2

@@ -346,7 +346,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ReasoningMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"])),
 			});
 
-			const findConversationMetadataForVerification = SqlSchema.findOneOption({
+			const findConversationForVerification = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -360,7 +360,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
-			const findConversationMetadataForUpdate = SqlSchema.findOneOption({
+			const findConversationForUpdate = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -375,7 +375,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
-			const findAgentMessageMetadataForStatusUpdate = SqlSchema.findOneOption({
+			const findAgentMessageForStatusUpdate = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -482,13 +482,13 @@ export class Conversation extends ServiceMap.Service<
 					findConversationForGeneration: Effect.fn("@naamio/mercury/Conversation#findConversationForGeneration")(
 						function* (conversationId) {
 							const conversationForGeneration = yield* Effect.gen(function* () {
-								const [maybeConversationMetadata, messages, messageParts] = yield* Effect.all([
+								const [maybeConversation, messages, messageParts] = yield* Effect.all([
 									findConversationForGeneration({ id: conversationId }),
 									findMessagesByConversationIdForGeneration({ conversationId }),
 									findMessagePartsByConversationIdForGeneration({ conversationId }),
 								]).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-								if (Option.isNone(maybeConversationMetadata)) {
+								if (Option.isNone(maybeConversation)) {
 									return Option.none();
 								}
 
@@ -536,7 +536,7 @@ export class Conversation extends ServiceMap.Service<
 
 								const conversationForGeneration: ConversationForGeneration = {
 									messages: Array.appendAll(agentMessagesById.values(), userMessagesById.values()),
-									userId: maybeConversationMetadata.value.userId,
+									userId: maybeConversation.value.userId,
 								};
 
 								Array.forEach(conversationForGeneration.messages, (message) => {
@@ -661,23 +661,23 @@ export class Conversation extends ServiceMap.Service<
 					transitionMessageToError: Effect.fn("@naamio/mercury/Conversation#transitionMessageToError")(
 						function* (message) {
 							yield* Effect.gen(function* () {
-								const maybeAgentMessageMetadata = yield* findAgentMessageMetadataForStatusUpdate({
+								const maybeAgentMessage = yield* findAgentMessageForStatusUpdate({
 									id: message.id,
 									userId: message.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-								if (Option.isNone(maybeAgentMessageMetadata)) {
+								if (Option.isNone(maybeAgentMessage)) {
 									return yield* new MissingMessageError();
 								}
 
-								if (maybeAgentMessageMetadata.value.status !== "IN_PROGRESS") {
+								if (maybeAgentMessage.value.status !== "IN_PROGRESS") {
 									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatus({
-									id: maybeAgentMessageMetadata.value.id,
+									id: maybeAgentMessage.value.id,
 									status: "ERROR",
-									userId: maybeAgentMessageMetadata.value.userId,
+									userId: maybeAgentMessage.value.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},
@@ -685,24 +685,24 @@ export class Conversation extends ServiceMap.Service<
 					transitionMessageToFinished: Effect.fn("@naamio/mercury/Conversation#transitionMessageToFinished")(
 						function* (message) {
 							yield* Effect.gen(function* () {
-								const maybeAgentMessageMetadata = yield* findAgentMessageMetadataForStatusUpdate({
+								const maybeAgentMessage = yield* findAgentMessageForStatusUpdate({
 									id: message.id,
 									userId: message.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-								if (Option.isNone(maybeAgentMessageMetadata)) {
+								if (Option.isNone(maybeAgentMessage)) {
 									return yield* new MissingMessageError();
 								}
 
-								if (maybeAgentMessageMetadata.value.status !== "IN_PROGRESS") {
+								if (maybeAgentMessage.value.status !== "IN_PROGRESS") {
 									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatusWithMetadata({
-									id: maybeAgentMessageMetadata.value.id,
+									id: maybeAgentMessage.value.id,
 									metadata: Option.some(message.metadata),
 									status: "FINISHED",
-									userId: maybeAgentMessageMetadata.value.userId,
+									userId: maybeAgentMessage.value.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},
@@ -761,12 +761,11 @@ export class Conversation extends ServiceMap.Service<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
-								id,
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							const maybeConversation = yield* findConversationForUpdate({ id, userId: currentSession.userId }).pipe(
+								Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+							);
 
-							if (Option.isNone(maybeConversationMetadata)) {
+							if (Option.isNone(maybeConversation)) {
 								return yield* new MissingConversationError();
 							}
 
@@ -792,12 +791,12 @@ export class Conversation extends ServiceMap.Service<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
+							const maybeConversation = yield* findConversationForUpdate({
 								id: input.conversationId,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							if (Option.isNone(maybeConversationMetadata)) {
+							if (Option.isNone(maybeConversation)) {
 								return yield* new MissingConversationError();
 							}
 
@@ -819,17 +818,17 @@ export class Conversation extends ServiceMap.Service<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
+							const maybeConversation = yield* findConversationForUpdate({
 								id: input.conversationId,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							if (Option.isNone(maybeConversationMetadata)) {
+							if (Option.isNone(maybeConversation)) {
 								return yield* new MissingConversationError();
 							}
 
 							yield* updateConversationUpdatedAt({
-								id: maybeConversationMetadata.value.id,
+								id: maybeConversation.value.id,
 								updatedAt: yield* DateTime.now,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
@@ -839,7 +838,7 @@ export class Conversation extends ServiceMap.Service<
 
 							yield* insertMessages([
 								{
-									conversationId: maybeConversationMetadata.value.id,
+									conversationId: maybeConversation.value.id,
 									createdAt: undefined,
 									id: userMessageInput.id,
 									parentId: userMessageInput.parentId,
@@ -847,7 +846,7 @@ export class Conversation extends ServiceMap.Service<
 									userId: currentSession.userId,
 								},
 								{
-									conversationId: maybeConversationMetadata.value.id,
+									conversationId: maybeConversation.value.id,
 									createdAt: undefined,
 									id: agentMessageInput.id,
 									metadata: Option.none(),
@@ -875,24 +874,24 @@ export class Conversation extends ServiceMap.Service<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							const maybeConversationMetadata = yield* findConversationMetadataForUpdate({
+							const maybeConversation = yield* findConversationForUpdate({
 								id: input.conversationId,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							if (Option.isNone(maybeConversationMetadata)) {
+							if (Option.isNone(maybeConversation)) {
 								return yield* new MissingConversationError();
 							}
 
 							yield* updateConversationUpdatedAt({
-								id: maybeConversationMetadata.value.id,
+								id: maybeConversation.value.id,
 								updatedAt: yield* DateTime.now,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							yield* insertMessages([
 								{
-									conversationId: maybeConversationMetadata.value.id,
+									conversationId: maybeConversation.value.id,
 									createdAt: undefined,
 									id: input.message.id,
 									metadata: Option.none(),
@@ -913,41 +912,38 @@ export class Conversation extends ServiceMap.Service<
 							const currentSession = yield* CurrentSession;
 
 							const transactionId = yield* Effect.gen(function* () {
-								const [maybeConversationMetadata, maybeAgentMessageMetadata] = yield* Effect.all([
-									findConversationMetadataForUpdate({ id: input.conversationId, userId: currentSession.userId }).pipe(
+								const [maybeConversation, maybeAgentMessage] = yield* Effect.all([
+									findConversationForUpdate({ id: input.conversationId, userId: currentSession.userId }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
 									),
-									findAgentMessageMetadataForStatusUpdate({ id: input.messageId, userId: currentSession.userId }).pipe(
+									findAgentMessageForStatusUpdate({ id: input.messageId, userId: currentSession.userId }).pipe(
 										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
 									),
 								]);
 
-								if (Option.isNone(maybeConversationMetadata)) {
+								if (Option.isNone(maybeConversation)) {
 									return yield* new MissingConversationError();
 								}
 
 								if (
-									Option.isNone(maybeAgentMessageMetadata)
-									|| maybeAgentMessageMetadata.value.conversationId !== maybeConversationMetadata.value.id
+									Option.isNone(maybeAgentMessage)
+									|| maybeAgentMessage.value.conversationId !== maybeConversation.value.id
 								) {
 									return yield* new MissingMessageError();
 								}
 
 								const transactionId = yield* getTransactionId();
 
-								if (maybeAgentMessageMetadata.value.status === "INTERRUPTED") {
+								if (maybeAgentMessage.value.status === "INTERRUPTED") {
 									return transactionId;
 								}
 
-								if (
-									maybeAgentMessageMetadata.value.status === "ERROR"
-									|| maybeAgentMessageMetadata.value.status === "FINISHED"
-								) {
+								if (maybeAgentMessage.value.status === "ERROR" || maybeAgentMessage.value.status === "FINISHED") {
 									return yield* new MessageAlreadyTransitionedError();
 								}
 
 								yield* updateAgentMessageStatus({
-									id: maybeAgentMessageMetadata.value.id,
+									id: maybeAgentMessage.value.id,
 									status: "INTERRUPTED",
 									userId: currentSession.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
@@ -962,7 +958,7 @@ export class Conversation extends ServiceMap.Service<
 						function* (id) {
 							const currentSession = yield* CurrentSession;
 
-							const maybeConversation = yield* findConversationMetadataForVerification({
+							const maybeConversation = yield* findConversationForVerification({
 								id,
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));

@@ -19,3 +19,7 @@ export class MessagePartMaterializationError extends Schema.TaggedErrorClass<Mes
 export class MessageAlreadyTransitionedError extends Schema.TaggedErrorClass<MessageAlreadyTransitionedError>(
 	"@naamio/mercury/Chat/MessageAlreadyTransitionedError",
 )("MessageAlreadyTransitionedError", {}) {}
+
+export class ConversationGenerationManagerNetworkingError extends Schema.TaggedErrorClass<ConversationGenerationManagerNetworkingError>(
+	"@naamio/mercury/Chat/ConversationGenerationManagerNetworkingError",
+)("ConversationGenerationManagerNetworkingError", {}) {}

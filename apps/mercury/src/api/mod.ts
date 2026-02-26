@@ -171,7 +171,7 @@ const SessionGroupLayer = HttpApiBuilder.group(
 				"shape",
 				Effect.fn("@naamio/mercury/SessionGroup#shape")(function* (context) {
 					return yield* electric.viewer
-						.sessionShape(context.query)
+						.session(context.query)
 						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 				}),
 			);
@@ -196,7 +196,7 @@ const UserGroupLayer = HttpApiBuilder.group(
 				"shape",
 				Effect.fn("@naamio/mercury/UserGroup#shape")(function* (context) {
 					return yield* electric.viewer
-						.userShape(context.query)
+						.user(context.query)
 						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 				}),
 			);
@@ -213,7 +213,7 @@ const PasskeyGroupLayer = HttpApiBuilder.group(
 			"shape",
 			Effect.fn("@naamio/mercury/PasskeyGroup#shape")(function* (context) {
 				return yield* electric.viewer
-					.passkeyShape(context.query)
+					.passkey(context.query)
 					.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
 			}),
 		);

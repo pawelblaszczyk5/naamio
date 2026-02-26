@@ -10,7 +10,7 @@ export const verifyId = Effect.fn(function* (id: string) {
 	return yield* Effect.promise(async () => verifyIdPromise(id));
 });
 
-export const ValidId = Schema.String.check(Schema.isLengthBetween(16, 16)).pipe(
+export const VerifiedId = Schema.String.check(Schema.isLengthBetween(16, 16)).pipe(
 	Schema.decode({
 		decode: SchemaGetter.checkEffect(
 			Effect.fn(function* (value: string) {

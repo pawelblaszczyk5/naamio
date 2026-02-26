@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@effect/vitest";
 import { Effect, Result, Schema } from "effect";
 
-import { generateId as generateIdEffect, ValidId, verifyId as verifyIdEffect } from "#src/effect.js";
+import { generateId as generateIdEffect, VerifiedId, verifyId as verifyIdEffect } from "#src/effect.js";
 import { generateId as generateIdPromise, verifyId as verifyIdPromise } from "#src/promise.js";
 
 const EMPTY_ID = "";
@@ -54,7 +54,7 @@ describe("Effect API", () => {
 	it.effect(
 		"Should properly work when composing exposed filter with custom schema",
 		Effect.fn(function* () {
-			const schema = ValidId.pipe(Schema.decodeTo(Schema.String.pipe(Schema.brand("ExampleId"))));
+			const schema = VerifiedId.pipe(Schema.decodeTo(Schema.String.pipe(Schema.brand("ExampleId"))));
 
 			const decode = Schema.decodeEffect(schema);
 

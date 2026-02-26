@@ -15,6 +15,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
+		"@effect/ai-openai": "catalog:",
 		"@effect/platform-node": "catalog:",
 		"@effect/sql-pg": "catalog:",
 		"@electric-sql/client": "catalog:",

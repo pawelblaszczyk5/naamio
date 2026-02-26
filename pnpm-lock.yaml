@@ -12,6 +12,9 @@ catalogs:
     '@babel/preset-typescript':
       specifier: ^7.28.5
       version: 7.28.5
+    '@effect/ai-openai':
+      specifier: 4.0.0-beta.18
+      version: 4.0.0-beta.18
     '@effect/language-service':
       specifier: ^0.77.0
       version: 0.77.0
@@ -293,6 +296,9 @@ importers:
 
   apps/mercury:
     dependencies:
+      '@effect/ai-openai':
+        specifier: 'catalog:'
+        version: 4.0.0-beta.18(effect@4.0.0-beta.18)
       '@effect/platform-node':
         specifier: 'catalog:'
         version: 4.0.0-beta.18(effect@4.0.0-beta.18)(ioredis@5.9.3)
@@ -1271,6 +1277,11 @@ packages:
 
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
+
+  '@effect/ai-openai@4.0.0-beta.18':
+    resolution: {integrity: sha512-pkHfGGXj3KiGxaheMj3AyOd9yT9ltde6IcajZbBNyB1lxBkSAuRH6BcFr0xBIrfypgwMW+HFBRnfBucX6lx9lQ==}
+    peerDependencies:
+      effect: ^4.0.0-beta.18
 
   '@effect/language-service@0.77.0':
     resolution: {integrity: sha512-QP2bri8DdcK7Eo+SqFS2yNeD0Ch9kKHYxq2jeE9CaPpBknevCNFb3+hT6qSsPt2P6yOkhNP83KMy5Uk7DGBXlg==}
@@ -7285,6 +7296,10 @@ snapshots:
   '@docsearch/sidepanel-js@4.5.3': {}
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
+
+  '@effect/ai-openai@4.0.0-beta.18(effect@4.0.0-beta.18)':
+    dependencies:
+      effect: 4.0.0-beta.18
 
   '@effect/language-service@0.77.0': {}
 

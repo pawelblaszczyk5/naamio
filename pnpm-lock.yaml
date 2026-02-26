@@ -448,6 +448,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@naamio/id-generator':
+        specifier: 'workspace:'
+        version: link:../id-generator
       '@naamio/schema':
         specifier: 'workspace:'
         version: link:../schema

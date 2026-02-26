@@ -29,6 +29,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
+		"@naamio/id-generator": "workspace:",
 		"@naamio/schema": "workspace:",
 		"effect": "catalog:"
 	},

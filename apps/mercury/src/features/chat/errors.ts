@@ -12,9 +12,9 @@ export class GenerationAlreadyInProgressError extends Schema.TaggedErrorClass<Ge
 	"@naamio/mercury/Chat/GenerationAlreadyInProgressError",
 )("GenerationAlreadyInProgressError", {}) {}
 
-export class CompactionDataError extends Schema.TaggedErrorClass<CompactionDataError>(
-	"@naamio/mercury/Chat/CompactionDataError",
-)("MissingCompactionDataError", {}) {}
+export class MessagePartMaterializationError extends Schema.TaggedErrorClass<MessagePartMaterializationError>(
+	"@naamio/mercury/Chat/MessagePartMaterializationError",
+)("MessagePartMaterializationError", {}) {}
 
 export class MessageAlreadyTransitionedError extends Schema.TaggedErrorClass<MessageAlreadyTransitionedError>(
 	"@naamio/mercury/Chat/MessageAlreadyTransitionedError",

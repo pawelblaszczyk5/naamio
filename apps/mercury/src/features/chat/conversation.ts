@@ -46,8 +46,8 @@ import type {
 } from "#src/features/chat/types.js";
 
 import {
-	CompactionDataError,
 	MessageAlreadyTransitionedError,
+	MessagePartMaterializationError,
 	MissingConversationError,
 	MissingMessageError,
 } from "#src/features/chat/errors.js";
@@ -59,10 +59,6 @@ export class Conversation extends ServiceMap.Service<
 	Conversation,
 	{
 		readonly system: {
-			readonly compactReasoningMessagePart: (
-				id: ReasoningMessagePartModel["id"],
-			) => Effect.Effect<void, CompactionDataError>;
-			readonly compactTextMessagePart: (id: TextMessagePartModel["id"]) => Effect.Effect<void, CompactionDataError>;
 			readonly deleteInflightChunks: (messagePartId: InflightChunkModel["messagePartId"]) => Effect.Effect<void>;
 			readonly findConversationForGeneration: (
 				id: ConversationModel["id"],
@@ -76,6 +72,12 @@ export class Conversation extends ServiceMap.Service<
 			readonly insertTextMessagePart: (
 				part: Pick<TextMessagePartModel, "data" | "messageId" | "userId">,
 			) => Effect.Effect<Pick<TextMessagePartModel, "id">>;
+			readonly materializeReasoningMessagePart: (
+				id: ReasoningMessagePartModel["id"],
+			) => Effect.Effect<void, MessagePartMaterializationError>;
+			readonly materializeTextMessagePart: (
+				id: TextMessagePartModel["id"],
+			) => Effect.Effect<void, MessagePartMaterializationError>;
 			readonly transitionMessageToError: (
 				message: Pick<AgentMessageModel, "id" | "userId">,
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
@@ -290,7 +292,7 @@ export class Conversation extends ServiceMap.Service<
 					.mapFields(Struct.renameKeys({ id: "conversationId" })),
 			});
 
-			const findInflightChunksByMessagePartIdForCompaction = SqlSchema.findNonEmpty({
+			const findInflightChunksByMessagePartIdForMaterializing = SqlSchema.findNonEmpty({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -307,7 +309,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: InflightChunkModel.select.mapFields(Struct.pick(["id", "sequence", "content", "userId"])),
 			});
 
-			const findTextMessagePartForCompaction = SqlSchema.findOneOption({
+			const findTextMessagePartForMaterializing = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -324,7 +326,7 @@ export class Conversation extends ServiceMap.Service<
 				Result: TextMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"])),
 			});
 
-			const findReasoningMessagePartForCompaction = SqlSchema.findOneOption({
+			const findReasoningMessagePartForMaterializing = SqlSchema.findOneOption({
 				execute: (request) => sql`
 					SELECT
 						${sql("id")},
@@ -453,72 +455,6 @@ export class Conversation extends ServiceMap.Service<
 
 			return Conversation.of({
 				system: {
-					compactReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#compactReasoningMessagePart")(
-						function* (id) {
-							yield* Effect.gen(function* () {
-								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
-									findInflightChunksByMessagePartIdForCompaction({ messagePartId: id }).pipe(
-										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
-										Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError())),
-									),
-									findReasoningMessagePartForCompaction({ id }).pipe(
-										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
-									),
-								]);
-
-								if (
-									Option.isNone(maybeStreamedMessagePart)
-									|| Option.isSome(maybeStreamedMessagePart.value.data.content)
-								) {
-									return yield* new CompactionDataError();
-								}
-
-								const finalContent = pipe(
-									inflightChunks,
-									Array.sortWith((chunk) => chunk.sequence, Order.Number),
-									Array.map((chunk) => chunk.content),
-									Array.join(""),
-								);
-
-								yield* updateStreamedMessagePartData({
-									data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
-									id: maybeStreamedMessagePart.value.id,
-									userId: maybeStreamedMessagePart.value.userId,
-								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
-							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
-						},
-					),
-					compactTextMessagePart: Effect.fn("@naamio/mercury/Conversation#compactTextMessagePart")(function* (id) {
-						yield* Effect.gen(function* () {
-							const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
-								findInflightChunksByMessagePartIdForCompaction({ messagePartId: id }).pipe(
-									Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
-									Effect.catchTag("NoSuchElementError", () => Effect.fail(new CompactionDataError())),
-								),
-								findTextMessagePartForCompaction({ id }).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die)),
-							]);
-
-							if (
-								Option.isNone(maybeStreamedMessagePart)
-								|| Option.isSome(maybeStreamedMessagePart.value.data.content)
-							) {
-								return yield* new CompactionDataError();
-							}
-
-							const finalContent = pipe(
-								inflightChunks,
-								Array.sortWith((chunk) => chunk.sequence, Order.Number),
-								Array.map((chunk) => chunk.content),
-								Array.join(""),
-							);
-
-							yield* updateStreamedMessagePartData({
-								data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
-								id: maybeStreamedMessagePart.value.id,
-								userId: maybeStreamedMessagePart.value.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
-						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
-					}),
 					deleteInflightChunks: Effect.fn("@naamio/mercury/Conversation#deleteInflightChunks")(
 						function* (messagePartId) {
 							yield* deleteInflightChunksByMessagePartId({ messagePartId }).pipe(
@@ -635,6 +571,76 @@ export class Conversation extends ServiceMap.Service<
 
 						return { id };
 					}),
+					materializeReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#materializeReasoningMessagePart")(
+						function* (id) {
+							yield* Effect.gen(function* () {
+								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
+									findInflightChunksByMessagePartIdForMaterializing({ messagePartId: id }).pipe(
+										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+										Effect.catchTag("NoSuchElementError", () => Effect.fail(new MessagePartMaterializationError())),
+									),
+									findReasoningMessagePartForMaterializing({ id }).pipe(
+										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+									),
+								]);
+
+								if (
+									Option.isNone(maybeStreamedMessagePart)
+									|| Option.isSome(maybeStreamedMessagePart.value.data.content)
+								) {
+									return yield* new MessagePartMaterializationError();
+								}
+
+								const finalContent = pipe(
+									inflightChunks,
+									Array.sortWith((chunk) => chunk.sequence, Order.Number),
+									Array.map((chunk) => chunk.content),
+									Array.join(""),
+								);
+
+								yield* updateStreamedMessagePartData({
+									data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
+									id: maybeStreamedMessagePart.value.id,
+									userId: maybeStreamedMessagePart.value.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+						},
+					),
+					materializeTextMessagePart: Effect.fn("@naamio/mercury/Conversation#materializeTextMessagePart")(
+						function* (id) {
+							yield* Effect.gen(function* () {
+								const [inflightChunks, maybeStreamedMessagePart] = yield* Effect.all([
+									findInflightChunksByMessagePartIdForMaterializing({ messagePartId: id }).pipe(
+										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+										Effect.catchTag("NoSuchElementError", () => Effect.fail(new MessagePartMaterializationError())),
+									),
+									findTextMessagePartForMaterializing({ id }).pipe(
+										Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+									),
+								]);
+
+								if (
+									Option.isNone(maybeStreamedMessagePart)
+									|| Option.isSome(maybeStreamedMessagePart.value.data.content)
+								) {
+									return yield* new MessagePartMaterializationError();
+								}
+
+								const finalContent = pipe(
+									inflightChunks,
+									Array.sortWith((chunk) => chunk.sequence, Order.Number),
+									Array.map((chunk) => chunk.content),
+									Array.join(""),
+								);
+
+								yield* updateStreamedMessagePartData({
+									data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
+									id: maybeStreamedMessagePart.value.id,
+									userId: maybeStreamedMessagePart.value.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+						},
+					),
 					transitionMessageToError: Effect.fn("@naamio/mercury/Conversation#transitionMessageToError")(
 						function* (message) {
 							yield* Effect.gen(function* () {
@@ -951,7 +957,7 @@ export const InflightChunkCleanupWorkflowLayer = InflightChunkCleanupWorkflow.to
 	Effect.fn(function* (payload) {
 		const conversation = yield* Conversation;
 
-		yield* DurableClock.sleep({ duration: Duration.minutes(5), name: "AwaitInflightChunkCompactionSync" });
+		yield* DurableClock.sleep({ duration: Duration.minutes(5), name: "AwaitMessagePartMaterializationSync" });
 
 		yield* conversation.system.deleteInflightChunks(payload.messagePartId);
 	}),

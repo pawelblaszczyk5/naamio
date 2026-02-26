@@ -110,6 +110,9 @@ export class Conversation extends ServiceMap.Service<
 				MessageAlreadyTransitionedError | MissingConversationError | MissingMessageError,
 				CurrentSession
 			>;
+			readonly verifyConversationExistence: (
+				id: ConversationModel["id"],
+			) => Effect.Effect<void, MissingConversationError, CurrentSession>;
 		};
 	}
 >()("@naamio/mercury/Conversation") {
@@ -341,6 +344,20 @@ export class Conversation extends ServiceMap.Service<
 				`,
 				Request: ReasoningMessagePartModel.select.mapFields(Struct.pick(["id"])),
 				Result: ReasoningMessagePartModel.select.mapFields(Struct.pick(["id", "userId", "type", "data"])),
+			});
+
+			const findConversationMetadataForVerification = SqlSchema.findOneOption({
+				execute: (request) => sql`
+					SELECT
+						${sql("id")},
+						${sql("userId")}
+					FROM
+						${sql("conversation")}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
+				`,
+				Request: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
+				Result: ConversationModel.select.mapFields(Struct.pick(["id", "userId"])),
 			});
 
 			const findConversationMetadataForUpdate = SqlSchema.findOneOption({
@@ -939,6 +956,20 @@ export class Conversation extends ServiceMap.Service<
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 							return { transactionId };
+						},
+					),
+					verifyConversationExistence: Effect.fn("@naamio/mercury/Conversation#verifyConversationExistence")(
+						function* (id) {
+							const currentSession = yield* CurrentSession;
+
+							const maybeConversation = yield* findConversationMetadataForVerification({
+								id,
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							if (Option.isNone(maybeConversation)) {
+								return yield* new MissingConversationError();
+							}
 						},
 					),
 				},

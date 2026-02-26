@@ -25,6 +25,18 @@ export class Electric extends ServiceMap.Service<
 	Electric,
 	{
 		readonly viewer: {
+			readonly conversationShape: (
+				electricQuery: ElectricProtocolQuery,
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
+			readonly inflightChunkShape: (
+				electricQuery: ElectricProtocolQuery,
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
+			readonly messagePartShape: (
+				electricQuery: ElectricProtocolQuery,
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
+			readonly messageShape: (
+				electricQuery: ElectricProtocolQuery,
+			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
 			readonly passkeyShape: (
 				electricQuery: ElectricProtocolQuery,
 			) => Effect.Effect<HttpServerResponse.HttpServerResponse, ShapeProxyError, CurrentSession>;
@@ -101,6 +113,66 @@ export class Electric extends ServiceMap.Service<
 
 			return Electric.of({
 				viewer: {
+					conversationShape: Effect.fn("@naamio/mercury/Electric#conversationShape")(function* (electricQuery) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [sql("id"), sql("accessedAt"), sql("createdAt"), sql("updatedAt"), sql("title")],
+							table: sql("conversation"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
+
+						return yield* proxy(request);
+					}),
+					inflightChunkShape: Effect.fn("@naamio/mercury/Electric#inflightChunkShape")(function* (electricQuery) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [sql("id"), sql("content"), sql("messagePartId"), sql("sequence")],
+							table: sql("inflightChunk"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
+
+						return yield* proxy(request);
+					}),
+					messagePartShape: Effect.fn("@naamio/mercury/Electric#messagePartShape")(function* (electricQuery) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [sql("id"), sql("messageId"), sql("createdAt"), sql("data"), sql("type")],
+							table: sql("messagePart"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
+
+						return yield* proxy(request);
+					}),
+					messageShape: Effect.fn("@naamio/mercury/Electric#messageShape")(function* (electricQuery) {
+						const currentSession = yield* CurrentSession;
+
+						const shapeDefinition: ShapeDefinition = {
+							columns: [
+								sql("id"),
+								sql("conversationId"),
+								sql("createdAt"),
+								sql("parentId"),
+								sql("role"),
+								sql("metadata"),
+								sql("status"),
+							],
+							table: sql("message"),
+							where: sql`${sql("userId")} = ${currentSession.userId}`,
+						};
+
+						const request = yield* mapShapeDefinitionIntoRequest(shapeDefinition, electricQuery);
+
+						return yield* proxy(request);
+					}),
 					passkeyShape: Effect.fn("@naamio/mercury/Electric#passkeyShape")(function* (electricQuery) {
 						const currentSession = yield* CurrentSession;
 

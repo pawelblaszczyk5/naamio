@@ -8,14 +8,12 @@ import gitignore from "eslint-config-flat-gitignore";
 import unicorn from "eslint-plugin-unicorn";
 import perfectionist from "eslint-plugin-perfectionist";
 import regexpPlugin from "eslint-plugin-regexp";
-import { FlatCompat } from "@eslint/eslintrc";
 import promise from "eslint-plugin-promise";
 import noSecrets from "eslint-plugin-no-secrets";
 import deMorgan from "eslint-plugin-de-morgan";
 import { defineConfig } from "eslint/config";
 import naamio from "@naamio/eslint-plugin";
-
-const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
+import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 
 const banExtension = (extension) => {
 	const message = `Unexpected use of file extension (.${extension})`;
@@ -71,7 +69,7 @@ export default defineConfig({
 		eslint.configs.recommended,
 		tseslint.configs.strictTypeChecked,
 		tseslint.configs.stylisticTypeChecked,
-		compat.extends("plugin:eslint-comments/recommended"),
+		comments.recommended,
 		unicorn.configs.recommended,
 		perfectionist.configs["recommended-natural"],
 		regexpPlugin.configs.recommended,
@@ -187,10 +185,10 @@ export default defineConfig({
 		// canonical
 		"canonical/filename-no-index": "error",
 
-		// eslint-comments overrides
-		"eslint-comments/disable-enable-pair": "error",
-		"eslint-comments/no-unused-disable": "error",
-		"eslint-comments/require-description": "error",
+		// @eslint-community/eslint-comments overrides
+		"@eslint-community/eslint-comments/disable-enable-pair": ["error", { allowWholeFile: true }],
+		"@eslint-community/eslint-comments/no-unused-disable": "error",
+		"@eslint-community/eslint-comments/require-description": "error",
 
 		// prefer-arrow-functions
 		"prefer-arrow-functions/prefer-arrow-functions": [

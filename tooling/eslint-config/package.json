@@ -23,7 +23,7 @@
 		}
 	},
 	"dependencies": {
-		"@eslint/eslintrc": "^3.3.4",
+		"@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
 		"@eslint/js": "^9.39.3",
 		"@eslint/markdown": "^7.5.1",
 		"@naamio/eslint-plugin": "workspace:",
@@ -34,7 +34,6 @@
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-canonical": "^5.1.3",
 		"eslint-plugin-de-morgan": "^2.0.0",
-		"eslint-plugin-eslint-comments": "^3.2.0",
 		"eslint-plugin-fp": "^2.3.0",
 		"eslint-plugin-import-x": "^4.16.1",
 		"eslint-plugin-jsx-a11y": "^6.10.2",

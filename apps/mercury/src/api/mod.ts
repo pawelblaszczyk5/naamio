@@ -2,11 +2,12 @@ import { Effect, Layer, Option, Redacted } from "effect";
 import { HttpApiBuilder, HttpApiError } from "effect/unstable/httpapi";
 
 import { NaamioApi } from "@naamio/api";
-import { BadGateway } from "@naamio/api/errors";
+import { BadGateway, InsufficientStorage } from "@naamio/api/errors";
 import { AuthenticatedOnly, CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 
 import { Session } from "#src/features/auth/session.js";
 import { WebAuthn } from "#src/features/auth/web-authn.js";
+import { Chat } from "#src/features/chat/mod.js";
 import { Electric } from "#src/features/electric/mod.js";
 import { User } from "#src/features/user/mod.js";
 import { ClusterRunnerLayer } from "#src/lib/cluster/mod.js";
@@ -220,6 +221,123 @@ const PasskeyGroupLayer = HttpApiBuilder.group(
 	}),
 ).pipe(Layer.provide([Session.layer, Electric.layer, User.layer, AuthenticatedOnlyLayer]));
 
+const ChatGroupLayer = HttpApiBuilder.group(
+	NaamioApi,
+	"Chat",
+	Effect.fn(function* (handlers) {
+		const chat = yield* Chat;
+		const electric = yield* Electric;
+
+		return handlers
+			.handle(
+				"startConversation",
+				Effect.fn("@naamio/mercury/ChatGroup#startConversation")(function* (context) {
+					return yield* chat.viewer
+						.startConversation({ conversationId: context.params.conversationId, messages: context.payload.messages })
+						.pipe(
+							Effect.catchTag("ConversationGenerationManagerNetworkingError", () =>
+								Effect.fail(new InsufficientStorage()),
+							),
+						);
+				}),
+			)
+			.handle(
+				"continueConversation",
+				Effect.fn("@naamio/mercury/ChatGroup#continueConversation")(function* (context) {
+					return yield* chat.viewer
+						.continueConversation({ conversationId: context.params.conversationId, messages: context.payload.messages })
+						.pipe(
+							Effect.catchTags({
+								ConversationGenerationManagerNetworkingError: () => Effect.fail(new InsufficientStorage()),
+								MissingConversationError: () => Effect.fail(new HttpApiError.NotFound()),
+							}),
+						);
+				}),
+			)
+			.handle(
+				"deleteConversation",
+				Effect.fn("@naamio/mercury/ChatGroup#deleteConversation")(function* (context) {
+					return yield* chat.viewer
+						.deleteConversation(context.params.conversationId)
+						.pipe(
+							Effect.catchTags({
+								ConversationGenerationManagerNetworkingError: () => Effect.fail(new InsufficientStorage()),
+								MissingConversationError: () => Effect.fail(new HttpApiError.NotFound()),
+							}),
+						);
+				}),
+			)
+			.handle(
+				"editConversationTitle",
+				Effect.fn("@naamio/mercury/ChatGroup#editConversationTitle")(function* (context) {
+					return yield* chat.viewer
+						.editConversationTitle({ conversationId: context.params.conversationId, title: context.payload.title })
+						.pipe(Effect.catchTag("MissingConversationError", () => Effect.fail(new HttpApiError.NotFound())));
+				}),
+			)
+			.handle(
+				"regenerateAnswer",
+				Effect.fn("@naamio/mercury/ChatGroup#regenerateAnswer")(function* (context) {
+					return yield* chat.viewer
+						.regenerateAnswer({ conversationId: context.params.conversationId, message: context.payload.message })
+						.pipe(
+							Effect.catchTags({
+								ConversationGenerationManagerNetworkingError: () => Effect.fail(new InsufficientStorage()),
+								MissingConversationError: () => Effect.fail(new HttpApiError.NotFound()),
+							}),
+						);
+				}),
+			)
+			.handle(
+				"interruptGeneration",
+				Effect.fn("@naamio/mercury/ChatGroup#interruptGeneration")(function* (context) {
+					return yield* chat.viewer
+						.interruptGeneration({ conversationId: context.params.conversationId, messageId: context.params.messageId })
+						.pipe(
+							Effect.catchTags({
+								ConversationGenerationManagerNetworkingError: () => Effect.fail(new InsufficientStorage()),
+								MessageAlreadyTransitionedError: () => Effect.fail(new HttpApiError.Conflict()),
+								MissingConversationError: () => Effect.fail(new HttpApiError.NotFound()),
+								MissingMessageError: () => Effect.fail(new HttpApiError.NotFound()),
+							}),
+						);
+				}),
+			)
+			.handle(
+				"conversationShape",
+				Effect.fn("@naamio/mercury/ChatGroup#conversationShape")(function* (context) {
+					return yield* electric.viewer
+						.conversation(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
+				}),
+			)
+			.handle(
+				"messageShape",
+				Effect.fn("@naamio/mercury/ChatGroup#messageShape")(function* (context) {
+					return yield* electric.viewer
+						.message(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
+				}),
+			)
+			.handle(
+				"messagePartShape",
+				Effect.fn("@naamio/mercury/ChatGroup#messagePartShape")(function* (context) {
+					return yield* electric.viewer
+						.messagePart(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
+				}),
+			)
+			.handle(
+				"inflightChunkShape",
+				Effect.fn("@naamio/mercury/ChatGroup#inflightChunkShape")(function* (context) {
+					return yield* electric.viewer
+						.inflightChunk(context.query)
+						.pipe(Effect.catchTag("ShapeProxyError", () => Effect.fail(new BadGateway())));
+				}),
+			);
+	}),
+).pipe(Layer.provide([Chat.layer, Electric.layer, AuthenticatedOnlyLayer]));
+
 export const NaamioApiServerLayer = HttpApiBuilder.layer(NaamioApi).pipe(
-	Layer.provide([WebAuthnGroupLayer, SessionGroupLayer, UserGroupLayer, PasskeyGroupLayer]),
+	Layer.provide([WebAuthnGroupLayer, SessionGroupLayer, UserGroupLayer, PasskeyGroupLayer, ChatGroupLayer]),
 );

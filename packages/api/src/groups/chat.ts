@@ -3,7 +3,13 @@ import { HttpApiEndpoint, HttpApiError, HttpApiGroup, OpenApi } from "effect/uns
 
 import { VerifiedId } from "@naamio/id-generator/effect";
 import { ElectricProtocolQuery } from "@naamio/schema/api";
-import { AgentMessageModel, ConversationModel, TextMessagePartModel, UserMessageModel } from "@naamio/schema/domain";
+import {
+	AgentMessageModel,
+	ConversationModel,
+	TextMessagePartModel,
+	TransactionId,
+	UserMessageModel,
+} from "@naamio/schema/domain";
 
 import { BadGateway, InsufficientStorage } from "#src/errors/mod.js";
 import { AuthenticatedOnly } from "#src/middlewares/authenticated-only.js";
@@ -44,6 +50,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			error: InsufficientStorage,
 			params: { conversationId: VerifiedId.pipe(Schema.decodeTo(ConversationModel.json.fields.id)) },
 			payload: Schema.Struct({ messages: Schema.Tuple([RootUserMessageInput, AgentMessageInput]) }),
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:
@@ -57,6 +64,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			error: [HttpApiError.NotFound, InsufficientStorage],
 			params: { conversationId: ConversationModel.json.fields.id },
 			payload: Schema.Struct({ messages: Schema.Tuple([UserMessageInput, AgentMessageInput]) }),
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:
@@ -70,6 +78,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			error: [HttpApiError.NotFound, InsufficientStorage],
 			params: { conversationId: ConversationModel.json.fields.id },
 			payload: Schema.Struct({ message: AgentMessageInputWithParentId }),
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:
@@ -82,7 +91,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 		HttpApiEndpoint.post("interruptGeneration", "/conversation/:conversationId/message/:messageId/interrupt", {
 			error: [HttpApiError.NotFound, InsufficientStorage, HttpApiError.Conflict],
 			params: { conversationId: ConversationModel.json.fields.id, messageId: AgentMessageModel.json.fields.id },
-			payload: Schema.Struct({ messageId: AgentMessageModel.json.fields.id }),
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:
@@ -95,6 +104,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 		HttpApiEndpoint.delete("deleteConversation", "/conversation/:conversationId", {
 			error: [HttpApiError.NotFound, InsufficientStorage],
 			params: { conversationId: ConversationModel.json.fields.id },
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:
@@ -110,6 +120,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			payload: ConversationModel.jsonUpdate
 				.mapFields(Struct.pick(["title"]))
 				.mapFields(Struct.evolve({ title: (schema) => schema.from.schema.members[0] })),
+			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({
 				description:

@@ -1,5 +1,6 @@
 import { HttpApi, OpenApi } from "effect/unstable/httpapi";
 
+import { Chat } from "#src/groups/chat.js";
 import { Passkey } from "#src/groups/passkey.js";
 import { Session } from "#src/groups/session.js";
 import { User } from "#src/groups/user.js";
@@ -10,6 +11,7 @@ export class NaamioApi extends HttpApi.make("NaamioApi")
 	.add(Session)
 	.add(User)
 	.add(Passkey)
+	.add(Chat)
 	.prefix("/api")
 	.annotateMerge(
 		OpenApi.annotations({

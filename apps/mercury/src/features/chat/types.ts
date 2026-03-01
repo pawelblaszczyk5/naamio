@@ -1,5 +1,5 @@
 import type { Array, Option } from "effect";
-import type { DistributedPick } from "type-fest";
+import type { DistributedPick, Simplify } from "type-fest";
 
 import type {
 	AgentMessageModel,
@@ -9,19 +9,23 @@ import type {
 	UserMessageModel,
 } from "@naamio/schema/domain";
 
-type TextMessagePartInput = Pick<TextMessagePartModel, "data" | "id" | "type">;
+type TextMessagePartInput = Simplify<
+	Pick<TextMessagePartModel, "id" | "type"> & {
+		readonly data: { readonly content: Option.Option.Value<TextMessagePartModel["data"]["content"]> };
+	}
+>;
 
 export type UserMessagePartInput = TextMessagePartInput;
 
 interface RootUserMessageInput {
 	id: UserMessageModel["id"];
-	parts: Array.NonEmptyArray<UserMessagePartInput>;
+	parts: Array.NonEmptyReadonlyArray<UserMessagePartInput>;
 }
 
 interface UserMessageInput {
 	id: UserMessageModel["id"];
 	parentId: UserMessageModel["parentId"];
-	parts: Array.NonEmptyArray<UserMessagePartInput>;
+	parts: Array.NonEmptyReadonlyArray<UserMessagePartInput>;
 }
 
 interface AgentMessageInput {
@@ -35,12 +39,12 @@ interface AgentMessageInputWithParentId {
 
 export interface StartConversationInput {
 	conversationId: ConversationModel["id"];
-	messages: [RootUserMessageInput, AgentMessageInput];
+	messages: readonly [RootUserMessageInput, AgentMessageInput];
 }
 
 export interface ContinueConversationInput {
 	conversationId: ConversationModel["id"];
-	messages: [UserMessageInput, AgentMessageInput];
+	messages: readonly [UserMessageInput, AgentMessageInput];
 }
 
 export interface RegenerateAnswerInput {

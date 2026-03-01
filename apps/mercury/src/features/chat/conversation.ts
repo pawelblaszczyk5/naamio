@@ -13,7 +13,6 @@ import {
 	ServiceMap,
 	Struct,
 } from "effect";
-import { Model } from "effect/unstable/schema";
 import { SqlSchema } from "effect/unstable/sql";
 import { DurableClock, Workflow } from "effect/unstable/workflow";
 
@@ -136,7 +135,7 @@ export class Conversation extends ServiceMap.Service<
 					INSERT INTO
 						${sql("message")} ${sql.insert(request)};
 				`,
-				Request: Schema.NonEmptyArray(Model.Union([AgentMessageModel, UserMessageModel]).insert),
+				Request: Schema.NonEmptyArray(Schema.Union([AgentMessageModel.insert, UserMessageModel.insert])),
 			});
 
 			const insertMessageParts = SqlSchema.void({
@@ -146,7 +145,7 @@ export class Conversation extends ServiceMap.Service<
 							request.map((messagePart) => ({ ...messagePart, data: sql.json(messagePart.data) })),
 						)};
 				`,
-				Request: Schema.NonEmptyArray(Model.Union([TextMessagePartModel, ReasoningMessagePartModel]).insert),
+				Request: Schema.NonEmptyArray(Schema.Union([TextMessagePartModel.insert, ReasoningMessagePartModel.insert])),
 			});
 
 			const insertInflightChunk = SqlSchema.void({
@@ -455,13 +454,13 @@ export class Conversation extends ServiceMap.Service<
 				]),
 			});
 
-			const mapMessagePartForInsert = Match.type<
+			const mapMessagePartInputForInsert = Match.type<
 				UserMessagePartInput & { messageId: UserMessageModel["id"]; userId: UserMessageModel["userId"] }
 			>().pipe(
 				Match.withReturnType<Parameters<typeof insertMessageParts>[0][number]>(),
 				Match.when({ type: "TEXT" }, (part) => ({
 					createdAt: undefined,
-					data: part.data,
+					data: { content: Option.some(part.data.content) },
 					id: part.id,
 					messageId: part.messageId,
 					type: "TEXT",
@@ -748,7 +747,11 @@ export class Conversation extends ServiceMap.Service<
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
-									mapMessagePartForInsert({ ...part, messageId: userMessageInput.id, userId: currentSession.userId }),
+									mapMessagePartInputForInsert({
+										...part,
+										messageId: userMessageInput.id,
+										userId: currentSession.userId,
+									}),
 								),
 							).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
@@ -859,7 +862,11 @@ export class Conversation extends ServiceMap.Service<
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
-									mapMessagePartForInsert({ ...part, messageId: userMessageInput.id, userId: currentSession.userId }),
+									mapMessagePartInputForInsert({
+										...part,
+										messageId: userMessageInput.id,
+										userId: currentSession.userId,
+									}),
 								),
 							).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 

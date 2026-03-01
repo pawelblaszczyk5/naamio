@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Function, Match } from "effect";
 
 import { AppLayout } from "#src/features/app/ui/app-layout.js";
+import { preloadConversationData } from "#src/features/chat/data/conversation.js";
+import { preloadInflightChunkData } from "#src/features/chat/data/inflight-chunk.js";
+import { preloadMessagePartData } from "#src/features/chat/data/message-part.js";
+import { preloadMessageData } from "#src/features/chat/data/message.js";
 import { preloadPasskeyData } from "#src/features/user/data/passkey.js";
 import {
 	checkSessionCacheStatus,
@@ -25,7 +29,16 @@ export const Route = createFileRoute("/app")({
 	},
 	component: AppLayout,
 	loader: async () => {
-		await Promise.all([preloadUserData(), preloadSessionData(), preloadPasskeyData(), initializePool()]);
+		await Promise.all([
+			preloadUserData(),
+			preloadSessionData(),
+			preloadPasskeyData(),
+			preloadConversationData(),
+			preloadMessageData(),
+			preloadMessagePartData(),
+			preloadInflightChunkData(),
+			initializePool(),
+		]);
 	},
 	ssr: false,
 });

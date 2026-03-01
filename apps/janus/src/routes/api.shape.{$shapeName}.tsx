@@ -1,13 +1,35 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRequestUrl } from "@tanstack/react-start/server";
-import { Effect, Option, pipe, Stream } from "effect";
+import { Effect, Option, pipe, Schema, Stream } from "effect";
 import { Headers } from "effect/unstable/http";
 
 import { NaamioHttpClient } from "#src/lib/api-client/mod.js";
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";
 
-const allowedShapeNames = new Set(["passkey", "session", "user"]);
+const ShapeName = Schema.Literals([
+	"passkey",
+	"session",
+	"user",
+	"conversation",
+	"message",
+	"message-part",
+	"inflight-chunk",
+]);
+
+const isShapeName = Schema.is(ShapeName);
+
+type AllowedShapeName = (typeof ShapeName)["Type"];
+
+const SHAPE_URL: Record<AllowedShapeName, string> = {
+	conversation: "/api/chat/conversation/shape",
+	"inflight-chunk": "/api/chat/inflight-chunk/shape",
+	message: "/api/chat/message/shape",
+	"message-part": "/api/chat/message-part/shape",
+	passkey: "/api/passkey/shape",
+	session: "/api/session/shape",
+	user: "/api/user/shape",
+};
 
 export const Route = createFileRoute("/api/shape/{$shapeName}")({
 	server: {
@@ -18,13 +40,13 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 
 					const shapeName = ctx.params.shapeName;
 
-					if (!allowedShapeNames.has(shapeName)) {
+					if (!isShapeName(shapeName)) {
 						return new Response(null, { status: 404 });
 					}
 
 					const urlParams = getRequestUrl().searchParams;
 
-					const response = yield* naamioHttpClient.get(`/api/${shapeName}/shape`, { urlParams });
+					const response = yield* naamioHttpClient.get(SHAPE_URL[shapeName], { urlParams });
 
 					const body = Stream.toReadableStream(response.stream);
 					const headers = pipe(response.headers, Headers.remove("Content-Encoding"), Headers.remove("Content-Length"));

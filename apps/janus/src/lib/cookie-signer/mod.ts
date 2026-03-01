@@ -33,8 +33,8 @@ export class CookieSigner extends ServiceMap.Service<
 
 					const allSecrets = Array.isArray(secrets) ? secrets : Array.make(secrets);
 
-					const maybeMatchingSecret = Array.head(
-						yield* Effect.filter(allSecrets, (secret) => verifyHmacSignature(base64Value, digest, secret)),
+					const maybeMatchingSecret = yield* Effect.findFirst(allSecrets, (secret) =>
+						verifyHmacSignature(base64Value, digest, secret),
 					);
 
 					if (Option.isNone(maybeMatchingSecret)) {

@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { ConversationModel } from "@naamio/schema/domain";
 
-const Conversation = Schema.Struct({
+export const Conversation = Schema.Struct({
 	accessedAt: Schema.Date,
 	createdAt: Schema.Date,
 	id: ConversationModel.json.fields.id,

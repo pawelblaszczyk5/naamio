@@ -11,13 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root.tsx'
 import { Route as AppRouteImport } from './routes/app.tsx'
 import { Route as IndexRouteImport } from './routes/index.tsx'
-import { Route as AppIndexRouteImport } from './routes/app.index.tsx'
-import { Route as AppSettingsRouteImport } from './routes/app.settings.tsx'
+import { Route as AppChatRouteImport } from './routes/app._chat.tsx'
 import { Route as HomeChar123languageChar125RouteImport } from './routes/_home.{$language}.tsx'
+import { Route as AppChatIndexRouteImport } from './routes/app._chat.index.tsx'
 import { Route as HomeChar123languageChar125IndexRouteImport } from './routes/_home.{$language}.index.tsx'
+import { Route as AppChatSettingsRouteImport } from './routes/app._chat.settings.tsx'
 import { Route as ApiShapeChar123shapeNameChar125RouteImport } from './routes/api.shape.{$shapeName}.tsx'
 import { Route as HomeChar123languageChar125SignUpRouteImport } from './routes/_home.{$language}.sign-up.tsx'
 import { Route as HomeChar123languageChar125SignInRouteImport } from './routes/_home.{$language}.sign-in.tsx'
+import { Route as AppChatConversationConversationIdRouteImport } from './routes/app._chat.conversation.$conversationId.tsx'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -29,14 +31,8 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppSettingsRoute = AppSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/_chat',
   getParentRoute: () => AppRoute,
 } as any)
 const HomeChar123languageChar125Route =
@@ -45,12 +41,22 @@ const HomeChar123languageChar125Route =
     path: '/{$language}',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AppChatIndexRoute = AppChatIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppChatRoute,
+} as any)
 const HomeChar123languageChar125IndexRoute =
   HomeChar123languageChar125IndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => HomeChar123languageChar125Route,
   } as any)
+const AppChatSettingsRoute = AppChatSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppChatRoute,
+} as any)
 const ApiShapeChar123shapeNameChar125Route =
   ApiShapeChar123shapeNameChar125RouteImport.update({
     id: '/api/shape/{$shapeName}',
@@ -69,38 +75,48 @@ const HomeChar123languageChar125SignInRoute =
     path: '/sign-in',
     getParentRoute: () => HomeChar123languageChar125Route,
   } as any)
+const AppChatConversationConversationIdRoute =
+  AppChatConversationConversationIdRouteImport.update({
+    id: '/conversation/$conversationId',
+    path: '/conversation/$conversationId',
+    getParentRoute: () => AppChatRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRouteWithChildren
+  '/app': typeof AppChatRouteWithChildren
   '/{$language}': typeof HomeChar123languageChar125RouteWithChildren
-  '/app/settings': typeof AppSettingsRoute
-  '/app/': typeof AppIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
+  '/app/settings': typeof AppChatSettingsRoute
   '/{$language}/': typeof HomeChar123languageChar125IndexRoute
+  '/app/': typeof AppChatIndexRoute
+  '/app/conversation/$conversationId': typeof AppChatConversationConversationIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app/settings': typeof AppSettingsRoute
-  '/app': typeof AppIndexRoute
+  '/app': typeof AppChatIndexRoute
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
+  '/app/settings': typeof AppChatSettingsRoute
   '/{$language}': typeof HomeChar123languageChar125IndexRoute
+  '/app/conversation/$conversationId': typeof AppChatConversationConversationIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/_home/{$language}': typeof HomeChar123languageChar125RouteWithChildren
-  '/app/settings': typeof AppSettingsRoute
-  '/app/': typeof AppIndexRoute
+  '/app/_chat': typeof AppChatRouteWithChildren
   '/_home/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/_home/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute
   '/api/shape/{$shapeName}': typeof ApiShapeChar123shapeNameChar125Route
+  '/app/_chat/settings': typeof AppChatSettingsRoute
   '/_home/{$language}/': typeof HomeChar123languageChar125IndexRoute
+  '/app/_chat/': typeof AppChatIndexRoute
+  '/app/_chat/conversation/$conversationId': typeof AppChatConversationConversationIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,32 +124,36 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/{$language}'
-    | '/app/settings'
-    | '/app/'
     | '/{$language}/sign-in'
     | '/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
+    | '/app/settings'
     | '/{$language}/'
+    | '/app/'
+    | '/app/conversation/$conversationId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app/settings'
     | '/app'
     | '/{$language}/sign-in'
     | '/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
+    | '/app/settings'
     | '/{$language}'
+    | '/app/conversation/$conversationId'
   id:
     | '__root__'
     | '/'
     | '/app'
     | '/_home/{$language}'
-    | '/app/settings'
-    | '/app/'
+    | '/app/_chat'
     | '/_home/{$language}/sign-in'
     | '/_home/{$language}/sign-up'
     | '/api/shape/{$shapeName}'
+    | '/app/_chat/settings'
     | '/_home/{$language}/'
+    | '/app/_chat/'
+    | '/app/_chat/conversation/$conversationId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -159,18 +179,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/': {
-      id: '/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/settings': {
-      id: '/app/settings'
-      path: '/settings'
-      fullPath: '/app/settings'
-      preLoaderRoute: typeof AppSettingsRouteImport
+    '/app/_chat': {
+      id: '/app/_chat'
+      path: ''
+      fullPath: '/app'
+      preLoaderRoute: typeof AppChatRouteImport
       parentRoute: typeof AppRoute
     }
     '/_home/{$language}': {
@@ -180,12 +193,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeChar123languageChar125RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/_chat/': {
+      id: '/app/_chat/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppChatIndexRouteImport
+      parentRoute: typeof AppChatRoute
+    }
     '/_home/{$language}/': {
       id: '/_home/{$language}/'
       path: '/'
       fullPath: '/{$language}/'
       preLoaderRoute: typeof HomeChar123languageChar125IndexRouteImport
       parentRoute: typeof HomeChar123languageChar125Route
+    }
+    '/app/_chat/settings': {
+      id: '/app/_chat/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppChatSettingsRouteImport
+      parentRoute: typeof AppChatRoute
     }
     '/api/shape/{$shapeName}': {
       id: '/api/shape/{$shapeName}'
@@ -208,17 +235,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HomeChar123languageChar125SignInRouteImport
       parentRoute: typeof HomeChar123languageChar125Route
     }
+    '/app/_chat/conversation/$conversationId': {
+      id: '/app/_chat/conversation/$conversationId'
+      path: '/conversation/$conversationId'
+      fullPath: '/app/conversation/$conversationId'
+      preLoaderRoute: typeof AppChatConversationConversationIdRouteImport
+      parentRoute: typeof AppChatRoute
+    }
   }
 }
 
+interface AppChatRouteChildren {
+  AppChatSettingsRoute: typeof AppChatSettingsRoute
+  AppChatIndexRoute: typeof AppChatIndexRoute
+  AppChatConversationConversationIdRoute: typeof AppChatConversationConversationIdRoute
+}
+
+const AppChatRouteChildren: AppChatRouteChildren = {
+  AppChatSettingsRoute: AppChatSettingsRoute,
+  AppChatIndexRoute: AppChatIndexRoute,
+  AppChatConversationConversationIdRoute:
+    AppChatConversationConversationIdRoute,
+}
+
+const AppChatRouteWithChildren =
+  AppChatRoute._addFileChildren(AppChatRouteChildren)
+
 interface AppRouteChildren {
-  AppSettingsRoute: typeof AppSettingsRoute
-  AppIndexRoute: typeof AppIndexRoute
+  AppChatRoute: typeof AppChatRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppSettingsRoute: AppSettingsRoute,
-  AppIndexRoute: AppIndexRoute,
+  AppChatRoute: AppChatRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

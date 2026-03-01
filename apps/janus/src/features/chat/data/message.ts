@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { AgentMessageModel, UserMessageModel } from "@naamio/schema/domain";
 
-const AgentMessage = Schema.Struct({
+export const AgentMessage = Schema.Struct({
 	conversationId: AgentMessageModel.json.fields.conversationId,
 	createdAt: Schema.Date,
 	id: AgentMessageModel.json.fields.id,
@@ -16,7 +16,7 @@ const AgentMessage = Schema.Struct({
 
 export type AgentMessage = (typeof AgentMessage)["Type"];
 
-const UserMessage = Schema.Struct({
+export const UserMessage = Schema.Struct({
 	conversationId: UserMessageModel.json.fields.conversationId,
 	createdAt: Schema.Date,
 	id: UserMessageModel.json.fields.id,
@@ -26,7 +26,7 @@ const UserMessage = Schema.Struct({
 
 export type UserMessage = (typeof UserMessage)["Type"];
 
-const Message = Schema.Union([AgentMessage, UserMessage]);
+export const Message = Schema.Union([AgentMessage, UserMessage]);
 
 export type Message = (typeof Message)["Type"];
 

@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { InflightChunkModel } from "@naamio/schema/domain";
 
-const InflightChunk = Schema.Struct({
+export const InflightChunk = Schema.Struct({
 	content: InflightChunkModel.json.fields.content,
 	id: InflightChunkModel.json.fields.id,
 	messagePartId: InflightChunkModel.json.fields.messagePartId,

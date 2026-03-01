@@ -4,7 +4,7 @@ import { Schema, String, Struct } from "effect";
 
 import { ReasoningMessagePartModel, TextMessagePartModel } from "@naamio/schema/domain";
 
-const TextMessagePart = Schema.Struct({
+export const TextMessagePart = Schema.Struct({
 	createdAt: Schema.Date,
 	data: TextMessagePartModel.json.fields.data.mapFields(Struct.evolve({ content: (schema) => schema.from })),
 	id: TextMessagePartModel.json.fields.id,
@@ -14,7 +14,7 @@ const TextMessagePart = Schema.Struct({
 
 export type TextMessagePart = (typeof TextMessagePart)["Type"];
 
-const ReasoningMessagePart = Schema.Struct({
+export const ReasoningMessagePart = Schema.Struct({
 	createdAt: Schema.Date,
 	data: ReasoningMessagePartModel.json.fields.data.mapFields(Struct.evolve({ content: (schema) => schema.from })),
 	id: ReasoningMessagePartModel.json.fields.id,
@@ -24,7 +24,7 @@ const ReasoningMessagePart = Schema.Struct({
 
 export type ReasoningMessagePart = (typeof ReasoningMessagePart)["Type"];
 
-const MessagePart = Schema.Union([TextMessagePart, ReasoningMessagePart]);
+export const MessagePart = Schema.Union([TextMessagePart, ReasoningMessagePart]);
 
 export type MessagePart = (typeof MessagePart)["Type"];
 

@@ -1,0 +1,87 @@
+import { createOptimisticAction } from "@tanstack/react-db";
+import { useServerFn } from "@tanstack/react-start";
+
+import type { StartConversationPayload } from "#src/features/chat/procedures/mod.js";
+
+import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
+import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
+import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
+import { startConversation } from "#src/features/chat/procedures/mod.js";
+import { generateId } from "#src/lib/id-pool/mod.js";
+
+export const useStartConversation = () => {
+	const callStartConversation = useServerFn(startConversation);
+
+	const action = createOptimisticAction({
+		mutationFn: async (data) => {
+			const result = await callStartConversation({ data });
+
+			return Promise.all([
+				conversationCollection.utils.awaitTxId(result.transactionId),
+				messageCollection.utils.awaitTxId(result.transactionId),
+				messagePartCollection.utils.awaitTxId(result.transactionId),
+			]);
+		},
+		onMutate: (data: StartConversationPayload) => {
+			const now = new Date();
+
+			conversationCollection.insert({
+				accessedAt: now,
+				createdAt: now,
+				id: data.conversationId,
+				title: null,
+				updatedAt: now,
+			});
+
+			const userMessageInput = data.messages[0];
+			const agentMessageInput = data.messages[1];
+
+			messageCollection.insert({
+				conversationId: data.conversationId,
+				createdAt: now,
+				id: userMessageInput.id,
+				parentId: null,
+				role: "USER",
+			});
+
+			messageCollection.insert({
+				conversationId: data.conversationId,
+				createdAt: now,
+				id: agentMessageInput.id,
+				metadata: null,
+				parentId: userMessageInput.id,
+				role: "AGENT",
+				status: "IN_PROGRESS",
+			});
+
+			userMessageInput.parts.forEach((part) => {
+				messagePartCollection.insert({
+					createdAt: now,
+					data: part.data,
+					id: part.id,
+					messageId: userMessageInput.id,
+					type: "TEXT",
+				});
+			});
+		},
+	});
+
+	const handler = (data: { content: string }) => {
+		const conversationId = Conversation.fields.id.makeUnsafe(generateId());
+		const userMessageId = UserMessage.fields.id.makeUnsafe(generateId());
+		const userTextMessagePartId = TextMessagePart.fields.id.makeUnsafe(generateId());
+		const agentMessageId = AgentMessage.fields.id.makeUnsafe(generateId());
+
+		const transaction = action({
+			conversationId,
+			messages: [
+				{ id: userMessageId, parts: [{ data: { content: data.content }, id: userTextMessagePartId, type: "TEXT" }] },
+				{ id: agentMessageId },
+			],
+		});
+
+		return { conversationId, transaction };
+	};
+
+	return handler;
+};

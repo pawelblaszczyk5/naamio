@@ -130,12 +130,20 @@ export class Conversation extends ServiceMap.Service<
 				Request: ConversationModel.insert,
 			});
 
-			const insertMessages = SqlSchema.void({
+			const insertUserMessage = SqlSchema.void({
 				execute: (request) => sql`
 					INSERT INTO
 						${sql("message")} ${sql.insert(request)};
 				`,
-				Request: Schema.NonEmptyArray(Schema.Union([AgentMessageModel.insert, UserMessageModel.insert])),
+				Request: UserMessageModel.insert,
+			});
+
+			const insertAgentMessage = SqlSchema.void({
+				execute: (request) => sql`
+					INSERT INTO
+						${sql("message")} ${sql.insert(request)};
+				`,
+				Request: AgentMessageModel.insert,
 			});
 
 			const insertMessageParts = SqlSchema.void({
@@ -728,26 +736,25 @@ export class Conversation extends ServiceMap.Service<
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
 
-							yield* insertMessages([
-								{
-									conversationId: input.conversationId,
-									createdAt: undefined,
-									id: userMessageInput.id,
-									parentId: Option.none(),
-									role: "USER",
-									userId: currentSession.userId,
-								},
-								{
-									conversationId: input.conversationId,
-									createdAt: undefined,
-									id: agentMessageInput.id,
-									metadata: Option.none(),
-									parentId: userMessageInput.id,
-									role: "AGENT",
-									status: "IN_PROGRESS",
-									userId: currentSession.userId,
-								},
-							]).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* insertUserMessage({
+								conversationId: input.conversationId,
+								createdAt: undefined,
+								id: userMessageInput.id,
+								parentId: Option.none(),
+								role: "USER",
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							yield* insertAgentMessage({
+								conversationId: input.conversationId,
+								createdAt: undefined,
+								id: agentMessageInput.id,
+								metadata: Option.none(),
+								parentId: userMessageInput.id,
+								role: "AGENT",
+								status: "IN_PROGRESS",
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
@@ -843,26 +850,25 @@ export class Conversation extends ServiceMap.Service<
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
 
-							yield* insertMessages([
-								{
-									conversationId: maybeConversation.value.id,
-									createdAt: undefined,
-									id: userMessageInput.id,
-									parentId: userMessageInput.parentId,
-									role: "USER",
-									userId: currentSession.userId,
-								},
-								{
-									conversationId: maybeConversation.value.id,
-									createdAt: undefined,
-									id: agentMessageInput.id,
-									metadata: Option.none(),
-									parentId: userMessageInput.id,
-									role: "AGENT",
-									status: "IN_PROGRESS",
-									userId: currentSession.userId,
-								},
-							]).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* insertUserMessage({
+								conversationId: input.conversationId,
+								createdAt: undefined,
+								id: userMessageInput.id,
+								parentId: Option.none(),
+								role: "USER",
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+							yield* insertAgentMessage({
+								conversationId: input.conversationId,
+								createdAt: undefined,
+								id: agentMessageInput.id,
+								metadata: Option.none(),
+								parentId: userMessageInput.id,
+								role: "AGENT",
+								status: "IN_PROGRESS",
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							yield* insertMessageParts(
 								Array.map(userMessageInput.parts, (part) =>
@@ -900,18 +906,16 @@ export class Conversation extends ServiceMap.Service<
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertMessages([
-								{
-									conversationId: maybeConversation.value.id,
-									createdAt: undefined,
-									id: input.message.id,
-									metadata: Option.none(),
-									parentId: input.message.parentId,
-									role: "AGENT",
-									status: "IN_PROGRESS",
-									userId: currentSession.userId,
-								},
-							]).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* insertAgentMessage({
+								conversationId: maybeConversation.value.id,
+								createdAt: undefined,
+								id: input.message.id,
+								metadata: Option.none(),
+								parentId: input.message.parentId,
+								role: "AGENT",
+								status: "IN_PROGRESS",
+								userId: currentSession.userId,
+							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));

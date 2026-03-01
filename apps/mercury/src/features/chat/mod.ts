@@ -1,7 +1,8 @@
 import { Effect, Layer, ServiceMap } from "effect";
 
-import type { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 import type { ConversationModel, TransactionId } from "@naamio/schema/domain";
+
+import { CurrentSession } from "@naamio/api/middlewares/authenticated-only";
 
 import type {
 	MessageAlreadyTransitionedError,
@@ -155,6 +156,18 @@ export class Chat extends ServiceMap.Service<
 									Effect.fail(new ConversationGenerationManagerNetworkingError()),
 								),
 							);
+
+						yield* Effect.gen(function* () {
+							const currentSession = yield* CurrentSession;
+
+							yield* Effect.sleep("2 seconds");
+
+							yield* conversation.system.setInitialConversationTitle({
+								id: input.conversationId,
+								title: "Lorem ipsum",
+								userId: currentSession.userId,
+							});
+						}).pipe(Effect.forkDetach);
 
 						return result;
 					}),

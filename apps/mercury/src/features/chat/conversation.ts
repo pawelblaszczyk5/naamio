@@ -77,6 +77,11 @@ export class Conversation extends ServiceMap.Service<
 			readonly materializeTextMessagePart: (
 				id: TextMessagePartModel["id"],
 			) => Effect.Effect<void, MessagePartMaterializationError>;
+			readonly setInitialConversationTitle: (conversation: {
+				id: ConversationModel["id"];
+				title: Option.Option.Value<ConversationModel["title"]>;
+				userId: ConversationModel["userId"];
+			}) => Effect.Effect<void, MissingConversationError>;
 			readonly transitionMessageToError: (
 				message: Pick<AgentMessageModel, "id" | "userId">,
 			) => Effect.Effect<void, MessageAlreadyTransitionedError | MissingMessageError>;
@@ -173,6 +178,17 @@ export class Conversation extends ServiceMap.Service<
 						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
 				`,
 				Request: ConversationModel.update.mapFields(Struct.pick(["updatedAt", "id", "userId"])),
+			});
+
+			const setConversationTitle = SqlSchema.void({
+				execute: (request) => sql`
+					UPDATE ${sql("conversation")}
+					SET
+						${sql.update(request, ["id", "userId"])}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
+				`,
+				Request: ConversationModel.update.mapFields(Struct.pick(["id", "userId", "title"])),
 			});
 
 			const updateConversationTitle = SqlSchema.void({
@@ -665,6 +681,26 @@ export class Conversation extends ServiceMap.Service<
 									data: { ...maybeStreamedMessagePart.value.data, content: Option.some(finalContent) },
 									id: maybeStreamedMessagePart.value.id,
 									userId: maybeStreamedMessagePart.value.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+						},
+					),
+					setInitialConversationTitle: Effect.fn("@naamio/mercury/Conversation#setInitialConversationTitle")(
+						function* (conversation) {
+							yield* Effect.gen(function* () {
+								const maybeConversation = yield* findConversationForUpdate({
+									id: conversation.id,
+									userId: conversation.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+								if (Option.isNone(maybeConversation)) {
+									return yield* new MissingConversationError();
+								}
+
+								yield* setConversationTitle({
+									id: conversation.id,
+									title: Option.some(conversation.title),
+									userId: conversation.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 						},

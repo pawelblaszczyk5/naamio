@@ -198,7 +198,10 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 						},
 						userId: maybeConversationForGeneration.value.userId,
 					});
-				}).pipe(Effect.withSpan("@naamio/mercury/ConversationGenerationManager#Generation"), Effect.forkIn(scope));
+				}).pipe(
+					Effect.withSpan("@naamio/mercury/ConversationGenerationManager#Generation", { root: true }),
+					Effect.forkIn(scope),
+				);
 
 				HashMap.set(ongoingGenerations, envelope.payload.messageId, fiber);
 			}),

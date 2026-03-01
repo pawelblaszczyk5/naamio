@@ -21,6 +21,9 @@ catalogs:
     '@effect/platform-node':
       specifier: 4.0.0-beta.21
       version: 4.0.0-beta.21
+    '@effect/platform-node-shared':
+      specifier: 4.0.0-beta.21
+      version: 4.0.0-beta.21
     '@effect/sql-pg':
       specifier: 4.0.0-beta.21
       version: 4.0.0-beta.21
@@ -144,6 +147,9 @@ importers:
       '@effect/platform-node':
         specifier: 'catalog:'
         version: 4.0.0-beta.21(effect@4.0.0-beta.21)(ioredis@5.9.3)
+      '@effect/platform-node-shared':
+        specifier: 'catalog:'
+        version: 4.0.0-beta.21(effect@4.0.0-beta.21)
       '@electric-sql/client':
         specifier: 'catalog:'
         version: 1.5.9
@@ -301,6 +307,9 @@ importers:
       '@effect/platform-node':
         specifier: 'catalog:'
         version: 4.0.0-beta.21(effect@4.0.0-beta.21)(ioredis@5.9.3)
+      '@effect/platform-node-shared':
+        specifier: 'catalog:'
+        version: 4.0.0-beta.21(effect@4.0.0-beta.21)
       '@effect/sql-pg':
         specifier: 'catalog:'
         version: 4.0.0-beta.21(effect@4.0.0-beta.21)
@@ -619,6 +628,9 @@ importers:
       '@effect/platform-node':
         specifier: 'catalog:'
         version: 4.0.0-beta.21(effect@4.0.0-beta.21)(ioredis@5.9.3)
+      '@effect/platform-node-shared':
+        specifier: 'catalog:'
+        version: 4.0.0-beta.21(effect@4.0.0-beta.21)
       effect:
         specifier: 'catalog:'
         version: 4.0.0-beta.21

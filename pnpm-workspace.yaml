@@ -12,6 +12,7 @@ catalog:
   "@effect/ai-openai": 4.0.0-beta.21
   "@effect/language-service": ^0.77.0
   "@effect/platform-node": 4.0.0-beta.21
+  "@effect/platform-node-shared": 4.0.0-beta.21
   "@effect/sql-pg": 4.0.0-beta.21
   "@effect/vitest": 4.0.0-beta.21
   effect: 4.0.0-beta.21

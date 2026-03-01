@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@effect/ai-openai": "catalog:",
 		"@effect/platform-node": "catalog:",
+		"@effect/platform-node-shared": "catalog:",
 		"@effect/sql-pg": "catalog:",
 		"@electric-sql/client": "catalog:",
 		"@naamio/api": "workspace:",

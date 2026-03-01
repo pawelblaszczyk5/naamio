@@ -309,8 +309,6 @@ export class WebAuthn extends ServiceMap.Service<
 								userId: maybeUserId,
 							}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
-							yield* Effect.log(challengeExpiration);
-
 							return { authenticationOptions, challengeId, expiresAt: challengeExpiration };
 						},
 					),

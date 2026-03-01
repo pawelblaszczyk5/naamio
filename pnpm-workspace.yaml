@@ -9,15 +9,15 @@ allowUnusedPatches: false
 catalog:
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.20
+  "@effect/ai-openai": 4.0.0-beta.21
   "@effect/language-service": ^0.77.0
-  "@effect/platform-node": 4.0.0-beta.20
-  "@effect/sql-pg": 4.0.0-beta.20
-  "@effect/vitest": 4.0.0-beta.20
-  effect: 4.0.0-beta.20
+  "@effect/platform-node": 4.0.0-beta.21
+  "@effect/sql-pg": 4.0.0-beta.21
+  "@effect/vitest": 4.0.0-beta.21
+  effect: 4.0.0-beta.21
   "@electric-sql/client": ^1.5.9
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
-  "@types/node": ^25.3.2
+  "@types/node": ^25.3.3
   eslint: ^9.39.2
   fontaine: ^0.8.0
   babel-plugin-react-compiler: 19.1.0-rc.3
@@ -45,7 +45,6 @@ allowBuilds:
   msgpackr-extract: false
 
 overrides:
-  "@effect/vitest>vitest": "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"

@@ -833,7 +833,7 @@ export class Conversation extends ServiceMap.Service<
 							);
 
 							return yield* getTransactionId();
-						});
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 						return { transactionId };
 					}),
@@ -858,7 +858,7 @@ export class Conversation extends ServiceMap.Service<
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							return yield* getTransactionId();
-						});
+						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
 
 						return { transactionId };
 					}),

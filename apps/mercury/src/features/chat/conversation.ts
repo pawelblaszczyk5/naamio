@@ -67,7 +67,7 @@ export class Conversation extends ServiceMap.Service<
 			) => Effect.Effect<void>;
 			readonly insertReasoningMessagePart: (
 				part: Pick<ReasoningMessagePartModel, "data" | "messageId" | "userId">,
-			) => Effect.Effect<void>;
+			) => Effect.Effect<Pick<ReasoningMessagePartModel, "id">>;
 			readonly insertTextMessagePart: (
 				part: Pick<TextMessagePartModel, "data" | "messageId" | "userId">,
 			) => Effect.Effect<Pick<TextMessagePartModel, "id">>;
@@ -559,16 +559,20 @@ export class Conversation extends ServiceMap.Service<
 					}),
 					insertReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#insertReasoningMessagePart")(
 						function* (part) {
+							const id = ReasoningMessagePartModel.fields.id.makeUnsafe(yield* generateId());
+
 							yield* insertMessageParts([
 								{
 									createdAt: undefined,
 									data: part.data,
-									id: ReasoningMessagePartModel.fields.id.makeUnsafe(yield* generateId()),
+									id,
 									messageId: part.messageId,
 									type: "REASONING",
 									userId: part.userId,
 								},
 							]).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+
+							return { id };
 						},
 					),
 					insertTextMessagePart: Effect.fn("@naamio/mercury/Conversation#insertTextMessagePart")(function* (part) {

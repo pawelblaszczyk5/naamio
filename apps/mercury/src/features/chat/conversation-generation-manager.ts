@@ -184,6 +184,12 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 						userId: maybeConversationForGeneration.value.userId,
 					});
 
+					yield* conversation.system.materializeTextMessagePart(textMessagePart.id);
+
+					yield* InflightChunkCleanupWorkflow.execute({ messagePartId: textMessagePart.id }, { discard: true }).pipe(
+						Effect.provideService(WorkflowEngine.WorkflowEngine, workflowEngine),
+					);
+
 					yield* conversation.system.transitionMessageToFinished({
 						id: envelope.payload.messageId,
 						metadata: {

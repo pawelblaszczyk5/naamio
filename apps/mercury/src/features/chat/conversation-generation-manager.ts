@@ -96,6 +96,17 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 							userId: maybeConversationForGeneration.value.userId,
 						});
 
+						yield* Effect.addFinalizer(() =>
+							Effect.gen(function* () {
+								yield* conversation.system.materializeReasoningMessagePart(reasoningMessagePart.id).pipe(Effect.orDie);
+
+								yield* InflightChunkCleanupWorkflow.execute(
+									{ messagePartId: reasoningMessagePart.id },
+									{ discard: true },
+								).pipe(Effect.provideService(WorkflowEngine.WorkflowEngine, workflowEngine));
+							}),
+						);
+
 						yield* conversation.system.insertInflightChunk({
 							content: "Lorem",
 							messagePartId: reasoningMessagePart.id,
@@ -130,13 +141,6 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 							userId: maybeConversationForGeneration.value.userId,
 						});
 
-						yield* conversation.system.materializeReasoningMessagePart(reasoningMessagePart.id);
-
-						yield* InflightChunkCleanupWorkflow.execute(
-							{ messagePartId: reasoningMessagePart.id },
-							{ discard: true },
-						).pipe(Effect.provideService(WorkflowEngine.WorkflowEngine, workflowEngine));
-
 						yield* Effect.sleep("4 seconds");
 
 						const textMessagePart = yield* conversation.system.insertTextMessagePart({
@@ -144,6 +148,17 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 							messageId: envelope.payload.messageId,
 							userId: maybeConversationForGeneration.value.userId,
 						});
+
+						yield* Effect.addFinalizer(() =>
+							Effect.gen(function* () {
+								yield* conversation.system.materializeTextMessagePart(textMessagePart.id).pipe(Effect.orDie);
+
+								yield* InflightChunkCleanupWorkflow.execute(
+									{ messagePartId: textMessagePart.id },
+									{ discard: true },
+								).pipe(Effect.provideService(WorkflowEngine.WorkflowEngine, workflowEngine));
+							}),
+						);
 
 						yield* conversation.system.insertInflightChunk({
 							content: "Consectetur",
@@ -179,12 +194,6 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 							userId: maybeConversationForGeneration.value.userId,
 						});
 
-						yield* conversation.system.materializeTextMessagePart(textMessagePart.id);
-
-						yield* InflightChunkCleanupWorkflow.execute({ messagePartId: textMessagePart.id }, { discard: true }).pipe(
-							Effect.provideService(WorkflowEngine.WorkflowEngine, workflowEngine),
-						);
-
 						yield* conversation.system.transitionMessageToFinished({
 							id: envelope.payload.messageId,
 							metadata: {
@@ -193,7 +202,10 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 							},
 							userId: maybeConversationForGeneration.value.userId,
 						});
-					}).pipe(Effect.withSpan("@naamio/mercury/ConversationGenerationManager#Generation", { root: true })),
+					}).pipe(
+						Effect.scoped,
+						Effect.withSpan("@naamio/mercury/ConversationGenerationManager#Generation", { root: true }),
+					),
 				);
 			}),
 		};

@@ -7,6 +7,7 @@ import stylex from "@naamio/stylex";
 import type { ReasoningMessagePart, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
 
+import { useInterruptGeneration } from "#src/features/chat/data/mutations.js";
 import {
 	useAgentMessagePartsByMessageId,
 	useConversationById,
@@ -54,10 +55,31 @@ const ReasoningMessagePartContent = ({ messagePart }: { messagePart: ReasoningMe
 const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 	const messageParts = useAgentMessagePartsByMessageId(message.id);
 
+	const interruptGeneration = useInterruptGeneration();
+
 	return (
 		<div>
 			<p>
-				<Trans>Message from agent</Trans>
+				<Trans>Message from agent</Trans>{" "}
+				{Match.value(message.status).pipe(
+					Match.when("ERROR", () => <Trans>Failed during generation</Trans>),
+					Match.when("FINISHED", () => <Trans>Correctly finished</Trans>),
+					Match.when("IN_PROGRESS", () => (
+						<span>
+							<Trans>Generation in progress</Trans>{" "}
+							<button
+								onClick={() => {
+									interruptGeneration({ conversationId: message.conversationId, messageId: message.id });
+								}}
+								type="button"
+							>
+								<Trans>Interrupt</Trans>
+							</button>
+						</span>
+					)),
+					Match.when("INTERRUPTED", () => <Trans>Generation interrupted</Trans>),
+					Match.exhaustive,
+				)}
 			</p>
 			<div {...stylex.props(styles.messagePartsList)}>
 				{messageParts.map((messagePart) =>

@@ -64,3 +64,25 @@ export const startConversation = createServerFn({ method: "POST" })
 			return result;
 		}).pipe(Effect.withSpan("@naamio/janus/user/startConversation"), runAuthenticatedOnlyServerFn(ctx)),
 	);
+
+const InterruptGenerationPayload = Schema.Struct({
+	conversationId: ConversationModel.json.fields.id,
+	messageId: AgentMessageModel.json.fields.id,
+});
+
+export type InterruptGenerationPayload = (typeof InterruptGenerationPayload)["Type"];
+
+export const interruptGeneration = createServerFn({ method: "POST" })
+	.inputValidator(Schema.toStandardSchemaV1(InterruptGenerationPayload))
+	.middleware([sessionTokenMiddleware])
+	.handler(async (ctx) =>
+		Effect.gen(function* () {
+			const naamioApiClient = yield* NaamioApiClient;
+
+			const result = yield* naamioApiClient.Chat.interruptGeneration({
+				params: { conversationId: ctx.data.conversationId, messageId: ctx.data.messageId },
+			});
+
+			return result;
+		}).pipe(Effect.withSpan("@naamio/janus/user/interruptGeneration"), runAuthenticatedOnlyServerFn(ctx)),
+	);

@@ -1,12 +1,14 @@
 import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 
-import type { StartConversationPayload } from "#src/features/chat/procedures/mod.js";
+import { assert } from "@naamio/assert";
+
+import type { InterruptGenerationPayload, StartConversationPayload } from "#src/features/chat/procedures/mod.js";
 
 import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
 import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
-import { startConversation } from "#src/features/chat/procedures/mod.js";
+import { interruptGeneration, startConversation } from "#src/features/chat/procedures/mod.js";
 import { generateId } from "#src/lib/id-pool/mod.js";
 
 export const useStartConversation = () => {
@@ -81,6 +83,33 @@ export const useStartConversation = () => {
 		});
 
 		return { conversationId, transaction };
+	};
+
+	return handler;
+};
+
+export const useInterruptGeneration = () => {
+	const callInterruptGeneration = useServerFn(interruptGeneration);
+
+	const action = createOptimisticAction({
+		mutationFn: async (data) => {
+			const result = await callInterruptGeneration({ data });
+
+			return messageCollection.utils.awaitTxId(result.transactionId);
+		},
+		onMutate: (data: InterruptGenerationPayload) => {
+			messageCollection.update(data.messageId, (draft) => {
+				assert(draft.role === "AGENT", "Agent message should always be tied to AgentMessageId");
+
+				draft.status = "INTERRUPTED";
+			});
+		},
+	});
+
+	const handler = (data: InterruptGenerationPayload) => {
+		const transaction = action(data);
+
+		return { transaction };
 	};
 
 	return handler;

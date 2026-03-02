@@ -4,7 +4,7 @@ name: "naamio"
 
 services:
   postgres:
-    image: postgres:18.1-alpine
+    image: postgres:18.3-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
@@ -22,7 +22,7 @@ services:
       - wal_level=logical
 
   electric:
-    image: electricsql/electric:1.2.9
+    image: electricsql/electric:1.4.10
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
@@ -34,13 +34,13 @@ services:
       - postgres
 
   otel-lgtm:
-    image: grafana/otel-lgtm:0.13.0
+    image: grafana/otel-lgtm:0.19.1
     restart: unless-stopped
     volumes:
       - otel_data:/data
 
   caddy:
-    image: caddy:2.10.2-alpine
+    image: caddy:2.11.1-alpine
     restart: unless-stopped
     volumes:
       - ./config/Caddyfile:/etc/caddy/Caddyfile

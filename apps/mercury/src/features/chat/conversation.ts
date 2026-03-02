@@ -13,6 +13,7 @@ import {
 	ServiceMap,
 	Struct,
 } from "effect";
+import { Model } from "effect/unstable/schema";
 import { SqlSchema } from "effect/unstable/sql";
 import { DurableClock, Workflow } from "effect/unstable/workflow";
 
@@ -158,7 +159,7 @@ export class Conversation extends ServiceMap.Service<
 							request.map((messagePart) => ({ ...messagePart, data: sql.json(messagePart.data) })),
 						)};
 				`,
-				Request: Schema.NonEmptyArray(Schema.Union([TextMessagePartModel.insert, ReasoningMessagePartModel.insert])),
+				Request: Schema.NonEmptyArray(Model.Union([TextMessagePartModel, ReasoningMessagePartModel]).insert),
 			});
 
 			const insertInflightChunk = SqlSchema.void({

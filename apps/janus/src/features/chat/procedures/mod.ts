@@ -86,3 +86,22 @@ export const interruptGeneration = createServerFn({ method: "POST" })
 			return result;
 		}).pipe(Effect.withSpan("@naamio/janus/user/interruptGeneration"), runAuthenticatedOnlyServerFn(ctx)),
 	);
+
+const DeleteConversationPayload = Schema.Struct({ conversationId: ConversationModel.json.fields.id });
+
+export type DeleteConversationPayload = (typeof DeleteConversationPayload)["Type"];
+
+export const deleteConversation = createServerFn({ method: "POST" })
+	.inputValidator(Schema.toStandardSchemaV1(DeleteConversationPayload))
+	.middleware([sessionTokenMiddleware])
+	.handler(async (ctx) =>
+		Effect.gen(function* () {
+			const naamioApiClient = yield* NaamioApiClient;
+
+			const result = yield* naamioApiClient.Chat.deleteConversation({
+				params: { conversationId: ctx.data.conversationId },
+			});
+
+			return result;
+		}).pipe(Effect.withSpan("@naamio/janus/user/deleteConversation"), runAuthenticatedOnlyServerFn(ctx)),
+	);

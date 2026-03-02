@@ -7,7 +7,7 @@ import stylex from "@naamio/stylex";
 import type { ReasoningMessagePart, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
 
-import { useInterruptGeneration } from "#src/features/chat/data/mutations.js";
+import { useDeleteConversation, useInterruptGeneration } from "#src/features/chat/data/mutations.js";
 import {
 	useAgentMessagePartsByMessageId,
 	useConversationById,
@@ -121,13 +121,15 @@ const MessageFromUser = ({ message }: { message: UserMessage }) => {
 };
 
 export const ExistingConversationPage = () => {
-	const conversationId = useParams({
+	const conversationIdFromParams = useParams({
 		from: "/app/_chat/conversation/$conversationId",
 		select: (params) => params.conversationId,
 	});
 
-	const conversation = useConversationById(conversationId);
-	const messages = useMessagesByConversationId(conversationId);
+	const conversation = useConversationById(conversationIdFromParams);
+	const messages = useMessagesByConversationId(conversationIdFromParams);
+
+	const deleteConversation = useDeleteConversation();
 
 	if (!conversation) {
 		return <Navigate to="/app" />;
@@ -138,7 +140,15 @@ export const ExistingConversationPage = () => {
 			<h1>
 				{conversation.title ?
 					<Trans>Conversation "{{ title: conversation.title }}"</Trans>
-				:	<Trans>Conversation without title (yet)</Trans>}
+				:	<Trans>Conversation without title (yet)</Trans>}{" "}
+				<button
+					onClick={() => {
+						deleteConversation({ conversationId: conversation.id });
+					}}
+					type="button"
+				>
+					Delete conversation
+				</button>
 			</h1>
 			<div {...stylex.props(styles.messagesList)}>
 				{messages.map((message) => {

@@ -87,6 +87,29 @@ export const interruptGeneration = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/user/interruptGeneration"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
+const EditConversationTitlePayload = Schema.Struct({
+	conversationId: ConversationModel.json.fields.id,
+	title: ConversationModel.json.fields.title.from.schema.members[0],
+});
+
+export type EditConversationTitlePayload = (typeof EditConversationTitlePayload)["Type"];
+
+export const editConversationTitle = createServerFn({ method: "POST" })
+	.inputValidator(Schema.toStandardSchemaV1(EditConversationTitlePayload))
+	.middleware([sessionTokenMiddleware])
+	.handler(async (ctx) =>
+		Effect.gen(function* () {
+			const naamioApiClient = yield* NaamioApiClient;
+
+			const result = yield* naamioApiClient.Chat.editConversationTitle({
+				params: { conversationId: ctx.data.conversationId },
+				payload: { title: ctx.data.title },
+			});
+
+			return result;
+		}).pipe(Effect.withSpan("@naamio/janus/user/editConversationTitle"), runAuthenticatedOnlyServerFn(ctx)),
+	);
+
 const DeleteConversationPayload = Schema.Struct({ conversationId: ConversationModel.json.fields.id });
 
 export type DeleteConversationPayload = (typeof DeleteConversationPayload)["Type"];

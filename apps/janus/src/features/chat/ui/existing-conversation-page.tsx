@@ -1,4 +1,4 @@
-import { Trans } from "@lingui/react/macro";
+import { Trans, useLingui } from "@lingui/react/macro";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { Match } from "effect";
 
@@ -7,7 +7,11 @@ import stylex from "@naamio/stylex";
 import type { ReasoningMessagePart, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
 
-import { useDeleteConversation, useInterruptGeneration } from "#src/features/chat/data/mutations.js";
+import {
+	useDeleteConversation,
+	useEditConversationTitle,
+	useInterruptGeneration,
+} from "#src/features/chat/data/mutations.js";
 import {
 	useAgentMessagePartsByMessageId,
 	useConversationById,
@@ -121,6 +125,7 @@ const MessageFromUser = ({ message }: { message: UserMessage }) => {
 };
 
 export const ExistingConversationPage = () => {
+	const { t } = useLingui();
 	const conversationIdFromParams = useParams({
 		from: "/app/_chat/conversation/$conversationId",
 		select: (params) => params.conversationId,
@@ -130,6 +135,7 @@ export const ExistingConversationPage = () => {
 	const messages = useMessagesByConversationId(conversationIdFromParams);
 
 	const deleteConversation = useDeleteConversation();
+	const editConversationTitle = useEditConversationTitle();
 
 	if (!conversation) {
 		return <Navigate to="/app" />;
@@ -141,6 +147,21 @@ export const ExistingConversationPage = () => {
 				{conversation.title ?
 					<Trans>Conversation "{{ title: conversation.title }}"</Trans>
 				:	<Trans>Conversation without title (yet)</Trans>}{" "}
+				<button
+					onClick={() => {
+						// eslint-disable-next-line no-alert -- temporary until real UI
+						const newTitle = globalThis.prompt(t`New title for conversation`);
+
+						if (!newTitle) {
+							return;
+						}
+
+						editConversationTitle({ conversationId: conversation.id, title: newTitle });
+					}}
+					type="button"
+				>
+					Edit title
+				</button>{" "}
 				<button
 					onClick={() => {
 						deleteConversation({ conversationId: conversation.id });

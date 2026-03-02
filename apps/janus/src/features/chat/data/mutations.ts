@@ -5,6 +5,7 @@ import { assert } from "@naamio/assert";
 
 import type {
 	DeleteConversationPayload,
+	EditConversationTitlePayload,
 	InterruptGenerationPayload,
 	StartConversationPayload,
 } from "#src/features/chat/procedures/mod.js";
@@ -12,7 +13,12 @@ import type {
 import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
 import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
-import { deleteConversation, interruptGeneration, startConversation } from "#src/features/chat/procedures/mod.js";
+import {
+	deleteConversation,
+	editConversationTitle,
+	interruptGeneration,
+	startConversation,
+} from "#src/features/chat/procedures/mod.js";
 import { generateId } from "#src/lib/id-pool/mod.js";
 
 export const useStartConversation = () => {
@@ -134,6 +140,31 @@ export const useDeleteConversation = () => {
 	});
 
 	const handler = (data: DeleteConversationPayload) => {
+		const transaction = action(data);
+
+		return { transaction };
+	};
+
+	return handler;
+};
+
+export const useEditConversationTitle = () => {
+	const callEditConversationTitle = useServerFn(editConversationTitle);
+
+	const action = createOptimisticAction({
+		mutationFn: async (data) => {
+			const result = await callEditConversationTitle({ data });
+
+			return conversationCollection.utils.awaitTxId(result.transactionId);
+		},
+		onMutate: (data: EditConversationTitlePayload) => {
+			conversationCollection.update(data.conversationId, (draft) => {
+				draft.title = data.title;
+			});
+		},
+	});
+
+	const handler = (data: EditConversationTitlePayload) => {
 		const transaction = action(data);
 
 		return { transaction };

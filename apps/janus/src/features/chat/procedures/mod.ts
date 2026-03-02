@@ -42,7 +42,7 @@ const AgentMessageInputWithParentId = AgentMessageModel.json.mapFields(
 	flow(Struct.pick(["id", "parentId"]), Struct.evolve({ id: (schema) => VerifiedId.pipe(Schema.decodeTo(schema)) })),
 );
 
-export const StartConversationPayload = Schema.Struct({
+const StartConversationPayload = Schema.Struct({
 	conversationId: VerifiedId.pipe(Schema.decodeTo(ConversationModel.json.fields.id)),
 	messages: Schema.Tuple([RootUserMessageInput, AgentMessageInput]),
 });

@@ -1,8 +1,7 @@
 import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 
-import type { Session } from "#src/features/user/data/session.js";
-import type { User } from "#src/features/user/data/user.js";
+import type { RevokeSessionPayload, UpdateLanguagePayload } from "#src/features/user/procedures/mod.js";
 
 import { useSessionId, useUser } from "#src/features/user/data/queries.js";
 import { sessionCollection } from "#src/features/user/data/session.js";
@@ -16,18 +15,24 @@ export const useUpdateLanguage = () => {
 
 	const action = createOptimisticAction({
 		mutationFn: async (data) => {
-			const result = await callUpdateLanguage({ data: { language: data.language } });
+			const result = await callUpdateLanguage({ data });
 
 			return userCollection.utils.awaitTxId(result.transactionId);
 		},
-		onMutate: (data: { language: User["language"] }) => {
+		onMutate: (data: UpdateLanguagePayload) => {
 			userCollection.update(userId, (draft) => {
 				draft.language = data.language;
 			});
 		},
 	});
 
-	return action;
+	const handler = (data: UpdateLanguagePayload) => {
+		const transaction = action(data);
+
+		return { transaction };
+	};
+
+	return handler;
 };
 
 export const useSignOut = () => {
@@ -35,11 +40,11 @@ export const useSignOut = () => {
 
 	const sessionId = useSessionId();
 
-	const action = async () => {
+	const handler = async () => {
 		await callRevokeSession({ data: { id: sessionId } });
 	};
 
-	return action;
+	return handler;
 };
 
 export const useRevokeSession = () => {
@@ -51,20 +56,26 @@ export const useRevokeSession = () => {
 
 			return sessionCollection.utils.awaitTxId(result.transactionId);
 		},
-		onMutate: (data: { id: Session["id"] }) => {
+		onMutate: (data: RevokeSessionPayload) => {
 			sessionCollection.delete(data.id);
 		},
 	});
 
-	return action;
+	const handler = (data: RevokeSessionPayload) => {
+		const transaction = action(data);
+
+		return transaction;
+	};
+
+	return handler;
 };
 
 export const useRevokeAllSessions = () => {
 	const callRevokeAllSessions = useServerFn(revokeAllSessions);
 
-	const action = async () => {
+	const handler = async () => {
 		await callRevokeAllSessions();
 	};
 
-	return action;
+	return handler;
 };

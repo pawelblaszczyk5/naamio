@@ -22,6 +22,8 @@ const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
 	.mapFields(Struct.pick(["username", "language"]))
 	.pipe(Schema.fieldsAssign({ displayName: WebAuthnRegistrationChallengeModel.jsonCreate.fields.displayName }));
 
+export type GenerateRegistrationOptionsPayload = (typeof GenerateRegistrationOptionsPayload)["Type"];
+
 export const generateRegistrationOptions = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(GenerateRegistrationOptionsPayload))
 	.handler(async (ctx) =>
@@ -39,6 +41,8 @@ export const generateRegistrationOptions = createServerFn({ method: "POST" })
 	);
 
 const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: WebAuthnRegistrationResponse });
+
+export type VerifyRegistrationPayload = (typeof VerifyRegistrationPayload)["Type"];
 
 export const verifyRegistration = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(VerifyRegistrationPayload))
@@ -78,6 +82,8 @@ const GenerateAuthenticationOptionsPayload = Schema.Struct({
 	username: UserModel.json.fields.username.pipe(Schema.OptionFromOptionalKey),
 });
 
+export type GenerateAuthenticationOptionsPayload = (typeof GenerateAuthenticationOptionsPayload)["Type"];
+
 export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(GenerateAuthenticationOptionsPayload))
 	.handler(async (ctx) =>
@@ -95,6 +101,8 @@ export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 	);
 
 const VerifyAuthenticationPayload = Schema.Struct({ authenticationResponse: WebAuthnAuthenticationResponse });
+
+export type VerifyAuthenticationPayload = (typeof VerifyAuthenticationPayload)["Type"];
 
 export const verifyAuthentication = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(VerifyAuthenticationPayload))

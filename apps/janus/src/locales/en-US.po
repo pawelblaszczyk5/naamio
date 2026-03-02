@@ -41,29 +41,53 @@ msgstr "No conversations yet"
 msgid "Waiting for title..."
 msgstr "Waiting for title..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:32
+#: src/features/chat/ui/existing-conversation-page.tsx:37
 msgid "Content"
 msgstr "Content"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:47
+#: src/features/chat/ui/existing-conversation-page.tsx:52
 msgid "Reasoning..."
 msgstr "Reasoning..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:60
+#: src/features/chat/ui/existing-conversation-page.tsx:67
 msgid "Message from agent"
 msgstr "Message from agent"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:85
+#: src/features/chat/ui/existing-conversation-page.tsx:69
+msgid "Failed during generation"
+msgstr "Failed during generation"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:70
+msgid "Correctly finished"
+msgstr "Correctly finished"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:73
+msgid "Generation in progress"
+msgstr "Generation in progress"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:80
+msgid "Interrupt"
+msgstr "Interrupt"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:84
+msgid "Generation interrupted"
+msgstr "Generation interrupted"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:111
 msgid "Message from user"
 msgstr "Message from user"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:118
+#: src/features/chat/ui/existing-conversation-page.tsx:148
 msgid "Conversation \"{title}\""
 msgstr "Conversation \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:119
+#: src/features/chat/ui/existing-conversation-page.tsx:149
 msgid "Conversation without title (yet)"
 msgstr "Conversation without title (yet)"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:153
+msgid "New title for conversation"
+msgstr "New title for conversation"
 
 #: src/features/chat/ui/new-conversation-page.tsx:39
 msgid "Chat page"

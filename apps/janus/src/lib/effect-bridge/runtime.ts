@@ -2,14 +2,17 @@ import { Layer, Logger, ManagedRuntime } from "effect";
 
 import { ObservabilityLayer } from "@naamio/observability";
 
-import { NaamioApiClient, NaamioHttpClient } from "#src/lib/api-client/mod.js";
+import { NaamioApiClient, NaamioHttpClient, NaamioUrlBuilder } from "#src/lib/api-client/mod.js";
 import { CookieSigner } from "#src/lib/cookie-signer/mod.js";
 
 import "@tanstack/react-start/server-only";
 
-const EnvironmentLayer = Layer.mergeAll(NaamioHttpClient.layer, NaamioApiClient.layer, CookieSigner.layer).pipe(
-	Layer.provideMerge([ObservabilityLayer, Logger.layer([Logger.consolePretty({ colors: true })])]),
-);
+const EnvironmentLayer = Layer.mergeAll(
+	NaamioHttpClient.layer,
+	NaamioApiClient.layer,
+	NaamioUrlBuilder.layer,
+	CookieSigner.layer,
+).pipe(Layer.provideMerge([ObservabilityLayer, Logger.layer([Logger.consolePretty({ colors: true })])]));
 
 const symbol = Symbol.for("@naamio/janus/RuntimeContainer");
 

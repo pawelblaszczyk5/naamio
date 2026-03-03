@@ -44,6 +44,18 @@ export class NaamioHttpClient extends ServiceMap.Service<NaamioHttpClient, HttpC
 	).pipe(Layer.provide(NodeHttpClient.layerNodeHttp)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
 }
 
+export class NaamioUrlBuilder extends ServiceMap.Service<
+	NaamioUrlBuilder,
+	HttpApiClient.UrlBuilder<typeof NaamioApi>
+>()("@naamio/janus/NaamioUrlBuilder") {
+	static layer = Layer.effect(
+		this,
+		Effect.gen(function* () {
+			return NaamioUrlBuilder.of(HttpApiClient.urlBuilder<typeof NaamioApi>());
+		}),
+	) satisfies Layer.Layer<NaamioUrlBuilder, unknown>;
+}
+
 export class NaamioApiClient extends ServiceMap.Service<
 	NaamioApiClient,
 	Effect.Success<ReturnType<typeof HttpApiClient.make<ApiId, Groups>>>

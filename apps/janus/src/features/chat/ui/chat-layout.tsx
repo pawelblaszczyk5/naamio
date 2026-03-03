@@ -8,7 +8,7 @@ import { useAvailableConversations } from "#src/features/chat/data/queries.js";
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
-	main: { padding: 32 },
+	main: { inlineSize: "100%", padding: 32 },
 	nav: {
 		blockSize: "100%",
 		borderColor: "#626262",

@@ -1,13 +1,16 @@
 import { Trans, useLingui } from "@lingui/react/macro";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { Match } from "effect";
+import { useId, useRef, useState } from "react";
 
+import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
 import type { ReasoningMessagePart, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
 
 import {
+	useContinueConversation,
 	useDeleteConversation,
 	useEditConversationTitle,
 	useInterruptGeneration,
@@ -21,9 +24,25 @@ import {
 } from "#src/features/chat/data/queries.js";
 
 const styles = stylex.create({
+	form: { display: "flex", flexDirection: "column", gap: 16, inlineSize: 500 },
 	messagePartsList: { display: "flex", flexDirection: "column", gap: 8 },
-	messagesList: { display: "flex", flexDirection: "column", gap: 16 },
-	root: { display: "flex", flexDirection: "column", gap: 32 },
+	messagesList: { display: "flex", flexDirection: "column", gap: 16, overflowY: "auto" },
+	root: {
+		blockSize: "100%",
+		display: "grid",
+		gap: 32,
+		gridTemplateRows: "auto minmax(0, 1fr) auto",
+		inlineSize: "100%",
+	},
+	textarea: {
+		borderColor: "black",
+		borderStyle: "solid",
+		borderWidth: 1,
+		inlineSize: "100%",
+		paddingBlock: 8,
+		paddingInline: 12,
+		resize: "none",
+	},
 });
 
 const TextMessagePartContent = ({ messagePart }: { messagePart: TextMessagePart }) => {
@@ -136,6 +155,15 @@ export const ExistingConversationPage = () => {
 
 	const deleteConversation = useDeleteConversation();
 	const editConversationTitle = useEditConversationTitle();
+	const continueConversation = useContinueConversation();
+
+	const [content, setContent] = useState("");
+
+	const formRef = useRef<HTMLFormElement>(null);
+
+	const id = useId();
+
+	const contentFieldId = `content-field-${id}`;
 
 	if (!conversation) {
 		return <Navigate to="/app" />;
@@ -180,6 +208,44 @@ export const ExistingConversationPage = () => {
 					return <MessageFromUser key={message.id} message={message} />;
 				})}
 			</div>
+			<form
+				onSubmit={(event) => {
+					event.preventDefault();
+
+					const message = messages.at(-1);
+
+					assert(message, "At least one message must always exist");
+					assert(message.role === "AGENT", "Last message must always be from agent");
+
+					setContent("");
+					continueConversation({ content, conversationId: conversation.id, previousMessage: message });
+				}}
+				ref={formRef}
+				{...stylex.props(styles.form)}
+			>
+				<label htmlFor={contentFieldId}>
+					<Trans>Message content</Trans>
+				</label>
+				<textarea
+					onChange={(event) => {
+						setContent(event.currentTarget.value);
+					}}
+					onKeyDown={(event) => {
+						if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+							event.preventDefault();
+							formRef.current?.requestSubmit();
+						}
+					}}
+					id={contentFieldId}
+					rows={4}
+					value={content}
+					required
+					{...stylex.props(styles.textarea)}
+				/>
+				<button type="submit">
+					<Trans>Send</Trans>
+				</button>
+			</form>
 		</div>
 	);
 };

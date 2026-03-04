@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRequestUrl } from "@tanstack/react-start/server";
-import { Effect, Match, Option, pipe, Schema, Stream } from "effect";
+import { Effect, Match, Option, Schema, Stream } from "effect";
 import { Headers } from "effect/unstable/http";
 
 import { NaamioHttpClient, NaamioUrlBuilder } from "#src/lib/api-client/mod.js";
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 					const response = yield* naamioHttpClient.get(url);
 
 					const body = Stream.toReadableStream(response.stream);
-					const headers = pipe(response.headers, Headers.remove("Content-Encoding"), Headers.remove("Content-Length"));
+					const headers = Headers.removeMany(response.headers, ["Content-Encoding", "Content-Length"]);
 
 					const maybeExistingVaryHeader = Option.fromUndefinedOr(Headers.get(headers, "Vary"));
 					const newVaryHeaderValue =

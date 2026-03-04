@@ -2,7 +2,7 @@ import type { Statement } from "effect/unstable/sql";
 
 import { NodeHttpClient } from "@effect/platform-node";
 import { PgClient } from "@effect/sql-pg";
-import { Config, Effect, Layer, pipe, Redacted, Schema, ServiceMap } from "effect";
+import { Config, Effect, Layer, Redacted, Schema, ServiceMap } from "effect";
 import { Headers, HttpClient, HttpClientRequest, HttpServerResponse } from "effect/unstable/http";
 
 import type { ElectricProtocolQuery } from "@naamio/schema/api";
@@ -92,7 +92,7 @@ export class Electric extends ServiceMap.Service<
 
 			const proxy = Effect.fn(function* (request: HttpClientRequest.HttpClientRequest) {
 				const response = yield* httpClient.execute(request).pipe(Effect.mapError(() => new ShapeProxyError()));
-				const headers = pipe(response.headers, Headers.remove("Content-Encoding"), Headers.remove("Content-Length"));
+				const headers = Headers.removeMany(response.headers, ["Content-Encoding", "Content-Length"]);
 
 				return HttpServerResponse.stream(response.stream, { headers, status: response.status });
 			});

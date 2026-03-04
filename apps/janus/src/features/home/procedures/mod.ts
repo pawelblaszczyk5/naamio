@@ -18,7 +18,7 @@ import {
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runServerFn } from "#src/lib/effect-bridge/mod.js";
 
-const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
+export const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
 	.mapFields(Struct.pick(["username", "language"]))
 	.pipe(Schema.fieldsAssign({ displayName: WebAuthnRegistrationChallengeModel.jsonCreate.fields.displayName }));
 
@@ -40,7 +40,7 @@ export const generateRegistrationOptions = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/home/generateRegistrationOptions"), runServerFn),
 	);
 
-const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: WebAuthnRegistrationResponse });
+export const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: WebAuthnRegistrationResponse });
 
 export type VerifyRegistrationPayload = (typeof VerifyRegistrationPayload)["Type"];
 
@@ -78,8 +78,8 @@ export const verifyRegistration = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/home/verifyRegistration"), runServerFn),
 	);
 
-const GenerateAuthenticationOptionsPayload = Schema.Struct({
-	username: UserModel.json.fields.username.pipe(Schema.OptionFromOptionalKey),
+export const GenerateAuthenticationOptionsPayload = Schema.Struct({
+	username: UserModel.json.fields.username.pipe(Schema.NullOr),
 });
 
 export type GenerateAuthenticationOptionsPayload = (typeof GenerateAuthenticationOptionsPayload)["Type"];
@@ -91,7 +91,7 @@ export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 			const naamioApiClient = yield* NaamioApiClient;
 
 			const result = yield* naamioApiClient.WebAuthn.generateAuthenticationOptions({
-				payload: { username: ctx.data.username },
+				payload: { username: Option.fromNullOr(ctx.data.username) },
 			});
 
 			yield* setWebAuthnChallengeCookie({ id: result.challengeId, type: "AUTHENTICATION" }, result.expiresAt);
@@ -100,7 +100,7 @@ export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/home/generateAuthenticationOptions"), runServerFn),
 	);
 
-const VerifyAuthenticationPayload = Schema.Struct({ authenticationResponse: WebAuthnAuthenticationResponse });
+export const VerifyAuthenticationPayload = Schema.Struct({ authenticationResponse: WebAuthnAuthenticationResponse });
 
 export type VerifyAuthenticationPayload = (typeof VerifyAuthenticationPayload)["Type"];
 

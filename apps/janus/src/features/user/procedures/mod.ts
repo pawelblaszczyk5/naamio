@@ -37,7 +37,7 @@ export const verifySession = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/user/verifySession"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
-const UpdateLanguagePayload = UserModel.jsonUpdate.mapFields(Struct.pick(["language"]));
+export const UpdateLanguagePayload = UserModel.jsonUpdate.mapFields(Struct.pick(["language"]));
 
 export type UpdateLanguagePayload = (typeof UpdateLanguagePayload)["Type"];
 
@@ -54,7 +54,7 @@ export const updateLanguage = createServerFn({ method: "POST" })
 		}).pipe(Effect.withSpan("@naamio/janus/user/updateLanguage"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
-const RevokeSessionPayload = SessionModel.json.mapFields(Struct.pick(["id"]));
+export const RevokeSessionPayload = SessionModel.json.mapFields(Struct.pick(["id"]));
 
 export type RevokeSessionPayload = (typeof RevokeSessionPayload)["Type"];
 

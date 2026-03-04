@@ -1,11 +1,17 @@
 import { Trans } from "@lingui/react/macro";
 import { startRegistration } from "@simplewebauthn/browser";
 import { useServerFn } from "@tanstack/react-start";
+import { Schema } from "effect";
 import { useId, useState } from "react";
 
 import stylex from "@naamio/stylex";
 
-import { generateRegistrationOptions, verifyRegistration } from "#src/features/home/procedures/mod.js";
+import {
+	generateRegistrationOptions,
+	GenerateRegistrationOptionsPayload,
+	verifyRegistration,
+	VerifyRegistrationPayload,
+} from "#src/features/home/procedures/mod.js";
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
@@ -27,6 +33,9 @@ export const SignUpPage = () => {
 	const callGenerateRegistrationOptions = useServerFn(generateRegistrationOptions);
 	const callVerifyRegistration = useServerFn(verifyRegistration);
 
+	const encodeGenerateRegistrationOptionsPayload = Schema.encodeSync(GenerateRegistrationOptionsPayload);
+	const encodeVerifyRegistrationPayload = Schema.encodeSync(VerifyRegistrationPayload);
+
 	return (
 		<div>
 			<h1>
@@ -36,11 +45,17 @@ export const SignUpPage = () => {
 				onSubmit={async (event) => {
 					event.preventDefault();
 
-					const result = await callGenerateRegistrationOptions({ data: { displayName, language, username } });
+					const result = await callGenerateRegistrationOptions({
+						data: encodeGenerateRegistrationOptionsPayload({
+							displayName: GenerateRegistrationOptionsPayload.fields.displayName.makeUnsafe(displayName),
+							language,
+							username: GenerateRegistrationOptionsPayload.fields.username.makeUnsafe(username),
+						}),
+					});
 
 					const registrationResponse = await startRegistration({ optionsJSON: result.registrationOptions });
 
-					await callVerifyRegistration({ data: { registrationResponse } });
+					await callVerifyRegistration({ data: encodeVerifyRegistrationPayload({ registrationResponse }) });
 				}}
 				{...stylex.props(styles.form)}
 			>

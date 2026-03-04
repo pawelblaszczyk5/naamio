@@ -2,11 +2,17 @@ import { Trans } from "@lingui/react/macro";
 import { startAuthentication } from "@simplewebauthn/browser";
 import { useLoaderData } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
+import { Schema } from "effect";
 import { useEffect, useId, useState } from "react";
 
 import stylex from "@naamio/stylex";
 
-import { generateAuthenticationOptions, verifyAuthentication } from "#src/features/home/procedures/mod.js";
+import {
+	generateAuthenticationOptions,
+	GenerateAuthenticationOptionsPayload,
+	verifyAuthentication,
+	VerifyAuthenticationPayload,
+} from "#src/features/home/procedures/mod.js";
 
 const styles = stylex.create({
 	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
@@ -28,6 +34,9 @@ export const SignInPage = () => {
 	const callGenerateAuthenticationOptions = useServerFn(generateAuthenticationOptions);
 	const callVerifyAuthentication = useServerFn(verifyAuthentication);
 
+	const encodeGenerateAuthenticationOptionsPayload = Schema.encodeSync(GenerateAuthenticationOptionsPayload);
+	const encodeVerifyAuthenticationPayload = Schema.encodeSync(VerifyAuthenticationPayload);
+
 	useEffect(() => {
 		const abortController = new AbortController();
 
@@ -41,13 +50,13 @@ export const SignInPage = () => {
 				return;
 			}
 
-			await callVerifyAuthentication({ data: { authenticationResponse } });
+			await callVerifyAuthentication({ data: encodeVerifyAuthenticationPayload({ authenticationResponse }) });
 		})();
 
 		return () => {
 			abortController.abort();
 		};
-	}, [authenticationOptions, callVerifyAuthentication]);
+	}, [authenticationOptions, callVerifyAuthentication, encodeVerifyAuthenticationPayload]);
 
 	return (
 		<div>
@@ -58,11 +67,15 @@ export const SignInPage = () => {
 				onSubmit={async (event) => {
 					event.preventDefault();
 
-					const result = await callGenerateAuthenticationOptions({ data: { username } });
+					const result = await callGenerateAuthenticationOptions({
+						data: encodeGenerateAuthenticationOptionsPayload({
+							username: GenerateAuthenticationOptionsPayload.fields.username.members[0].makeUnsafe(username),
+						}),
+					});
 
 					const authenticationResponse = await startAuthentication({ optionsJSON: result.authenticationOptions });
 
-					await callVerifyAuthentication({ data: { authenticationResponse } });
+					await callVerifyAuthentication({ data: encodeVerifyAuthenticationPayload({ authenticationResponse }) });
 				}}
 				{...stylex.props(styles.form)}
 			>

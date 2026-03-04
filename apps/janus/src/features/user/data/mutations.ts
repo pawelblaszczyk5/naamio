@@ -1,21 +1,28 @@
 import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
-
-import type { RevokeSessionPayload, UpdateLanguagePayload } from "#src/features/user/procedures/mod.js";
+import { Schema } from "effect";
 
 import { useSessionId, useUser } from "#src/features/user/data/queries.js";
 import { sessionCollection } from "#src/features/user/data/session.js";
 import { userCollection } from "#src/features/user/data/user.js";
-import { revokeAllSessions, revokeSession, updateLanguage } from "#src/features/user/procedures/mod.js";
+import {
+	revokeAllSessions,
+	revokeSession,
+	RevokeSessionPayload,
+	updateLanguage,
+	UpdateLanguagePayload,
+} from "#src/features/user/procedures/mod.js";
 
 export const useUpdateLanguage = () => {
 	const callUpdateLanguage = useServerFn(updateLanguage);
 
 	const userId = useUser().id;
 
+	const encodePayload = Schema.encodeSync(UpdateLanguagePayload);
+
 	const action = createOptimisticAction({
 		mutationFn: async (data) => {
-			const result = await callUpdateLanguage({ data });
+			const result = await callUpdateLanguage({ data: encodePayload(data) });
 
 			return userCollection.utils.awaitTxId(result.transactionId);
 		},
@@ -40,8 +47,10 @@ export const useSignOut = () => {
 
 	const sessionId = useSessionId();
 
+	const encodePayload = Schema.encodeSync(RevokeSessionPayload);
+
 	const handler = async () => {
-		await callRevokeSession({ data: { id: sessionId } });
+		await callRevokeSession({ data: encodePayload({ id: sessionId }) });
 	};
 
 	return handler;
@@ -50,9 +59,11 @@ export const useSignOut = () => {
 export const useRevokeSession = () => {
 	const callRevokeSession = useServerFn(revokeSession);
 
+	const encodePayload = Schema.encodeSync(RevokeSessionPayload);
+
 	const action = createOptimisticAction({
 		mutationFn: async (data) => {
-			const result = await callRevokeSession({ data: { id: data.id } });
+			const result = await callRevokeSession({ data: encodePayload(data) });
 
 			return sessionCollection.utils.awaitTxId(result.transactionId);
 		},

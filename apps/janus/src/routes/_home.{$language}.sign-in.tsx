@@ -13,6 +13,6 @@ export const Route = createFileRoute("/_home/{$language}/sign-in")({
 			throw redirect({ replace: true, to: "/app" });
 		}
 
-		return generateAuthenticationOptions({ data: {} });
+		return generateAuthenticationOptions({ data: { username: null } });
 	},
 });

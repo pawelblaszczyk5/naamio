@@ -48,7 +48,7 @@ export class Session extends HttpApiGroup.make("Session")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs all available session for current user, without any additional filtering. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric session shape",
+				summary: "Electric session shape.",
 			}),
 		),
 	)

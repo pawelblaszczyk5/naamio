@@ -55,7 +55,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Start new chat conversation from the provided input. It involves creating conversation, messages and message parts from provided input. After doing so it fires background job to start LLM generation. It also involves generating conversation title in the background.",
-				summary: "Start new conversation",
+				summary: "Start new conversation.",
 			}),
 		),
 	)
@@ -69,7 +69,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Continue existing conversation with the provided input. After inserting messages and message parts from provided input it fires background job to start LLM generation. It may be used both for standard continuation but it may also be used for mimicking user message editing, which is basically continuing conversation from different leaf.",
-				summary: "Continue existing conversation",
+				summary: "Continue existing conversation.",
 			}),
 		),
 	)
@@ -83,7 +83,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Regenerate answer for existing user message. After inserting agent message it fires background job to start LLM generation. It's used for cases where user want to retry message generation both due to error and answer dissatisfaction.",
-				summary: "Regenerate answer in existing conversation",
+				summary: "Regenerate answer in existing conversation.",
 			}),
 		),
 	)
@@ -96,7 +96,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Interrupt ongoing LLM generation for given message ID. As mentioned in previous endpoints - each of them fires background job for LLM generation. Later on you can interrupt it if you don't care about answer anymore or don't want to incur additional costs.",
-				summary: "Interrupt ongoing generation",
+				summary: "Interrupt ongoing generation.",
 			}),
 		),
 	)
@@ -109,7 +109,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Allows to completely delete everything related to a single conversation including conversation itself, messages, message parts and even the inflight chunks. It also stops any ongoing generations for this conversation to prevent runaway jobs.",
-				summary: "Delete existing conversation",
+				summary: "Delete existing conversation.",
 			}),
 		),
 	)
@@ -125,7 +125,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"By default the conversation title is generated in the background by LLM. It may lead to titles that doesn't reflect the best the purpose of conversation. This allows user to override generated title with whatever they like.",
-				summary: "Edit existing conversation title",
+				summary: "Edit existing conversation title.",
 			}),
 		),
 	)
@@ -151,7 +151,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs data about all current user conversations. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric conversation shape",
+				summary: "Electric conversation shape.",
 			}),
 		),
 	)
@@ -163,7 +163,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs data about all current user messages. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric message shape",
+				summary: "Electric message shape.",
 			}),
 		),
 	)
@@ -175,7 +175,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs data about all current user message parts. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric message part shape",
+				summary: "Electric message part shape.",
 			}),
 		),
 	)
@@ -187,7 +187,7 @@ export class Chat extends HttpApiGroup.make("Chat")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs data about all current user inflight chunks. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric inflight chunk shape",
+				summary: "Electric inflight chunk shape.",
 			}),
 		),
 	)
@@ -196,6 +196,6 @@ export class Chat extends HttpApiGroup.make("Chat")
 	.annotateMerge(
 		OpenApi.annotations({
 			description:
-				"Everything related to chat inside of the app. Starting new conversation, continuing existing ones, managing them. That's the core experience of user inside of the app",
+				"Everything related to chat inside of the app. Starting new conversation, continuing existing ones, managing them. That's the core experience of user inside of the app.",
 		}),
 	) {}

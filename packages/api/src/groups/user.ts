@@ -16,7 +16,7 @@ export class User extends HttpApiGroup.make("User")
 			OpenApi.annotations({
 				description:
 					"Allows updating current user language preference. Returns Postgres transaction id for Electric sync purposes.",
-				summary: "Update current user language",
+				summary: "Update current user language.",
 			}),
 		),
 	)
@@ -25,7 +25,7 @@ export class User extends HttpApiGroup.make("User")
 			OpenApi.annotations({
 				description:
 					"Electric shape that syncs data about current user. It uses the recommended Auth Proxy pattern from the Electric documentation and allows consuming shape through standard API-like endpoint, with built-in authentication, authorization and access control.",
-				summary: "Electric user shape",
+				summary: "Electric user shape.",
 			}),
 		),
 	)
@@ -33,6 +33,6 @@ export class User extends HttpApiGroup.make("User")
 	.middleware(AuthenticatedOnly)
 	.annotateMerge(
 		OpenApi.annotations({
-			description: "Everything related to user inside of the app. Their preferences, settings, etc",
+			description: "Everything related to user inside of the app. Their preferences, settings, etc.",
 		}),
 	) {}

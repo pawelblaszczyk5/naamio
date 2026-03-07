@@ -304,6 +304,17 @@ const ChatGroupLayer = HttpApiBuilder.group(
 				}),
 			)
 			.handle(
+				"markConversationAsAccessed",
+				Effect.fn("@naamio/mercury/ChatGroup#markConversationAsAccessed")(function* (context) {
+					return yield* chat.viewer
+						.markConversationAsAccessed({
+							accessedAt: context.payload.accessedAt,
+							conversationId: context.params.conversationId,
+						})
+						.pipe(Effect.catchTag("MissingConversationError", () => Effect.fail(new HttpApiError.NotFound())));
+				}),
+			)
+			.handle(
 				"conversationShape",
 				Effect.fn("@naamio/mercury/ChatGroup#conversationShape")(function* (context) {
 					return yield* electric.viewer

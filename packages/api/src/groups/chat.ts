@@ -130,6 +130,20 @@ export class Chat extends HttpApiGroup.make("Chat")
 		),
 	)
 	.add(
+		HttpApiEndpoint.patch("markConversationAsAccessed", "/conversation/:conversationId/accessed-at", {
+			error: HttpApiError.NotFound,
+			params: { conversationId: ConversationModel.json.fields.id },
+			payload: ConversationModel.jsonUpdate.mapFields(Struct.pick(["accessedAt"])),
+			success: Schema.Struct({ transactionId: TransactionId }),
+		}).annotateMerge(
+			OpenApi.annotations({
+				description:
+					"Besides marking conversation as updated on each change it can also be marked as accessed for tracking when user visited the conversation. This shouldn't be used to mark every single access. This should be limited to e.g. once every session, otherwise if this value is used to display lately used conversation, it'd result in constant order switching.",
+				summary: "Update conversation accessed at time.",
+			}),
+		),
+	)
+	.add(
 		HttpApiEndpoint.get("conversationShape", "/conversation/shape", {
 			error: BadGateway,
 			query: ElectricProtocolQuery,

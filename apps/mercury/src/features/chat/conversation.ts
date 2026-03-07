@@ -39,6 +39,7 @@ import type {
 	ConversationForGeneration,
 	EditConversationTitleInput,
 	InterruptGenerationInput,
+	MarkConversationAsAccessedInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
 	UserMessageForGeneration,
@@ -101,6 +102,9 @@ export class Conversation extends ServiceMap.Service<
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly editConversationTitle: (
 				input: EditConversationTitleInput,
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
+			readonly updateConversationAccessedAt: (
+				input: MarkConversationAsAccessedInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly updateConversationWithContinuation: (
 				input: ContinueConversationInput,
@@ -201,6 +205,17 @@ export class Conversation extends ServiceMap.Service<
 						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
 				`,
 				Request: ConversationModel.update.mapFields(Struct.pick(["updatedAt", "id", "userId", "title"])),
+			});
+
+			const updateConversationAccessedAt = SqlSchema.void({
+				execute: (request) => sql`
+					UPDATE ${sql("conversation")}
+					SET
+						${sql.update(request, ["id", "userId"])}
+					WHERE
+						${sql.and([sql`${sql("id")} = ${request.id}`, sql`${sql("userId")} = ${request.userId}`])};
+				`,
+				Request: ConversationModel.update.mapFields(Struct.pick(["id", "userId", "accessedAt"])),
 			});
 
 			const updateAgentMessageStatus = SqlSchema.void({
@@ -863,6 +878,32 @@ export class Conversation extends ServiceMap.Service<
 
 						return { transactionId };
 					}),
+					updateConversationAccessedAt: Effect.fn("@naamio/mercury/Conversation#updateConversationAccessedAt")(
+						function* (input) {
+							const currentSession = yield* CurrentSession;
+
+							const transactionId = yield* Effect.gen(function* () {
+								const maybeConversation = yield* findConversationForUpdate({
+									id: input.conversationId,
+									userId: currentSession.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+								if (Option.isNone(maybeConversation)) {
+									return yield* new MissingConversationError();
+								}
+
+								yield* updateConversationAccessedAt({
+									accessedAt: input.accessedAt,
+									id: input.conversationId,
+									userId: currentSession.userId,
+								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+
+								return yield* getTransactionId();
+							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
+
+							return { transactionId };
+						},
+					),
 					updateConversationWithContinuation: Effect.fn(
 						"@naamio/mercury/Conversation#updateConversationWithContinuation",
 					)(function* (input) {

@@ -13,6 +13,7 @@ import type {
 	ContinueConversationInput,
 	EditConversationTitleInput,
 	InterruptGenerationInput,
+	MarkConversationAsAccessedInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
 } from "#src/features/chat/types.js";
@@ -56,6 +57,9 @@ export class Chat extends ServiceMap.Service<
 				| MissingMessageError,
 				CurrentSession
 			>;
+			readonly markConversationAsAccessed: (
+				input: MarkConversationAsAccessedInput,
+			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly regenerateAnswer: (
 				input: RegenerateAnswerInput,
 			) => Effect.Effect<
@@ -128,6 +132,9 @@ export class Chat extends ServiceMap.Service<
 							);
 
 						return result;
+					}),
+					markConversationAsAccessed: Effect.fn("@naamio/mercury/Chat#markConversationAsAccessed")(function* (input) {
+						return yield* conversation.viewer.updateConversationAccessedAt(input);
 					}),
 					regenerateAnswer: Effect.fn("@naamio/mercury/Chat#regenerateAnswer")(function* (input) {
 						const conversationGenerationManager = conversationGenerationManagerClient(input.conversationId);

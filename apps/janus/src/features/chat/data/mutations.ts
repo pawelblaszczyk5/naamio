@@ -175,7 +175,7 @@ export const useContinueConversation = () => {
 	const handler = (data: {
 		content: string;
 		conversationId: Conversation["id"];
-		previousMessage: AgentMessage | null;
+		previousMessageId: AgentMessage['id'] | null;
 	}) => {
 		const userMessageId = UserMessage.fields.id.makeUnsafe(generateId());
 		const userTextMessagePartId = TextMessagePart.fields.id.makeUnsafe(generateId());
@@ -186,7 +186,7 @@ export const useContinueConversation = () => {
 			messages: [
 				{
 					id: userMessageId,
-					parentId: data.previousMessage ? data.previousMessage.id : null,
+					parentId: data.previousMessageId,
 					parts: [{ data: { content: data.content }, id: userTextMessagePartId, type: "TEXT" }],
 				},
 				{ id: agentMessageId },

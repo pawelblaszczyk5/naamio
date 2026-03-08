@@ -77,28 +77,36 @@ msgstr "Interrupt"
 msgid "Generation interrupted"
 msgstr "Generation interrupted"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:156
+#: src/features/chat/ui/existing-conversation-page.tsx:160
 msgid "Message from user"
 msgstr "Message from user"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:203
+#: src/features/chat/ui/existing-conversation-page.tsx:164
+msgid "New content for message"
+msgstr "New content for message"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:178
+msgid "Edit message"
+msgstr "Edit message"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:226
 msgid "Conversation \"{title}\""
 msgstr "Conversation \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:204
+#: src/features/chat/ui/existing-conversation-page.tsx:227
 msgid "Conversation without title (yet)"
 msgstr "Conversation without title (yet)"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:208
+#: src/features/chat/ui/existing-conversation-page.tsx:231
 msgid "New title for conversation"
 msgstr "New title for conversation"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:258
+#: src/features/chat/ui/existing-conversation-page.tsx:281
 #: src/features/chat/ui/new-conversation-page.tsx:53
 msgid "Message content"
 msgstr "Message content"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:277
+#: src/features/chat/ui/existing-conversation-page.tsx:300
 #: src/features/chat/ui/new-conversation-page.tsx:72
 msgid "Send"
 msgstr "Send"

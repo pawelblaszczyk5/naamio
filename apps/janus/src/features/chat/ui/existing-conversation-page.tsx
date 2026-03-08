@@ -148,12 +148,35 @@ const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 };
 
 const MessageFromUser = ({ message }: { message: UserMessage }) => {
+	const { t } = useLingui();
+
 	const messageParts = useUserMessagePartsByMessageId(message.id);
+
+	const continueConversation = useContinueConversation();
 
 	return (
 		<div>
 			<p>
-				<Trans>Message from user</Trans>
+				<Trans>Message from user</Trans>{" "}
+				<button
+					onClick={() => {
+						// eslint-disable-next-line no-alert -- temporary until real UI
+						const newContent = globalThis.prompt(t`New content for message`);
+
+						if (!newContent) {
+							return;
+						}
+
+						continueConversation({
+							content: newContent,
+							conversationId: message.conversationId,
+							previousMessageId: message.parentId,
+						});
+					}}
+					type="button"
+				>
+					<Trans>Edit message</Trans>
+				</button>
 			</p>
 			<div {...stylex.props(styles.messagePartsList)}>
 				{messageParts.map((messagePart) =>
@@ -249,7 +272,7 @@ export const ExistingConversationPage = () => {
 					}
 
 					setContent("");
-					continueConversation({ content, conversationId: conversation.id, previousMessage: message });
+					continueConversation({ content, conversationId: conversation.id, previousMessageId: message.id });
 				}}
 				ref={formRef}
 				{...stylex.props(styles.form)}

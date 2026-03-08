@@ -181,6 +181,15 @@ export default defineConfig({
 		"@typescript-eslint/no-useless-empty-export": "error",
 		"@typescript-eslint/promise-function-async": "error",
 		"@typescript-eslint/restrict-template-expressions": "error",
+		"@typescript-eslint/only-throw-error": [
+			"error",
+			{
+				allow: [
+					{ from: "package", package: "@tanstack/router-core", name: "Redirect" },
+					{ from: "package", package: "@tanstack/router-core", name: "NotFoundError" },
+				],
+			},
+		],
 
 		// canonical
 		"canonical/filename-no-index": "error",

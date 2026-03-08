@@ -62,11 +62,6 @@ export interface EditConversationTitleInput {
 	title: Option.Option.Value<ConversationModel["title"]>;
 }
 
-export interface MarkConversationAsAccessedInput {
-	accessedAt: ConversationModel["accessedAt"];
-	conversationId: ConversationModel["id"];
-}
-
 export interface UserMessageForGeneration {
 	id: UserMessageModel["id"];
 	parentId: UserMessageModel["parentId"];

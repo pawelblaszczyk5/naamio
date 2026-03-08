@@ -39,7 +39,6 @@ import type {
 	ConversationForGeneration,
 	EditConversationTitleInput,
 	InterruptGenerationInput,
-	MarkConversationAsAccessedInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
 	UserMessageForGeneration,
@@ -104,7 +103,7 @@ export class Conversation extends ServiceMap.Service<
 				input: EditConversationTitleInput,
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly updateConversationAccessedAt: (
-				input: MarkConversationAsAccessedInput,
+				id: ConversationModel["id"],
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly updateConversationWithContinuation: (
 				input: ContinueConversationInput,
@@ -879,22 +878,21 @@ export class Conversation extends ServiceMap.Service<
 						return { transactionId };
 					}),
 					updateConversationAccessedAt: Effect.fn("@naamio/mercury/Conversation#updateConversationAccessedAt")(
-						function* (input) {
+						function* (id) {
 							const currentSession = yield* CurrentSession;
 
 							const transactionId = yield* Effect.gen(function* () {
-								const maybeConversation = yield* findConversationForUpdate({
-									id: input.conversationId,
-									userId: currentSession.userId,
-								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+								const maybeConversation = yield* findConversationForUpdate({ id, userId: currentSession.userId }).pipe(
+									Effect.catchTag(["SqlError", "SchemaError"], Effect.die),
+								);
 
 								if (Option.isNone(maybeConversation)) {
 									return yield* new MissingConversationError();
 								}
 
 								yield* updateConversationAccessedAt({
-									accessedAt: input.accessedAt,
-									id: input.conversationId,
+									accessedAt: yield* DateTime.now,
+									id,
 									userId: currentSession.userId,
 								}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 

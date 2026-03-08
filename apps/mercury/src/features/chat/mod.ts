@@ -13,7 +13,6 @@ import type {
 	ContinueConversationInput,
 	EditConversationTitleInput,
 	InterruptGenerationInput,
-	MarkConversationAsAccessedInput,
 	RegenerateAnswerInput,
 	StartConversationInput,
 } from "#src/features/chat/types.js";
@@ -58,7 +57,7 @@ export class Chat extends ServiceMap.Service<
 				CurrentSession
 			>;
 			readonly markConversationAsAccessed: (
-				input: MarkConversationAsAccessedInput,
+				id: ConversationModel["id"],
 			) => Effect.Effect<{ transactionId: TransactionId }, MissingConversationError, CurrentSession>;
 			readonly regenerateAnswer: (
 				input: RegenerateAnswerInput,

@@ -307,10 +307,7 @@ const ChatGroupLayer = HttpApiBuilder.group(
 				"markConversationAsAccessed",
 				Effect.fn("@naamio/mercury/ChatGroup#markConversationAsAccessed")(function* (context) {
 					return yield* chat.viewer
-						.markConversationAsAccessed({
-							accessedAt: context.payload.accessedAt,
-							conversationId: context.params.conversationId,
-						})
+						.markConversationAsAccessed(context.params.conversationId)
 						.pipe(Effect.catchTag("MissingConversationError", () => Effect.fail(new HttpApiError.NotFound())));
 				}),
 			)

@@ -130,10 +130,9 @@ export class Chat extends HttpApiGroup.make("Chat")
 		),
 	)
 	.add(
-		HttpApiEndpoint.patch("markConversationAsAccessed", "/conversation/:conversationId/accessed-at", {
+		HttpApiEndpoint.post("markConversationAsAccessed", "/conversation/:conversationId/update-accessed-at", {
 			error: HttpApiError.NotFound,
 			params: { conversationId: ConversationModel.json.fields.id },
-			payload: ConversationModel.jsonUpdate.mapFields(Struct.pick(["accessedAt"])),
 			success: Schema.Struct({ transactionId: TransactionId }),
 		}).annotateMerge(
 			OpenApi.annotations({

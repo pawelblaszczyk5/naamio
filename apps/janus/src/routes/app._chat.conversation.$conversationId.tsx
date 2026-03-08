@@ -20,7 +20,7 @@ export const Route = createFileRoute("/app/_chat/conversation/$conversationId")(
 			return { conversationId: maybeConversationId };
 		},
 	},
-	loader: (ctx) => {
-		setupConversationState(ctx.params.conversationId);
+	loader: async (ctx) => {
+		await setupConversationState(ctx.params.conversationId);
 	},
 });

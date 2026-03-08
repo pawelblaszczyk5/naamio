@@ -7,9 +7,9 @@ import type { ConversationModel } from "@naamio/schema/domain";
 import { assert } from "@naamio/assert";
 
 import { conversationStateCollection } from "#src/features/chat/data/conversation-state.js";
-import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
+import { Conversation, conversationCollection, preloadConversationData } from "#src/features/chat/data/conversation.js";
 import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
-import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
+import { AgentMessage, messageCollection, preloadMessageData, UserMessage } from "#src/features/chat/data/message.js";
 import {
 	continueConversation,
 	ContinueConversationPayload,
@@ -175,7 +175,7 @@ export const useContinueConversation = () => {
 	const handler = (data: {
 		content: string;
 		conversationId: Conversation["id"];
-		previousMessageId: AgentMessage['id'] | null;
+		previousMessageId: AgentMessage["id"] | null;
 	}) => {
 		const userMessageId = UserMessage.fields.id.makeUnsafe(generateId());
 		const userTextMessagePartId = TextMessagePart.fields.id.makeUnsafe(generateId());
@@ -355,7 +355,9 @@ const markConversationAsAccessedAction = createOptimisticAction({
 	},
 });
 
-export const setupConversationState = (conversationId: ConversationModel["id"]) => {
+export const setupConversationState = async (conversationId: ConversationModel["id"]) => {
+	await Promise.all([preloadConversationData(), preloadMessageData()]);
+
 	if (conversationStateCollection.has(conversationId) || !conversationCollection.get(conversationId)) {
 		return;
 	}

@@ -132,6 +132,10 @@ export const useContinueConversation = () => {
 			const userMessageInput = data.messages[0];
 			const agentMessageInput = data.messages[1];
 
+			conversationCollection.update(data.conversationId, (draft) => {
+				draft.updatedAt = now;
+			});
+
 			messageCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
@@ -264,6 +268,7 @@ export const useEditConversationTitle = () => {
 		onMutate: (data: EditConversationTitlePayload) => {
 			conversationCollection.update(data.conversationId, (draft) => {
 				draft.title = data.title;
+				draft.updatedAt = new Date();
 			});
 		},
 	});

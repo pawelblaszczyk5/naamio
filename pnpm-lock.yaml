@@ -13,26 +13,26 @@ catalogs:
       specifier: ^7.28.5
       version: 7.28.5
     '@effect/ai-openai':
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     '@effect/language-service':
-      specifier: ^0.78.0
-      version: 0.78.0
+      specifier: ^0.79.0
+      version: 0.79.0
     '@effect/platform-node':
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     '@effect/platform-node-shared':
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     '@effect/sql-pg':
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     '@effect/vitest':
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     '@electric-sql/client':
-      specifier: ^1.5.11
-      version: 1.5.11
+      specifier: ^1.5.12
+      version: 1.5.12
     '@fontsource-variable/ibm-plex-sans':
       specifier: ^5.2.8
       version: 5.2.8
@@ -64,8 +64,8 @@ catalogs:
       specifier: 0.0.0-experimental-1371fcb-20260304
       version: 0.0.0-experimental-1371fcb-20260304
     effect:
-      specifier: 4.0.0-beta.28
-      version: 4.0.0-beta.28
+      specifier: 4.0.0-beta.29
+      version: 4.0.0-beta.29
     eslint:
       specifier: ^9.39.2
       version: 9.39.2
@@ -146,13 +146,13 @@ importers:
     dependencies:
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(ioredis@5.9.3)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(ioredis@5.9.3)
       '@effect/platform-node-shared':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.11
+        version: 1.5.12
       '@hono/node-server':
         specifier: ^1.19.11
         version: 1.19.11(hono@4.12.5)
@@ -196,11 +196,11 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@tanstack/electric-db-collection':
-        specifier: ^0.2.37
-        version: 0.2.37(typescript@5.9.3)
+        specifier: ^0.2.39
+        version: 0.2.39(typescript@5.9.3)
       '@tanstack/react-db':
-        specifier: ^0.1.74
-        version: 0.1.74(react@19.3.0-canary-3bc2d414-20260304)(typescript@5.9.3)
+        specifier: ^0.1.75
+        version: 0.1.75(react@19.3.0-canary-3bc2d414-20260304)(typescript@5.9.3)
       '@tanstack/react-router':
         specifier: ^1.166.2
         version: 1.166.2(react-dom@19.3.0-canary-3bc2d414-20260304(react@19.3.0-canary-3bc2d414-20260304))(react@19.3.0-canary-3bc2d414-20260304)
@@ -212,7 +212,7 @@ importers:
         version: 0.0.5
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
       hono:
         specifier: ^4.12.5
         version: 4.12.5
@@ -231,10 +231,10 @@ importers:
         version: 7.28.5(patch_hash=ee9804e542a66f0c266a5cab5343f3983738f1bda5347c5dcf24cc8b7d0b6762)(@babel/core@7.29.0)
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
       '@fontsource-variable/ibm-plex-sans':
         specifier: 'catalog:'
         version: 5.2.8
@@ -303,19 +303,19 @@ importers:
     dependencies:
       '@effect/ai-openai':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(ioredis@5.9.3)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(ioredis@5.9.3)
       '@effect/platform-node-shared':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)
       '@effect/sql-pg':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.11
+        version: 1.5.12
       '@naamio/api':
         specifier: 'workspace:'
         version: link:../../packages/api
@@ -336,7 +336,7 @@ importers:
         version: 13.2.3
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -346,7 +346,7 @@ importers:
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -470,11 +470,11 @@ importers:
         version: link:../schema
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -550,14 +550,14 @@ importers:
     dependencies:
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -590,14 +590,14 @@ importers:
         version: link:../assert
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@effect/vitest':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -627,17 +627,17 @@ importers:
     dependencies:
       '@effect/platform-node':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)(ioredis@5.9.3)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)(ioredis@5.9.3)
       '@effect/platform-node-shared':
         specifier: 'catalog:'
-        version: 4.0.0-beta.28(effect@4.0.0-beta.28)
+        version: 4.0.0-beta.29(effect@4.0.0-beta.29)
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -658,14 +658,14 @@ importers:
     dependencies:
       '@electric-sql/client':
         specifier: 'catalog:'
-        version: 1.5.11
+        version: 1.5.12
       effect:
         specifier: 'catalog:'
-        version: 4.0.0-beta.28
+        version: 4.0.0-beta.29
     devDependencies:
       '@effect/language-service':
         specifier: 'catalog:'
-        version: 0.78.0
+        version: 0.79.0
       '@naamio/eslint-config':
         specifier: 'workspace:'
         version: link:../../tooling/eslint-config
@@ -1285,41 +1285,42 @@ packages:
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
 
-  '@effect/ai-openai@4.0.0-beta.28':
-    resolution: {integrity: sha512-+C9Sd5qV3jQBSSthNSvTV/yDeT9PFol2T0QYjRiqnZ2PFdr5GQlMbb5yClIMVUQ31TqZmaBX0FYpKRRUEv7Wjw==}
+  '@effect/ai-openai@4.0.0-beta.29':
+    resolution: {integrity: sha512-z7SETlZeQF8YI+rmz/xM3MQDnSqR2X8KBSbtcaE8fCI83DY08MDJI0tFz+J6orxgffUV87AgNiLCrzDMCYhrIA==}
     peerDependencies:
-      effect: ^4.0.0-beta.28
+      effect: ^4.0.0-beta.29
 
-  '@effect/language-service@0.78.0':
-    resolution: {integrity: sha512-dEYMhvhKFhikXpXjOlcByRKOU34xFeZbZcOuVTeWTQmjmZ/ZF4K3z0Ku6vL4cWKC8RRIB5di+ix18Y4f9ey5Dg==}
+  '@effect/language-service@0.79.0':
+    resolution: {integrity: sha512-DEmIOsg1GjjP6s9HXH1oJrW+gDmzkhVv9WOZl6to5eNyyCrjz1S2PDqQ7aYrW/HuifhfwI5Bik1pK4pj7Z+lrg==}
     hasBin: true
 
-  '@effect/platform-node-shared@4.0.0-beta.28':
-    resolution: {integrity: sha512-k3HAbzlUEA7pEtfmMr8lTWzhamn7a1jEmg4Te+p/rJwu2ZjYBg2vSa/FoIjQQPXo+morqLUIUqosY3vDub/+XQ==}
+  '@effect/platform-node-shared@4.0.0-beta.29':
+    resolution: {integrity: sha512-6nV/yI1LgYJ1PzTjb20Ar4a+Z9dBltd2QCNzLj9NmdBQusJO9ve7qk0GBa3IFkmAVAqUfCVXEwhYz3TjnP+lrA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.0-beta.28
+      effect: ^4.0.0-beta.29
 
-  '@effect/platform-node@4.0.0-beta.28':
-    resolution: {integrity: sha512-AIna99z2G9thtbMzjT3jwonn4cLvk/MSP2b3Emmaa+Rifrn58tC7oohdVYdA0eLH2whddi8i9TvMMoeirZf1qA==}
+  '@effect/platform-node@4.0.0-beta.29':
+    resolution: {integrity: sha512-lAJZrx/PnBWkf+X/iox0MRDnc+XpEIbVJEmiLhR7KrpuyzwNrlUmgRy9fHoGJMbcxqkHrXUh+rj9g7UGPYX3rQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.0-beta.28
+      effect: ^4.0.0-beta.29
       ioredis: ^5.7.0
 
-  '@effect/sql-pg@4.0.0-beta.28':
-    resolution: {integrity: sha512-NF173i9TabCBr9c3MFzmSCG/NblJhesVe7owgo/YH7OOAgvUpAO3nbjWcbvkvvDpqwJrOBoUHpeTNz67wP1x6A==}
+  '@effect/sql-pg@4.0.0-beta.29':
+    resolution: {integrity: sha512-vOb5y7m2oWGh2aqvhUBQUCfpC/CrEgFjNIvE7nsWUh4COuF2sAH1RP7UdBmFsIU1NFAyV+X5f/DFW2Ne2gJzeQ==}
     peerDependencies:
-      effect: ^4.0.0-beta.28
+      effect: ^4.0.0-beta.29
 
-  '@effect/vitest@4.0.0-beta.28':
-    resolution: {integrity: sha512-18Li/g0dtJ9w74dQXWcDsiJS4t+NJJoQy7Naf6iFrdMUEFkxEM7uc+2XGoO97NNV9/4UQdzbKtU4VLdrDRuf+g==}
+  '@effect/vitest@4.0.0-beta.29':
+    resolution: {integrity: sha512-5HoZOUd82lpEoiTuWUw0lWxudaT1xY6kKd3KFNI1Kpg12uKd4Oh9gXrMncIuHxDKhrvVP6yerEIg13L3gZNshQ==}
     peerDependencies:
-      effect: ^4.0.0-beta.28
+      effect: ^4.0.0-beta.29
       vitest: ^3.0.0 || ^4.0.0
 
-  '@electric-sql/client@1.5.11':
-    resolution: {integrity: sha512-I/0rpC9IWWFME4hbHGyncekXFsuqKQmp+q4kgilTJIaoXMdYZJv7pY2W3Xecp3aCu4XUsnw9UEvZ0oofPqW6/Q==}
+  '@electric-sql/client@1.5.12':
+    resolution: {integrity: sha512-mWDEpKog0Zo4WOjReW4x9ELaHsjTthpziLVJkjmSdh/4Y/ZHw5EoY5e9dJX9itPSKVk9GNFz3YfHFv5EAyCOmw==}
+    hasBin: true
 
   '@emnapi/core@1.7.1':
     resolution: {integrity: sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==}
@@ -2533,13 +2534,13 @@ packages:
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/db@0.5.30':
-    resolution: {integrity: sha512-kgBbmGrWSrDdKPzl465OEGy2Epyc6HsoI2U/jUrMSHuGgUEtgowpnBCTyPJCGBrHL8+bYgASFV4ULsFn4L6pLg==}
+  '@tanstack/db@0.5.31':
+    resolution: {integrity: sha512-q2gCcFLkQec6AwA8aSDDOEAT7hlyVn67J/kseUoZfEPyiokmx1oBekg27tywirmlSqc3Q5GUi5Vt/mjQ85gQmQ==}
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/electric-db-collection@0.2.37':
-    resolution: {integrity: sha512-IqrsSmrW9W8gQTzvSql4lQ31BtqojQ3Un2UZoS8tb3CDRbWSD+R1qXLt+UKiYvGEfWLjBP1sdZV2D6rC0vVD0g==}
+  '@tanstack/electric-db-collection@0.2.39':
+    resolution: {integrity: sha512-5t/N6ArP29sEjJJqu331e1RMtXCmgN4qtPzuxaUrtftOhm/b0O5H4rrt/TXsmttkWqeb5t8wH84LjvTjM4OX3Q==}
 
   '@tanstack/eslint-plugin-router@1.161.4':
     resolution: {integrity: sha512-Cw6naM1QII0DEpjQvs1VDCa8f0hNhCQ0DehdAeVqHfovwUSWw+5F7WhgSlUrZAQN2RodzehWkRm6K/BqtQYnyA==}
@@ -2554,8 +2555,8 @@ packages:
     resolution: {integrity: sha512-3PouiFjR4B6x1c969/Pl4ZIJleof1M0n6fNX8NRiC9Sqv1g06CVDlEaXUR4212ycGFyfq4q+t8Gi37Xy+z34iQ==}
     engines: {node: '>=18'}
 
-  '@tanstack/react-db@0.1.74':
-    resolution: {integrity: sha512-5c5sIVLWsqDnufK4fTnO6VQWUjuIQXB5LEY7zBSqhfJgTMomHtFVxb899O97z2oqF+UzIzmW/lXqUq9Xm8l1Pg==}
+  '@tanstack/react-db@0.1.75':
+    resolution: {integrity: sha512-23LVu1zArKXaPug7euZO07SsEjATfzvLQSuCOW+C4bK6V17CL6129EbrW23q9KUwnMkp8VpLOpqZniNY4ib3ig==}
     peerDependencies:
       react: 19.3.0-canary-3bc2d414-20260304
 
@@ -3884,8 +3885,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  effect@4.0.0-beta.28:
-    resolution: {integrity: sha512-9T/LPIF/t54DN/z1gTnJ3Jwv4s6iWlN3w8Jvg7koDLI4whLXDEsnXWhMf05yQZUSNRJ0naVV1Ltwr2+cEj0HZA==}
+  effect@4.0.0-beta.29:
+    resolution: {integrity: sha512-7UoBAEiktoS81XLMX/39Mq/Ymq8whxmqFpsI0MEYdMlbDcbytzQlyuyhvrwEIdrd9qrqa8DZ5mKblWasamryqw==}
 
   electron-to-chromium@1.5.267:
     resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
@@ -7273,25 +7274,25 @@ snapshots:
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
 
-  '@effect/ai-openai@4.0.0-beta.28(effect@4.0.0-beta.28)':
+  '@effect/ai-openai@4.0.0-beta.29(effect@4.0.0-beta.29)':
     dependencies:
-      effect: 4.0.0-beta.28
+      effect: 4.0.0-beta.29
 
-  '@effect/language-service@0.78.0': {}
+  '@effect/language-service@0.79.0': {}
 
-  '@effect/platform-node-shared@4.0.0-beta.28(effect@4.0.0-beta.28)':
+  '@effect/platform-node-shared@4.0.0-beta.29(effect@4.0.0-beta.29)':
     dependencies:
       '@types/ws': 8.18.1
-      effect: 4.0.0-beta.28
+      effect: 4.0.0-beta.29
       ws: 8.19.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform-node@4.0.0-beta.28(effect@4.0.0-beta.28)(ioredis@5.9.3)':
+  '@effect/platform-node@4.0.0-beta.29(effect@4.0.0-beta.29)(ioredis@5.9.3)':
     dependencies:
-      '@effect/platform-node-shared': 4.0.0-beta.28(effect@4.0.0-beta.28)
-      effect: 4.0.0-beta.28
+      '@effect/platform-node-shared': 4.0.0-beta.29(effect@4.0.0-beta.29)
+      effect: 4.0.0-beta.29
       ioredis: 5.9.3
       mime: 4.1.0
       undici: 7.22.0
@@ -7299,9 +7300,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@effect/sql-pg@4.0.0-beta.28(effect@4.0.0-beta.28)':
+  '@effect/sql-pg@4.0.0-beta.29(effect@4.0.0-beta.29)':
     dependencies:
-      effect: 4.0.0-beta.28
+      effect: 4.0.0-beta.29
       pg: 8.18.0
       pg-connection-string: 2.11.0
       pg-cursor: 2.17.0(pg@8.18.0)
@@ -7310,12 +7311,12 @@ snapshots:
     transitivePeerDependencies:
       - pg-native
 
-  '@effect/vitest@4.0.0-beta.28(effect@4.0.0-beta.28)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))':
+  '@effect/vitest@4.0.0-beta.29(effect@4.0.0-beta.29)(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
-      effect: 4.0.0-beta.28
+      effect: 4.0.0-beta.29
       vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@25.3.5)(jiti@2.6.1)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.2)
 
-  '@electric-sql/client@1.5.11':
+  '@electric-sql/client@1.5.12':
     dependencies:
       '@microsoft/fetch-event-source': 2.0.1
     optionalDependencies:
@@ -8394,18 +8395,18 @@ snapshots:
       sorted-btree: 1.8.1
       typescript: 5.9.3
 
-  '@tanstack/db@0.5.30(typescript@5.9.3)':
+  '@tanstack/db@0.5.31(typescript@5.9.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@tanstack/db-ivm': 0.1.17(typescript@5.9.3)
       '@tanstack/pacer-lite': 0.2.1
       typescript: 5.9.3
 
-  '@tanstack/electric-db-collection@0.2.37(typescript@5.9.3)':
+  '@tanstack/electric-db-collection@0.2.39(typescript@5.9.3)':
     dependencies:
-      '@electric-sql/client': 1.5.11
+      '@electric-sql/client': 1.5.12
       '@standard-schema/spec': 1.1.0
-      '@tanstack/db': 0.5.30(typescript@5.9.3)
+      '@tanstack/db': 0.5.31(typescript@5.9.3)
       '@tanstack/store': 0.8.0
       debug: 4.4.3
     transitivePeerDependencies:
@@ -8424,9 +8425,9 @@ snapshots:
 
   '@tanstack/pacer-lite@0.2.1': {}
 
-  '@tanstack/react-db@0.1.74(react@19.3.0-canary-3bc2d414-20260304)(typescript@5.9.3)':
+  '@tanstack/react-db@0.1.75(react@19.3.0-canary-3bc2d414-20260304)(typescript@5.9.3)':
     dependencies:
-      '@tanstack/db': 0.5.30(typescript@5.9.3)
+      '@tanstack/db': 0.5.31(typescript@5.9.3)
       react: 19.3.0-canary-3bc2d414-20260304
       use-sync-external-store: 1.6.0(react@19.3.0-canary-3bc2d414-20260304)
     transitivePeerDependencies:
@@ -9958,7 +9959,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  effect@4.0.0-beta.28:
+  effect@4.0.0-beta.29:
     dependencies:
       '@standard-schema/spec': 1.1.0
       fast-check: 4.5.3

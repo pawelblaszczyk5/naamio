@@ -9,14 +9,14 @@ allowUnusedPatches: false
 catalog:
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.28
-  "@effect/language-service": ^0.78.0
-  "@effect/platform-node": 4.0.0-beta.28
-  "@effect/platform-node-shared": 4.0.0-beta.28
-  "@effect/sql-pg": 4.0.0-beta.28
-  "@effect/vitest": 4.0.0-beta.28
-  effect: 4.0.0-beta.28
-  "@electric-sql/client": ^1.5.11
+  "@effect/ai-openai": 4.0.0-beta.29
+  "@effect/language-service": ^0.79.0
+  "@effect/platform-node": 4.0.0-beta.29
+  "@effect/platform-node-shared": 4.0.0-beta.29
+  "@effect/sql-pg": 4.0.0-beta.29
+  "@effect/vitest": 4.0.0-beta.29
+  effect: 4.0.0-beta.29
+  "@electric-sql/client": ^1.5.12
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@types/node": ^25.3.5
   eslint: ^9.39.2

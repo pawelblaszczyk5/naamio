@@ -21,6 +21,8 @@ import {
 	InterruptGenerationPayload,
 	markConversationAsAccessed,
 	MarkConversationAsAccessedPayload,
+	regenerateAnswer,
+	RegenerateAnswerPayload,
 	startConversation,
 	StartConversationPayload,
 } from "#src/features/chat/procedures/mod.js";
@@ -189,6 +191,59 @@ export const useContinueConversation = () => {
 				},
 				{ id: agentMessageId },
 			],
+		});
+
+		return { transaction };
+	};
+
+	return handler;
+};
+
+export const useRegenerateAnswer = () => {
+	const callRegenerateAnswer = useServerFn(regenerateAnswer);
+
+	const encodePayload = Schema.encodeSync(RegenerateAnswerPayload);
+
+	const action = createOptimisticAction({
+		mutationFn: async (data, params) => {
+			const result = await callRegenerateAnswer({ data: encodePayload(data) });
+
+			conversationStateCollection.utils.acceptMutations(params.transaction);
+
+			return Promise.all([
+				conversationCollection.utils.awaitTxId(result.transactionId),
+				messageCollection.utils.awaitTxId(result.transactionId),
+			]);
+		},
+		onMutate: (data: RegenerateAnswerPayload) => {
+			const now = new Date();
+
+			conversationCollection.update(data.conversationId, (draft) => {
+				draft.updatedAt = now;
+			});
+
+			messageCollection.insert({
+				conversationId: data.conversationId,
+				createdAt: now,
+				id: data.message.id,
+				metadata: null,
+				parentId: data.message.parentId,
+				role: "AGENT",
+				status: "IN_PROGRESS",
+			});
+
+			conversationStateCollection.update(data.conversationId, (draft) => {
+				draft.activeLeafId = data.message.id;
+			});
+		},
+	});
+
+	const handler = (data: { messageToRegenerate: AgentMessage }) => {
+		const regeneratedMessageId = AgentMessage.fields.id.makeUnsafe(generateId());
+
+		const transaction = action({
+			conversationId: data.messageToRegenerate.conversationId,
+			message: { id: regeneratedMessageId, parentId: data.messageToRegenerate.parentId },
 		});
 
 		return { transaction };

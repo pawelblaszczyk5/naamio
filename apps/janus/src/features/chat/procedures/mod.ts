@@ -40,8 +40,6 @@ const AgentMessageInput = AgentMessageModel.json.mapFields(
 	flow(Struct.pick(["id"]), Struct.evolve({ id: (schema) => VerifiedId.pipe(Schema.decodeTo(schema)) })),
 );
 
-// @ts-expect-error -- it'll be used
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- it'll be used
 const AgentMessageInputWithParentId = AgentMessageModel.json.mapFields(
 	flow(Struct.pick(["id", "parentId"]), Struct.evolve({ id: (schema) => VerifiedId.pipe(Schema.decodeTo(schema)) })),
 );
@@ -98,6 +96,29 @@ export const continueConversation = createServerFn({ method: "POST" })
 
 			return result;
 		}).pipe(Effect.withSpan("@naamio/janus/user/continueConversation"), runAuthenticatedOnlyServerFn(ctx)),
+	);
+
+export const RegenerateAnswerPayload = Schema.Struct({
+	conversationId: VerifiedId.pipe(Schema.decodeTo(ConversationModel.json.fields.id)),
+	message: AgentMessageInputWithParentId,
+});
+
+export type RegenerateAnswerPayload = (typeof RegenerateAnswerPayload)["Type"];
+
+export const regenerateAnswer = createServerFn({ method: "POST" })
+	.inputValidator(Schema.toStandardSchemaV1(RegenerateAnswerPayload))
+	.middleware([sessionTokenMiddleware])
+	.handler(async (ctx) =>
+		Effect.gen(function* () {
+			const naamioApiClient = yield* NaamioApiClient;
+
+			const result = yield* naamioApiClient.Chat.regenerateAnswer({
+				params: { conversationId: ctx.data.conversationId },
+				payload: { message: ctx.data.message },
+			});
+
+			return result;
+		}).pipe(Effect.withSpan("@naamio/janus/user/regenerateAnswer"), runAuthenticatedOnlyServerFn(ctx)),
 	);
 
 export const InterruptGenerationPayload = Schema.Struct({

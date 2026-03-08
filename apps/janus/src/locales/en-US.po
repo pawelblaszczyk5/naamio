@@ -41,60 +41,64 @@ msgstr "No conversations yet"
 msgid "Waiting for title..."
 msgstr "Waiting for title..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:56
+#: src/features/chat/ui/existing-conversation-page.tsx:58
 msgid "Content"
 msgstr "Content"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:71
+#: src/features/chat/ui/existing-conversation-page.tsx:73
 msgid "Reasoning..."
 msgstr "Reasoning..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:86
+#: src/features/chat/ui/existing-conversation-page.tsx:93
+msgid "Regenerate"
+msgstr "Regenerate"
+
+#: src/features/chat/ui/existing-conversation-page.tsx:100
 msgid "Message from agent"
 msgstr "Message from agent"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:88
+#: src/features/chat/ui/existing-conversation-page.tsx:104
 msgid "Failed during generation"
 msgstr "Failed during generation"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:89
+#: src/features/chat/ui/existing-conversation-page.tsx:109
 msgid "Correctly finished"
 msgstr "Correctly finished"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:92
+#: src/features/chat/ui/existing-conversation-page.tsx:114
 msgid "Generation in progress"
 msgstr "Generation in progress"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:99
+#: src/features/chat/ui/existing-conversation-page.tsx:121
 msgid "Interrupt"
 msgstr "Interrupt"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:103
+#: src/features/chat/ui/existing-conversation-page.tsx:127
 msgid "Generation interrupted"
 msgstr "Generation interrupted"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:130
+#: src/features/chat/ui/existing-conversation-page.tsx:156
 msgid "Message from user"
 msgstr "Message from user"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:176
+#: src/features/chat/ui/existing-conversation-page.tsx:203
 msgid "Conversation \"{title}\""
 msgstr "Conversation \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:177
+#: src/features/chat/ui/existing-conversation-page.tsx:204
 msgid "Conversation without title (yet)"
 msgstr "Conversation without title (yet)"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:181
+#: src/features/chat/ui/existing-conversation-page.tsx:208
 msgid "New title for conversation"
 msgstr "New title for conversation"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:227
+#: src/features/chat/ui/existing-conversation-page.tsx:258
 #: src/features/chat/ui/new-conversation-page.tsx:53
 msgid "Message content"
 msgstr "Message content"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:246
+#: src/features/chat/ui/existing-conversation-page.tsx:277
 #: src/features/chat/ui/new-conversation-page.tsx:72
 msgid "Send"
 msgstr "Send"

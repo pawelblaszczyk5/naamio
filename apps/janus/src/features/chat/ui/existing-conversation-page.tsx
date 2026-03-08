@@ -14,6 +14,7 @@ import {
 	useDeleteConversation,
 	useEditConversationTitle,
 	useInterruptGeneration,
+	useRegenerateAnswer,
 } from "#src/features/chat/data/mutations.js";
 import {
 	useAgentMessagePartsByMessageId,
@@ -80,14 +81,34 @@ const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 	const messageParts = useAgentMessagePartsByMessageId(message.id);
 
 	const interruptGeneration = useInterruptGeneration();
+	const regenerateAnswer = useRegenerateAnswer();
+
+	const regenerateButton = (
+		<button
+			onClick={() => {
+				regenerateAnswer({ messageToRegenerate: message });
+			}}
+			type="button"
+		>
+			<Trans>Regenerate</Trans>
+		</button>
+	);
 
 	return (
 		<div>
 			<p>
 				<Trans>Message from agent</Trans>{" "}
 				{Match.value(message.status).pipe(
-					Match.when("ERROR", () => <Trans>Failed during generation</Trans>),
-					Match.when("FINISHED", () => <Trans>Correctly finished</Trans>),
+					Match.when("ERROR", () => (
+						<span>
+							<Trans>Failed during generation</Trans> {regenerateButton}
+						</span>
+					)),
+					Match.when("FINISHED", () => (
+						<span>
+							<Trans>Correctly finished</Trans> {regenerateButton}
+						</span>
+					)),
 					Match.when("IN_PROGRESS", () => (
 						<span>
 							<Trans>Generation in progress</Trans>{" "}
@@ -101,7 +122,11 @@ const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 							</button>
 						</span>
 					)),
-					Match.when("INTERRUPTED", () => <Trans>Generation interrupted</Trans>),
+					Match.when("INTERRUPTED", () => (
+						<span>
+							<Trans>Generation interrupted</Trans> {regenerateButton}
+						</span>
+					)),
 					Match.exhaustive,
 				)}
 			</p>

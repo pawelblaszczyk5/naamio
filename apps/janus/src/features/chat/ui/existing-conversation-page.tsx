@@ -114,7 +114,7 @@ const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 							<Trans>Generation in progress</Trans>{" "}
 							<button
 								onClick={() => {
-									interruptGeneration({ conversationId: message.conversationId, messageId: message.id });
+									interruptGeneration({ messageToInterrupt: message });
 								}}
 								type="button"
 							>

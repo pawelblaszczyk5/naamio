@@ -272,8 +272,11 @@ export const useInterruptGeneration = () => {
 		},
 	});
 
-	const handler = (data: InterruptGenerationPayload) => {
-		const transaction = action(data);
+	const handler = (data: { messageToInterrupt: AgentMessage }) => {
+		const transaction = action({
+			conversationId: data.messageToInterrupt.conversationId,
+			messageId: data.messageToInterrupt.id,
+		});
 
 		return { transaction };
 	};

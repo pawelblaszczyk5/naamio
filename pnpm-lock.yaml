@@ -726,6 +726,9 @@ importers:
       '@stylistic/eslint-plugin':
         specifier: ^5.10.0
         version: 5.10.0(eslint@9.39.2(jiti@2.6.1))
+      '@tanstack/eslint-plugin-router':
+        specifier: ^1.161.4
+        version: 1.161.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint:
         specifier: 'catalog:'
         version: 9.39.2(jiti@2.6.1)
@@ -2537,6 +2540,11 @@ packages:
 
   '@tanstack/electric-db-collection@0.2.37':
     resolution: {integrity: sha512-IqrsSmrW9W8gQTzvSql4lQ31BtqojQ3Un2UZoS8tb3CDRbWSD+R1qXLt+UKiYvGEfWLjBP1sdZV2D6rC0vVD0g==}
+
+  '@tanstack/eslint-plugin-router@1.161.4':
+    resolution: {integrity: sha512-Cw6naM1QII0DEpjQvs1VDCa8f0hNhCQ0DehdAeVqHfovwUSWw+5F7WhgSlUrZAQN2RodzehWkRm6K/BqtQYnyA==}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
 
   '@tanstack/history@1.161.4':
     resolution: {integrity: sha512-Kp/WSt411ZWYvgXy6uiv5RmhHrz9cAml05AQPrtdAp7eUqvIDbMGPnML25OKbzR3RJ1q4wgENxDTvlGPa9+Mww==}
@@ -8400,6 +8408,14 @@ snapshots:
       '@tanstack/db': 0.5.30(typescript@5.9.3)
       '@tanstack/store': 0.8.0
       debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  '@tanstack/eslint-plugin-router@1.161.4(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/utils': 8.56.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      eslint: 9.39.2(jiti@2.6.1)
     transitivePeerDependencies:
       - supports-color
       - typescript

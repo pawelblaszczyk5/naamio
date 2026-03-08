@@ -282,6 +282,14 @@ export default defineConfig({
 			"error",
 			{ groups: ["multiline-prop", "unknown", "shorthand-prop"], order: "asc", type: "natural" },
 		],
+		"perfectionist/sort-objects": [
+			"error",
+			{
+				useConfigurationIf: { callingFunctionNamePattern: { pattern: "createFileRoute", scope: "deep" } },
+				type: "unsorted",
+			},
+			{ type: "natural", order: "asc" },
+		],
 
 		// no-secrets
 		"no-secrets/no-secrets": ["error", { tolerance: 4.25 }],

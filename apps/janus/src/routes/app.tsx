@@ -17,6 +17,8 @@ import { preloadUserData } from "#src/features/user/data/user.js";
 import { initializePool } from "#src/lib/id-pool/mod.js";
 
 export const Route = createFileRoute("/app")({
+	ssr: false,
+	component: AppLayout,
 	beforeLoad: async () => {
 		const sessionCacheStatus = checkSessionCacheStatus();
 
@@ -27,7 +29,6 @@ export const Route = createFileRoute("/app")({
 			Match.exhaustive,
 		);
 	},
-	component: AppLayout,
 	loader: async () => {
 		await Promise.all([
 			preloadUserData(),
@@ -40,5 +41,4 @@ export const Route = createFileRoute("/app")({
 			initializePool(),
 		]);
 	},
-	ssr: false,
 });

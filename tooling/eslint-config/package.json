@@ -20,6 +20,9 @@
 		},
 		"./stylex": {
 			"default": "./src/stylex.js"
+		},
+		"./tanstack-router": {
+			"default": "./src/tanstack-router.js"
 		}
 	},
 	"dependencies": {
@@ -29,6 +32,7 @@
 		"@naamio/eslint-plugin": "workspace:",
 		"@stylexjs/eslint-plugin": "catalog:",
 		"@stylistic/eslint-plugin": "^5.10.0",
+		"@tanstack/eslint-plugin-router": "^1.161.4",
 		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.2.1",
 		"eslint-import-resolver-typescript": "^4.4.4",

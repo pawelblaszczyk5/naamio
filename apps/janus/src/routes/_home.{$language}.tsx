@@ -6,12 +6,6 @@ import { HomeNotFound } from "#src/features/home/ui/home-not-found.js";
 
 export const Route = createFileRoute("/_home/{$language}")({
 	component: HomeLayout,
-	loader: async () => {
-		const isLoggedIn = await checkHasSessionToken();
-
-		return { isLoggedIn };
-	},
-	notFoundComponent: HomeNotFound,
 	params: {
 		parse: (rawParams) => {
 			const language = rawParams.language;
@@ -35,5 +29,11 @@ export const Route = createFileRoute("/_home/{$language}")({
 
 			return { language: "en" as const };
 		},
+	},
+	notFoundComponent: HomeNotFound,
+	loader: async () => {
+		const isLoggedIn = await checkHasSessionToken();
+
+		return { isLoggedIn };
 	},
 });

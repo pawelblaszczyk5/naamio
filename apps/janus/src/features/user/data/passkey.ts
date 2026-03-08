@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { PasskeyModel } from "@naamio/schema/domain";
 
-const Passkey = Schema.Struct({
+export const Passkey = Schema.Struct({
 	aaguid: PasskeyModel.json.fields.aaguid,
 	backedUp: PasskeyModel.json.fields.backedUp,
 	createdAt: Schema.Date,

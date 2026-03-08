@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { UserModel } from "@naamio/schema/domain";
 
-const User = Schema.Struct({
+export const User = Schema.Struct({
 	id: UserModel.json.fields.id,
 	language: UserModel.json.fields.language,
 	username: UserModel.json.fields.username,

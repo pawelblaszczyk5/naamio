@@ -4,7 +4,7 @@ import { Schema, String } from "effect";
 
 import { SessionModel } from "@naamio/schema/domain";
 
-const Session = Schema.Struct({
+export const Session = Schema.Struct({
 	deviceLabel: Schema.NullOr(SessionModel.json.fields.deviceLabel.from),
 	expiresAt: Schema.Date,
 	id: SessionModel.json.fields.id,

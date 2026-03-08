@@ -18,6 +18,7 @@ import {
 import {
 	useAgentMessagePartsByMessageId,
 	useConversationById,
+	useConversationStateById,
 	useInflightChunksByMessagePartId,
 	useMessagesByConversationId,
 	useUserMessagePartsByMessageId,
@@ -152,6 +153,7 @@ export const ExistingConversationPage = () => {
 
 	const conversation = useConversationById(conversationIdFromParams);
 	const messages = useMessagesByConversationId(conversationIdFromParams);
+	const conversationState = useConversationStateById(conversationIdFromParams);
 
 	const deleteConversation = useDeleteConversation();
 	const editConversationTitle = useEditConversationTitle();
@@ -165,7 +167,7 @@ export const ExistingConversationPage = () => {
 
 	const contentFieldId = `content-field-${id}`;
 
-	if (!conversation) {
+	if (!conversation || !conversationState) {
 		return <Navigate to="/app" />;
 	}
 
@@ -216,6 +218,10 @@ export const ExistingConversationPage = () => {
 
 					assert(message, "At least one message must always exist");
 					assert(message.role === "AGENT", "Last message must always be from agent");
+
+					if (message.status === "IN_PROGRESS") {
+						return;
+					}
 
 					setContent("");
 					continueConversation({ content, conversationId: conversation.id, previousMessage: message });

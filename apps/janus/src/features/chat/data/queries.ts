@@ -1,10 +1,12 @@
 import { and, eq, inArray, useLiveQuery } from "@tanstack/react-db";
 
+import type { ConversationState } from "#src/features/chat/data/conversation-state.js";
 import type { Conversation } from "#src/features/chat/data/conversation.js";
 import type { InflightChunk } from "#src/features/chat/data/inflight-chunk.js";
 import type { MessagePart } from "#src/features/chat/data/message-part.js";
 import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
 
+import { conversationStateCollection } from "#src/features/chat/data/conversation-state.js";
 import { conversationCollection } from "#src/features/chat/data/conversation.js";
 import { inflightChunkCollection } from "#src/features/chat/data/inflight-chunk.js";
 import { messagePartCollection } from "#src/features/chat/data/message-part.js";
@@ -14,8 +16,15 @@ export const useAvailableConversations = () =>
 	useLiveQuery((q) =>
 		q
 			.from({ conversation: conversationCollection })
-			.select(({ conversation }) => ({ id: conversation.id, title: conversation.title }))
-			.orderBy(({ conversation }) => conversation.createdAt, "desc"),
+			.fn.select(({ conversation }) => {
+				const lastActivityAt =
+					conversation.updatedAt.getTime() >= conversation.accessedAt.getTime() ?
+						conversation.updatedAt
+					:	conversation.accessedAt;
+
+				return { id: conversation.id, lastActivityAt, title: conversation.title };
+			})
+			.orderBy(({ $selected }) => $selected.lastActivityAt, "desc"),
 	).data;
 
 export const useConversationById = (id: Conversation["id"]) =>
@@ -81,4 +90,14 @@ export const useInflightChunksByMessagePartId = (messagePartId: InflightChunk["m
 				.where(({ inflightChunk }) => eq(inflightChunk.messagePartId, messagePartId))
 				.orderBy(({ inflightChunk }) => inflightChunk.sequence, "asc"),
 		[messagePartId],
+	).data;
+
+export const useConversationStateById = (id: ConversationState["id"]) =>
+	useLiveQuery(
+		(q) =>
+			q
+				.from({ conversationState: conversationStateCollection })
+				.where(({ conversationState }) => eq(conversationState.id, id))
+				.findOne(),
+		[id],
 	).data;

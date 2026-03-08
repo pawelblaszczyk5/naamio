@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Schema } from "effect";
 
 import { Conversation } from "#src/features/chat/data/conversation.js";
+import { setupConversationState } from "#src/features/chat/data/mutations.js";
 import { ExistingConversationPage } from "#src/features/chat/ui/existing-conversation-page.js";
 
 const isConversationId = Schema.is(Conversation.fields.id);
@@ -18,5 +19,8 @@ export const Route = createFileRoute("/app/_chat/conversation/$conversationId")(
 
 			return { conversationId: maybeConversationId };
 		},
+	},
+	loader: (ctx) => {
+		setupConversationState(ctx.params.conversationId);
 	},
 });

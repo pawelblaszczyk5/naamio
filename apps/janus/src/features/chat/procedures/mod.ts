@@ -163,3 +163,22 @@ export const deleteConversation = createServerFn({ method: "POST" })
 			return result;
 		}).pipe(Effect.withSpan("@naamio/janus/user/deleteConversation"), runAuthenticatedOnlyServerFn(ctx)),
 	);
+
+export const MarkConversationAsAccessedPayload = Schema.Struct({ conversationId: ConversationModel.json.fields.id });
+
+export type MarkConversationAsAccessedPayload = (typeof DeleteConversationPayload)["Type"];
+
+export const markConversationAsAccessed = createServerFn({ method: "POST" })
+	.inputValidator(Schema.toStandardSchemaV1(MarkConversationAsAccessedPayload))
+	.middleware([sessionTokenMiddleware])
+	.handler(async (ctx) =>
+		Effect.gen(function* () {
+			const naamioApiClient = yield* NaamioApiClient;
+
+			const result = yield* naamioApiClient.Chat.markConversationAsAccessed({
+				params: { conversationId: ctx.data.conversationId },
+			});
+
+			return result;
+		}).pipe(Effect.withSpan("@naamio/janus/user/markConversationAsAccessed"), runAuthenticatedOnlyServerFn(ctx)),
+	);

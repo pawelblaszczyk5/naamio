@@ -2,8 +2,11 @@ import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 
+import type { ConversationModel } from "@naamio/schema/domain";
+
 import { assert } from "@naamio/assert";
 
+import { conversationStateCollection } from "#src/features/chat/data/conversation-state.js";
 import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
 import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
 import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
@@ -16,6 +19,8 @@ import {
 	EditConversationTitlePayload,
 	interruptGeneration,
 	InterruptGenerationPayload,
+	markConversationAsAccessed,
+	MarkConversationAsAccessedPayload,
 	startConversation,
 	StartConversationPayload,
 } from "#src/features/chat/procedures/mod.js";
@@ -27,8 +32,10 @@ export const useStartConversation = () => {
 	const encodePayload = Schema.encodeSync(StartConversationPayload);
 
 	const action = createOptimisticAction({
-		mutationFn: async (data) => {
+		mutationFn: async (data, params) => {
 			const result = await callStartConversation({ data: encodePayload(data) });
+
+			conversationStateCollection.utils.acceptMutations(params.transaction);
 
 			return Promise.all([
 				conversationCollection.utils.awaitTxId(result.transactionId),
@@ -77,6 +84,8 @@ export const useStartConversation = () => {
 					type: "TEXT",
 				});
 			});
+
+			conversationStateCollection.insert({ activeLeafId: agentMessageInput.id, id: data.conversationId });
 		},
 	});
 
@@ -106,8 +115,10 @@ export const useContinueConversation = () => {
 	const encodePayload = Schema.encodeSync(ContinueConversationPayload);
 
 	const action = createOptimisticAction({
-		mutationFn: async (data) => {
+		mutationFn: async (data, params) => {
 			const result = await callContinueConversation({ data: encodePayload(data) });
+
+			conversationStateCollection.utils.acceptMutations(params.transaction);
 
 			return Promise.all([
 				conversationCollection.utils.awaitTxId(result.transactionId),
@@ -147,6 +158,10 @@ export const useContinueConversation = () => {
 					messageId: userMessageInput.id,
 					type: "TEXT",
 				});
+			});
+
+			conversationStateCollection.update(data.conversationId, (draft) => {
+				draft.activeLeafId = agentMessageInput.id;
 			});
 		},
 	});
@@ -213,13 +228,16 @@ export const useDeleteConversation = () => {
 	const encodePayload = Schema.encodeSync(DeleteConversationPayload);
 
 	const action = createOptimisticAction({
-		mutationFn: async (data) => {
+		mutationFn: async (data, params) => {
 			const result = await callDeleteConversation({ data: encodePayload(data) });
+
+			conversationStateCollection.utils.acceptMutations(params.transaction);
 
 			return conversationCollection.utils.awaitTxId(result.transactionId);
 		},
 		onMutate: (data: DeleteConversationPayload) => {
 			conversationCollection.delete(data.conversationId);
+			conversationStateCollection.delete(data.conversationId);
 		},
 	});
 
@@ -257,4 +275,36 @@ export const useEditConversationTitle = () => {
 	};
 
 	return handler;
+};
+
+const encodeMarkConversationAsAccessedPayload = Schema.encodeSync(MarkConversationAsAccessedPayload);
+
+const markConversationAsAccessedAction = createOptimisticAction({
+	mutationFn: async (data) => {
+		const result = await markConversationAsAccessed({ data: encodeMarkConversationAsAccessedPayload(data) });
+
+		return conversationCollection.utils.awaitTxId(result.transactionId);
+	},
+	onMutate: (data: MarkConversationAsAccessedPayload) => {
+		conversationCollection.update(data.conversationId, (draft) => {
+			draft.accessedAt = new Date();
+		});
+	},
+});
+
+export const setupConversationState = (conversationId: ConversationModel["id"]) => {
+	if (conversationStateCollection.has(conversationId) || !conversationCollection.get(conversationId)) {
+		return;
+	}
+
+	markConversationAsAccessedAction({ conversationId });
+
+	const newestAgentMessage = messageCollection.state
+		.values()
+		.filter((message) => message.role === "AGENT")
+		.reduce((previousMessage, currentMessage) =>
+			previousMessage.createdAt >= currentMessage.createdAt ? previousMessage : currentMessage,
+		);
+
+	conversationStateCollection.insert({ activeLeafId: newestAgentMessage.id, id: conversationId });
 };

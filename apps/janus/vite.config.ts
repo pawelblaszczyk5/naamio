@@ -55,7 +55,6 @@ export default defineConfig((environment) => {
 	const isDevelopment = environment.command === "serve";
 
 	return {
-		devtools: { enabled: false },
 		build: { assetsInlineLimit: 0 },
 		css: {
 			postcss: {
@@ -68,6 +67,7 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
+		devtools: { enabled: false },
 		environments: {
 			client: {
 				build: {

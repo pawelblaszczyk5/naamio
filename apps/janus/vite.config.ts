@@ -7,7 +7,6 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { FontaineTransform } from "fontaine";
 import { defineConfig } from "vite";
-import inspect from "vite-plugin-inspect";
 
 const typedStylexPlugin = stylexPlugin as (options: {
 	babelConfig?: unknown;
@@ -56,6 +55,7 @@ export default defineConfig((environment) => {
 	const isDevelopment = environment.command === "serve";
 
 	return {
+		devtools: { enabled: false },
 		build: { assetsInlineLimit: 0 },
 		css: {
 			postcss: {
@@ -73,7 +73,7 @@ export default defineConfig((environment) => {
 				build: {
 					rolldownOptions: {
 						output: {
-							advancedChunks: {
+							codeSplitting: {
 								groups: [
 									{
 										name: "react",
@@ -99,7 +99,6 @@ export default defineConfig((environment) => {
 			},
 		},
 		plugins: [
-			inspect(),
 			tanstackStart({ importProtection: { behavior: "error" }, router: { addExtensions: true } }),
 			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
 			lingui({ failOnCompileError: true, failOnMissing: true }),

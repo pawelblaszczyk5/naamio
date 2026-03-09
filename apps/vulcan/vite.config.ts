@@ -60,6 +60,7 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
+		devtools: { enabled: false },
 		plugins: [
 			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
 			FontaineTransform.vite({ fallbacks: {} }),

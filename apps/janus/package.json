@@ -64,13 +64,13 @@
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
+		"@vitejs/devtools": "catalog:",
 		"@vitejs/plugin-react": "catalog:",
 		"babel-plugin-react-compiler": "catalog:",
 		"eslint": "catalog:",
 		"fontaine": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:",
-		"vite-plugin-inspect": "catalog:",
 		"vitest": "catalog:",
 		"wait-on": "catalog:"
 	}

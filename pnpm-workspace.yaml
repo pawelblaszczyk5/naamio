@@ -23,7 +23,7 @@ catalog:
   fontaine: ^0.8.0
   babel-plugin-react-compiler: 0.0.0-experimental-1371fcb-20260304
   typescript: ^5.9.3
-  vite: 8.0.0-beta.16
+  vite: 8.0.0-beta.18
   vitest: ^4.0.18
   vite-plugin-inspect: ^11.3.3
   "@vitejs/plugin-react": ^5.1.4
@@ -49,6 +49,7 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
+  vite: "catalog:"
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch

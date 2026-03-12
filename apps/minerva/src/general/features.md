@@ -6,9 +6,8 @@ Non-comprehensive list of important, user-facing features that are currently pla
 
 - Command palette with searching through conversations
 - Dual theme - light and dark
-- I18n
+- i18n
 - Sync-first
-- Costs summaries <Badge type="info" text="TBD" />
 
 ## Outside
 

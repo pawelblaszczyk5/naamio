@@ -7,6 +7,7 @@ packages:
 allowUnusedPatches: false
 
 catalog:
+  "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
   "@effect/ai-openai": 4.0.0-beta.30
@@ -23,12 +24,13 @@ catalog:
   fontaine: ^0.8.0
   babel-plugin-react-compiler: 0.0.0-experimental-1371fcb-20260304
   typescript: ^5.9.3
-  vite: 8.0.0-beta.18
-  vitest: ^4.0.18
+  vite: 8.0.0
+  vitest: ^4.1.0
   "@vitejs/devtools": ^0.0.0-alpha.33
-  "@vitejs/plugin-react": ^5.1.4
+  "@vitejs/plugin-react": ^6.0.1
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
+  "@rolldown/plugin-babel": ^0.2.1
   "@stylexjs/babel-plugin": ^0.18.1
   "@stylexjs/eslint-plugin": ^0.18.1
   "@stylexjs/postcss-plugin": ^0.18.1
@@ -49,7 +51,7 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-  vite: "catalog:"
+  babel-plugin-react-compiler: "catalog:"
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch

@@ -1,6 +1,5 @@
-import type { BabelOptions } from "@vitejs/plugin-react";
-
 import { lingui } from "@lingui/vite-plugin";
+import babel from "@rolldown/plugin-babel";
 // @ts-expect-error - untyped module
 import stylexPlugin from "@stylexjs/postcss-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -15,6 +14,8 @@ const typedStylexPlugin = stylexPlugin as (options: {
 	include?: Array<string>;
 	useCSSLayers?: boolean;
 }) => never;
+
+type BabelOptions = Parameters<typeof babel>[0];
 
 const getBabelConfig = ({
 	isDevelopment,
@@ -98,9 +99,12 @@ export default defineConfig((environment) => {
 				},
 			},
 		},
+
+		optimizeDeps: { include: ["react/compiler-runtime"] },
 		plugins: [
 			tanstackStart({ importProtection: { behavior: "error" }, router: { addExtensions: true } }),
-			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
+			react(),
+			babel(getBabelConfig({ isDevelopment, isPostCssPipeline: false })),
 			lingui({ failOnCompileError: true, failOnMissing: true }),
 			FontaineTransform.vite({ fallbacks: {} }),
 		],

@@ -1,5 +1,4 @@
-import type { BabelOptions } from "@vitejs/plugin-react";
-
+import babel from "@rolldown/plugin-babel";
 // @ts-expect-error - untyped module
 import stylexPlugin from "@stylexjs/postcss-plugin";
 import react from "@vitejs/plugin-react";
@@ -14,6 +13,8 @@ const typedStylexPlugin = stylexPlugin as (options: {
 	useCSSLayers?: boolean;
 }) => never;
 
+type BabelOptions = Parameters<typeof babel>[0];
+
 const getBabelConfig = ({
 	isDevelopment,
 	isPostCssPipeline,
@@ -21,8 +22,12 @@ const getBabelConfig = ({
 	isDevelopment: boolean;
 	isPostCssPipeline: boolean;
 }) => {
+	const pipelineDependentPlugins =
+		isPostCssPipeline ? [["@babel/plugin-syntax-jsx", {}]] : [["babel-plugin-react-compiler", {}]];
+
 	const config: { plugins: NonNullable<BabelOptions["plugins"]>; presets: NonNullable<BabelOptions["presets"]> } = {
 		plugins: [
+			...pipelineDependentPlugins,
 			[
 				"@stylexjs/babel-plugin",
 				{
@@ -34,13 +39,8 @@ const getBabelConfig = ({
 				},
 			],
 		],
-		presets: [],
+		presets: isPostCssPipeline ? ["@babel/preset-typescript"] : [],
 	};
-
-	if (isPostCssPipeline) {
-		config.plugins.unshift(["babel-plugin-react-compiler", {}], ["@babel/plugin-syntax-jsx", {}]);
-		config.presets.push("@babel/preset-typescript");
-	}
 
 	return config;
 };
@@ -61,8 +61,10 @@ export default defineConfig((environment) => {
 			},
 		},
 		devtools: { enabled: false },
+		optimizeDeps: { include: ["react/compiler-runtime"] },
 		plugins: [
-			react({ babel: getBabelConfig({ isDevelopment, isPostCssPipeline: false }) }),
+			react(),
+			babel(getBabelConfig({ isDevelopment, isPostCssPipeline: false })),
 			FontaineTransform.vite({ fallbacks: {} }),
 		],
 	};

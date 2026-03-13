@@ -48,6 +48,7 @@
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
+		"@babel/core": "catalog:",
 		"@babel/plugin-syntax-jsx": "catalog:",
 		"@babel/preset-typescript": "catalog:",
 		"@effect/language-service": "catalog:",
@@ -59,6 +60,7 @@
 		"@lingui/vite-plugin": "^5.9.2",
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
+		"@rolldown/plugin-babel": "catalog:",
 		"@stylexjs/babel-plugin": "catalog:",
 		"@stylexjs/postcss-plugin": "catalog:",
 		"@types/node": "catalog:",

@@ -48,10 +48,11 @@ allowBuilds:
   msgpackr-extract: false
 
 overrides:
+  babel-plugin-react-compiler: "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-  babel-plugin-react-compiler: "catalog:"
+  vite: "catalog:"
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch

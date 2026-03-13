@@ -4,6 +4,11 @@ packages:
   - packages/*
   - tooling/*
 
+allowBuilds:
+  esbuild: false
+  msgpackr-extract: true
+  unrs-resolver: true
+
 allowUnusedPatches: false
 
 catalog:
@@ -16,36 +21,34 @@ catalog:
   "@effect/platform-node-shared": 4.0.0-beta.31
   "@effect/sql-pg": 4.0.0-beta.31
   "@effect/vitest": 4.0.0-beta.31
-  effect: 4.0.0-beta.31
   "@electric-sql/client": ^1.5.12
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
-  "@types/node": ^25.5.0
-  eslint: ^9.39.2
-  fontaine: ^0.8.0
-  babel-plugin-react-compiler: 0.0.0-experimental-1371fcb-20260304
-  typescript: ^5.9.3
-  vite: 8.0.0
-  vitest: ^4.1.0
-  "@vitejs/devtools": ^0.1.0
-  "@vitejs/plugin-react": ^6.0.1
-  "@types/react": ^19.2.14
-  "@types/react-dom": ^19.2.3
   "@rolldown/plugin-babel": ^0.2.1
   "@stylexjs/babel-plugin": ^0.18.1
   "@stylexjs/eslint-plugin": ^0.18.1
   "@stylexjs/postcss-plugin": ^0.18.1
   "@stylexjs/stylex": ^0.18.1
+  "@types/node": ^25.5.0
+  "@types/react": ^19.2.14
+  "@types/react-dom": ^19.2.3
+  "@vitejs/devtools": ^0.1.0
+  "@vitejs/plugin-react": ^6.0.1
+  babel-plugin-react-compiler: 0.0.0-experimental-1371fcb-20260304
+  effect: 4.0.0-beta.31
+  eslint: ^9.39.2
+  fontaine: ^0.8.0
   react: 19.3.0-canary-3bc2d414-20260304
   react-dom: 19.3.0-canary-3bc2d414-20260304
   tsc-alias: ^1.8.16
   type-fest: ^5.4.4
+  typescript: ^5.9.3
+  vite: ^8.0.0
+  vitest: ^4.1.0
   wait-on: ^9.0.4
 
-allowBuilds:
-  "@parcel/watcher": true
-  unrs-resolver: true
-  esbuild: false
-  msgpackr-extract: false
+engineStrict: true
+linkWorkspacePackages: true
+managePackageManagerVersions: true
 
 overrides:
   babel-plugin-react-compiler: "catalog:"
@@ -54,14 +57,12 @@ overrides:
   react-dom: "catalog:"
   vite: "catalog:"
 
+packageManagerStrictVersion: true
+
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
   prettier-plugin-sql@0.19.2: patches/prettier-plugin-sql.patch
 
-engineStrict: true
-packageManagerStrictVersion: true
 saveWorkspaceProtocol: true
-linkWorkspacePackages: true
-managePackageManagerVersions: true
-verifyDepsBeforeRun: "error"
 strictDepBuilds: true
+verifyDepsBeforeRun: "error"

@@ -1,11 +1,13 @@
+import { eq, useLiveQueryEffect } from "@tanstack/react-db";
 import { redirect } from "@tanstack/react-router";
 import { DateTime, Duration } from "effect";
 import { useEffect } from "react";
 
 import { assert } from "@naamio/assert";
 
-import { useSessionById, useSessionId } from "#src/features/user/data/queries.js";
+import { useSessionId } from "#src/features/user/data/queries.js";
 import { sessionCacheCollection } from "#src/features/user/data/session-cache.js";
+import { sessionCollection } from "#src/features/user/data/session.js";
 import { verifySession } from "#src/features/user/procedures/mod.js";
 
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
@@ -65,13 +67,16 @@ export const refreshSessionCache = async () => {
 export const useSessionVerificationPoller = () => {
 	const sessionId = useSessionId();
 
-	const session = useSessionById(sessionId);
-
-	useEffect(() => {
-		if (!session) {
+	useLiveQueryEffect({
+		onExit: () => {
 			globalThis.location.reload();
-		}
-	}, [session]);
+		},
+		query: (q) =>
+			q
+				.from({ session: sessionCollection })
+				.where(({ session }) => eq(session.id, sessionId))
+				.findOne(),
+	});
 
 	useEffect(() => {
 		const interval = setInterval(async () => {

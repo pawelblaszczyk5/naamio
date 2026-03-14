@@ -1,9 +1,7 @@
-import { eq, useLiveQuery } from "@tanstack/react-db";
+import { useLiveQuery } from "@tanstack/react-db";
 import { useSyncExternalStore } from "react";
 
 import { assert } from "@naamio/assert";
-
-import type { Session } from "#src/features/user/data/session.js";
 
 import { passkeyCollection } from "#src/features/user/data/passkey.js";
 import { sessionCacheCollection } from "#src/features/user/data/session-cache.js";
@@ -17,16 +15,6 @@ export const useSessionId = () => {
 
 	return data.id;
 };
-
-export const useSessionById = (id: Session["id"]) =>
-	useLiveQuery(
-		(q) =>
-			q
-				.from({ session: sessionCollection })
-				.where(({ session }) => eq(session.id, id))
-				.findOne(),
-		[id],
-	).data;
 
 export const useSessions = () =>
 	useLiveQuery((q) => q.from({ session: sessionCollection }).orderBy(({ session }) => session.expiresAt, "desc")).data;

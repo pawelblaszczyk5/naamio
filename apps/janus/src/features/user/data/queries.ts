@@ -58,7 +58,7 @@ export const useUserLanguageSsrSafe = () => {
 			};
 		},
 		() => {
-			const user = userCollection.state.values().take(1).next().value;
+			const user = userCollection.state.values().toArray().at(0);
 
 			if (user) {
 				return user.language;

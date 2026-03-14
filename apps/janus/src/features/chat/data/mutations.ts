@@ -1,4 +1,4 @@
-import { createOptimisticAction } from "@tanstack/react-db";
+import { and, createOptimisticAction, eq, queryOnce } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 
@@ -7,9 +7,9 @@ import type { ConversationModel } from "@naamio/schema/domain";
 import { assert } from "@naamio/assert";
 
 import { conversationStateCollection } from "#src/features/chat/data/conversation-state.js";
-import { Conversation, conversationCollection, preloadConversationData } from "#src/features/chat/data/conversation.js";
+import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
 import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
-import { AgentMessage, messageCollection, preloadMessageData, UserMessage } from "#src/features/chat/data/message.js";
+import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
 import {
 	continueConversation,
 	ContinueConversationPayload,
@@ -356,20 +356,32 @@ const markConversationAsAccessedAction = createOptimisticAction({
 });
 
 export const setupConversationState = async (conversationId: ConversationModel["id"]) => {
-	await Promise.all([preloadConversationData(), preloadMessageData()]);
+	if (conversationStateCollection.has(conversationId)) {
+		return;
+	}
 
-	if (conversationStateCollection.has(conversationId) || !conversationCollection.get(conversationId)) {
+	const conversation = await queryOnce((q) =>
+		q
+			.from({ conversation: conversationCollection })
+			.where(({ conversation }) => eq(conversation.id, conversationId))
+			.findOne(),
+	);
+
+	if (!conversation) {
 		return;
 	}
 
 	markConversationAsAccessedAction({ conversationId });
 
-	const newestAgentMessage = messageCollection.state
-		.values()
-		.filter((message) => message.role === "AGENT")
-		.reduce((previousMessage, currentMessage) =>
-			previousMessage.createdAt >= currentMessage.createdAt ? previousMessage : currentMessage,
-		);
+	const newestAgentMessage = await queryOnce((q) =>
+		q
+			.from({ message: messageCollection })
+			.where(({ message }) => and(eq(message.role, "AGENT"), eq(message.conversationId, conversationId)))
+			.orderBy(({ message }) => message.createdAt, "desc")
+			.findOne(),
+	);
+
+	assert(newestAgentMessage?.role === "AGENT", "Every conversation must have at least one agent message");
 
 	conversationStateCollection.insert({ activeLeafId: newestAgentMessage.id, id: conversationId });
 };

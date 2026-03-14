@@ -11,7 +11,7 @@ import { verifySession } from "#src/features/user/procedures/mod.js";
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
 const SESSION_STALE_AGE = Duration.divideUnsafe(SESSION_VERIFICATION_POLLING_INTERVAL, 2);
 
-const getSessionCacheEntry = () => sessionCacheCollection.state.values().take(1).next().value;
+const getSessionCacheEntry = () => sessionCacheCollection.state.values().toArray().at(0);
 
 export const checkSessionCacheStatus = () => {
 	const entry = getSessionCacheEntry();

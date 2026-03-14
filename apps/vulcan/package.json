@@ -29,9 +29,9 @@
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
 		"@rolldown/plugin-babel": "catalog:",
-		"@storybook/addon-a11y": "^10.2.18",
-		"@storybook/addon-docs": "^10.2.18",
-		"@storybook/react-vite": "^10.2.18",
+		"@storybook/addon-a11y": "^10.2.19",
+		"@storybook/addon-docs": "^10.2.19",
+		"@storybook/react-vite": "^10.2.19",
 		"@stylexjs/babel-plugin": "catalog:",
 		"@stylexjs/postcss-plugin": "catalog:",
 		"@types/react": "catalog:",
@@ -42,7 +42,7 @@
 		"eslint": "catalog:",
 		"fontaine": "catalog:",
 		"serve": "^14.2.6",
-		"storybook": "^10.2.18",
+		"storybook": "^10.2.19",
 		"typescript": "catalog:",
 		"vite": "catalog:"
 	}

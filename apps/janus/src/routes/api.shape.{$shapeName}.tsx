@@ -53,10 +53,11 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 					const body = Stream.toReadableStream(response.stream);
 					const headers = Headers.removeMany(response.headers, ["Content-Encoding", "Content-Length"]);
 
-					const maybeExistingVaryHeader = Option.fromUndefinedOr(Headers.get(headers, "Vary"));
-					const newVaryHeaderValue =
-						Option.isSome(maybeExistingVaryHeader) ? `${maybeExistingVaryHeader.value}, Cookie` : "Cookie";
-					const headersWithVary = Headers.set(headers, "Vary", newVaryHeaderValue);
+					const varyValue = Option.match(Headers.get(headers, "Vary"), {
+						onNone: () => "Cookie",
+						onSome: (existingVary) => `${existingVary}, Cookie`,
+					});
+					const headersWithVary = Headers.set(headers, "Vary", varyValue);
 
 					return new Response(body, { headers: headersWithVary, status: response.status });
 				}).pipe(Effect.withSpan(`@naamio/janus/shape/${ctx.params.shapeName}`), runAuthenticatedOnlyServerFn(ctx)),

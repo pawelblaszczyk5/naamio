@@ -32,7 +32,7 @@
 		"@naamio/eslint-plugin": "workspace:",
 		"@stylexjs/eslint-plugin": "catalog:",
 		"@stylistic/eslint-plugin": "^5.10.0",
-		"@tanstack/eslint-plugin-router": "^1.161.5",
+		"@tanstack/eslint-plugin-router": "^1.161.6",
 		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.2.1",
 		"eslint-import-resolver-typescript": "^4.4.4",
@@ -56,6 +56,6 @@
 		"eslint-plugin-react-x": "^2.13.0",
 		"eslint-plugin-regexp": "^3.1.0",
 		"eslint-plugin-unicorn": "^63.0.0",
-		"typescript-eslint": "^8.57.0"
+		"typescript-eslint": "^8.57.1"
 	}
 }

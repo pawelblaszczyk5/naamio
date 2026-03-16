@@ -15,12 +15,12 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.31
+  "@effect/ai-openai": 4.0.0-beta.33
   "@effect/language-service": ^0.80.0
-  "@effect/platform-node": 4.0.0-beta.31
-  "@effect/platform-node-shared": 4.0.0-beta.31
-  "@effect/sql-pg": 4.0.0-beta.31
-  "@effect/vitest": 4.0.0-beta.31
+  "@effect/platform-node": 4.0.0-beta.33
+  "@effect/platform-node-shared": 4.0.0-beta.33
+  "@effect/sql-pg": 4.0.0-beta.33
+  "@effect/vitest": 4.0.0-beta.33
   "@electric-sql/client": ^1.5.12
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.1
@@ -31,10 +31,10 @@ catalog:
   "@types/node": ^25.5.0
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@vitejs/devtools": ^0.1.0
+  "@vitejs/devtools": ^0.1.1
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: 0.0.0-experimental-1371fcb-20260304
-  effect: 4.0.0-beta.31
+  effect: 4.0.0-beta.33
   eslint: ^9.39.2
   fontaine: ^0.8.0
   react: 19.3.0-canary-3bc2d414-20260304

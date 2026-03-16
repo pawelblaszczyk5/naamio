@@ -35,7 +35,7 @@ catalog:
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: 0.0.0-experimental-5d11809-20260312
   effect: 4.0.0-beta.33
-  eslint: ^9.39.2
+  eslint: ^10.0.3
   fontaine: ^0.8.0
   react: 19.3.0-canary-c80a0750-20260312
   react-dom: 19.3.0-canary-c80a0750-20260312
@@ -52,6 +52,7 @@ managePackageManagerVersions: true
 
 overrides:
   babel-plugin-react-compiler: "catalog:"
+  eslint: "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
@@ -61,6 +62,7 @@ packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
+  "@stylexjs/eslint-plugin": patches/@stylexjs__eslint-plugin.patch
   prettier-plugin-sql@0.19.2: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

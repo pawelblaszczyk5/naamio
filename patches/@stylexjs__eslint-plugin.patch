@@ -1,0 +1,13 @@
+diff --git a/lib/stylex-enforce-extension.js b/lib/stylex-enforce-extension.js
+index c0a890eb88d323de029f7476df5b9bb8497cbec5..dfafa84ba5f1e72ba98dea76766a3ceb8c8e609a 100644
+--- a/lib/stylex-enforce-extension.js
++++ b/lib/stylex-enforce-extension.js
+@@ -59,7 +59,7 @@ const stylexEnforceExtension = {
+     let hasDefineVarsExports = false;
+     let hasDefineMarkerExports = false;
+     let reportedDefaultExportError = false;
+-    const fileName = context.getFilename();
++    const fileName = context.filename;
+     const options = context.options[0] || {};
+     const {
+       validImports: importsToLookFor = ['stylex', '@stylexjs/stylex'],

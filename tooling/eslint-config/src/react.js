@@ -2,7 +2,6 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import stylistic from "@stylistic/eslint-plugin";
 import reactDom from "eslint-plugin-react-dom";
-import reactHooksExtra from "eslint-plugin-react-hooks-extra";
 import reactNamingConvention from "eslint-plugin-react-naming-convention";
 import reactWebApi from "eslint-plugin-react-web-api";
 import react from "eslint-plugin-react-x";
@@ -18,7 +17,6 @@ export default defineConfig({
 		react: react,
 		"react-dom": reactDom,
 		"react-web-api": reactWebApi,
-		"react-hooks-extra": reactHooksExtra,
 		"react-refresh": reactRefresh,
 		"react-naming-convention": reactNamingConvention,
 		stylistic: stylistic,
@@ -30,10 +28,9 @@ export default defineConfig({
 		"react/jsx-dollar": "error",
 		"react/jsx-key-before-spread": "error",
 		"react/jsx-no-comment-textnodes": "error",
-		"react/jsx-no-iife": "error",
 		"react/jsx-shorthand-boolean": "error",
 		"react/jsx-shorthand-fragment": "error",
-		"react/no-useless-forward-ref": "error",
+		"react/no-forward-ref": "error",
 		"react/no-access-state-in-setstate": "error",
 		"react/no-array-index-key": "error",
 		"react/no-children-count": "error",
@@ -52,7 +49,9 @@ export default defineConfig({
 		"react/no-direct-mutation-state": "error",
 		"react/no-duplicate-key": "error",
 		"react/no-forward-ref": "error",
+		"react/no-implicit-children": "error",
 		"react/no-implicit-key": "error",
+		"react/no-implicit-ref": "error",
 		"react/no-leaked-conditional-rendering": "error",
 		"react/no-missing-component-display-name": "error",
 		"react/no-missing-context-display-name": "error",
@@ -62,7 +61,6 @@ export default defineConfig({
 		"react/no-set-state-in-component-did-mount": "error",
 		"react/no-set-state-in-component-did-update": "error",
 		"react/no-set-state-in-component-will-update": "error",
-		"react/no-unnecessary-key": "error",
 		"react/no-unnecessary-use-callback": "error",
 		"react/no-unnecessary-use-memo": "error",
 		"react/no-unnecessary-use-prefix": "error",
@@ -75,7 +73,9 @@ export default defineConfig({
 		"react/no-use-context": "error",
 		"react/no-useless-fragment": "error",
 		"react/prefer-destructuring-assignment": "error",
-		"react/prefer-use-state-lazy-initialization": "error",
+		"react/use-state": "error",
+		"react/unstable-rules-of-props": "error",
+		"react/unstable-rules-of-state": "error",
 
 		// react-dom
 		"react-dom/no-void-elements-with-children": "error",
@@ -99,12 +99,7 @@ export default defineConfig({
 		"react-web-api/no-leaked-resize-observer": "error",
 		"react-web-api/no-leaked-timeout": "error",
 
-		// react-hooks-extra
-		"react-hooks-extra/no-direct-set-state-in-use-effect": "error",
-
 		// react-naming-convention
-		"react-naming-convention/component-name": "error",
-		"react-naming-convention/use-state": "error",
 		"react-naming-convention/ref-name": "error",
 		"react-naming-convention/context-name": "error",
 		"react-naming-convention/id-name": "error",

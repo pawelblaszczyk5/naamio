@@ -21,7 +21,7 @@ catalog:
   "@effect/platform-node-shared": 4.0.0-beta.33
   "@effect/sql-pg": 4.0.0-beta.33
   "@effect/vitest": 4.0.0-beta.33
-  "@electric-sql/client": ^1.5.12
+  "@electric-sql/client": ^1.5.13
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.1
   "@stylexjs/babel-plugin": ^0.18.1
@@ -31,7 +31,7 @@ catalog:
   "@types/node": ^25.5.0
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@vitejs/devtools": ^0.1.1
+  "@vitejs/devtools": ^0.1.2
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: 0.0.0-experimental-5d11809-20260312
   effect: 4.0.0-beta.33

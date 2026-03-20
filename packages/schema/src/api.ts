@@ -25,7 +25,7 @@ export const ElectricProtocolQuery = Schema.Record(
 	Schema.optionalKey(Schema.String),
 ).pipe(Schema.brand("ElectricProtocolUrlParams"));
 
-export type ElectricProtocolQuery = (typeof ElectricProtocolQuery)["Type"];
+export type ElectricProtocolQuery = Schema.Schema.Type<typeof ElectricProtocolQuery>;
 
 export const WebAuthnRegistrationOptions = Schema.Struct({
 	attestation: AttestationConveyancePreference.pipe(optionalWithExactOptionalPropertyKeysCompat),
@@ -44,7 +44,7 @@ export const WebAuthnRegistrationOptions = Schema.Struct({
 	user: PublicKeyCredentialUserEntity,
 });
 
-export type WebAuthnRegistrationOptions = (typeof WebAuthnRegistrationOptions)["Type"];
+export type WebAuthnRegistrationOptions = Schema.Schema.Type<typeof WebAuthnRegistrationOptions>;
 
 export const WebAuthnRegistrationResponse = Schema.Struct({
 	authenticatorAttachment: AuthenticatorAttachment.pipe(optionalWithExactOptionalPropertyKeysCompat),
@@ -55,7 +55,7 @@ export const WebAuthnRegistrationResponse = Schema.Struct({
 	type: PublicKeyCredentialType,
 });
 
-export type WebAuthnRegistrationResponse = (typeof WebAuthnRegistrationResponse)["Type"];
+export type WebAuthnRegistrationResponse = Schema.Schema.Type<typeof WebAuthnRegistrationResponse>;
 
 export const WebAuthnAuthenticationOptions = Schema.Struct({
 	allowCredentials: Schema.Array(PublicKeyCredentialDescriptor).pipe(
@@ -70,7 +70,7 @@ export const WebAuthnAuthenticationOptions = Schema.Struct({
 	userVerification: UserVerificationRequirement.pipe(optionalWithExactOptionalPropertyKeysCompat),
 });
 
-export type WebAuthnAuthenticationOptions = (typeof WebAuthnAuthenticationOptions)["Type"];
+export type WebAuthnAuthenticationOptions = Schema.Schema.Type<typeof WebAuthnAuthenticationOptions>;
 
 export const WebAuthnAuthenticationResponse = Schema.Struct({
 	authenticatorAttachment: AuthenticatorAttachment.pipe(optionalWithExactOptionalPropertyKeysCompat),
@@ -81,4 +81,4 @@ export const WebAuthnAuthenticationResponse = Schema.Struct({
 	type: PublicKeyCredentialType,
 });
 
-export type WebAuthnAuthenticationResponse = (typeof WebAuthnAuthenticationResponse)["Type"];
+export type WebAuthnAuthenticationResponse = Schema.Schema.Type<typeof WebAuthnAuthenticationResponse>;

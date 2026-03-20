@@ -22,7 +22,7 @@ export const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
 	.mapFields(Struct.pick(["username", "language"]))
 	.pipe(Schema.fieldsAssign({ displayName: WebAuthnRegistrationChallengeModel.jsonCreate.fields.displayName }));
 
-export type GenerateRegistrationOptionsPayload = (typeof GenerateRegistrationOptionsPayload)["Type"];
+export type GenerateRegistrationOptionsPayload = Schema.Schema.Type<typeof GenerateRegistrationOptionsPayload>;
 
 export const generateRegistrationOptions = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(GenerateRegistrationOptionsPayload))
@@ -42,7 +42,7 @@ export const generateRegistrationOptions = createServerFn({ method: "POST" })
 
 export const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: WebAuthnRegistrationResponse });
 
-export type VerifyRegistrationPayload = (typeof VerifyRegistrationPayload)["Type"];
+export type VerifyRegistrationPayload = Schema.Schema.Type<typeof VerifyRegistrationPayload>;
 
 export const verifyRegistration = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(VerifyRegistrationPayload))
@@ -82,7 +82,7 @@ export const GenerateAuthenticationOptionsPayload = Schema.Struct({
 	username: UserModel.json.fields.username.pipe(Schema.NullOr),
 });
 
-export type GenerateAuthenticationOptionsPayload = (typeof GenerateAuthenticationOptionsPayload)["Type"];
+export type GenerateAuthenticationOptionsPayload = Schema.Schema.Type<typeof GenerateAuthenticationOptionsPayload>;
 
 export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(GenerateAuthenticationOptionsPayload))
@@ -102,7 +102,7 @@ export const generateAuthenticationOptions = createServerFn({ method: "POST" })
 
 export const VerifyAuthenticationPayload = Schema.Struct({ authenticationResponse: WebAuthnAuthenticationResponse });
 
-export type VerifyAuthenticationPayload = (typeof VerifyAuthenticationPayload)["Type"];
+export type VerifyAuthenticationPayload = Schema.Schema.Type<typeof VerifyAuthenticationPayload>;
 
 export const verifyAuthentication = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(VerifyAuthenticationPayload))

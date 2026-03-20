@@ -12,7 +12,7 @@ export const TextMessagePart = Schema.Struct({
 	type: TextMessagePartModel.json.fields.type,
 });
 
-export type TextMessagePart = (typeof TextMessagePart)["Type"];
+export type TextMessagePart = Schema.Schema.Type<typeof TextMessagePart>;
 
 export const ReasoningMessagePart = Schema.Struct({
 	createdAt: Schema.Date,
@@ -22,11 +22,11 @@ export const ReasoningMessagePart = Schema.Struct({
 	type: ReasoningMessagePartModel.json.fields.type,
 });
 
-export type ReasoningMessagePart = (typeof ReasoningMessagePart)["Type"];
+export type ReasoningMessagePart = Schema.Schema.Type<typeof ReasoningMessagePart>;
 
 export const MessagePart = Schema.Union([TextMessagePart, ReasoningMessagePart]);
 
-export type MessagePart = (typeof MessagePart)["Type"];
+export type MessagePart = Schema.Schema.Type<typeof MessagePart>;
 
 export const messagePartCollection = createCollection(
 	electricCollectionOptions({

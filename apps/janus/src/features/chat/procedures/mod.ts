@@ -49,7 +49,7 @@ export const StartConversationPayload = Schema.Struct({
 	messages: Schema.Tuple([RootUserMessageInput, AgentMessageInput]),
 });
 
-export type StartConversationPayload = (typeof StartConversationPayload)["Type"];
+export type StartConversationPayload = Schema.Schema.Type<typeof StartConversationPayload>;
 
 export const startConversation = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(StartConversationPayload))
@@ -72,7 +72,7 @@ export const ContinueConversationPayload = Schema.Struct({
 	messages: Schema.Tuple([UserMessageInput, AgentMessageInput]),
 });
 
-export type ContinueConversationPayload = (typeof ContinueConversationPayload)["Type"];
+export type ContinueConversationPayload = Schema.Schema.Type<typeof ContinueConversationPayload>;
 
 export const continueConversation = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(ContinueConversationPayload))
@@ -103,7 +103,7 @@ export const RegenerateAnswerPayload = Schema.Struct({
 	message: AgentMessageInputWithParentId,
 });
 
-export type RegenerateAnswerPayload = (typeof RegenerateAnswerPayload)["Type"];
+export type RegenerateAnswerPayload = Schema.Schema.Type<typeof RegenerateAnswerPayload>;
 
 export const regenerateAnswer = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(RegenerateAnswerPayload))
@@ -126,7 +126,7 @@ export const InterruptGenerationPayload = Schema.Struct({
 	messageId: AgentMessageModel.json.fields.id,
 });
 
-export type InterruptGenerationPayload = (typeof InterruptGenerationPayload)["Type"];
+export type InterruptGenerationPayload = Schema.Schema.Type<typeof InterruptGenerationPayload>;
 
 export const interruptGeneration = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(InterruptGenerationPayload))
@@ -148,7 +148,7 @@ export const EditConversationTitlePayload = Schema.Struct({
 	title: ConversationModel.json.fields.title.from.schema.members[0],
 });
 
-export type EditConversationTitlePayload = (typeof EditConversationTitlePayload)["Type"];
+export type EditConversationTitlePayload = Schema.Schema.Type<typeof EditConversationTitlePayload>;
 
 export const editConversationTitle = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(EditConversationTitlePayload))
@@ -168,7 +168,7 @@ export const editConversationTitle = createServerFn({ method: "POST" })
 
 export const DeleteConversationPayload = Schema.Struct({ conversationId: ConversationModel.json.fields.id });
 
-export type DeleteConversationPayload = (typeof DeleteConversationPayload)["Type"];
+export type DeleteConversationPayload = Schema.Schema.Type<typeof DeleteConversationPayload>;
 
 export const deleteConversation = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(DeleteConversationPayload))
@@ -187,7 +187,7 @@ export const deleteConversation = createServerFn({ method: "POST" })
 
 export const MarkConversationAsAccessedPayload = Schema.Struct({ conversationId: ConversationModel.json.fields.id });
 
-export type MarkConversationAsAccessedPayload = (typeof DeleteConversationPayload)["Type"];
+export type MarkConversationAsAccessedPayload = Schema.Schema.Type<typeof DeleteConversationPayload>;
 
 export const markConversationAsAccessed = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(MarkConversationAsAccessedPayload))

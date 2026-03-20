@@ -6,7 +6,7 @@ import { AuthenticatorTransport } from "#src/web-authn.js";
 
 export const TransactionId = Schema.NumberFromString.pipe(Schema.brand("TransactionId"));
 
-export type TransactionId = (typeof TransactionId)["Type"];
+export type TransactionId = Schema.Schema.Type<typeof TransactionId>;
 
 const Id = Schema.Trimmed.check(Schema.isNonEmpty());
 

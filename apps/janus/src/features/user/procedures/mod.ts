@@ -39,7 +39,7 @@ export const verifySession = createServerFn({ method: "POST" })
 
 export const UpdateLanguagePayload = UserModel.jsonUpdate.mapFields(Struct.pick(["language"]));
 
-export type UpdateLanguagePayload = (typeof UpdateLanguagePayload)["Type"];
+export type UpdateLanguagePayload = Schema.Schema.Type<typeof UpdateLanguagePayload>;
 
 export const updateLanguage = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(UpdateLanguagePayload))
@@ -56,7 +56,7 @@ export const updateLanguage = createServerFn({ method: "POST" })
 
 export const RevokeSessionPayload = SessionModel.json.mapFields(Struct.pick(["id"]));
 
-export type RevokeSessionPayload = (typeof RevokeSessionPayload)["Type"];
+export type RevokeSessionPayload = Schema.Schema.Type<typeof RevokeSessionPayload>;
 
 export const revokeSession = createServerFn({ method: "POST" })
 	.inputValidator(Schema.toStandardSchemaV1(RevokeSessionPayload))

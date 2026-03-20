@@ -10,7 +10,7 @@ export const User = Schema.Struct({
 	username: UserModel.json.fields.username,
 });
 
-export type User = (typeof User)["Type"];
+export type User = Schema.Schema.Type<typeof User>;
 
 export const userCollection = createCollection(
 	electricCollectionOptions({

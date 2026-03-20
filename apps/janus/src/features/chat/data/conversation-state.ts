@@ -10,7 +10,7 @@ export const ConversationState = Schema.Struct({
 	id: ConversationModel.json.fields.id,
 });
 
-export type ConversationState = (typeof ConversationState)["Type"];
+export type ConversationState = Schema.Schema.Type<typeof ConversationState>;
 
 export const conversationStateCollection = createCollection(
 	localOnlyCollectionOptions({

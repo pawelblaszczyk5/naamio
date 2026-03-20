@@ -13,7 +13,7 @@ export const Passkey = Schema.Struct({
 	id: PasskeyModel.json.fields.id,
 });
 
-export type Passkey = (typeof Passkey)["Type"];
+export type Passkey = Schema.Schema.Type<typeof Passkey>;
 
 export const passkeyCollection = createCollection(
 	electricCollectionOptions({

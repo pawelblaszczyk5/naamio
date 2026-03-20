@@ -12,7 +12,7 @@ export const Conversation = Schema.Struct({
 	updatedAt: Schema.Date,
 });
 
-export type Conversation = (typeof Conversation)["Type"];
+export type Conversation = Schema.Schema.Type<typeof Conversation>;
 
 export const conversationCollection = createCollection(
 	electricCollectionOptions({

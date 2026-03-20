@@ -11,7 +11,7 @@ export const InflightChunk = Schema.Struct({
 	sequence: InflightChunkModel.json.fields.sequence,
 });
 
-export type InflightChunk = (typeof InflightChunk)["Type"];
+export type InflightChunk = Schema.Schema.Type<typeof InflightChunk>;
 
 export const inflightChunkCollection = createCollection(
 	electricCollectionOptions({

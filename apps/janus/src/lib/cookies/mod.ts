@@ -19,7 +19,7 @@ const WebAuthnChallengeCookie = Schema.Union([
 	WebAuthnRegistrationChallengeModel.json.mapFields(Struct.pick(["id", "type"])),
 ]);
 
-type WebAuthnChallengeCookie = (typeof WebAuthnChallengeCookie)["Type"];
+type WebAuthnChallengeCookie = Schema.Schema.Type<typeof WebAuthnChallengeCookie>;
 
 const WebAuthnChallengeCookieJson = Schema.fromJsonString(WebAuthnChallengeCookie);
 

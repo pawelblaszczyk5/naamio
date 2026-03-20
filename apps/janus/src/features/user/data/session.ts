@@ -11,7 +11,7 @@ export const Session = Schema.Struct({
 	passkeyId: SessionModel.json.fields.passkeyId,
 });
 
-export type Session = (typeof Session)["Type"];
+export type Session = Schema.Schema.Type<typeof Session>;
 
 export const sessionCollection = createCollection(
 	electricCollectionOptions({

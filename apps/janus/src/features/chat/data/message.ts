@@ -14,7 +14,7 @@ export const AgentMessage = Schema.Struct({
 	status: AgentMessageModel.json.fields.status,
 });
 
-export type AgentMessage = (typeof AgentMessage)["Type"];
+export type AgentMessage = Schema.Schema.Type<typeof AgentMessage>;
 
 export const UserMessage = Schema.Struct({
 	conversationId: UserMessageModel.json.fields.conversationId,
@@ -24,11 +24,11 @@ export const UserMessage = Schema.Struct({
 	role: UserMessageModel.json.fields.role,
 });
 
-export type UserMessage = (typeof UserMessage)["Type"];
+export type UserMessage = Schema.Schema.Type<typeof UserMessage>;
 
 export const Message = Schema.Union([AgentMessage, UserMessage]);
 
-export type Message = (typeof Message)["Type"];
+export type Message = Schema.Schema.Type<typeof Message>;
 
 export const messageCollection = createCollection(
 	electricCollectionOptions({

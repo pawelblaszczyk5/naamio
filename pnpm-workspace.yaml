@@ -15,12 +15,12 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.35
-  "@effect/language-service": ^0.80.0
-  "@effect/platform-node": 4.0.0-beta.35
-  "@effect/platform-node-shared": 4.0.0-beta.35
-  "@effect/sql-pg": 4.0.0-beta.35
-  "@effect/vitest": 4.0.0-beta.35
+  "@effect/ai-openai": 4.0.0-beta.36
+  "@effect/language-service": ^0.81.0
+  "@effect/platform-node": 4.0.0-beta.36
+  "@effect/platform-node-shared": 4.0.0-beta.36
+  "@effect/sql-pg": 4.0.0-beta.36
+  "@effect/vitest": 4.0.0-beta.36
   "@electric-sql/client": ^1.5.13
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.2
@@ -34,8 +34,8 @@ catalog:
   "@vitejs/devtools": ^0.1.3
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: 0.0.0-experimental-5d11809-20260312
-  effect: 4.0.0-beta.35
-  eslint: ^10.0.3
+  effect: 4.0.0-beta.36
+  eslint: ^10.1.0
   fontaine: ^0.8.0
   react: 19.3.0-canary-c80a0750-20260312
   react-dom: 19.3.0-canary-c80a0750-20260312
@@ -62,8 +62,8 @@ packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
-  "@stylexjs/eslint-plugin": patches/@stylexjs__eslint-plugin.patch
-  prettier-plugin-sql@0.19.2: patches/prettier-plugin-sql.patch
+  "@stylexjs/eslint-plugin@0.18.1": patches/@stylexjs__eslint-plugin.patch
+  prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true
 strictDepBuilds: true

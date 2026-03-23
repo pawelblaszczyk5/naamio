@@ -3,6 +3,8 @@ import { getRequestUrl } from "@tanstack/react-start/server";
 import { Effect, Match, Option, Schema, Stream } from "effect";
 import { Headers } from "effect/unstable/http";
 
+import { ElectricProtocolQuery } from "@naamio/schema/api";
+
 import { NaamioHttpClient, NaamioUrlBuilder } from "#src/lib/api-client/mod.js";
 import { sessionTokenMiddleware } from "#src/lib/effect-bridge/middleware.js";
 import { runAuthenticatedOnlyServerFn } from "#src/lib/effect-bridge/mod.js";
@@ -18,6 +20,7 @@ const ShapeName = Schema.Literals([
 ]);
 
 const isShapeName = Schema.is(ShapeName);
+const decodeQuery = Schema.decodeEffect(ElectricProtocolQuery);
 
 export const Route = createFileRoute("/api/shape/{$shapeName}")({
 	server: {
@@ -33,18 +36,16 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 						return new Response(null, { status: 404 });
 					}
 
-					const query = Object.fromEntries(getRequestUrl().searchParams);
+					const query = yield* decodeQuery(Object.fromEntries(getRequestUrl().searchParams));
 
 					const url = Match.value(shapeName).pipe(
-						Match.when("user", () => naamioUrlBuilder("User", "GET /api/user/shape", { query })),
-						Match.when("session", () => naamioUrlBuilder("Session", "GET /api/session/shape", { query })),
-						Match.when("passkey", () => naamioUrlBuilder("Passkey", "GET /api/passkey/shape", { query })),
-						Match.when("conversation", () => naamioUrlBuilder("Chat", "GET /api/chat/conversation/shape", { query })),
-						Match.when("message", () => naamioUrlBuilder("Chat", "GET /api/chat/message/shape", { query })),
-						Match.when("message-part", () => naamioUrlBuilder("Chat", "GET /api/chat/message-part/shape", { query })),
-						Match.when("inflight-chunk", () =>
-							naamioUrlBuilder("Chat", "GET /api/chat/inflight-chunk/shape", { query }),
-						),
+						Match.when("user", () => naamioUrlBuilder.User.shape({ query })),
+						Match.when("session", () => naamioUrlBuilder.Session.shape({ query })),
+						Match.when("passkey", () => naamioUrlBuilder.Passkey.shape({ query })),
+						Match.when("conversation", () => naamioUrlBuilder.Chat.conversationShape({ query })),
+						Match.when("message", () => naamioUrlBuilder.Chat.messageShape({ query })),
+						Match.when("message-part", () => naamioUrlBuilder.Chat.messagePartShape({ query })),
+						Match.when("inflight-chunk", () => naamioUrlBuilder.Chat.inflightChunkShape({ query })),
 						Match.exhaustive,
 					);
 

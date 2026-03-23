@@ -1,4 +1,4 @@
-# cspell:ignore esbuild, unrs, msgpackr, subdeps, vitest
+# cspell:ignore esbuild, unrs, msgpackr, vitest
 packages:
   - apps/*
   - packages/*
@@ -15,12 +15,12 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.36
-  "@effect/language-service": ^0.81.0
-  "@effect/platform-node": 4.0.0-beta.36
-  "@effect/platform-node-shared": 4.0.0-beta.36
-  "@effect/sql-pg": 4.0.0-beta.36
-  "@effect/vitest": 4.0.0-beta.36
+  "@effect/ai-openai": 4.0.0-beta.38
+  "@effect/language-service": ^0.82.0
+  "@effect/platform-node": 4.0.0-beta.38
+  "@effect/platform-node-shared": 4.0.0-beta.38
+  "@effect/sql-pg": 4.0.0-beta.38
+  "@effect/vitest": 4.0.0-beta.38
   "@electric-sql/client": ^1.5.13
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.2
@@ -31,19 +31,19 @@ catalog:
   "@types/node": ^25.5.0
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@vitejs/devtools": ^0.1.3
+  "@vitejs/devtools": ^0.1.8
   "@vitejs/plugin-react": ^6.0.1
-  babel-plugin-react-compiler: 0.0.0-experimental-5d11809-20260312
-  effect: 4.0.0-beta.36
+  babel-plugin-react-compiler: ^1.0.0
+  effect: 4.0.0-beta.38
   eslint: ^10.1.0
   fontaine: ^0.8.0
-  react: 19.3.0-canary-c80a0750-20260312
-  react-dom: 19.3.0-canary-c80a0750-20260312
+  react: 19.3.0-canary-ed69815c-20260323
+  react-dom: 19.3.0-canary-ed69815c-20260323
   tsc-alias: ^1.8.16
   type-fest: ^5.5.0
   typescript: ^5.9.3
-  vite: ^8.0.1
-  vitest: ^4.1.0
+  vite: ^8.0.2
+  vitest: ^4.1.1
   wait-on: ^9.0.4
 
 engineStrict: true
@@ -51,7 +51,6 @@ linkWorkspacePackages: true
 managePackageManagerVersions: true
 
 overrides:
-  babel-plugin-react-compiler: "catalog:"
   eslint: "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"

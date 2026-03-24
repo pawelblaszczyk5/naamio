@@ -51,7 +51,6 @@ export class NaamioUrlBuilder extends ServiceMap.Service<
 	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
-			// @ts-expect-error -- this must be fixed, report issue
 			return NaamioUrlBuilder.of(HttpApiClient.urlBuilder(NaamioApi));
 		}),
 	) satisfies Layer.Layer<NaamioUrlBuilder, unknown>;

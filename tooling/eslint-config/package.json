@@ -34,7 +34,7 @@
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@tanstack/eslint-plugin-router": "^1.161.6",
 		"eslint": "catalog:",
-		"eslint-config-flat-gitignore": "^2.2.1",
+		"eslint-config-flat-gitignore": "^2.3.0",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-canonical": "^5.1.3",
 		"eslint-plugin-de-morgan": "^2.1.1",

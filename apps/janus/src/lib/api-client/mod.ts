@@ -1,5 +1,3 @@
-import type { HttpApi } from "effect/unstable/httpapi";
-
 import { NodeHttpClient } from "@effect/platform-node";
 import { Config, Effect, Layer, Option, ServiceMap } from "effect";
 import { HttpClient, HttpClientRequest } from "effect/unstable/http";
@@ -11,10 +9,9 @@ import { SessionToken } from "#src/lib/effect-bridge/context.js";
 
 import "@tanstack/react-start/server-only";
 
-type Groups = typeof NaamioApi extends HttpApi.HttpApi<any, infer Groups> ? Groups : never;
+type Groups = (typeof NaamioApi)["groups"][string];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- I need to have this here for proper inferring
-type ApiId = typeof NaamioApi extends HttpApi.HttpApi<infer Id, infer _> ? Id : never;
+type ApiId = (typeof NaamioApi)["identifier"];
 
 export class NaamioHttpClient extends ServiceMap.Service<NaamioHttpClient, HttpClient.HttpClient>()(
 	"@naamio/janus/NaamioHttpClient",

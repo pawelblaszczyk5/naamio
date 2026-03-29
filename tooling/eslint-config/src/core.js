@@ -1,4 +1,4 @@
-import eslint from "@eslint/js";
+import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import canonical from "eslint-plugin-canonical";
 import preferArrowFunctions from "eslint-plugin-prefer-arrow-functions";
@@ -66,7 +66,7 @@ export default defineConfig({
 	settings: { "import-x/extensions": [".ts", ".tsx", ".js"], "import-x/resolver": { typescript: true, node: true } },
 	extends: [
 		gitignore(),
-		eslint.configs.recommended,
+		js.configs.recommended,
 		tseslint.configs.strictTypeChecked,
 		tseslint.configs.stylisticTypeChecked,
 		comments.recommended,

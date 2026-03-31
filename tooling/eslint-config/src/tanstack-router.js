@@ -5,5 +5,5 @@ export default defineConfig({
 	name: "naamio/tanstack-router",
 	files: ["**/*.{ts,tsx,js,jsx}"],
 	plugins: { "@tanstack/router": tanstackRouter },
-	rules: { "@tanstack/router/create-route-property-order": "error" },
+	rules: { "@tanstack/router/create-route-property-order": "error", "@tanstack/router/route-param-names": "error" },
 });

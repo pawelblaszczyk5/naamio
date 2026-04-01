@@ -4,11 +4,68 @@ import stylistic from "@stylistic/eslint-plugin";
 import reactDom from "eslint-plugin-react-dom";
 import reactNamingConvention from "eslint-plugin-react-naming-convention";
 import reactWebApi from "eslint-plugin-react-web-api";
+import reactJsx from "eslint-plugin-react-jsx";
 import react from "eslint-plugin-react-x";
 import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig } from "eslint/config";
+import eslintReactKit from "@eslint-react/kit";
 
 // cspell:ignore innerhtml, textnodes, setstate
+
+export function jsxBooleanValue() {
+	return (context) => ({
+		JSXAttribute(node) {
+			const { value } = node;
+
+			if (value?.type !== "JSXExpressionContainer") return;
+			if (value.expression.type !== "Literal" || value.expression.value !== true) return;
+
+			context.report({
+				node,
+				message: "Omit the value for boolean attributes.",
+				fix: (fixer) => fixer.removeRange([node.name.range[1], value.range[1]]),
+			});
+		},
+	});
+}
+
+export function jsxFragments() {
+	return (context) => {
+		function reportSyntaxPreferred(node, pattern) {
+			const hasAttributes = node.attributes.length > 0;
+
+			if (hasAttributes) return;
+
+			context.report({
+				node,
+				message: `Use shorthand fragment syntax '<>...</>' instead of '<${pattern}>...</${pattern}'.`,
+				fix(fixer) {
+					const closing = node.parent?.closingElement;
+					if (!closing) return null;
+					return [fixer.replaceText(node, "<>"), fixer.replaceText(closing, "</>")];
+				},
+			});
+		}
+
+		return {
+			JSXOpeningElement(node) {
+				const name = node.name;
+
+				if (name.type === "JSXIdentifier" && name.name === "Fragment") {
+					reportSyntaxPreferred(node, "Fragment");
+
+					return;
+				}
+
+				if (name.type !== "JSXMemberExpression") return;
+				if (name.object.type !== "JSXIdentifier" || name.object.name !== "React") return;
+				if (name.property.type !== "JSXIdentifier" || name.property.name !== "Fragment") return;
+
+				reportSyntaxPreferred(node, "React.Fragment");
+			},
+		};
+	};
+}
 
 export default defineConfig({
 	name: "naamio/react",
@@ -21,15 +78,16 @@ export default defineConfig({
 		"react-naming-convention": reactNamingConvention,
 		stylistic: stylistic,
 		"react-hooks": reactHooks,
+		"react-jsx": reactJsx,
 	},
-	extends: [reactHooks.configs.flat["recommended-latest"], jsxA11y.flatConfigs.strict],
+	extends: [
+		reactHooks.configs.flat["recommended-latest"],
+		jsxA11y.flatConfigs.strict,
+		eslintReactKit().use(jsxBooleanValue).use(jsxFragments).getConfig(),
+	],
 	rules: {
 		// react
-		"react/jsx-dollar": "error",
-		"react/jsx-key-before-spread": "error",
-		"react/jsx-no-comment-textnodes": "error",
-		"react/jsx-shorthand-boolean": "error",
-		"react/jsx-shorthand-fragment": "error",
+
 		"react/no-forward-ref": "error",
 		"react/no-access-state-in-setstate": "error",
 		"react/no-array-index-key": "error",
@@ -37,7 +95,6 @@ export default defineConfig({
 		"react/no-children-for-each": "error",
 		"react/no-children-map": "error",
 		"react/no-children-only": "error",
-		"react/no-children-prop": "error",
 		"react/no-children-to-array": "error",
 		"react/no-class-component": "error",
 		"react/no-clone-element": "error",
@@ -71,11 +128,14 @@ export default defineConfig({
 		"react/no-unused-class-component-members": "error",
 		"react/no-unused-state": "error",
 		"react/no-use-context": "error",
-		"react/no-useless-fragment": "error",
 		"react/prefer-destructuring-assignment": "error",
 		"react/use-state": "error",
-		"react/unstable-rules-of-props": "error",
-		"react/unstable-rules-of-state": "error",
+
+		// react-jsx
+		"react-jsx/no-children-prop": "error",
+		"react-jsx/no-comment-textnodes": "error",
+		"react-jsx/no-useless-fragment": "error",
+		"react-jsx/no-key-after-spread": "error",
 
 		// react-dom
 		"react-dom/no-void-elements-with-children": "error",
@@ -85,7 +145,6 @@ export default defineConfig({
 		"react-dom/no-flush-sync": "error",
 		"react-dom/no-missing-button-type": "error",
 		"react-dom/no-missing-iframe-sandbox": "error",
-		"react-dom/no-namespace": "error",
 		"react-dom/no-render-return-value": "error",
 		"react-dom/no-script-url": "error",
 		"react-dom/no-unsafe-iframe-sandbox": "error",

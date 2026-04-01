@@ -15,35 +15,35 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.39
-  "@effect/language-service": ^0.83.1
-  "@effect/platform-node": 4.0.0-beta.39
-  "@effect/platform-node-shared": 4.0.0-beta.39
-  "@effect/sql-pg": 4.0.0-beta.39
-  "@effect/vitest": 4.0.0-beta.39
-  "@electric-sql/client": ^1.5.13
+  "@effect/ai-openai": 4.0.0-beta.43
+  "@effect/language-service": ^0.84.2
+  "@effect/platform-node": 4.0.0-beta.43
+  "@effect/platform-node-shared": 4.0.0-beta.43
+  "@effect/sql-pg": 4.0.0-beta.43
+  "@effect/vitest": 4.0.0-beta.43
+  "@electric-sql/client": ^1.5.14
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.2
-  "@stylexjs/babel-plugin": ^0.18.1
-  "@stylexjs/eslint-plugin": ^0.18.1
-  "@stylexjs/postcss-plugin": ^0.18.1
-  "@stylexjs/stylex": ^0.18.1
+  "@stylexjs/babel-plugin": ^0.18.2
+  "@stylexjs/eslint-plugin": ^0.18.2
+  "@stylexjs/postcss-plugin": ^0.18.2
+  "@stylexjs/stylex": ^0.18.2
   "@types/node": ^25.5.0
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
   "@vitejs/devtools": ^0.1.11
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: ^1.0.0
-  effect: 4.0.0-beta.39
+  effect: 4.0.0-beta.43
   eslint: ^10.1.0
   fontaine: ^0.8.0
-  react: 19.3.0-canary-ed69815c-20260323
-  react-dom: 19.3.0-canary-ed69815c-20260323
+  react: 19.3.0-canary-80b1cab3-20260331
+  react-dom: 19.3.0-canary-80b1cab3-20260331
   tsc-alias: ^1.8.16
   type-fest: ^5.5.0
   typescript: ^5.9.3
-  vite: ^8.0.2
-  vitest: ^4.1.1
+  vite: ^8.0.3
+  vitest: ^4.1.2
   wait-on: ^9.0.4
 
 engineStrict: true
@@ -61,7 +61,7 @@ packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
-  "@stylexjs/eslint-plugin@0.18.1": patches/@stylexjs__eslint-plugin.patch
+  "@stylexjs/eslint-plugin@0.18.2": patches/@stylexjs__eslint-plugin.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

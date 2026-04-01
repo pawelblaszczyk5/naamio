@@ -66,4 +66,4 @@ patchedDependencies:
 
 saveWorkspaceProtocol: true
 strictDepBuilds: true
-verifyDepsBeforeRun: "error"
+verifyDepsBeforeRun: "install"

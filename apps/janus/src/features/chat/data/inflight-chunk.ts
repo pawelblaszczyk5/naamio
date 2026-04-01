@@ -1,5 +1,5 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { createCollection } from "@tanstack/react-db";
+import { BTreeIndex, createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
 
 import { InflightChunkModel } from "@naamio/schema/domain";
@@ -15,6 +15,8 @@ export type InflightChunk = Schema.Schema.Type<typeof InflightChunk>;
 
 export const inflightChunkCollection = createCollection(
 	electricCollectionOptions({
+		autoIndex: "eager",
+		defaultIndexType: BTreeIndex,
 		getKey: (item) => item.id,
 		schema: Schema.toStandardSchemaV1(InflightChunk),
 		shapeOptions: {

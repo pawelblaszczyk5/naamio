@@ -1,5 +1,5 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { createCollection } from "@tanstack/react-db";
+import { BTreeIndex, createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
 
 import { SessionModel } from "@naamio/schema/domain";
@@ -15,6 +15,8 @@ export type Session = Schema.Schema.Type<typeof Session>;
 
 export const sessionCollection = createCollection(
 	electricCollectionOptions({
+		autoIndex: "eager",
+		defaultIndexType: BTreeIndex,
 		getKey: (item) => item.id,
 		schema: Schema.toStandardSchemaV1(Session),
 		shapeOptions: {

@@ -201,11 +201,11 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@tanstack/electric-db-collection':
-        specifier: ^0.2.41
-        version: 0.2.41(typescript@5.9.3)
+        specifier: ^0.2.43
+        version: 0.2.43(typescript@5.9.3)
       '@tanstack/react-db':
-        specifier: ^0.1.77
-        version: 0.1.77(react@19.3.0-canary-80b1cab3-20260331)(typescript@5.9.3)
+        specifier: ^0.1.79
+        version: 0.1.79(react@19.3.0-canary-80b1cab3-20260331)(typescript@5.9.3)
       '@tanstack/react-router':
         specifier: ^1.168.10
         version: 1.168.10(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
@@ -2608,18 +2608,18 @@ packages:
     peerDependencies:
       eslint: ^10.1.0
 
-  '@tanstack/db-ivm@0.1.17':
-    resolution: {integrity: sha512-DK7vm56CDxNuRAdsbiPs+gITJ+16tUtYgZg3BRTLYKGIDsy8sdIO7sQFq5zl7Y+aIKAPmMAbVp9UjJ75FTtwgQ==}
+  '@tanstack/db-ivm@0.1.18':
+    resolution: {integrity: sha512-+pZJiRKdoKRM5Epq9T7otD9ZJl82pRFauo7LKuJGrarjVKQ7r+QQlPe3kGdN9LEKSnuNGIWjX9OOY4M8kH4eLw==}
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/db@0.5.33':
-    resolution: {integrity: sha512-8pV3jZdqx6VgDubuddoT0UbQi8RrlCJ/kjhmgPIZUjvfhD3sz1TRMK4RTwOOf/JPTQ4qwWy5ggYLUTJxZZRB2w==}
+  '@tanstack/db@0.6.1':
+    resolution: {integrity: sha512-/9e1d9I4MouEt9MtgM0/PIzKNA9E0P71DQDxXC0/VbnBrG+VbSJpBkXxZ3A8EmehsuONfgs+FYjSO2hXbiC1xg==}
     peerDependencies:
       typescript: '>=4.7'
 
-  '@tanstack/electric-db-collection@0.2.41':
-    resolution: {integrity: sha512-V8vmLrKrUYrATXtMTlAmAJ6PoDji4qf7iJ8pWqoxDgdHMGcgU0oOMbFSSHywRzscgVeKFRo+LJTSuZTrwTFn2A==}
+  '@tanstack/electric-db-collection@0.2.43':
+    resolution: {integrity: sha512-OCZun7+2EcVLpYH93bTxJOhFSKSRCNs1Ya/QfNUeWQ88weQX2y2xvu5koEz0q5z3ivpad13BV9QMlO2vhP4LIA==}
 
   '@tanstack/eslint-plugin-router@1.161.6':
     resolution: {integrity: sha512-aHln6x6mhtQmrbwMI0lmnMh7t9nEvrJrFOl1vGtQknEKdgKEEqSh9a9/MZKNm3kENaHotoqpRcfbE/or9aAYfQ==}
@@ -2634,8 +2634,8 @@ packages:
     resolution: {integrity: sha512-3PouiFjR4B6x1c969/Pl4ZIJleof1M0n6fNX8NRiC9Sqv1g06CVDlEaXUR4212ycGFyfq4q+t8Gi37Xy+z34iQ==}
     engines: {node: '>=18'}
 
-  '@tanstack/react-db@0.1.77':
-    resolution: {integrity: sha512-rN9UTE6LrmXrkeo5S1O6zE7altQhFIhWjF0Afbt42/GPsCUGH9sI0Ll24SpkpRsYSorGc06Z5r8LwhzcJvTmiQ==}
+  '@tanstack/react-db@0.1.79':
+    resolution: {integrity: sha512-xjJbSjlQCWBQYLQBEopAsq+riz9Ci1QauTQ8W1M5D40cOe0Su2Y50XeyF2qnT6CWhFTvlrhwdCBmV5irefpIgw==}
     peerDependencies:
       react: 19.3.0-canary-80b1cab3-20260331
 
@@ -2733,9 +2733,6 @@ packages:
   '@tanstack/start-storage-context@1.166.23':
     resolution: {integrity: sha512-3vEdiYRMx+r+Q7Xqxj3YmADPIpMm7fkKxDa8ITwodGXiw+SBJCGkpBXGUWjOXyXkIyqGHKM5UrReTcVUTkmaug==}
     engines: {node: '>=22.12.0'}
-
-  '@tanstack/store@0.8.1':
-    resolution: {integrity: sha512-PtOisLjUZPz5VyPRSCGjNOlwTvabdTBQ2K80DpVL1chGVr35WRxfeavAPdNq6pm/t7F8GhoR2qtmkkqtCEtHYw==}
 
   '@tanstack/store@0.9.3':
     resolution: {integrity: sha512-8reSzl/qGWGGVKhBoxXPMWzATSbZLZFWhwBAFO9NAyp0TxzfBP0mIrGb8CP8KrQTmvzXlR/vFPPUrHTLBGyFyw==}
@@ -8575,25 +8572,25 @@ snapshots:
       estraverse: 5.3.0
       picomatch: 4.0.3
 
-  '@tanstack/db-ivm@0.1.17(typescript@5.9.3)':
+  '@tanstack/db-ivm@0.1.18(typescript@5.9.3)':
     dependencies:
       fractional-indexing: 3.2.0
       sorted-btree: 1.8.1
       typescript: 5.9.3
 
-  '@tanstack/db@0.5.33(typescript@5.9.3)':
+  '@tanstack/db@0.6.1(typescript@5.9.3)':
     dependencies:
       '@standard-schema/spec': 1.1.0
-      '@tanstack/db-ivm': 0.1.17(typescript@5.9.3)
+      '@tanstack/db-ivm': 0.1.18(typescript@5.9.3)
       '@tanstack/pacer-lite': 0.2.1
       typescript: 5.9.3
 
-  '@tanstack/electric-db-collection@0.2.41(typescript@5.9.3)':
+  '@tanstack/electric-db-collection@0.2.43(typescript@5.9.3)':
     dependencies:
       '@electric-sql/client': 1.5.14
       '@standard-schema/spec': 1.1.0
-      '@tanstack/db': 0.5.33(typescript@5.9.3)
-      '@tanstack/store': 0.8.1
+      '@tanstack/db': 0.6.1(typescript@5.9.3)
+      '@tanstack/store': 0.9.3
       debug: 4.4.3
     transitivePeerDependencies:
       - supports-color
@@ -8611,9 +8608,9 @@ snapshots:
 
   '@tanstack/pacer-lite@0.2.1': {}
 
-  '@tanstack/react-db@0.1.77(react@19.3.0-canary-80b1cab3-20260331)(typescript@5.9.3)':
+  '@tanstack/react-db@0.1.79(react@19.3.0-canary-80b1cab3-20260331)(typescript@5.9.3)':
     dependencies:
-      '@tanstack/db': 0.5.33(typescript@5.9.3)
+      '@tanstack/db': 0.6.1(typescript@5.9.3)
       react: 19.3.0-canary-80b1cab3-20260331
       use-sync-external-store: 1.6.0(react@19.3.0-canary-80b1cab3-20260331)
     transitivePeerDependencies:
@@ -8785,8 +8782,6 @@ snapshots:
   '@tanstack/start-storage-context@1.166.23':
     dependencies:
       '@tanstack/router-core': 1.168.9
-
-  '@tanstack/store@0.8.1': {}
 
   '@tanstack/store@0.9.3': {}
 

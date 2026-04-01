@@ -1,5 +1,5 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { createCollection } from "@tanstack/react-db";
+import { BTreeIndex, createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
 
 import { AgentMessageModel, UserMessageModel } from "@naamio/schema/domain";
@@ -32,6 +32,8 @@ export type Message = Schema.Schema.Type<typeof Message>;
 
 export const messageCollection = createCollection(
 	electricCollectionOptions({
+		autoIndex: "eager",
+		defaultIndexType: BTreeIndex,
 		getKey: (item) => item.id,
 		schema: Schema.toStandardSchemaV1(Message),
 		shapeOptions: {

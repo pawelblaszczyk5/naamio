@@ -1,6 +1,6 @@
 {
 	"$schema": "./node_modules/turbo/schema.json",
-	"ui": "tui",
+	"global": { "ui": "tui", },
 	"tasks": {
 		"lint": { "dependsOn": ["^build"] },
 		"lint:fix": { "dependsOn": ["^build"], "cache": false },
@@ -16,6 +16,15 @@
 		"//#format:fix": { "dependsOn": [], "cache": false },
 		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },
 		"//#sort-package-json:fix": { "dependsOn": [], "cache": false },
-		"//#spellcheck": { "dependsOn": [] }
-	}
+		"//#spellcheck": { "dependsOn": [], }
+	},
+	"futureFlags": {
+		"globalConfiguration": true,
+		"affectedUsingTaskInputs": true,
+		"watchUsingTaskInputs": true,
+		"filterUsingTasks": true,
+		"pruneIncludesGlobalFiles": true,
+		"errorsOnlyShowHash": true,
+		"longerSignatureKey": true
+	},
 }

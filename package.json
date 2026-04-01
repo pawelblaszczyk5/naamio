@@ -42,7 +42,7 @@
 		"prettier-plugin-sql": "^0.20.0",
 		"sort-package-json": "^3.6.1",
 		"taze": "^19.11.0",
-		"turbo": "^2.8.20",
+		"turbo": "^2.9.3",
 		"typescript": "catalog:"
 	},
 	"packageManager": "pnpm@10.33.0",

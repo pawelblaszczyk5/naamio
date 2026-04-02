@@ -1,4 +1,4 @@
-import { BTreeIndex, createCollection, localOnlyCollectionOptions } from "@tanstack/react-db";
+import { BasicIndex, createCollection, localOnlyCollectionOptions } from "@tanstack/react-db";
 import { Schema } from "effect";
 
 import { ConversationModel } from "@naamio/schema/domain";
@@ -15,7 +15,7 @@ export type ConversationState = Schema.Schema.Type<typeof ConversationState>;
 export const conversationStateCollection = createCollection(
 	localOnlyCollectionOptions({
 		autoIndex: "eager",
-		defaultIndexType: BTreeIndex,
+		defaultIndexType: BasicIndex,
 		getKey: (conversationState) => conversationState.id,
 		schema: Schema.toStandardSchemaV1(ConversationState),
 	}),

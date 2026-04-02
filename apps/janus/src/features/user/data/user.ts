@@ -1,5 +1,5 @@
 import { electricCollectionOptions } from "@tanstack/electric-db-collection";
-import { BTreeIndex, createCollection } from "@tanstack/react-db";
+import { BasicIndex, createCollection } from "@tanstack/react-db";
 import { Schema, String } from "effect";
 
 import { UserModel } from "@naamio/schema/domain";
@@ -15,7 +15,7 @@ export type User = Schema.Schema.Type<typeof User>;
 export const userCollection = createCollection(
 	electricCollectionOptions({
 		autoIndex: "eager",
-		defaultIndexType: BTreeIndex,
+		defaultIndexType: BasicIndex,
 		getKey: (item) => item.id,
 		schema: Schema.toStandardSchemaV1(User),
 		shapeOptions: {

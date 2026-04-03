@@ -17,7 +17,7 @@ catalog:
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
   "@effect/ai-openai": 4.0.0-beta.43
-  "@effect/language-service": ^0.84.2
+  "@effect/language-service": ^0.84.3
   "@effect/platform-node": 4.0.0-beta.43
   "@effect/platform-node-shared": 4.0.0-beta.43
   "@effect/sql-pg": 4.0.0-beta.43
@@ -29,10 +29,10 @@ catalog:
   "@stylexjs/eslint-plugin": ^0.18.2
   "@stylexjs/postcss-plugin": ^0.18.2
   "@stylexjs/stylex": ^0.18.2
-  "@types/node": ^25.5.0
+  "@types/node": ^25.5.2
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@vitejs/devtools": ^0.1.11
+  "@vitejs/devtools": ^0.1.13
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: ^1.0.0
   effect: 4.0.0-beta.43

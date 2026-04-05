@@ -1,6 +1,5 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import canonical from "eslint-plugin-canonical";
 import preferArrowFunctions from "eslint-plugin-prefer-arrow-functions";
 import fp from "eslint-plugin-fp";
 import importX from "eslint-plugin-import-x";
@@ -56,13 +55,7 @@ export default defineConfig({
 	name: "naamio/core",
 	files: ["**/*.{ts,tsx,js,jsx}"],
 	linterOptions: { reportUnusedDisableDirectives: "error", reportUnusedInlineConfigs: "error" },
-	plugins: {
-		canonical,
-		"prefer-arrow-functions": preferArrowFunctions,
-		fp,
-		"import-x": importX,
-		"no-secrets": noSecrets,
-	},
+	plugins: { "prefer-arrow-functions": preferArrowFunctions, fp, "import-x": importX, "no-secrets": noSecrets },
 	settings: { "import-x/extensions": [".ts", ".tsx", ".js"], "import-x/resolver": { typescript: true, node: true } },
 	extends: [
 		gitignore(),
@@ -190,9 +183,6 @@ export default defineConfig({
 				],
 			},
 		],
-
-		// canonical
-		"canonical/filename-no-index": "error",
 
 		// @eslint-community/eslint-comments overrides
 		"@eslint-community/eslint-comments/disable-enable-pair": ["error", { allowWholeFile: true }],

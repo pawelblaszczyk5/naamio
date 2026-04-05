@@ -14,7 +14,10 @@ const plugin = { configs: {} as Plugin["configs"], rules } satisfies Plugin;
 
 // eslint-disable-next-line fp/no-mutating-assign -- this way I can easily extend defined configs, without getting into circular references
 Object.assign(plugin.configs, {
-	recommended: { plugins: { naamio: plugin }, rules: { "naamio/enforce-stylex-call-as-last-prop": "error" as const } },
+	recommended: {
+		plugins: { naamio: plugin },
+		rules: { "naamio/enforce-stylex-call-as-last-prop": "error" as const, "naamio/no-index-file": "error" as const },
+	},
 });
 
 export default plugin;

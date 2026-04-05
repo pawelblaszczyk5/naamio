@@ -16,6 +16,6 @@ export default defineConfig(
 	{ files: ["vite.config.ts", "lingui.config.ts"], rules: { "import-x/no-default-export": "off" } },
 	{
 		files: ["src/routes/**"],
-		rules: { "canonical/filename-no-index": "off", "@typescript-eslint/no-use-before-define": "off" },
+		rules: { "naamio/no-index-file": "off", "@typescript-eslint/no-use-before-define": "off" },
 	},
 );

@@ -1,9 +1,8 @@
-import { createRule } from "#src/utils.js";
 import path from "node:path";
 
-export type ParsedName = { base: string; dir: string; ext: string; name: string };
+import { createRule } from "#src/utils.js";
 
-export const parseFilename = (filename: string) => {
+const parseFilename = (filename: string) => {
 	const resolvedFilename = path.resolve(filename);
 	const extension = path.extname(resolvedFilename);
 

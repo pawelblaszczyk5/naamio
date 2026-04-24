@@ -6,7 +6,7 @@ import fontItalicLatinExtendedUrl from "@fontsource-variable/ibm-plex-sans/files
 import fontStandardLatinUrl from "@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2";
 import { setupI18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { HeadContent, Outlet, Scripts, useMatch } from "@tanstack/react-router";
+import { HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { useState } from "react";
 import { preload } from "react-dom";
 
@@ -16,33 +16,11 @@ import { assert } from "@naamio/assert";
 import { IconSpritesheetContext } from "@naamio/design-system/components/icon";
 import iconsSpritesheet from "@naamio/design-system/icons-spritesheet.svg";
 
-import { useUserLanguageSsrSafe } from "#src/features/user/data/queries.js";
+import { useDocumentLanguage } from "#src/lib/shell/use-document-language.js";
 import { messages as englishMessages } from "#src/locales/en-US.po";
 import { messages as polishMessages } from "#src/locales/pl-PL.po";
 
 import stylesheetHref from "#src/styles.css?url";
-
-const FALLBACK_LANGUAGE = "en-US";
-
-const useLanguage = (): UserModel["language"] => {
-	const homeMatch = useMatch({ from: "/_home/{$language}", shouldThrow: false });
-	const appMatch = useMatch({ from: "/app", shouldThrow: false });
-	const userLanguage = useUserLanguageSsrSafe();
-
-	if (homeMatch) {
-		if (homeMatch.status === "notFound") {
-			return FALLBACK_LANGUAGE;
-		}
-
-		return homeMatch.params.language;
-	}
-
-	if (appMatch) {
-		return userLanguage ?? FALLBACK_LANGUAGE;
-	}
-
-	return FALLBACK_LANGUAGE;
-};
 
 const createI18nInstanceForLanguage = (language: UserModel["language"]) => {
 	const i18n = setupI18n();
@@ -56,7 +34,7 @@ const createI18nInstanceForLanguage = (language: UserModel["language"]) => {
 };
 
 export const RootDocument = () => {
-	const language = useLanguage();
+	const language = useDocumentLanguage();
 
 	assert(language, "Language must always be provided default value");
 

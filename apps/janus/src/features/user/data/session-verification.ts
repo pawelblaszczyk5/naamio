@@ -5,25 +5,24 @@ import { useEffect } from "react";
 
 import { assert } from "@naamio/assert";
 
-import { useSessionId } from "#src/features/user/data/queries.js";
-import { sessionCacheCollection } from "#src/features/user/data/session-cache.js";
-import { sessionCollection } from "#src/features/user/data/session.js";
+import { localSessionsCollection, sessionsCollection } from "#src/features/user/data/collections.js";
+import { useSessionId } from "#src/features/user/data/shared.js";
 import { verifySession } from "#src/features/user/procedures/mod.js";
 
 const SESSION_VERIFICATION_POLLING_INTERVAL = Duration.minutes(10);
 const SESSION_STALE_AGE = Duration.divideUnsafe(SESSION_VERIFICATION_POLLING_INTERVAL, 2);
 
-const getSessionCacheEntry = () => sessionCacheCollection.state.values().toArray().at(0);
+const getLocalSession = () => localSessionsCollection.state.values().toArray().at(0);
 
-export const checkSessionCacheStatus = () => {
-	const entry = getSessionCacheEntry();
+export const checkLocalSessionStatus = () => {
+	const localSession = getLocalSession();
 
-	if (!entry) {
+	if (!localSession) {
 		return "MISSING";
 	}
 
 	const nowDateTime = DateTime.makeUnsafe(new Date());
-	const entryStaleCutoff = DateTime.makeUnsafe(entry.refreshedAt).pipe(DateTime.addDuration(SESSION_STALE_AGE));
+	const entryStaleCutoff = DateTime.makeUnsafe(localSession.refreshedAt).pipe(DateTime.addDuration(SESSION_STALE_AGE));
 
 	const isStale = DateTime.isGreaterThanOrEqualTo(nowDateTime, entryStaleCutoff);
 
@@ -34,34 +33,34 @@ export const checkSessionCacheStatus = () => {
 	return "FRESH";
 };
 
-export const hydrateSessionCache = async () => {
+export const preloadLocalSession = async () => {
 	const session = await verifySession();
 
 	if (!session) {
 		throw redirect({ to: "/" });
 	}
 
-	sessionCacheCollection.insert({ id: session.id, refreshedAt: new Date() });
+	localSessionsCollection.insert({ id: session.id, refreshedAt: new Date() });
 };
 
-export const refreshSessionCache = async () => {
+export const refreshLocalSession = async () => {
 	const session = await verifySession();
 
-	const entry = getSessionCacheEntry();
+	const entry = getLocalSession();
 
-	assert(entry, "Session cache entry must exist in poller");
+	assert(entry, "Local session must exist in poller");
 	assert(session, "Missing session should be caught by electric sync before hitting refresher");
 
 	if (entry.id === session.id) {
-		sessionCacheCollection.update(session.id, (draft) => {
+		localSessionsCollection.update(session.id, (draft) => {
 			draft.refreshedAt = new Date();
 		});
 
 		return;
 	}
 
-	sessionCacheCollection.delete(entry.id);
-	sessionCacheCollection.insert({ id: session.id, refreshedAt: new Date() });
+	localSessionsCollection.delete(entry.id);
+	localSessionsCollection.insert({ id: session.id, refreshedAt: new Date() });
 };
 
 export const useSessionVerificationPoller = () => {
@@ -73,22 +72,22 @@ export const useSessionVerificationPoller = () => {
 		},
 		query: (q) =>
 			q
-				.from({ session: sessionCollection })
+				.from({ session: sessionsCollection })
 				.where(({ session }) => eq(session.id, sessionId))
 				.findOne(),
 	});
 
 	useEffect(() => {
 		const interval = setInterval(async () => {
-			const sessionCacheStatus = checkSessionCacheStatus();
+			const localSessionStatus = checkLocalSessionStatus();
 
-			assert(sessionCacheStatus !== "MISSING", "Session cache entry can't be missing when running poller");
+			assert(localSessionStatus !== "MISSING", "Local session can't be missing when running poller");
 
-			if (sessionCacheStatus === "FRESH") {
+			if (localSessionStatus === "FRESH") {
 				return;
 			}
 
-			await refreshSessionCache();
+			await refreshLocalSession();
 		}, Duration.toMillis(SESSION_VERIFICATION_POLLING_INTERVAL));
 
 		return () => {

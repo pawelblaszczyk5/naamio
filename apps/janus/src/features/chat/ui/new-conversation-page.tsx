@@ -4,7 +4,7 @@ import { useId, useRef, useState } from "react";
 
 import stylex from "@naamio/stylex";
 
-import { useStartConversation } from "#src/features/chat/data/mutations.js";
+import { useStartConversation } from "#src/features/chat/data/conversation-lifecycle.js";
 
 const styles = stylex.create({
 	form: { columnGap: 16, display: "flex", flexDirection: "column", rowGap: 16 },

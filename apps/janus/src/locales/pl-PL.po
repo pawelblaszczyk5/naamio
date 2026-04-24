@@ -13,103 +13,103 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/chat/ui/chat-layout.tsx:33
+#: src/features/chat/ui/chat-layout.tsx:47
 #: src/features/home/ui/home-layout.tsx:31
 msgid "Hello world!"
 msgstr "Witaj świecie!"
 
-#: src/features/chat/ui/chat-layout.tsx:35
+#: src/features/chat/ui/chat-layout.tsx:49
 #: src/features/home/ui/home-layout.tsx:33
 msgid "Home"
 msgstr "Strona główna"
 
-#: src/features/chat/ui/chat-layout.tsx:38
+#: src/features/chat/ui/chat-layout.tsx:52
 #: src/features/home/ui/home-layout.tsx:37
 msgid "App"
 msgstr "Aplikacja"
 
-#: src/features/chat/ui/chat-layout.tsx:41
-#: src/features/user/ui/settings-page.tsx:32
+#: src/features/chat/ui/chat-layout.tsx:55
+#: src/features/user/ui/settings-page.tsx:120
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: src/features/chat/ui/chat-layout.tsx:47
+#: src/features/chat/ui/chat-layout.tsx:61
 msgid "No conversations yet"
 msgstr "Brak konwersacji"
 
-#: src/features/chat/ui/chat-layout.tsx:57
+#: src/features/chat/ui/chat-layout.tsx:71
 msgid "Waiting for title..."
 msgstr "Oczekiwanie na tytuł..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:59
-msgid "Content"
-msgstr "Treść"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:74
-msgid "Reasoning..."
-msgstr "Rozumowanie.."
-
-#: src/features/chat/ui/existing-conversation-page.tsx:94
-msgid "Regenerate"
-msgstr "Regeneruj"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:101
-msgid "Message from agent"
-msgstr "Wiadomość od agenta"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:105
-msgid "Failed during generation"
-msgstr "Błąd podczas generowania"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:110
-msgid "Correctly finished"
-msgstr "Poprawnie zakończona"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:115
-msgid "Generation in progress"
-msgstr "Generowanie w trakcie"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:122
-msgid "Interrupt"
-msgstr "Przerwij"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:128
-msgid "Generation interrupted"
-msgstr "Przerwano generowanie"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:161
-msgid "Message from user"
-msgstr "Wiadomość od użytkownika"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:165
-msgid "New content for message"
-msgstr "Nowa treść wiadomości"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:179
-msgid "Edit message"
-msgstr "Edytuj wiadomość"
-
-#: src/features/chat/ui/existing-conversation-page.tsx:227
+#: src/features/chat/ui/existing-conversation-page.tsx:149
 msgid "Conversation \"{title}\""
 msgstr "Konwersacja \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:228
+#: src/features/chat/ui/existing-conversation-page.tsx:150
 msgid "Conversation without title (yet)"
 msgstr "Konwersacja bez tytułu (jeszcze)"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:232
+#: src/features/chat/ui/existing-conversation-page.tsx:154
 msgid "New title for conversation"
 msgstr "Nowy tytuł dla konwersacji"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:282
+#: src/features/chat/ui/existing-conversation-page.tsx:194
 #: src/features/chat/ui/new-conversation-page.tsx:53
 msgid "Message content"
 msgstr "Treść wiadomości"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:301
+#: src/features/chat/ui/existing-conversation-page.tsx:213
 #: src/features/chat/ui/new-conversation-page.tsx:72
 msgid "Send"
 msgstr "Wyślij"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:47
+msgid "Regenerate"
+msgstr "Regeneruj"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:54
+msgid "Message from agent"
+msgstr "Wiadomość od agenta"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:58
+msgid "Failed during generation"
+msgstr "Błąd podczas generowania"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:63
+msgid "Correctly finished"
+msgstr "Poprawnie zakończona"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:68
+msgid "Generation in progress"
+msgstr "Generowanie w trakcie"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:75
+msgid "Interrupt"
+msgstr "Przerwij"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:81
+msgid "Generation interrupted"
+msgstr "Przerwano generowanie"
+
+#: src/features/chat/ui/messages-list/message-from-user.tsx:43
+msgid "Message from user"
+msgstr "Wiadomość od użytkownika"
+
+#: src/features/chat/ui/messages-list/message-from-user.tsx:47
+msgid "New content for message"
+msgstr "Nowa treść wiadomości"
+
+#: src/features/chat/ui/messages-list/message-from-user.tsx:61
+msgid "Edit message"
+msgstr "Edytuj wiadomość"
+
+#: src/features/chat/ui/messages-list/message-part-content.tsx:32
+msgid "Content"
+msgstr "Treść"
+
+#: src/features/chat/ui/messages-list/message-part-content.tsx:47
+msgid "Reasoning..."
+msgstr "Rozumowanie.."
 
 #: src/features/chat/ui/new-conversation-page.tsx:39
 msgid "Chat page"
@@ -158,62 +158,62 @@ msgstr "Strona rejestracji"
 msgid "Device name"
 msgstr "Nazwa urządzenia"
 
-#: src/features/user/ui/settings-page.tsx:35
+#: src/features/user/ui/settings-page.tsx:123
 msgid "Your username: {username}"
 msgstr "Twoja nazwa użytkownika: {username}"
 
-#: src/features/user/ui/settings-page.tsx:38
+#: src/features/user/ui/settings-page.tsx:126
 msgid "Your language: {language}"
 msgstr "Twój język: {language}"
 
-#: src/features/user/ui/settings-page.tsx:45
+#: src/features/user/ui/settings-page.tsx:133
 msgid "Change language"
 msgstr "Zmień język"
 
-#: src/features/user/ui/settings-page.tsx:49
+#: src/features/user/ui/settings-page.tsx:137
 msgid "Your user ID: {id}"
 msgstr "Twoje ID użytkownika: {id}"
 
-#: src/features/user/ui/settings-page.tsx:52
+#: src/features/user/ui/settings-page.tsx:140
 msgid "Sessions"
 msgstr "Sesje"
 
-#: src/features/user/ui/settings-page.tsx:59
+#: src/features/user/ui/settings-page.tsx:147
 msgid "Revoke all sessions"
 msgstr "Wyloguj wszystkie sesje"
 
-#: src/features/user/ui/settings-page.tsx:65
+#: src/features/user/ui/settings-page.tsx:153
 msgid "Session for device \"{label}\", expires at {date}"
 msgstr "Sesja dla urządzenia \"{label}\", wygasa {date}"
 
-#: src/features/user/ui/settings-page.tsx:66
+#: src/features/user/ui/settings-page.tsx:154
 msgid "Unknown device"
 msgstr "Nieznane"
 
-#: src/features/user/ui/settings-page.tsx:82
+#: src/features/user/ui/settings-page.tsx:170
 msgid "Sign out"
 msgstr "Wyloguj się"
 
-#: src/features/user/ui/settings-page.tsx:83
+#: src/features/user/ui/settings-page.tsx:171
 msgid "Revoke session"
 msgstr "Wyloguj sesję"
 
-#: src/features/user/ui/settings-page.tsx:85
+#: src/features/user/ui/settings-page.tsx:173
 msgid "Current session"
 msgstr "Obecna sesja"
 
-#: src/features/user/ui/settings-page.tsx:90
+#: src/features/user/ui/settings-page.tsx:178
 msgid "Passkeys"
 msgstr "Passkeys"
 
-#: src/features/user/ui/settings-page.tsx:95
+#: src/features/user/ui/settings-page.tsx:183
 msgid "Passkey named \"{displayName}\", created at {date}."
 msgstr "Passkey o nazwie \"{displayName}\", utworzony {date}."
 
-#: src/features/user/ui/settings-page.tsx:100
+#: src/features/user/ui/settings-page.tsx:188
 msgid "This passkey is backed up."
 msgstr "Ten passkey ma kopię zapasową."
 
-#: src/features/user/ui/settings-page.tsx:101
+#: src/features/user/ui/settings-page.tsx:189
 msgid "This passkey isn't backed up."
 msgstr "Ten passkey nie ma kopii zapasowej."

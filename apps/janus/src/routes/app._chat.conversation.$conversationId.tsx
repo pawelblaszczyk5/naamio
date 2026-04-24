@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Schema } from "effect";
 
-import { Conversation } from "#src/features/chat/data/conversation.js";
-import { setupConversationState } from "#src/features/chat/data/mutations.js";
+import { Conversation } from "#src/features/chat/data/collections.js";
+import { setupConversationState } from "#src/features/chat/data/setup-conversation-state.js";
 import { ExistingConversationPage } from "#src/features/chat/ui/existing-conversation-page.js";
 
 const isConversationId = Schema.is(Conversation.fields.id);

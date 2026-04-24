@@ -1,26 +1,24 @@
-import { and, createOptimisticAction, eq, queryOnce } from "@tanstack/react-db";
+import { createOptimisticAction } from "@tanstack/react-db";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 
-import type { ConversationModel } from "@naamio/schema/domain";
-
 import { assert } from "@naamio/assert";
 
-import { conversationStateCollection } from "#src/features/chat/data/conversation-state.js";
-import { Conversation, conversationCollection } from "#src/features/chat/data/conversation.js";
-import { messagePartCollection, TextMessagePart } from "#src/features/chat/data/message-part.js";
-import { AgentMessage, messageCollection, UserMessage } from "#src/features/chat/data/message.js";
+import {
+	AgentMessage,
+	Conversation,
+	conversationsCollection,
+	conversationsStateCollection,
+	messagePartsCollection,
+	messagesCollection,
+	TextMessagePart,
+	UserMessage,
+} from "#src/features/chat/data/collections.js";
 import {
 	continueConversation,
 	ContinueConversationPayload,
-	deleteConversation,
-	DeleteConversationPayload,
-	editConversationTitle,
-	EditConversationTitlePayload,
 	interruptGeneration,
 	InterruptGenerationPayload,
-	markConversationAsAccessed,
-	MarkConversationAsAccessedPayload,
 	regenerateAnswer,
 	RegenerateAnswerPayload,
 	startConversation,
@@ -37,18 +35,18 @@ export const useStartConversation = () => {
 		mutationFn: async (data, params) => {
 			const result = await callStartConversation({ data: encodePayload(data) });
 
-			conversationStateCollection.utils.acceptMutations(params.transaction);
+			conversationsStateCollection.utils.acceptMutations(params.transaction);
 
 			return Promise.all([
-				conversationCollection.utils.awaitTxId(result.transactionId),
-				messageCollection.utils.awaitTxId(result.transactionId),
-				messagePartCollection.utils.awaitTxId(result.transactionId),
+				conversationsCollection.utils.awaitTxId(result.transactionId),
+				messagesCollection.utils.awaitTxId(result.transactionId),
+				messagePartsCollection.utils.awaitTxId(result.transactionId),
 			]);
 		},
 		onMutate: (data: StartConversationPayload) => {
 			const now = new Date();
 
-			conversationCollection.insert({
+			conversationsCollection.insert({
 				accessedAt: now,
 				createdAt: now,
 				id: data.conversationId,
@@ -59,7 +57,7 @@ export const useStartConversation = () => {
 			const userMessageInput = data.messages[0];
 			const agentMessageInput = data.messages[1];
 
-			messageCollection.insert({
+			messagesCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
 				id: userMessageInput.id,
@@ -67,7 +65,7 @@ export const useStartConversation = () => {
 				role: "USER",
 			});
 
-			messageCollection.insert({
+			messagesCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
 				id: agentMessageInput.id,
@@ -78,7 +76,7 @@ export const useStartConversation = () => {
 			});
 
 			userMessageInput.parts.forEach((part) => {
-				messagePartCollection.insert({
+				messagePartsCollection.insert({
 					createdAt: now,
 					data: part.data,
 					id: part.id,
@@ -87,7 +85,7 @@ export const useStartConversation = () => {
 				});
 			});
 
-			conversationStateCollection.insert({ activeLeafId: agentMessageInput.id, id: data.conversationId });
+			conversationsStateCollection.insert({ activeLeafId: agentMessageInput.id, id: data.conversationId });
 		},
 	});
 
@@ -120,12 +118,12 @@ export const useContinueConversation = () => {
 		mutationFn: async (data, params) => {
 			const result = await callContinueConversation({ data: encodePayload(data) });
 
-			conversationStateCollection.utils.acceptMutations(params.transaction);
+			conversationsStateCollection.utils.acceptMutations(params.transaction);
 
 			return Promise.all([
-				conversationCollection.utils.awaitTxId(result.transactionId),
-				messageCollection.utils.awaitTxId(result.transactionId),
-				messagePartCollection.utils.awaitTxId(result.transactionId),
+				conversationsCollection.utils.awaitTxId(result.transactionId),
+				messagesCollection.utils.awaitTxId(result.transactionId),
+				messagePartsCollection.utils.awaitTxId(result.transactionId),
 			]);
 		},
 		onMutate: (data: ContinueConversationPayload) => {
@@ -134,11 +132,11 @@ export const useContinueConversation = () => {
 			const userMessageInput = data.messages[0];
 			const agentMessageInput = data.messages[1];
 
-			conversationCollection.update(data.conversationId, (draft) => {
+			conversationsCollection.update(data.conversationId, (draft) => {
 				draft.updatedAt = now;
 			});
 
-			messageCollection.insert({
+			messagesCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
 				id: userMessageInput.id,
@@ -146,7 +144,7 @@ export const useContinueConversation = () => {
 				role: "USER",
 			});
 
-			messageCollection.insert({
+			messagesCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
 				id: agentMessageInput.id,
@@ -157,7 +155,7 @@ export const useContinueConversation = () => {
 			});
 
 			userMessageInput.parts.forEach((part) => {
-				messagePartCollection.insert({
+				messagePartsCollection.insert({
 					createdAt: now,
 					data: part.data,
 					id: part.id,
@@ -166,7 +164,7 @@ export const useContinueConversation = () => {
 				});
 			});
 
-			conversationStateCollection.update(data.conversationId, (draft) => {
+			conversationsStateCollection.update(data.conversationId, (draft) => {
 				draft.activeLeafId = agentMessageInput.id;
 			});
 		},
@@ -208,21 +206,21 @@ export const useRegenerateAnswer = () => {
 		mutationFn: async (data, params) => {
 			const result = await callRegenerateAnswer({ data: encodePayload(data) });
 
-			conversationStateCollection.utils.acceptMutations(params.transaction);
+			conversationsStateCollection.utils.acceptMutations(params.transaction);
 
 			return Promise.all([
-				conversationCollection.utils.awaitTxId(result.transactionId),
-				messageCollection.utils.awaitTxId(result.transactionId),
+				conversationsCollection.utils.awaitTxId(result.transactionId),
+				messagesCollection.utils.awaitTxId(result.transactionId),
 			]);
 		},
 		onMutate: (data: RegenerateAnswerPayload) => {
 			const now = new Date();
 
-			conversationCollection.update(data.conversationId, (draft) => {
+			conversationsCollection.update(data.conversationId, (draft) => {
 				draft.updatedAt = now;
 			});
 
-			messageCollection.insert({
+			messagesCollection.insert({
 				conversationId: data.conversationId,
 				createdAt: now,
 				id: data.message.id,
@@ -232,7 +230,7 @@ export const useRegenerateAnswer = () => {
 				status: "IN_PROGRESS",
 			});
 
-			conversationStateCollection.update(data.conversationId, (draft) => {
+			conversationsStateCollection.update(data.conversationId, (draft) => {
 				draft.activeLeafId = data.message.id;
 			});
 		},
@@ -261,10 +259,10 @@ export const useInterruptGeneration = () => {
 		mutationFn: async (data) => {
 			const result = await callInterruptGeneration({ data: encodePayload(data) });
 
-			return messageCollection.utils.awaitTxId(result.transactionId);
+			return messagesCollection.utils.awaitTxId(result.transactionId);
 		},
 		onMutate: (data: InterruptGenerationPayload) => {
-			messageCollection.update(data.messageId, (draft) => {
+			messagesCollection.update(data.messageId, (draft) => {
 				assert(draft.role === "AGENT", "Agent message should always be tied to AgentMessageId");
 
 				draft.status = "INTERRUPTED";
@@ -282,106 +280,4 @@ export const useInterruptGeneration = () => {
 	};
 
 	return handler;
-};
-
-export const useDeleteConversation = () => {
-	const callDeleteConversation = useServerFn(deleteConversation);
-
-	const encodePayload = Schema.encodeSync(DeleteConversationPayload);
-
-	const action = createOptimisticAction({
-		mutationFn: async (data, params) => {
-			const result = await callDeleteConversation({ data: encodePayload(data) });
-
-			conversationStateCollection.utils.acceptMutations(params.transaction);
-
-			return conversationCollection.utils.awaitTxId(result.transactionId);
-		},
-		onMutate: (data: DeleteConversationPayload) => {
-			conversationCollection.delete(data.conversationId);
-			conversationStateCollection.delete(data.conversationId);
-		},
-	});
-
-	const handler = (data: DeleteConversationPayload) => {
-		const transaction = action(data);
-
-		return { transaction };
-	};
-
-	return handler;
-};
-
-export const useEditConversationTitle = () => {
-	const callEditConversationTitle = useServerFn(editConversationTitle);
-
-	const encodePayload = Schema.encodeSync(EditConversationTitlePayload);
-
-	const action = createOptimisticAction({
-		mutationFn: async (data) => {
-			const result = await callEditConversationTitle({ data: encodePayload(data) });
-
-			return conversationCollection.utils.awaitTxId(result.transactionId);
-		},
-		onMutate: (data: EditConversationTitlePayload) => {
-			conversationCollection.update(data.conversationId, (draft) => {
-				draft.title = data.title;
-				draft.updatedAt = new Date();
-			});
-		},
-	});
-
-	const handler = (data: EditConversationTitlePayload) => {
-		const transaction = action(data);
-
-		return { transaction };
-	};
-
-	return handler;
-};
-
-const encodeMarkConversationAsAccessedPayload = Schema.encodeSync(MarkConversationAsAccessedPayload);
-
-const markConversationAsAccessedAction = createOptimisticAction({
-	mutationFn: async (data) => {
-		const result = await markConversationAsAccessed({ data: encodeMarkConversationAsAccessedPayload(data) });
-
-		return conversationCollection.utils.awaitTxId(result.transactionId);
-	},
-	onMutate: (data: MarkConversationAsAccessedPayload) => {
-		conversationCollection.update(data.conversationId, (draft) => {
-			draft.accessedAt = new Date();
-		});
-	},
-});
-
-export const setupConversationState = async (conversationId: ConversationModel["id"]) => {
-	if (conversationStateCollection.has(conversationId)) {
-		return;
-	}
-
-	const conversation = await queryOnce((q) =>
-		q
-			.from({ conversation: conversationCollection })
-			.where(({ conversation }) => eq(conversation.id, conversationId))
-			.findOne(),
-	);
-
-	if (!conversation) {
-		return;
-	}
-
-	markConversationAsAccessedAction({ conversationId });
-
-	const newestAgentMessage = await queryOnce((q) =>
-		q
-			.from({ message: messageCollection })
-			.where(({ message }) => and(eq(message.role, "AGENT"), eq(message.conversationId, conversationId)))
-			.orderBy(({ message }) => message.createdAt, "desc")
-			.findOne(),
-	);
-
-	assert(newestAgentMessage?.role === "AGENT", "Every conversation must have at least one agent message");
-
-	conversationStateCollection.insert({ activeLeafId: newestAgentMessage.id, id: conversationId });
 };

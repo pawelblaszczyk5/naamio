@@ -1,34 +1,29 @@
 import { Trans, useLingui } from "@lingui/react/macro";
+import { createOptimisticAction, eq, useLiveQuery } from "@tanstack/react-db";
 import { Navigate, useParams } from "@tanstack/react-router";
-import { Match } from "effect";
+import { useServerFn } from "@tanstack/react-start";
+import { Schema } from "effect";
 import { useId, useRef, useState } from "react";
 
 import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
-import type { ReasoningMessagePart, TextMessagePart } from "#src/features/chat/data/message-part.js";
-import type { AgentMessage, UserMessage } from "#src/features/chat/data/message.js";
-
 import {
-	useContinueConversation,
-	useDeleteConversation,
-	useEditConversationTitle,
-	useInterruptGeneration,
-	useRegenerateAnswer,
-} from "#src/features/chat/data/mutations.js";
+	conversationsCollection,
+	conversationsStateCollection,
+	messagesCollection,
+} from "#src/features/chat/data/collections.js";
+import { useContinueConversation } from "#src/features/chat/data/conversation-lifecycle.js";
 import {
-	useAgentMessagePartsByMessageId,
-	useConversationById,
-	useConversationStateById,
-	useInflightChunksByMessagePartId,
-	useMessagesByConversationId,
-	useUserMessagePartsByMessageId,
-} from "#src/features/chat/data/queries.js";
+	deleteConversation,
+	DeleteConversationPayload,
+	editConversationTitle,
+	EditConversationTitlePayload,
+} from "#src/features/chat/procedures/mod.js";
+import { MessagesList } from "#src/features/chat/ui/messages-list/mod.js";
 
 const styles = stylex.create({
 	form: { columnGap: 16, display: "flex", flexDirection: "column", inlineSize: 500, rowGap: 16 },
-	messagePartsList: { columnGap: 8, display: "flex", flexDirection: "column", rowGap: 8 },
-	messagesList: { columnGap: 16, display: "flex", flexDirection: "column", overflowY: "auto", rowGap: 16 },
 	root: {
 		blockSize: "100%",
 		columnGap: 32,
@@ -48,161 +43,88 @@ const styles = stylex.create({
 	},
 });
 
-const TextMessagePartContent = ({ messagePart }: { messagePart: TextMessagePart }) => {
-	const existingContent = messagePart.data.content;
-	const inflightChunks = useInflightChunksByMessagePartId(messagePart.id);
+const useDeleteConversation = () => {
+	const callDeleteConversation = useServerFn(deleteConversation);
 
-	const contentToRender = existingContent ?? inflightChunks.map((inflightChunk) => inflightChunk.content).join("");
+	const encodePayload = Schema.encodeSync(DeleteConversationPayload);
 
-	return (
-		<p>
-			<Trans>Content</Trans>
-			<br />
-			{contentToRender}
-		</p>
-	);
+	const action = createOptimisticAction({
+		mutationFn: async (data, params) => {
+			const result = await callDeleteConversation({ data: encodePayload(data) });
+
+			conversationsStateCollection.utils.acceptMutations(params.transaction);
+
+			return conversationsCollection.utils.awaitTxId(result.transactionId);
+		},
+		onMutate: (data: DeleteConversationPayload) => {
+			conversationsCollection.delete(data.conversationId);
+			conversationsStateCollection.delete(data.conversationId);
+		},
+	});
+
+	const handler = (data: DeleteConversationPayload) => {
+		const transaction = action(data);
+
+		return { transaction };
+	};
+
+	return handler;
 };
 
-const ReasoningMessagePartContent = ({ messagePart }: { messagePart: ReasoningMessagePart }) => {
-	const existingContent = messagePart.data.content;
-	const inflightChunks = useInflightChunksByMessagePartId(messagePart.id);
+const useEditConversationTitle = () => {
+	const callEditConversationTitle = useServerFn(editConversationTitle);
 
-	const contentToRender = existingContent ?? inflightChunks.map((inflightChunk) => inflightChunk.content).join("");
+	const encodePayload = Schema.encodeSync(EditConversationTitlePayload);
 
-	return (
-		<p>
-			<Trans>Reasoning...</Trans>
-			<br />
-			{contentToRender}
-		</p>
-	);
-};
+	const action = createOptimisticAction({
+		mutationFn: async (data) => {
+			const result = await callEditConversationTitle({ data: encodePayload(data) });
 
-const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
-	const messageParts = useAgentMessagePartsByMessageId(message.id);
+			return conversationsCollection.utils.awaitTxId(result.transactionId);
+		},
+		onMutate: (data: EditConversationTitlePayload) => {
+			conversationsCollection.update(data.conversationId, (draft) => {
+				draft.title = data.title;
+				draft.updatedAt = new Date();
+			});
+		},
+	});
 
-	const interruptGeneration = useInterruptGeneration();
-	const regenerateAnswer = useRegenerateAnswer();
+	const handler = (data: EditConversationTitlePayload) => {
+		const transaction = action(data);
 
-	const regenerateButton = (
-		<button
-			onClick={() => {
-				regenerateAnswer({ messageToRegenerate: message });
-			}}
-			type="button"
-		>
-			<Trans>Regenerate</Trans>
-		</button>
-	);
+		return { transaction };
+	};
 
-	return (
-		<div>
-			<p>
-				<Trans>Message from agent</Trans>{" "}
-				{Match.value(message.status).pipe(
-					Match.when("ERROR", () => (
-						<span>
-							<Trans>Failed during generation</Trans> {regenerateButton}
-						</span>
-					)),
-					Match.when("FINISHED", () => (
-						<span>
-							<Trans>Correctly finished</Trans> {regenerateButton}
-						</span>
-					)),
-					Match.when("IN_PROGRESS", () => (
-						<span>
-							<Trans>Generation in progress</Trans>{" "}
-							<button
-								onClick={() => {
-									interruptGeneration({ messageToInterrupt: message });
-								}}
-								type="button"
-							>
-								<Trans>Interrupt</Trans>
-							</button>
-						</span>
-					)),
-					Match.when("INTERRUPTED", () => (
-						<span>
-							<Trans>Generation interrupted</Trans> {regenerateButton}
-						</span>
-					)),
-					Match.exhaustive,
-				)}
-			</p>
-			<div {...stylex.props(styles.messagePartsList)}>
-				{messageParts.map((messagePart) =>
-					Match.value(messagePart).pipe(
-						Match.when({ type: "REASONING" }, (messagePart) => (
-							<ReasoningMessagePartContent key={messagePart.id} messagePart={messagePart} />
-						)),
-						Match.when({ type: "TEXT" }, (messagePart) => (
-							<TextMessagePartContent key={messagePart.id} messagePart={messagePart} />
-						)),
-						Match.exhaustive,
-					),
-				)}
-			</div>
-		</div>
-	);
-};
-
-const MessageFromUser = ({ message }: { message: UserMessage }) => {
-	const { t } = useLingui();
-
-	const messageParts = useUserMessagePartsByMessageId(message.id);
-
-	const continueConversation = useContinueConversation();
-
-	return (
-		<div>
-			<p>
-				<Trans>Message from user</Trans>{" "}
-				<button
-					onClick={() => {
-						// eslint-disable-next-line no-alert -- temporary until real UI
-						const newContent = globalThis.prompt(t`New content for message`);
-
-						if (!newContent) {
-							return;
-						}
-
-						continueConversation({
-							content: newContent,
-							conversationId: message.conversationId,
-							previousMessageId: message.parentId,
-						});
-					}}
-					type="button"
-				>
-					<Trans>Edit message</Trans>
-				</button>
-			</p>
-			<div {...stylex.props(styles.messagePartsList)}>
-				{messageParts.map((messagePart) =>
-					Match.value(messagePart).pipe(
-						Match.when({ type: "TEXT" }, (messagePart) => (
-							<TextMessagePartContent key={messagePart.id} messagePart={messagePart} />
-						)),
-						Match.exhaustive,
-					),
-				)}
-			</div>
-		</div>
-	);
+	return handler;
 };
 
 export const ExistingConversationPage = () => {
 	const { t } = useLingui();
+
 	const conversationIdFromParams = useParams({
 		from: "/app/_chat/conversation/$conversationId",
 		select: (params) => params.conversationId,
 	});
 
-	const conversation = useConversationById(conversationIdFromParams);
-	const messages = useMessagesByConversationId(conversationIdFromParams);
-	const conversationState = useConversationStateById(conversationIdFromParams);
+	const { data: conversation } = useLiveQuery(
+		(q) =>
+			q
+				.from({ conversation: conversationsCollection })
+				.where(({ conversation }) => eq(conversation.id, conversationIdFromParams))
+				.findOne(),
+		[conversationIdFromParams],
+	);
+
+	const { data: lastMessage } = useLiveQuery(
+		(q) =>
+			q
+				.from({ message: messagesCollection })
+				.where(({ message }) => eq(message.conversationId, conversationIdFromParams))
+				.orderBy(({ message }) => message.createdAt, "desc")
+				.findOne(),
+		[conversationIdFromParams],
+	);
 
 	const deleteConversation = useDeleteConversation();
 	const editConversationTitle = useEditConversationTitle();
@@ -216,7 +138,7 @@ export const ExistingConversationPage = () => {
 
 	const contentFieldId = `content-field-${id}`;
 
-	if (!conversation || !conversationState) {
+	if (!conversation || !lastMessage) {
 		return <Navigate to="/app" />;
 	}
 
@@ -250,30 +172,20 @@ export const ExistingConversationPage = () => {
 					Delete conversation
 				</button>
 			</h1>
-			<div {...stylex.props(styles.messagesList)}>
-				{messages.map((message) => {
-					if (message.role === "AGENT") {
-						return <MessageFromAgent key={message.id} message={message} />;
-					}
-
-					return <MessageFromUser key={message.id} message={message} />;
-				})}
-			</div>
+			<MessagesList conversationId={conversation.id} />
 			<form
 				onSubmit={(event) => {
 					event.preventDefault();
 
-					const message = messages.at(-1);
+					assert(lastMessage, "At least one message must always exist");
+					assert(lastMessage.role === "AGENT", "Last message must always be from agent");
 
-					assert(message, "At least one message must always exist");
-					assert(message.role === "AGENT", "Last message must always be from agent");
-
-					if (message.status === "IN_PROGRESS") {
+					if (lastMessage.status === "IN_PROGRESS") {
 						return;
 					}
 
 					setContent("");
-					continueConversation({ content, conversationId: conversation.id, previousMessageId: message.id });
+					continueConversation({ content, conversationId: conversation.id, previousMessageId: lastMessage.id });
 				}}
 				ref={formRef}
 				{...stylex.props(styles.form)}

@@ -1,10 +1,11 @@
 import { Trans } from "@lingui/react/macro";
+import { useLiveQuery } from "@tanstack/react-db";
 import { Link, Outlet } from "@tanstack/react-router";
 import { Array } from "effect";
 
 import stylex from "@naamio/stylex";
 
-import { useAvailableConversations } from "#src/features/chat/data/queries.js";
+import { conversationsCollection } from "#src/features/chat/data/collections.js";
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
@@ -25,7 +26,20 @@ const styles = stylex.create({
 
 export const ChatLayout = () => {
 	const language = useLanguage();
-	const conversations = useAvailableConversations();
+
+	const { data: conversations } = useLiveQuery((q) =>
+		q
+			.from({ conversation: conversationsCollection })
+			.fn.select(({ conversation }) => {
+				const lastActivityAt =
+					conversation.updatedAt.getTime() >= conversation.accessedAt.getTime() ?
+						conversation.updatedAt
+					:	conversation.accessedAt;
+
+				return { id: conversation.id, lastActivityAt, title: conversation.title };
+			})
+			.orderBy(({ $selected }) => $selected.lastActivityAt, "desc"),
+	);
 
 	return (
 		<div {...stylex.props(styles.root)}>

@@ -103,8 +103,8 @@ catalogs:
 overrides:
   eslint: ^10.2.1
   eslint-import-resolver-typescript>eslint-plugin-import: '-'
-  react: 19.3.0-canary-80b1cab3-20260331
-  react-dom: 19.3.0-canary-80b1cab3-20260331
+  react: 19.3.0-canary-142cfde8-20260422
+  react-dom: 19.3.0-canary-142cfde8-20260422
   '@tanstack/react-start': 1.167.42
 
 patchedDependencies:
@@ -172,7 +172,7 @@ importers:
         version: 6.0.0
       '@lingui/react':
         specifier: ^6.0.0
-        version: 6.0.0(react@19.3.0-canary-80b1cab3-20260331)
+        version: 6.0.0(react@19.3.0-canary-142cfde8-20260422)
       '@naamio/api':
         specifier: 'workspace:'
         version: link:../../packages/api
@@ -211,13 +211,13 @@ importers:
         version: 0.3.3(typescript@6.0.3)
       '@tanstack/react-db':
         specifier: ^0.1.83
-        version: 0.1.83(react@19.3.0-canary-80b1cab3-20260331)(typescript@6.0.3)
+        version: 0.1.83(react@19.3.0-canary-142cfde8-20260422)(typescript@6.0.3)
       '@tanstack/react-router':
         specifier: ^1.168.23
-        version: 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+        version: 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/react-start':
         specifier: 1.167.42
-        version: 1.167.42(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(vite@8.0.10)
+        version: 1.167.42(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(vite@8.0.10)
       arkregex:
         specifier: ^0.0.5
         version: 0.0.5
@@ -228,11 +228,11 @@ importers:
         specifier: ^4.12.15
         version: 4.12.15
       react:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422
       react-dom:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -413,11 +413,11 @@ importers:
         specifier: 'workspace:'
         version: link:../../packages/stylex
       react:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422
       react-dom:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -442,13 +442,13 @@ importers:
         version: 0.2.3(@babel/core@7.29.0)(@babel/runtime@7.28.6)(rolldown@1.0.0-rc.17)(vite@8.0.10)
       '@storybook/addon-a11y':
         specifier: ^10.3.5
-        version: 10.3.5(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))
+        version: 10.3.5(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))
       '@storybook/addon-docs':
         specifier: ^10.3.5
-        version: 10.3.5(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
+        version: 10.3.5(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
       '@storybook/react-vite':
         specifier: ^10.3.5
-        version: 10.3.5(esbuild@0.27.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(typescript@6.0.3)(vite@8.0.10)
+        version: 10.3.5(esbuild@0.27.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(typescript@6.0.3)(vite@8.0.10)
       '@stylexjs/babel-plugin':
         specifier: 'catalog:'
         version: 0.18.3
@@ -481,7 +481,7 @@ importers:
         version: 14.2.6
       storybook:
         specifier: ^10.3.5
-        version: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+        version: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -547,11 +547,11 @@ importers:
         specifier: 'workspace:'
         version: link:../stylex
       react:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422
       react-dom:
-        specifier: 19.3.0-canary-80b1cab3-20260331
-        version: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+        specifier: 19.3.0-canary-142cfde8-20260422
+        version: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
     devDependencies:
       '@naamio/eslint-config':
         specifier: 'workspace:'
@@ -1900,7 +1900,7 @@ packages:
     engines: {node: '>=22.19.0'}
     peerDependencies:
       babel-plugin-macros: 2 || 3
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
     peerDependenciesMeta:
       babel-plugin-macros:
         optional: true
@@ -1928,7 +1928,7 @@ packages:
     resolution: {integrity: sha512-f++rKLQgUVYDAtECQ6fn/is15GkEH9+nZPM3MS0RcxVqoTfawHvDlSCH7JbMhAM6uJ32v3eXLvLmLvjGu7PTQw==}
     peerDependencies:
       '@types/react': '>=16'
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   '@messageformat/date-skeleton@1.1.0':
     resolution: {integrity: sha512-rmGAfB1tIPER+gh3p/RgA+PVeRE/gxuQ2w4snFWPF5xtb5mbWR7Cbw7wCOftcUypbD6HVoxrVdyyghPm3WzP5A==}
@@ -2720,29 +2720,29 @@ packages:
   '@storybook/icons@2.0.1':
     resolution: {integrity: sha512-/smVjw88yK3CKsiuR71vNgWQ9+NuY2L+e8X7IMrFjexjm6ZR8ULrV2DRkTA61aV6ryefslzHEGDInGpnNeIocg==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
 
   '@storybook/react-dom-shim@10.3.5':
     resolution: {integrity: sha512-Gw8R7XZm0zSUH0XAuxlQJhmizsLzyD6x00KOlP6l7oW9eQHXGfxg3seNDG3WrSAcW07iP1/P422kuiriQlOv7g==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
       storybook: ^10.3.5
 
   '@storybook/react-vite@10.3.5':
     resolution: {integrity: sha512-UB5sJHeh26bfd8sNMx2YPGYRYmErIdTRaLOT28m4bykQIa1l9IgVktsYg/geW7KsJU0lXd3oTbnUjLD+enpi3w==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
       storybook: ^10.3.5
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
 
   '@storybook/react@10.3.5':
     resolution: {integrity: sha512-tpLTLaVGoA6fLK3ReyGzZUricq7lyPaV2hLPpj5wqdXLV/LpRtAHClUpNoPDYSBjlnSjL81hMZijbkGC3mA+gw==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
       storybook: ^10.3.5
       typescript: '>= 4.9.x'
     peerDependenciesMeta:
@@ -2799,29 +2799,29 @@ packages:
   '@tanstack/react-db@0.1.83':
     resolution: {integrity: sha512-LNV0C7OARazooT2hLTr5anXo6tbEyX2rHZQ0j9HZ/iNBI+Tx/y19o5Nd3ooyAYz5LEHJJxb8iM8ZTVB/diGnXw==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   '@tanstack/react-router@1.168.23':
     resolution: {integrity: sha512-+GblieDnutG6oipJJPNtRJjrWF8QTZEG/l0532+BngFkVK48oHNOcvIkSoAFYftK1egAwM7KBxXsb0Ou+X6/MQ==}
     engines: {node: '>=20.19'}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
 
   '@tanstack/react-start-client@1.166.40':
     resolution: {integrity: sha512-ynjRe8YjaPfcQNEaQ3nE2/zIZNCdyVGew0pHK5lCorqEy3z/YuiKlj5ZXPmel7XGw0XoKsDIH2eXnUtTbIwpjg==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
 
   '@tanstack/react-start-rsc@0.0.21':
     resolution: {integrity: sha512-Q7T8HIGgCIrbMkdep5bmh/uPRK/3OZQ11FODZoMOvyrgTho/MA4kuUFSREvz2LdlXYrz3WxhSSLJnAtpPKJn5w==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
       '@vitejs/plugin-rsc': '>=0.5.20'
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
     peerDependenciesMeta:
       '@vitejs/plugin-rsc':
         optional: true
@@ -2830,8 +2830,8 @@ packages:
     resolution: {integrity: sha512-Z0kyOeraz5nHE7DYh4brYetYoXvh3wjNNI3fJZ0+OzGODfNUgZtEQg/f1g1f1kj64irgWIuWTVPi3rOwiPSzYw==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
 
   '@tanstack/react-start@1.167.42':
     resolution: {integrity: sha512-zobCIyeChagJg/dwWOWYofseucV618++DOIT/HB6tfnKKKnCw15vO9jhkGD5c+SBUNLyG4km+Y4ynvTIkaseVg==}
@@ -2839,8 +2839,8 @@ packages:
     hasBin: true
     peerDependencies:
       '@vitejs/plugin-rsc': '*'
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
       vite: '>=7.0.0'
     peerDependenciesMeta:
       '@vitejs/plugin-rsc':
@@ -2849,8 +2849,8 @@ packages:
   '@tanstack/react-store@0.9.3':
     resolution: {integrity: sha512-y2iHd/N9OkoQbFJLUX1T9vbc2O9tjH0pQRgTcx1/Nz4IlwLvkgpuglXUx+mXt0g5ZDFrEeDnONPqkbfxXJKwRg==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422
 
   '@tanstack/router-core@1.168.15':
     resolution: {integrity: sha512-Wr0424NDtD8fT/uALobMZ9DdcfsTyXtW5IPR++7zvW8/7RaIOeaqXpVDId8ywaGtqPWLWOfaUg2zUtYtukoXYA==}
@@ -5923,10 +5923,10 @@ packages:
     resolution: {integrity: sha512-+NRMYs2DyTP4/tqWz371Oo50JqmWltR1h2gcdgUMAWZJIAvrd0/SqlCfx7tpzpl/s36rzw6qH2MjoNrxtRNYhA==}
     engines: {node: ^20.9.0 || >=22}
 
-  react-dom@19.3.0-canary-80b1cab3-20260331:
-    resolution: {integrity: sha512-2ZzMn9N7N1bBIsIqfJogUXuCau2dQ2XsG8mjVXnIA/a3ZMGQtCoq1DZv2kfqtrIu4MB+kYclx3/X5vEMiE4oeQ==}
+  react-dom@19.3.0-canary-142cfde8-20260422:
+    resolution: {integrity: sha512-ieiW+EIvJ5hc4d+0wSQmNenkiAD5MRRiioAXtwf+h6XzCzhLZ4o3XbviJcbM0E8MmFd0gF9xi2hFmv/wxoVbSA==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -5934,8 +5934,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react@19.3.0-canary-80b1cab3-20260331:
-    resolution: {integrity: sha512-+s8c5xiJ1D/rlYL5N9wlpmRysL1DYjoEmc/gfVewnczx9JJMfdHHoAA6dHedqqlxpmSHwzobOCIDYcqY32lK2Q==}
+  react@19.3.0-canary-142cfde8-20260422:
+    resolution: {integrity: sha512-M6hCOD1QAAsjgXjWw9kmR2xAKgwhkPwKGfY8zos5zqx5S8xCRLp5qwiG9YbFHNGyXSyO9NLMIx9oJarBQsw8kA==}
     engines: {node: '>=0.10.0'}
 
   read-yaml-file@2.1.0:
@@ -6086,8 +6086,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  scheduler@0.28.0-canary-80b1cab3-20260331:
-    resolution: {integrity: sha512-MYz+B5ApGH8jb1SvZMkylGsBaRGtxoLtGVZNj7kw+YgmD1zINNc5XbLAjhc0/c2pt3xIs00u+8No/Ghl6E8eEQ==}
+  scheduler@0.28.0-canary-142cfde8-20260422:
+    resolution: {integrity: sha512-E/hR3A+kktYD3k4DiYmnRbU2dytPYtiNjpsTLZN1TV+1/yrivjGQZAAcI380MffxFcEkqEjJWPuF642NrJHTyQ==}
 
   scslre@0.3.0:
     resolution: {integrity: sha512-3A6sD0WYP7+QrjbfNA2FN3FsOaGGFoekCVgTyypy53gPxhbkCIjtO6YWgdrfM+n/8sI8JeXZOIxsHjMTNxQ4nQ==}
@@ -6632,7 +6632,7 @@ packages:
   use-sync-external-store@1.6.0:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
     peerDependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   uuid@13.0.0:
     resolution: {integrity: sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==}
@@ -7969,11 +7969,11 @@ snapshots:
       '@messageformat/parser': 5.1.1
       js-sha256: 0.10.1
 
-  '@lingui/react@6.0.0(react@19.3.0-canary-80b1cab3-20260331)':
+  '@lingui/react@6.0.0(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
       '@lingui/babel-plugin-lingui-macro': 6.0.0
       '@lingui/core': 6.0.0
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
     transitivePeerDependencies:
       - supports-color
 
@@ -7991,11 +7991,11 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  '@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.3.0-canary-80b1cab3-20260331)':
+  '@mdx-js/react@3.1.1(@types/react@19.2.14)(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
       '@types/mdx': 2.0.13
       '@types/react': 19.2.14
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   '@messageformat/date-skeleton@1.1.0': {}
 
@@ -8583,21 +8583,21 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@storybook/addon-a11y@10.3.5(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))':
+  '@storybook/addon-a11y@10.3.5(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))':
     dependencies:
       '@storybook/global': 5.0.0
       axe-core: 4.11.1
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
 
-  '@storybook/addon-docs@10.3.5(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)':
+  '@storybook/addon-docs@10.3.5(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)':
     dependencies:
-      '@mdx-js/react': 3.1.1(@types/react@19.2.14)(react@19.3.0-canary-80b1cab3-20260331)
-      '@storybook/csf-plugin': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
-      '@storybook/icons': 2.0.1(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
-      '@storybook/react-dom-shim': 10.3.5(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@mdx-js/react': 3.1.1(@types/react@19.2.14)(react@19.3.0-canary-142cfde8-20260422)
+      '@storybook/csf-plugin': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
+      '@storybook/icons': 2.0.1(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
+      '@storybook/react-dom-shim': 10.3.5(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - '@types/react'
@@ -8606,10 +8606,10 @@ snapshots:
       - vite
       - webpack
 
-  '@storybook/builder-vite@10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)':
+  '@storybook/builder-vite@10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)':
     dependencies:
-      '@storybook/csf-plugin': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@storybook/csf-plugin': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       ts-dedent: 2.2.0
       vite: 8.0.10(@types/node@25.6.0)(@vitejs/devtools@0.1.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
     transitivePeerDependencies:
@@ -8617,9 +8617,9 @@ snapshots:
       - rollup
       - webpack
 
-  '@storybook/csf-plugin@10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)':
+  '@storybook/csf-plugin@10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)':
     dependencies:
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       unplugin: 2.3.11
     optionalDependencies:
       esbuild: 0.27.3
@@ -8628,30 +8628,30 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/icons@2.0.1(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)':
+  '@storybook/icons@2.0.1(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
 
-  '@storybook/react-dom-shim@10.3.5(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))':
+  '@storybook/react-dom-shim@10.3.5(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))':
     dependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
 
-  '@storybook/react-vite@10.3.5(esbuild@0.27.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(typescript@6.0.3)(vite@8.0.10)':
+  '@storybook/react-vite@10.3.5(esbuild@0.27.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(typescript@6.0.3)(vite@8.0.10)':
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.7.0(typescript@6.0.3)(vite@8.0.10)
       '@rollup/pluginutils': 5.3.0(rollup@4.59.0)
-      '@storybook/builder-vite': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
-      '@storybook/react': 10.3.5(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(typescript@6.0.3)
+      '@storybook/builder-vite': 10.3.5(esbuild@0.27.3)(rollup@4.59.0)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
+      '@storybook/react': 10.3.5(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(typescript@6.0.3)
       empathic: 2.0.0
       magic-string: 0.30.21
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
       react-docgen: 8.0.2
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
       resolve: 1.22.11
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       tsconfig-paths: 4.2.0
       vite: 8.0.10(@types/node@25.6.0)(@vitejs/devtools@0.1.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
     transitivePeerDependencies:
@@ -8661,15 +8661,15 @@ snapshots:
       - typescript
       - webpack
 
-  '@storybook/react@10.3.5(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(typescript@6.0.3)':
+  '@storybook/react@10.3.5(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(typescript@6.0.3)':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 10.3.5(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))
-      react: 19.3.0-canary-80b1cab3-20260331
+      '@storybook/react-dom-shim': 10.3.5(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))
+      react: 19.3.0-canary-142cfde8-20260422
       react-docgen: 8.0.2
       react-docgen-typescript: 2.4.0(typescript@6.0.3)
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
-      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
+      storybook: 10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -8760,45 +8760,45 @@ snapshots:
 
   '@tanstack/pacer-lite@0.2.1': {}
 
-  '@tanstack/react-db@0.1.83(react@19.3.0-canary-80b1cab3-20260331)(typescript@6.0.3)':
+  '@tanstack/react-db@0.1.83(react@19.3.0-canary-142cfde8-20260422)(typescript@6.0.3)':
     dependencies:
       '@tanstack/db': 0.6.5(typescript@6.0.3)
-      react: 19.3.0-canary-80b1cab3-20260331
-      use-sync-external-store: 1.6.0(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      use-sync-external-store: 1.6.0(react@19.3.0-canary-142cfde8-20260422)
     transitivePeerDependencies:
       - typescript
 
-  '@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)':
+  '@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
       '@tanstack/history': 1.161.6
-      '@tanstack/react-store': 0.9.3(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-store': 0.9.3(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/router-core': 1.168.15
       isbot: 5.1.35
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
 
-  '@tanstack/react-start-client@1.166.40(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)':
+  '@tanstack/react-start-client@1.166.40(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
-      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/router-core': 1.168.15
       '@tanstack/start-client-core': 1.167.17
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
 
-  '@tanstack/react-start-rsc@0.0.21(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(vite@8.0.10)':
+  '@tanstack/react-start-rsc@0.0.21(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(vite@8.0.10)':
     dependencies:
-      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
-      '@tanstack/react-start-server': 1.166.41(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
+      '@tanstack/react-start-server': 1.166.41(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/router-core': 1.168.15
       '@tanstack/router-utils': 1.161.6
       '@tanstack/start-client-core': 1.167.17
       '@tanstack/start-fn-stubs': 1.161.6
-      '@tanstack/start-plugin-core': 1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
+      '@tanstack/start-plugin-core': 1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
       '@tanstack/start-server-core': 1.167.19
       '@tanstack/start-storage-context': 1.166.29
       pathe: 2.0.3
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
     transitivePeerDependencies:
       - '@rsbuild/core'
       - crossws
@@ -8807,31 +8807,31 @@ snapshots:
       - vite-plugin-solid
       - webpack
 
-  '@tanstack/react-start-server@1.166.41(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)':
+  '@tanstack/react-start-server@1.166.41(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
       '@tanstack/history': 1.161.6
-      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/router-core': 1.168.15
       '@tanstack/start-client-core': 1.167.17
       '@tanstack/start-server-core': 1.167.19
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
     transitivePeerDependencies:
       - crossws
 
-  '@tanstack/react-start@1.167.42(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(vite@8.0.10)':
+  '@tanstack/react-start@1.167.42(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(vite@8.0.10)':
     dependencies:
-      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
-      '@tanstack/react-start-client': 1.166.40(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
-      '@tanstack/react-start-rsc': 0.0.21(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)(vite@8.0.10)
-      '@tanstack/react-start-server': 1.166.41(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
+      '@tanstack/react-start-client': 1.166.40(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
+      '@tanstack/react-start-rsc': 0.0.21(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)(vite@8.0.10)
+      '@tanstack/react-start-server': 1.166.41(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@tanstack/router-utils': 1.161.7
       '@tanstack/start-client-core': 1.167.17
-      '@tanstack/start-plugin-core': 1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
+      '@tanstack/start-plugin-core': 1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
       '@tanstack/start-server-core': 1.167.19
       pathe: 2.0.3
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
       vite: 8.0.10(@types/node@25.6.0)(@vitejs/devtools@0.1.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - '@rsbuild/core'
@@ -8840,12 +8840,12 @@ snapshots:
       - vite-plugin-solid
       - webpack
 
-  '@tanstack/react-store@0.9.3(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)':
+  '@tanstack/react-store@0.9.3(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)':
     dependencies:
       '@tanstack/store': 0.9.3
-      react: 19.3.0-canary-80b1cab3-20260331
-      react-dom: 19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331)
-      use-sync-external-store: 1.6.0(react@19.3.0-canary-80b1cab3-20260331)
+      react: 19.3.0-canary-142cfde8-20260422
+      react-dom: 19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422)
+      use-sync-external-store: 1.6.0(react@19.3.0-canary-142cfde8-20260422)
 
   '@tanstack/router-core@1.168.15':
     dependencies:
@@ -8867,7 +8867,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tanstack/router-plugin@1.167.22(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)':
+  '@tanstack/router-plugin@1.167.22(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-syntax-jsx': 7.28.6(@babel/core@7.29.0)
@@ -8883,7 +8883,7 @@ snapshots:
       unplugin: 2.3.11
       zod: 3.25.76
     optionalDependencies:
-      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@tanstack/react-router': 1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       vite: 8.0.10(@types/node@25.6.0)(@vitejs/devtools@0.1.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3)
     transitivePeerDependencies:
       - supports-color
@@ -8925,7 +8925,7 @@ snapshots:
 
   '@tanstack/start-fn-stubs@1.161.6': {}
 
-  '@tanstack/start-plugin-core@1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)':
+  '@tanstack/start-plugin-core@1.167.35(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)':
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/core': 7.29.0
@@ -8933,7 +8933,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.40
       '@tanstack/router-core': 1.168.15
       '@tanstack/router-generator': 1.166.32
-      '@tanstack/router-plugin': 1.167.22(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331))(vite@8.0.10)
+      '@tanstack/router-plugin': 1.167.22(@tanstack/react-router@1.168.23(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422))(vite@8.0.10)
       '@tanstack/router-utils': 1.161.6
       '@tanstack/start-client-core': 1.167.17
       '@tanstack/start-server-core': 1.167.19
@@ -12574,16 +12574,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331):
+  react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422):
     dependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
-      scheduler: 0.28.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
+      scheduler: 0.28.0-canary-142cfde8-20260422
 
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
 
-  react@19.3.0-canary-80b1cab3-20260331: {}
+  react@19.3.0-canary-142cfde8-20260422: {}
 
   read-yaml-file@2.1.0:
     dependencies:
@@ -12785,7 +12785,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  scheduler@0.28.0-canary-80b1cab3-20260331: {}
+  scheduler@0.28.0-canary-142cfde8-20260422: {}
 
   scslre@0.3.0:
     dependencies:
@@ -12960,10 +12960,10 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
-  storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331):
+  storybook@10.3.5(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422):
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/icons': 2.0.1(react-dom@19.3.0-canary-80b1cab3-20260331(react@19.3.0-canary-80b1cab3-20260331))(react@19.3.0-canary-80b1cab3-20260331)
+      '@storybook/icons': 2.0.1(react-dom@19.3.0-canary-142cfde8-20260422(react@19.3.0-canary-142cfde8-20260422))(react@19.3.0-canary-142cfde8-20260422)
       '@testing-library/jest-dom': 6.9.1
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
       '@vitest/expect': 3.2.4
@@ -12973,7 +12973,7 @@ snapshots:
       open: 10.2.0
       recast: 0.23.11
       semver: 7.7.4
-      use-sync-external-store: 1.6.0(react@19.3.0-canary-80b1cab3-20260331)
+      use-sync-external-store: 1.6.0(react@19.3.0-canary-142cfde8-20260422)
       ws: 8.20.0
     optionalDependencies:
       prettier: 3.8.3
@@ -13369,9 +13369,9 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-sync-external-store@1.6.0(react@19.3.0-canary-80b1cab3-20260331):
+  use-sync-external-store@1.6.0(react@19.3.0-canary-142cfde8-20260422):
     dependencies:
-      react: 19.3.0-canary-80b1cab3-20260331
+      react: 19.3.0-canary-142cfde8-20260422
 
   uuid@13.0.0: {}
 

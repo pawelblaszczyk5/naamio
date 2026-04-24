@@ -39,8 +39,8 @@ catalog:
   effect: 4.0.0-beta.44
   eslint: ^10.2.1
   fontaine: ^0.8.0
-  react: 19.3.0-canary-80b1cab3-20260331
-  react-dom: 19.3.0-canary-80b1cab3-20260331
+  react: 19.3.0-canary-142cfde8-20260422
+  react-dom: 19.3.0-canary-142cfde8-20260422
   tsc-alias: ^1.8.16
   type-fest: ^5.6.0
   typescript: ^6.0.3

@@ -1,18 +1,5 @@
 import { PgClient } from "@effect/sql-pg";
-import {
-	Array,
-	DateTime,
-	Duration,
-	Effect,
-	Layer,
-	Match,
-	Option,
-	Order,
-	pipe,
-	Schema,
-	ServiceMap,
-	Struct,
-} from "effect";
+import { Array, Context, DateTime, Duration, Effect, Layer, Match, Option, Order, pipe, Schema, Struct } from "effect";
 import { Model } from "effect/unstable/schema";
 import { SqlSchema } from "effect/unstable/sql";
 import { DurableClock, Workflow } from "effect/unstable/workflow";
@@ -55,7 +42,7 @@ import { WorkflowEngineLayer } from "#src/lib/cluster/mod.js";
 import { DatabaseLayer } from "#src/lib/database/mod.js";
 import { createGetTransactionId } from "#src/lib/database/utilities.js";
 
-export class Conversation extends ServiceMap.Service<
+export class Conversation extends Context.Service<
 	Conversation,
 	{
 		readonly system: {
@@ -590,7 +577,7 @@ export class Conversation extends ServiceMap.Service<
 					insertInflightChunk: Effect.fn("@naamio/mercury/Conversation#insertInflightChunk")(function* (inflightChunk) {
 						yield* insertInflightChunk({
 							content: inflightChunk.content,
-							id: InflightChunkModel.fields.id.makeUnsafe(yield* generateId()),
+							id: InflightChunkModel.fields.id.make(yield* generateId()),
 							messagePartId: inflightChunk.messagePartId,
 							sequence: inflightChunk.sequence,
 							userId: inflightChunk.userId,
@@ -598,7 +585,7 @@ export class Conversation extends ServiceMap.Service<
 					}),
 					insertReasoningMessagePart: Effect.fn("@naamio/mercury/Conversation#insertReasoningMessagePart")(
 						function* (part) {
-							const id = ReasoningMessagePartModel.fields.id.makeUnsafe(yield* generateId());
+							const id = ReasoningMessagePartModel.fields.id.make(yield* generateId());
 
 							yield* insertMessageParts([
 								{
@@ -615,7 +602,7 @@ export class Conversation extends ServiceMap.Service<
 						},
 					),
 					insertTextMessagePart: Effect.fn("@naamio/mercury/Conversation#insertTextMessagePart")(function* (part) {
-						const id = TextMessagePartModel.fields.id.makeUnsafe(yield* generateId());
+						const id = TextMessagePartModel.fields.id.make(yield* generateId());
 
 						yield* insertMessageParts([
 							{

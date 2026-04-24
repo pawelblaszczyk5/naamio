@@ -1,9 +1,9 @@
-import { ServiceMap } from "effect";
+import { Context } from "effect";
 import { HttpApiError, HttpApiMiddleware, HttpApiSecurity, OpenApi } from "effect/unstable/httpapi";
 
 import type { SessionModel } from "@naamio/schema/domain";
 
-export class CurrentSession extends ServiceMap.Service<
+export class CurrentSession extends Context.Service<
 	CurrentSession,
 	Pick<SessionModel, "expiresAt" | "id" | "userId">
 >()("@naamio/api/CurrentSession") {}

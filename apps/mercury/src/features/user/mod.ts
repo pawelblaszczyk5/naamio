@@ -1,5 +1,5 @@
 import { PgClient } from "@effect/sql-pg";
-import { Cron, DateTime, Duration, Effect, Layer, Option, Schema, ServiceMap, Struct } from "effect";
+import { Context, Cron, DateTime, Duration, Effect, Layer, Option, Schema, Struct } from "effect";
 import { ClusterCron } from "effect/unstable/cluster";
 import { SqlSchema } from "effect/unstable/sql";
 
@@ -17,7 +17,7 @@ export class UsernameTakenError extends Schema.TaggedErrorClass<UsernameTakenErr
 	"@naamio/mercury/User/UsernameTakenError",
 )("UsernameTakenError", {}) {}
 
-export class User extends ServiceMap.Service<
+export class User extends Context.Service<
 	User,
 	{
 		readonly system: {
@@ -112,8 +112,8 @@ export class User extends ServiceMap.Service<
 							return yield* new UsernameTakenError();
 						}
 
-						const id = UserModel.fields.id.makeUnsafe(yield* generateId());
-						const webAuthnId = UserModel.fields.webAuthnId.makeUnsafe(yield* generateId());
+						const id = UserModel.fields.id.make(yield* generateId());
+						const webAuthnId = UserModel.fields.webAuthnId.make(yield* generateId());
 
 						yield* insertUser({
 							confirmedAt: Option.none(),

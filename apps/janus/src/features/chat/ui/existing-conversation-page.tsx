@@ -26,15 +26,16 @@ import {
 } from "#src/features/chat/data/queries.js";
 
 const styles = stylex.create({
-	form: { display: "flex", flexDirection: "column", gap: 16, inlineSize: 500 },
-	messagePartsList: { display: "flex", flexDirection: "column", gap: 8 },
-	messagesList: { display: "flex", flexDirection: "column", gap: 16, overflowY: "auto" },
+	form: { columnGap: 16, display: "flex", flexDirection: "column", inlineSize: 500, rowGap: 16 },
+	messagePartsList: { columnGap: 8, display: "flex", flexDirection: "column", rowGap: 8 },
+	messagesList: { columnGap: 16, display: "flex", flexDirection: "column", overflowY: "auto", rowGap: 16 },
 	root: {
 		blockSize: "100%",
+		columnGap: 32,
 		display: "grid",
-		gap: 32,
 		gridTemplateRows: "auto minmax(0, 1fr) auto",
 		inlineSize: "100%",
+		rowGap: 32,
 	},
 	textarea: {
 		borderColor: "black",

@@ -13,13 +13,14 @@ const styles = stylex.create({
 		blockSize: "100%",
 		borderColor: "#626262",
 		borderInlineEndWidth: 1,
+		columnGap: 16,
 		display: "flex",
 		flexDirection: "column",
-		gap: 16,
 		inlineSize: 240,
 		padding: 32,
+		rowGap: 16,
 	},
-	root: { blockSize: "100dvh", display: "flex", gap: 24 },
+	root: { blockSize: "100dvh", columnGap: 24, display: "flex", rowGap: 24 },
 });
 
 export const ChatLayout = () => {

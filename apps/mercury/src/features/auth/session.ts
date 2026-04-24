@@ -1,5 +1,5 @@
 import { PgClient } from "@effect/sql-pg";
-import { Config, DateTime, Duration, Effect, Layer, Option, Redacted, Schema, ServiceMap, Struct } from "effect";
+import { Config, Context, DateTime, Duration, Effect, Layer, Option, Redacted, Schema, Struct } from "effect";
 import { SqlSchema } from "effect/unstable/sql";
 import { customAlphabet } from "nanoid";
 
@@ -25,7 +25,7 @@ export class MissingSessionError extends Schema.TaggedErrorClass<MissingSessionE
 	"@naamio/mercury/Session/MissingSessionError",
 )("MissingSessionError", {}) {}
 
-export class Session extends ServiceMap.Service<
+export class Session extends Context.Service<
 	Session,
 	{
 		readonly system: {
@@ -145,7 +145,7 @@ export class Session extends ServiceMap.Service<
 			return Session.of({
 				system: {
 					create: Effect.fn("@naamio/mercury/Session#create")(function* (data) {
-						const id = SessionModel.fields.id.makeUnsafe(yield* generateId());
+						const id = SessionModel.fields.id.make(yield* generateId());
 						const expiresAt = yield* DateTime.now.pipe(Effect.map(DateTime.addDuration(SESSION_EXPIRATION_DURATION)));
 						const value = generateSessionValue();
 						const signature = yield* generateHmacSignature(value, SESSION_VALUE_SECRET);

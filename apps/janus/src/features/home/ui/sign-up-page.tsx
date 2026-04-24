@@ -15,7 +15,7 @@ import {
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 
 const styles = stylex.create({
-	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
+	form: { alignItems: "flex-start", columnGap: 8, display: "flex", flexDirection: "column", rowGap: 8 },
 	input: { borderColor: "black", borderStyle: "solid", borderWidth: 1 },
 });
 
@@ -47,9 +47,9 @@ export const SignUpPage = () => {
 
 					const result = await callGenerateRegistrationOptions({
 						data: encodeGenerateRegistrationOptionsPayload({
-							displayName: GenerateRegistrationOptionsPayload.fields.displayName.makeUnsafe(displayName),
+							displayName: GenerateRegistrationOptionsPayload.fields.displayName.make(displayName),
 							language,
-							username: GenerateRegistrationOptionsPayload.fields.username.makeUnsafe(username),
+							username: GenerateRegistrationOptionsPayload.fields.username.make(username),
 						}),
 					});
 

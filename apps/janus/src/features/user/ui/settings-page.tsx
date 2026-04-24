@@ -15,7 +15,7 @@ export const SettingsPage = () => {
 	const sessions = useSessions();
 	const passkeys = usePasskeys();
 
-	const { i18n, t } = useLingui();
+	const { t } = useLingui();
 
 	const language = useLanguage();
 
@@ -23,6 +23,8 @@ export const SettingsPage = () => {
 	const revokeAllSessions = useRevokeAllSessions();
 	const revokeSession = useRevokeSession();
 	const signOut = useSignOut();
+
+	const formatter = Intl.DateTimeFormat(language);
 
 	return (
 		<div>
@@ -62,7 +64,7 @@ export const SettingsPage = () => {
 					<li key={session.id}>
 						<Trans>
 							Session for device "{{ label: session.deviceLabel ?? t`Unknown device` }}", expires at{" "}
-							{{ date: i18n.date(session.expiresAt) }}
+							{{ date: formatter.format(session.expiresAt) }}
 						</Trans>{" "}
 						<button
 							onClick={() => {
@@ -92,7 +94,7 @@ export const SettingsPage = () => {
 					<li key={passkey.id}>
 						<Trans>
 							Passkey named "{{ displayName: passkey.displayName }}", created at{" "}
-							{{ date: i18n.date(passkey.createdAt) }}.
+							{{ date: formatter.format(passkey.createdAt) }}.
 						</Trans>{" "}
 						{passkey.backedUp ?
 							<Trans>This passkey is backed up.</Trans>

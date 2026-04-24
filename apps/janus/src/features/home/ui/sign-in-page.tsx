@@ -15,7 +15,7 @@ import {
 } from "#src/features/home/procedures/mod.js";
 
 const styles = stylex.create({
-	form: { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: 8 },
+	form: { alignItems: "flex-start", columnGap: 8, display: "flex", flexDirection: "column", rowGap: 8 },
 	input: { borderColor: "black", borderStyle: "solid", borderWidth: 1 },
 });
 
@@ -69,7 +69,7 @@ export const SignInPage = () => {
 
 					const result = await callGenerateAuthenticationOptions({
 						data: encodeGenerateAuthenticationOptionsPayload({
-							username: GenerateAuthenticationOptionsPayload.fields.username.members[0].makeUnsafe(username),
+							username: GenerateAuthenticationOptionsPayload.fields.username.members[0].make(username),
 						}),
 					});
 

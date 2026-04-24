@@ -2,7 +2,7 @@ import type { Statement } from "effect/unstable/sql";
 
 import { NodeHttpClient } from "@effect/platform-node";
 import { PgClient } from "@effect/sql-pg";
-import { Config, Effect, Layer, Redacted, Schema, ServiceMap } from "effect";
+import { Config, Context, Effect, Layer, Redacted, Schema } from "effect";
 import { Headers, HttpClient, HttpClientRequest, HttpServerResponse } from "effect/unstable/http";
 
 import type { ElectricProtocolQuery } from "@naamio/schema/api";
@@ -21,7 +21,7 @@ export class ShapeProxyError extends Schema.TaggedErrorClass<ShapeProxyError>(
 	"@naamio/mercury/Electric/ShapeProxyError",
 )("ShapeProxyError", {}) {}
 
-export class Electric extends ServiceMap.Service<
+export class Electric extends Context.Service<
 	Electric,
 	{
 		readonly viewer: {

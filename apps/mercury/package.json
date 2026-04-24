@@ -27,7 +27,7 @@
 		"@naamio/schema": "workspace:",
 		"@simplewebauthn/server": "^13.3.0",
 		"effect": "catalog:",
-		"nanoid": "^5.1.7",
+		"nanoid": "^5.1.9",
 		"tsx": "^4.21.0"
 	},
 	"devDependencies": {

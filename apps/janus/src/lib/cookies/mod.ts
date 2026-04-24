@@ -72,7 +72,7 @@ export const setSessionCookie = Effect.fn(function* (token: SessionCookie["token
 
 	const signedEncodedData = yield* cookieSigner.encode(
 		SessionCookieJson,
-		SessionCookie.makeUnsafe({ token }),
+		SessionCookie.make({ token }),
 		yield* SESSION_COOKIE_SECRET,
 	);
 

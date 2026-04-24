@@ -1,5 +1,5 @@
 import { NodeHttpClient } from "@effect/platform-node";
-import { Config, Effect, Layer, Option, ServiceMap } from "effect";
+import { Config, Context, Effect, Layer, Option } from "effect";
 import { HttpClient, HttpClientRequest } from "effect/unstable/http";
 import { HttpApiClient } from "effect/unstable/httpapi";
 
@@ -13,7 +13,7 @@ type Groups = (typeof NaamioApi)["groups"][string];
 
 type ApiId = (typeof NaamioApi)["identifier"];
 
-export class NaamioHttpClient extends ServiceMap.Service<NaamioHttpClient, HttpClient.HttpClient>()(
+export class NaamioHttpClient extends Context.Service<NaamioHttpClient, HttpClient.HttpClient>()(
 	"@naamio/janus/NaamioHttpClient",
 ) {
 	static layer = Layer.effect(
@@ -41,10 +41,9 @@ export class NaamioHttpClient extends ServiceMap.Service<NaamioHttpClient, HttpC
 	).pipe(Layer.provide(NodeHttpClient.layerNodeHttp)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
 }
 
-export class NaamioUrlBuilder extends ServiceMap.Service<
-	NaamioUrlBuilder,
-	HttpApiClient.UrlBuilder<typeof NaamioApi>
->()("@naamio/janus/NaamioUrlBuilder") {
+export class NaamioUrlBuilder extends Context.Service<NaamioUrlBuilder, HttpApiClient.UrlBuilder<typeof NaamioApi>>()(
+	"@naamio/janus/NaamioUrlBuilder",
+) {
 	static layer = Layer.effect(
 		this,
 		Effect.gen(function* () {
@@ -53,7 +52,7 @@ export class NaamioUrlBuilder extends ServiceMap.Service<
 	) satisfies Layer.Layer<NaamioUrlBuilder, unknown>;
 }
 
-export class NaamioApiClient extends ServiceMap.Service<
+export class NaamioApiClient extends Context.Service<
 	NaamioApiClient,
 	Effect.Success<ReturnType<typeof HttpApiClient.make<ApiId, Groups>>>
 >()("@naamio/janus/NaamioApiClient") {

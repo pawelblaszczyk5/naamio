@@ -1,4 +1,4 @@
-import { Effect, Layer, ServiceMap } from "effect";
+import { Context, Effect, Layer } from "effect";
 
 import type { ConversationModel, TransactionId } from "@naamio/schema/domain";
 
@@ -25,7 +25,7 @@ import { Conversation } from "#src/features/chat/conversation.js";
 import { ConversationGenerationManagerNetworkingError } from "#src/features/chat/errors.js";
 import { ClusterRunnerLayer } from "#src/lib/cluster/mod.js";
 
-export class Chat extends ServiceMap.Service<
+export class Chat extends Context.Service<
 	Chat,
 	{
 		readonly viewer: {

@@ -9,6 +9,7 @@ import {
 } from "@simplewebauthn/server";
 import {
 	Config,
+	Context,
 	Cron,
 	DateTime,
 	Duration,
@@ -19,7 +20,6 @@ import {
 	Option,
 	Redacted,
 	Schema,
-	ServiceMap,
 	Struct,
 } from "effect";
 import { ClusterCron } from "effect/unstable/cluster";
@@ -52,7 +52,7 @@ export class MissingPasskeyError extends Schema.TaggedErrorClass<MissingPasskeyE
 	"@naamio/mercury/WebAuthn/MissingPasskeyError",
 )("MissingPasskeyError", {}) {}
 
-export class WebAuthn extends ServiceMap.Service<
+export class WebAuthn extends Context.Service<
 	WebAuthn,
 	{
 		readonly system: {
@@ -295,7 +295,7 @@ export class WebAuthn extends ServiceMap.Service<
 								Effect.catchTag("SchemaError", Effect.die),
 							);
 
-							const challengeId = WebAuthnAuthenticationChallengeModel.fields.id.makeUnsafe(yield* generateId());
+							const challengeId = WebAuthnAuthenticationChallengeModel.fields.id.make(yield* generateId());
 
 							const challengeExpiration = yield* DateTime.now.pipe(
 								Effect.map((dateTime) => DateTime.addDuration(dateTime, CHALLENGE_TIMEOUT)),
@@ -329,7 +329,7 @@ export class WebAuthn extends ServiceMap.Service<
 								Effect.catchTag("SchemaError", Effect.die),
 							);
 
-							const challengeId = WebAuthnRegistrationChallengeModel.fields.id.makeUnsafe(yield* generateId());
+							const challengeId = WebAuthnRegistrationChallengeModel.fields.id.make(yield* generateId());
 
 							const challengeExpiration = yield* DateTime.now.pipe(
 								Effect.map((dateTime) => DateTime.addDuration(dateTime, CHALLENGE_TIMEOUT)),
@@ -367,7 +367,7 @@ export class WebAuthn extends ServiceMap.Service<
 								}
 
 								const maybePasskey = yield* findPasskeyByCredentialIdForVerification(
-									PasskeyModel.fields.credentialId.makeUnsafe(data.authenticationResponse.id),
+									PasskeyModel.fields.credentialId.make(data.authenticationResponse.id),
 								).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 								if (Option.isNone(maybePasskey)) {
@@ -464,17 +464,17 @@ export class WebAuthn extends ServiceMap.Service<
 									return yield* new FailedVerificationError();
 								}
 
-								const passkeyId = PasskeyModel.fields.id.makeUnsafe(yield* generateId());
+								const passkeyId = PasskeyModel.fields.id.make(yield* generateId());
 								const encodedPublicKey = Encoding.encodeBase64(
 									verificationResult.registrationInfo.credential.publicKey,
 								);
 
 								yield* insertPasskey({
-									aaguid: PasskeyModel.fields.aaguid.makeUnsafe(verificationResult.registrationInfo.aaguid),
+									aaguid: PasskeyModel.fields.aaguid.make(verificationResult.registrationInfo.aaguid),
 									backedUp: verificationResult.registrationInfo.credentialBackedUp,
 									counter: verificationResult.registrationInfo.credential.counter,
 									createdAt: undefined,
-									credentialId: PasskeyModel.fields.credentialId.makeUnsafe(
+									credentialId: PasskeyModel.fields.credentialId.make(
 										verificationResult.registrationInfo.credential.id,
 									),
 									deviceType: Match.value(verificationResult.registrationInfo.credentialDeviceType).pipe(

@@ -14,7 +14,7 @@ it.effect(
 	"Should support basic back and forth flow",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
@@ -33,7 +33,7 @@ it.effect(
 	"Should work with multiple secrets",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
@@ -53,7 +53,7 @@ it.effect(
 	"Should always use latest secret for encoding",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 		const secrets = Array.make(secret, Redacted.make("EXAMPLE_SUPER_SECURE_SECRET_BUT_DIFFERENT"));
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secrets);
@@ -68,7 +68,7 @@ it.effect(
 	"Should not return data if signature does not match",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
@@ -82,7 +82,7 @@ it.effect(
 	"Should not return data if different secret is used",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 
 		const decoded = yield* cookieSigner.decode(
@@ -99,7 +99,7 @@ it.effect(
 	"Should not return data if schema does not match",
 	Effect.fn(function* () {
 		const cookieSigner = yield* CookieSigner;
-		const data = ExampleSchema.makeUnsafe({ bar: "Hello world!", foo: 5 });
+		const data = ExampleSchema.make({ bar: "Hello world!", foo: 5 });
 
 		const encoded = yield* cookieSigner.encode(ExampleSchemaJson, data, secret);
 

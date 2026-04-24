@@ -16,37 +16,37 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.43
-  "@effect/language-service": ^0.84.3
-  "@effect/platform-node": 4.0.0-beta.43
-  "@effect/platform-node-shared": 4.0.0-beta.43
-  "@effect/sql-pg": 4.0.0-beta.43
-  "@effect/vitest": 4.0.0-beta.43
-  "@electric-sql/client": ^1.5.14
+  "@effect/ai-openai": 4.0.0-beta.44
+  "@effect/language-service": ^0.85.1
+  "@effect/platform-node": 4.0.0-beta.44
+  "@effect/platform-node-shared": 4.0.0-beta.44
+  "@effect/sql-pg": 4.0.0-beta.44
+  "@effect/vitest": 4.0.0-beta.44
+  "@electric-sql/client": ^1.5.15
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
-  "@rolldown/plugin-babel": ^0.2.2
-  "@stylexjs/babel-plugin": ^0.18.2
-  "@stylexjs/eslint-plugin": ^0.18.2
-  "@stylexjs/postcss-plugin": ^0.18.2
-  "@stylexjs/stylex": ^0.18.2
-  "@types/node": ^25.5.2
+  "@rolldown/plugin-babel": ^0.2.3
+  "@stylexjs/babel-plugin": ^0.18.3
+  "@stylexjs/eslint-plugin": ^0.18.3
+  "@stylexjs/postcss-plugin": ^0.18.3
+  "@stylexjs/stylex": ^0.18.3
+  "@types/node": ^25.6.0
   "@types/react": ^19.2.14
   "@types/react-dom": ^19.2.3
-  "@typescript-eslint/utils": ^8.58.0
-  "@vitejs/devtools": ^0.1.13
+  "@typescript-eslint/utils": ^8.59.0
+  "@vitejs/devtools": ^0.1.15
   "@vitejs/plugin-react": ^6.0.1
   babel-plugin-react-compiler: ^1.0.0
-  effect: 4.0.0-beta.43
-  eslint: ^10.2.0
+  effect: 4.0.0-beta.44
+  eslint: ^10.2.1
   fontaine: ^0.8.0
   react: 19.3.0-canary-80b1cab3-20260331
   react-dom: 19.3.0-canary-80b1cab3-20260331
   tsc-alias: ^1.8.16
-  type-fest: ^5.5.0
-  typescript: ^6.0.2
-  vite: ^8.0.7
-  vitest: ^4.1.3
-  wait-on: ^9.0.4
+  type-fest: ^5.6.0
+  typescript: ^6.0.3
+  vite: ^8.0.10
+  vitest: ^4.1.5
+  wait-on: ^9.0.5
 
 disallowWorkspaceCycles: true
 engineStrict: true
@@ -54,18 +54,17 @@ linkWorkspacePackages: true
 managePackageManagerVersions: true
 
 overrides:
-  "@typescript-eslint/utils": "catalog:"
   eslint: "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-  vite: "catalog:"
+  "@tanstack/react-start": 1.167.42
 
 packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
-  "@stylexjs/eslint-plugin@0.18.2": patches/@stylexjs__eslint-plugin.patch
+  "@stylexjs/eslint-plugin@0.18.3": patches/@stylexjs__eslint-plugin.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

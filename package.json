@@ -35,17 +35,17 @@
 	},
 	"devDependencies": {
 		"@cspell/dict-pl_pl": "^3.0.6",
-		"actions-up": "^1.13.0",
+		"actions-up": "^1.14.1",
 		"cspell": "^10.0.0",
-		"prettier": "^3.8.1",
+		"prettier": "^3.8.3",
 		"prettier-plugin-embed": "^0.5.1",
 		"prettier-plugin-sql": "^0.20.0",
 		"sort-package-json": "^3.6.1",
 		"taze": "^19.11.0",
-		"turbo": "^2.9.5",
+		"turbo": "^2.9.6",
 		"typescript": "catalog:"
 	},
-	"packageManager": "pnpm@10.33.0",
+	"packageManager": "pnpm@10.33.2",
 	"engines": {
 		"node": "24.14.0"
 	}

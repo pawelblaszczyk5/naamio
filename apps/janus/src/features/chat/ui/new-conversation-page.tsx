@@ -7,8 +7,8 @@ import stylex from "@naamio/stylex";
 import { useStartConversation } from "#src/features/chat/data/mutations.js";
 
 const styles = stylex.create({
-	form: { display: "flex", flexDirection: "column", gap: 16 },
-	root: { display: "flex", flexDirection: "column", gap: 32 },
+	form: { columnGap: 16, display: "flex", flexDirection: "column", rowGap: 16 },
+	root: { columnGap: 32, display: "flex", flexDirection: "column", rowGap: 32 },
 	textarea: {
 		borderColor: "black",
 		borderStyle: "solid",

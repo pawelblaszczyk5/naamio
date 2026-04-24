@@ -92,10 +92,10 @@ export const useStartConversation = () => {
 	});
 
 	const handler = (data: { content: string }) => {
-		const conversationId = Conversation.fields.id.makeUnsafe(generateId());
-		const userMessageId = UserMessage.fields.id.makeUnsafe(generateId());
-		const userTextMessagePartId = TextMessagePart.fields.id.makeUnsafe(generateId());
-		const agentMessageId = AgentMessage.fields.id.makeUnsafe(generateId());
+		const conversationId = Conversation.fields.id.make(generateId());
+		const userMessageId = UserMessage.fields.id.make(generateId());
+		const userTextMessagePartId = TextMessagePart.fields.id.make(generateId());
+		const agentMessageId = AgentMessage.fields.id.make(generateId());
 
 		const transaction = action({
 			conversationId,
@@ -177,9 +177,9 @@ export const useContinueConversation = () => {
 		conversationId: Conversation["id"];
 		previousMessageId: AgentMessage["id"] | null;
 	}) => {
-		const userMessageId = UserMessage.fields.id.makeUnsafe(generateId());
-		const userTextMessagePartId = TextMessagePart.fields.id.makeUnsafe(generateId());
-		const agentMessageId = AgentMessage.fields.id.makeUnsafe(generateId());
+		const userMessageId = UserMessage.fields.id.make(generateId());
+		const userTextMessagePartId = TextMessagePart.fields.id.make(generateId());
+		const agentMessageId = AgentMessage.fields.id.make(generateId());
 
 		const transaction = action({
 			conversationId: data.conversationId,
@@ -239,7 +239,7 @@ export const useRegenerateAnswer = () => {
 	});
 
 	const handler = (data: { messageToRegenerate: AgentMessage }) => {
-		const regeneratedMessageId = AgentMessage.fields.id.makeUnsafe(generateId());
+		const regeneratedMessageId = AgentMessage.fields.id.make(generateId());
 
 		const transaction = action({
 			conversationId: data.messageToRegenerate.conversationId,

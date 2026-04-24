@@ -58,6 +58,7 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
+  vite: "catalog:"
   "@tanstack/react-start": 1.167.42
 
 packageManagerStrictVersion: true

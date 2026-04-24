@@ -4,5 +4,8 @@
 	"js/ts.preferences.autoImportFileExcludePatterns": ["hono/*"],
 	"editor.quickSuggestions": { "strings": true },
 	"prettier.documentSelectors": ["**/*.svg"],
-	"prettier.prettierPath": "./node_modules/prettier"
+	"prettier.prettierPath": "./node_modules/prettier",
+	"files.watcherExclude": { "apps/janus/src/routeTree.gen.ts": true },
+	"search.exclude": { "apps/janus/src/routeTree.gen.ts": true },
+	"files.readonlyInclude": { "apps/janus/src/routeTree.gen.ts": true }
 }

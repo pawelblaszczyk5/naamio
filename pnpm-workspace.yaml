@@ -58,7 +58,7 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-  turbo: 2.9.1
+  turbo: 2.8.20
   vite: "catalog:"
 
 packageManagerStrictVersion: true

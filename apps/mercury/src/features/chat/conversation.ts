@@ -917,7 +917,7 @@ export class Conversation extends Context.Service<
 								conversationId: input.conversationId,
 								createdAt: undefined,
 								id: userMessageInput.id,
-								parentId: Option.none(),
+								parentId: userMessageInput.parentId,
 								role: "USER",
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));

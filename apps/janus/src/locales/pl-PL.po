@@ -41,65 +41,73 @@ msgstr "Brak konwersacji"
 msgid "Waiting for title..."
 msgstr "Oczekiwanie na tytuł..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:149
+#: src/features/chat/ui/existing-conversation-page.tsx:143
 msgid "Conversation \"{title}\""
 msgstr "Konwersacja \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:150
+#: src/features/chat/ui/existing-conversation-page.tsx:144
 msgid "Conversation without title (yet)"
 msgstr "Konwersacja bez tytułu (jeszcze)"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:154
+#: src/features/chat/ui/existing-conversation-page.tsx:148
 msgid "New title for conversation"
 msgstr "Nowy tytuł dla konwersacji"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:194
+#: src/features/chat/ui/existing-conversation-page.tsx:185
 #: src/features/chat/ui/new-conversation-page.tsx:53
 msgid "Message content"
 msgstr "Treść wiadomości"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:213
+#: src/features/chat/ui/existing-conversation-page.tsx:204
 #: src/features/chat/ui/new-conversation-page.tsx:72
 msgid "Send"
 msgstr "Wyślij"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:47
+#: src/features/chat/ui/messages-list/branch-switcher.tsx:127
+msgid "Previous"
+msgstr "Poprzednia"
+
+#: src/features/chat/ui/messages-list/branch-switcher.tsx:141
+msgid "Next"
+msgstr "Następna"
+
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:48
 msgid "Regenerate"
 msgstr "Regeneruj"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:54
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:55
 msgid "Message from agent"
 msgstr "Wiadomość od agenta"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:58
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:59
 msgid "Failed during generation"
 msgstr "Błąd podczas generowania"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:63
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:64
 msgid "Correctly finished"
 msgstr "Poprawnie zakończona"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:68
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:69
 msgid "Generation in progress"
 msgstr "Generowanie w trakcie"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:75
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:76
 msgid "Interrupt"
 msgstr "Przerwij"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:81
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:82
 msgid "Generation interrupted"
 msgstr "Przerwano generowanie"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:43
+#: src/features/chat/ui/messages-list/message-from-user.tsx:44
 msgid "Message from user"
 msgstr "Wiadomość od użytkownika"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:47
+#: src/features/chat/ui/messages-list/message-from-user.tsx:48
 msgid "New content for message"
 msgstr "Nowa treść wiadomości"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:61
+#: src/features/chat/ui/messages-list/message-from-user.tsx:62
 msgid "Edit message"
 msgstr "Edytuj wiadomość"
 

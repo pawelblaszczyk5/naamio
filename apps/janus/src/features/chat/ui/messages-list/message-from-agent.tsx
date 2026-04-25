@@ -8,6 +8,7 @@ import type { AgentMessage, MessagePart } from "#src/features/chat/data/collecti
 
 import { messagePartsCollection } from "#src/features/chat/data/collections.js";
 import { useInterruptGeneration, useRegenerateAnswer } from "#src/features/chat/data/conversation-lifecycle.js";
+import { BranchSwitcher } from "#src/features/chat/ui/messages-list/branch-switcher.js";
 import { MessagePartContent } from "#src/features/chat/ui/messages-list/message-part-content.js";
 
 const useAgentMessagePartsByMessageId = (messageId: AgentMessage["id"]) => {
@@ -89,6 +90,7 @@ export const MessageFromAgent = ({ message }: { message: AgentMessage }) => {
 					<MessagePartContent key={messagePart.id} messagePart={messagePart} />
 				))}
 			</div>
+			<BranchSwitcher conversationId={message.conversationId} messageId={message.id} parentId={message.parentId} />
 		</div>
 	);
 };

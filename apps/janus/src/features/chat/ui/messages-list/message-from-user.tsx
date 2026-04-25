@@ -7,6 +7,7 @@ import type { MessagePart, UserMessage } from "#src/features/chat/data/collectio
 
 import { messagePartsCollection } from "#src/features/chat/data/collections.js";
 import { useContinueConversation } from "#src/features/chat/data/conversation-lifecycle.js";
+import { BranchSwitcher } from "#src/features/chat/ui/messages-list/branch-switcher.js";
 import { MessagePartContent } from "#src/features/chat/ui/messages-list/message-part-content.js";
 
 const useUserMessagePartsByMessageId = (messageId: UserMessage["id"]) => {
@@ -66,6 +67,7 @@ export const MessageFromUser = ({ message }: { message: UserMessage }) => {
 					<MessagePartContent key={messagePart.id} messagePart={messagePart} />
 				))}
 			</div>
+			<BranchSwitcher conversationId={message.conversationId} messageId={message.id} parentId={message.parentId} />
 		</div>
 	);
 };

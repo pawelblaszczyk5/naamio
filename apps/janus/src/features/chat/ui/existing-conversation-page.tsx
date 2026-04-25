@@ -5,14 +5,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 import { useId, useRef, useState } from "react";
 
-import { assert } from "@naamio/assert";
 import stylex from "@naamio/stylex";
 
-import {
-	conversationsCollection,
-	conversationsStateCollection,
-	messagesCollection,
-} from "#src/features/chat/data/collections.js";
+import { conversationsCollection, conversationsStateCollection } from "#src/features/chat/data/collections.js";
 import { useContinueConversation } from "#src/features/chat/data/conversation-lifecycle.js";
 import {
 	deleteConversation,
@@ -116,12 +111,11 @@ export const ExistingConversationPage = () => {
 		[conversationIdFromParams],
 	);
 
-	const { data: lastMessage } = useLiveQuery(
+	const { data: conversationState } = useLiveQuery(
 		(q) =>
 			q
-				.from({ message: messagesCollection })
-				.where(({ message }) => eq(message.conversationId, conversationIdFromParams))
-				.orderBy(({ message }) => message.createdAt, "desc")
+				.from({ conversationState: conversationsStateCollection })
+				.where(({ conversationState }) => eq(conversationState.id, conversationIdFromParams))
 				.findOne(),
 		[conversationIdFromParams],
 	);
@@ -138,7 +132,7 @@ export const ExistingConversationPage = () => {
 
 	const contentFieldId = `content-field-${id}`;
 
-	if (!conversation || !lastMessage) {
+	if (!conversation || !conversationState) {
 		return <Navigate to="/app" />;
 	}
 
@@ -177,15 +171,12 @@ export const ExistingConversationPage = () => {
 				onSubmit={(event) => {
 					event.preventDefault();
 
-					assert(lastMessage, "At least one message must always exist");
-					assert(lastMessage.role === "AGENT", "Last message must always be from agent");
-
-					if (lastMessage.status === "IN_PROGRESS") {
-						return;
-					}
-
 					setContent("");
-					continueConversation({ content, conversationId: conversation.id, previousMessageId: lastMessage.id });
+					continueConversation({
+						content,
+						conversationId: conversation.id,
+						previousMessageId: conversationState.activeLeafId,
+					});
 				}}
 				ref={formRef}
 				{...stylex.props(styles.form)}

@@ -27,19 +27,20 @@ const findNewestLeaf = (messages: Array<MessageForSearch>, startingMessageId: Me
 		messagesByParentId.set(message.parentId, siblings);
 	});
 
-	const leafsUnderMessage: Array<MessageForSearch> = [];
+	let bestLeaf: MessageForSearch | undefined;
 
 	const depthFirstSearch = (message: MessageForSearch) => {
 		const children = messagesByParentId.get(message.id);
 
 		if (!children) {
-			leafsUnderMessage.push(message);
-
+			if (!bestLeaf || message.createdAt.getTime() > bestLeaf.createdAt.getTime()) {
+				bestLeaf = message;
+			}
 			return;
 		}
 
-		children.forEach((children) => {
-			depthFirstSearch(children);
+		children.forEach((child) => {
+			depthFirstSearch(child);
 		});
 	};
 
@@ -49,15 +50,9 @@ const findNewestLeaf = (messages: Array<MessageForSearch>, startingMessageId: Me
 
 	depthFirstSearch(startMessage);
 
-	const newLeafMessage = leafsUnderMessage.reduce((previous, current) => {
-		if (current.createdAt.getTime() > previous.createdAt.getTime()) {
-			return current;
-		}
+	assert(bestLeaf, "There always must be at least one leaf under each message");
 
-		return previous;
-	});
-
-	return newLeafMessage.id;
+	return bestLeaf.id;
 };
 
 const useTraverseBranch = (conversationId: Message["conversationId"]) => {

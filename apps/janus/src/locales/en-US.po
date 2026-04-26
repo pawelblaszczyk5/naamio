@@ -63,11 +63,11 @@ msgstr "Message content"
 msgid "Send"
 msgstr "Send"
 
-#: src/features/chat/ui/messages-list/branch-switcher.tsx:127
+#: src/features/chat/ui/messages-list/branch-switcher.tsx:122
 msgid "Previous"
 msgstr "Previous"
 
-#: src/features/chat/ui/messages-list/branch-switcher.tsx:141
+#: src/features/chat/ui/messages-list/branch-switcher.tsx:136
 msgid "Next"
 msgstr "Next"
 

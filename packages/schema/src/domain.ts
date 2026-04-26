@@ -121,20 +121,18 @@ export class AgentMessageModel extends Model.Class<AgentMessageModel>("@naamio/s
 	...BaseMessageFields,
 	id: AgentMessageId,
 	metadata: Model.FieldOption(
-		Model.JsonFromString(
-			Schema.Struct({
-				performanceMetrics: Schema.Struct({
-					processingTime: Schema.Number.check(Schema.isGreaterThan(0)),
-					timeToFirstToken: Schema.Number.check(Schema.isGreaterThan(0)),
-				}),
-				usage: Schema.Struct({
-					cachedInputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-					inputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-					outputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-					totalTokens: Schema.Int.check(Schema.isGreaterThan(0)),
-				}),
+		Schema.Struct({
+			performanceMetrics: Schema.Struct({
+				processingTime: Schema.Number.check(Schema.isGreaterThan(0)),
+				timeToFirstToken: Schema.Number.check(Schema.isGreaterThan(0)),
 			}),
-		),
+			usage: Schema.Struct({
+				cachedInputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+				inputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+				outputTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+				totalTokens: Schema.Int.check(Schema.isGreaterThan(0)),
+			}),
+		}),
 	),
 	parentId: UserMessageId,
 	role: Schema.tag(MessageRole.enums.AGENT),

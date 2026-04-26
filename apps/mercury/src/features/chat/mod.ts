@@ -105,7 +105,7 @@ export class Chat extends Context.Service<
 						yield* conversation.viewer.verifyConversationExistence(id);
 
 						yield* conversationGenerationManager
-							.Cleanup(undefined)
+							.Cleanup()
 							.pipe(
 								Effect.catchTag(["AlreadyProcessingMessage", "MailboxFull", "PersistenceError"], () =>
 									Effect.fail(new ConversationGenerationManagerNetworkingError()),

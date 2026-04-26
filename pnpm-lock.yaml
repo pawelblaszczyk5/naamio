@@ -15,9 +15,6 @@ catalogs:
     '@babel/preset-typescript':
       specifier: ^7.28.5
       version: 7.28.5
-    '@effect/ai-openai':
-      specifier: 4.0.0-beta.85
-      version: 4.0.0-beta.85
     '@effect/language-service':
       specifier: ^0.86.2
       version: 0.86.2
@@ -93,6 +90,9 @@ catalogs:
     tsc-alias:
       specifier: ^1.8.17
       version: 1.8.17
+    tsx:
+      specifier: ^4.22.4
+      version: 4.22.4
     type-fest:
       specifier: ^5.7.0
       version: 5.7.0
@@ -318,9 +318,6 @@ importers:
 
   apps/mercury:
     dependencies:
-      '@effect/ai-openai':
-        specifier: 'catalog:'
-        version: 4.0.0-beta.85(effect@4.0.0-beta.85)
       '@effect/platform-node':
         specifier: 'catalog:'
         version: 4.0.0-beta.85(effect@4.0.0-beta.85)(ioredis@5.10.0)
@@ -358,7 +355,7 @@ importers:
         specifier: ^5.1.15
         version: 5.1.15
       tsx:
-        specifier: ^4.22.4
+        specifier: 'catalog:'
         version: 4.22.4
     devDependencies:
       '@effect/language-service':
@@ -537,6 +534,40 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0)
+
+  packages/ai-fireworks:
+    dependencies:
+      effect:
+        specifier: 'catalog:'
+        version: 4.0.0-beta.85
+    devDependencies:
+      '@effect/language-service':
+        specifier: 'catalog:'
+        version: 0.86.2
+      '@naamio/eslint-config':
+        specifier: 'workspace:'
+        version: link:../../tooling/eslint-config
+      '@naamio/typescript-config':
+        specifier: 'workspace:'
+        version: link:../../tooling/typescript-config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.0.0
+      eslint:
+        specifier: ^10.5.0
+        version: 10.5.0(jiti@2.7.0)
+      tsc-alias:
+        specifier: 'catalog:'
+        version: 1.8.17
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.9(@types/node@26.0.0)(vite@8.0.16(@types/node@26.0.0)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
 
   packages/api:
     dependencies:
@@ -1291,11 +1322,6 @@ packages:
 
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
-
-  '@effect/ai-openai@4.0.0-beta.85':
-    resolution: {integrity: sha512-fKio37ue7LL9gI8+QpUFPPsusbgXXGN1OFQ0lY02ApkdrnP8LExfnnFI9OV7fBLYkLgZKNXCq2l/9rkDm+SjZQ==}
-    peerDependencies:
-      effect: ^4.0.0-beta.85
 
   '@effect/language-service@0.86.2':
     resolution: {integrity: sha512-SaPln+8srOqDJDUwNTDmP5e+IYpEDr9+1epGznnsLqu8xvo6VnxyWARdeLpqvZJlb0Pgy9ca7ppqvvdWbHPXAg==}
@@ -7868,10 +7894,6 @@ snapshots:
   '@csstools/css-tokenizer@3.0.4': {}
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
-
-  '@effect/ai-openai@4.0.0-beta.85(effect@4.0.0-beta.85)':
-    dependencies:
-      effect: 4.0.0-beta.85
 
   '@effect/language-service@0.86.2': {}
 

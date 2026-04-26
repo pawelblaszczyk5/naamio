@@ -16,7 +16,6 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.85
   "@effect/language-service": ^0.86.2
   "@effect/platform-node": 4.0.0-beta.85
   "@effect/platform-node-shared": 4.0.0-beta.85
@@ -45,6 +44,7 @@ catalog:
   react: 19.3.0-canary-b1786c31-20260618
   react-dom: 19.3.0-canary-b1786c31-20260618
   tsc-alias: ^1.8.17
+  tsx: ^4.22.4
   type-fest: ^5.7.0
   typescript: ^6.0.3
   vite: ^8.0.16
@@ -56,9 +56,6 @@ engineStrict: true
 linkWorkspacePackages: true
 managePackageManagerVersions: true
 minimumReleaseAge: 1440
-
-minimumReleaseAgeExclude:
-  - cnfast@0.0.8
 
 overrides:
   eslint: "catalog:"

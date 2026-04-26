@@ -15,7 +15,6 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@effect/ai-openai": "catalog:",
 		"@effect/platform-node": "catalog:",
 		"@effect/platform-node-shared": "catalog:",
 		"@effect/sql-pg": "catalog:",
@@ -28,7 +27,7 @@
 		"@simplewebauthn/server": "^13.3.1",
 		"effect": "catalog:",
 		"nanoid": "^5.1.15",
-		"tsx": "^4.22.4"
+		"tsx": "catalog:"
 	},
 	"devDependencies": {
 		"@effect/language-service": "catalog:",

@@ -189,7 +189,6 @@ export default defineConfig({
 		"@eslint-community/eslint-comments/require-description": "error",
 
 		// fp
-		"fp/no-arguments": "error",
 		"fp/no-delete": "error",
 		"fp/no-mutating-assign": "error",
 		"fp/no-valueof-field": "error",
@@ -245,6 +244,8 @@ export default defineConfig({
 				typedVariables: "arrow-function",
 			},
 		],
+		"unicorn/no-non-function-verb-prefix": "off",
+		"unicorn/prefer-includes-over-repeated-comparisons": "off",
 
 		// perfectionist overrides
 		"perfectionist/sort-modules": "off",

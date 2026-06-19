@@ -58,8 +58,8 @@ msgstr "Nowy tytuł dla konwersacji"
 msgid "Message content"
 msgstr "Treść wiadomości"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:203
-#: src/features/chat/ui/new-conversation-page.tsx:71
+#: src/features/chat/ui/existing-conversation-page.tsx:209
+#: src/features/chat/ui/new-conversation-page.tsx:77
 msgid "Send"
 msgstr "Wyślij"
 

@@ -112,8 +112,8 @@ patchedDependencies:
   '@stylexjs/eslint-plugin@0.18.3':
     hash: e85fca652a21763f122536be43e0d8eee1b4664f1d948355078919d50fc3f2b4
     path: patches/@stylexjs__eslint-plugin.patch
-  '@stylexjs/stylex@0.18.3':
-    hash: 778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d
+  '@stylexjs/stylex':
+    hash: 183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98
     path: patches/@stylexjs__stylex.patch
   prettier-plugin-sql@0.20.0:
     hash: efc0f22c65ada2a034b400ce36eac5d2c2dabb1e9cc2fe3d9c47086f49bca941
@@ -206,7 +206,7 @@ importers:
         version: 1.1.0
       '@stylexjs/stylex':
         specifier: 'catalog:'
-        version: 0.18.3(patch_hash=778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d)
+        version: 0.18.3(patch_hash=183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98)
       '@tanstack/electric-db-collection':
         specifier: ^0.3.3
         version: 0.3.3(typescript@6.0.3)
@@ -412,7 +412,7 @@ importers:
         version: link:../../packages/design-system
       '@stylexjs/stylex':
         specifier: 'catalog:'
-        version: 0.18.3(patch_hash=778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d)
+        version: 0.18.3(patch_hash=183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98)
       react:
         specifier: 19.3.0-canary-142cfde8-20260422
         version: 19.3.0-canary-142cfde8-20260422
@@ -546,7 +546,7 @@ importers:
         version: link:../assert
       '@stylexjs/stylex':
         specifier: 'catalog:'
-        version: 0.18.3(patch_hash=778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d)
+        version: 0.18.3(patch_hash=183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98)
       react:
         specifier: 19.3.0-canary-142cfde8-20260422
         version: 19.3.0-canary-142cfde8-20260422
@@ -8610,7 +8610,7 @@ snapshots:
       '@babel/types': 7.29.0
       '@dual-bundle/import-meta-resolve': 4.2.1
       '@stylexjs/shared': 0.18.3
-      '@stylexjs/stylex': 0.18.3(patch_hash=778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d)
+      '@stylexjs/stylex': 0.18.3(patch_hash=183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98)
       postcss-value-parser: 4.2.0
     transitivePeerDependencies:
       - supports-color
@@ -8635,7 +8635,7 @@ snapshots:
 
   '@stylexjs/shared@0.18.3': {}
 
-  '@stylexjs/stylex@0.18.3(patch_hash=778e8f8110688b37098ef555524fa9c7d3be3c7f7aa52a0e58a2d5c5fc92c35d)':
+  '@stylexjs/stylex@0.18.3(patch_hash=183104d839afa83c8b875fa352bc5e96aaa624476166e92f8185f42d7c774e98)':
     dependencies:
       css-mediaquery: 0.1.2
       invariant: 2.2.4

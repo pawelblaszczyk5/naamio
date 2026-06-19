@@ -34,7 +34,7 @@ export const ConversationGenerationManagerEntityLayer = ConversationGenerationMa
 		const ongoingGenerations = yield* FiberMap.make<AgentMessageModel["id"]>();
 		const isCleanedUpRef = yield* Ref.make(false);
 
-		const conversationId = yield* Entity.CurrentAddress.asEffect().pipe(
+		const conversationId = yield* Entity.CurrentAddress.pipe(
 			Effect.map((entityAddress) => entityAddress.entityId),
 			Effect.flatMap(Schema.decodeEffect(ConversationModel.select.fields.id)),
 			Effect.catchTag(["SchemaError"], Effect.die),

@@ -42,7 +42,7 @@ export const UpdateLanguagePayload = UserModel.jsonUpdate.mapFields(Struct.pick(
 export type UpdateLanguagePayload = Schema.Schema.Type<typeof UpdateLanguagePayload>;
 
 export const updateLanguage = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(UpdateLanguagePayload))
+	.validator(Schema.toStandardSchemaV1(UpdateLanguagePayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -59,7 +59,7 @@ export const RevokeSessionPayload = SessionModel.json.mapFields(Struct.pick(["id
 export type RevokeSessionPayload = Schema.Schema.Type<typeof RevokeSessionPayload>;
 
 export const revokeSession = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(RevokeSessionPayload))
+	.validator(Schema.toStandardSchemaV1(RevokeSessionPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {

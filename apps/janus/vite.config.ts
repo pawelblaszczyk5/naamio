@@ -67,7 +67,6 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
-		devtools: { enabled: false },
 		environments: {
 			client: {
 				build: {

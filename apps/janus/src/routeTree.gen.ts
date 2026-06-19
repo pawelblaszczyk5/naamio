@@ -84,7 +84,7 @@ const AppChatConversationConversationIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppChatRouteWithChildren
+  '/app': typeof AppRouteWithChildren
   '/{$language}': typeof HomeChar123languageChar125RouteWithChildren
   '/{$language}/sign-in': typeof HomeChar123languageChar125SignInRoute
   '/{$language}/sign-up': typeof HomeChar123languageChar125SignUpRoute

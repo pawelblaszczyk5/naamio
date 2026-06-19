@@ -16,7 +16,7 @@ const ID_LENGTH = 16;
 // eslint-disable-next-line no-secrets/no-secrets -- that's custom alphabet for ID generation
 const ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"; // cspell:disable-line
 
-const HEX_TO_ALPHABET_RATIO = 1.464_495;
+const HEX_TO_ALPHABET_RATIO = 1.464495;
 
 const calculateHexLength = (alphabetLength: number) => Math.floor(alphabetLength * HEX_TO_ALPHABET_RATIO);
 

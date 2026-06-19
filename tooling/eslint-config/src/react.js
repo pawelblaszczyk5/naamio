@@ -87,7 +87,7 @@ export default defineConfig({
 	],
 	rules: {
 		// react
-
+		"react/globals": "error",
 		"react/no-forward-ref": "error",
 		"react/no-access-state-in-setstate": "error",
 		"react/no-array-index-key": "error",
@@ -114,12 +114,9 @@ export default defineConfig({
 		"react/no-missing-context-display-name": "error",
 		"react/no-missing-key": "error",
 		"react/no-nested-component-definitions": "error",
-		"react/no-redundant-should-component-update": "error",
 		"react/no-set-state-in-component-did-mount": "error",
 		"react/no-set-state-in-component-did-update": "error",
 		"react/no-set-state-in-component-will-update": "error",
-		"react/no-unnecessary-use-callback": "error",
-		"react/no-unnecessary-use-memo": "error",
 		"react/no-unnecessary-use-prefix": "error",
 		"react/no-unsafe-component-will-mount": "error",
 		"react/no-unsafe-component-will-receive-props": "error",
@@ -128,7 +125,7 @@ export default defineConfig({
 		"react/no-unused-class-component-members": "error",
 		"react/no-unused-state": "error",
 		"react/no-use-context": "error",
-		"react/prefer-destructuring-assignment": "error",
+		"react/static-components": "error",
 		"react/use-state": "error",
 
 		// react-jsx
@@ -157,6 +154,8 @@ export default defineConfig({
 		"react-web-api/no-leaked-interval": "error",
 		"react-web-api/no-leaked-resize-observer": "error",
 		"react-web-api/no-leaked-timeout": "error",
+		"react-web-api/no-leaked-fetch": "error",
+		"react-web-api/no-leaked-intersection-observer": "error",
 
 		// react-naming-convention
 		"react-naming-convention/ref-name": "error",

@@ -52,7 +52,7 @@ export const StartConversationPayload = Schema.Struct({
 export type StartConversationPayload = Schema.Schema.Type<typeof StartConversationPayload>;
 
 export const startConversation = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(StartConversationPayload))
+	.validator(Schema.toStandardSchemaV1(StartConversationPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -75,7 +75,7 @@ export const ContinueConversationPayload = Schema.Struct({
 export type ContinueConversationPayload = Schema.Schema.Type<typeof ContinueConversationPayload>;
 
 export const continueConversation = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(ContinueConversationPayload))
+	.validator(Schema.toStandardSchemaV1(ContinueConversationPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -106,7 +106,7 @@ export const RegenerateAnswerPayload = Schema.Struct({
 export type RegenerateAnswerPayload = Schema.Schema.Type<typeof RegenerateAnswerPayload>;
 
 export const regenerateAnswer = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(RegenerateAnswerPayload))
+	.validator(Schema.toStandardSchemaV1(RegenerateAnswerPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -129,7 +129,7 @@ export const InterruptGenerationPayload = Schema.Struct({
 export type InterruptGenerationPayload = Schema.Schema.Type<typeof InterruptGenerationPayload>;
 
 export const interruptGeneration = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(InterruptGenerationPayload))
+	.validator(Schema.toStandardSchemaV1(InterruptGenerationPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -151,7 +151,7 @@ export const EditConversationTitlePayload = Schema.Struct({
 export type EditConversationTitlePayload = Schema.Schema.Type<typeof EditConversationTitlePayload>;
 
 export const editConversationTitle = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(EditConversationTitlePayload))
+	.validator(Schema.toStandardSchemaV1(EditConversationTitlePayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -171,7 +171,7 @@ export const DeleteConversationPayload = Schema.Struct({ conversationId: Convers
 export type DeleteConversationPayload = Schema.Schema.Type<typeof DeleteConversationPayload>;
 
 export const deleteConversation = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(DeleteConversationPayload))
+	.validator(Schema.toStandardSchemaV1(DeleteConversationPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
@@ -190,7 +190,7 @@ export const MarkConversationAsAccessedPayload = Schema.Struct({ conversationId:
 export type MarkConversationAsAccessedPayload = Schema.Schema.Type<typeof DeleteConversationPayload>;
 
 export const markConversationAsAccessed = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(MarkConversationAsAccessedPayload))
+	.validator(Schema.toStandardSchemaV1(MarkConversationAsAccessedPayload))
 	.middleware([sessionTokenMiddleware])
 	.handler(async (ctx) =>
 		Effect.gen(function* () {

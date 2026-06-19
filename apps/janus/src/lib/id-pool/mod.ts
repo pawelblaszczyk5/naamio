@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-top-level-assignment-in-function -- this file is stateless and initialized as singleton for pooling purposes */
 import { assert } from "@naamio/assert";
 import { generateId as generateIdAsync } from "@naamio/id-generator/promise";
 
@@ -29,14 +30,14 @@ const refillPool = async () => {
 	isRefillInProgress = false;
 };
 
-let poolInitialized = false;
+let isPoolInitialized = false;
 
 export const initializePool = async () => {
-	if (poolInitialized) {
+	if (isPoolInitialized) {
 		return;
 	}
 
-	poolInitialized = true;
+	isPoolInitialized = true;
 
 	await refillPool();
 };
@@ -44,7 +45,7 @@ export const initializePool = async () => {
 export const generateId = () => {
 	const id = ID_POOL.shift();
 
-	assert(poolInitialized, "Pool must be initialized before generating ID");
+	assert(isPoolInitialized, "Pool must be initialized before generating ID");
 	assert(id, "Trying to use ID from empty pool");
 
 	if (ID_POOL.length < POOL_MIN_SIZE) {

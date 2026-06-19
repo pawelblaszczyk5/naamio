@@ -216,8 +216,8 @@ export default defineConfig({
 		// unicorn overrides
 		"unicorn/expiring-todo-comments": ["error", { allowWarningComments: false, terms: ["TODO", "FIXME"] }],
 		"unicorn/import-style": ["error", { extendDefaultStyles: false }],
-		"unicorn/no-array-for-each": "off",
 		"unicorn/no-array-reduce": "off",
+		"unicorn/no-for-each": "off",
 		"unicorn/no-null": "off",
 		"unicorn/no-useless-undefined": "off",
 		"unicorn/numeric-separators-style": [
@@ -239,6 +239,7 @@ export default defineConfig({
 		"unicorn/prefer-native-coercion-functions": "off",
 		"unicorn/prefer-array-flat": "off",
 		"unicorn/number-literal-case": "off",
+		"unicorn/max-nested-calls": "off",
 
 		// perfectionist overrides
 		"perfectionist/sort-modules": "off",

@@ -14,9 +14,8 @@
 	"devDependencies": {
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
-		"@vitejs/devtools": "catalog:",
 		"eslint": "catalog:",
-		"oxc-minify": "^0.127.0",
+		"oxc-minify": "^0.137.0",
 		"vitepress": "2.0.0-alpha.17"
 	}
 }

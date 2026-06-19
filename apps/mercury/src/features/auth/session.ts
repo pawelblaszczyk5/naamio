@@ -151,16 +151,18 @@ export class Session extends Context.Service<
 						const signature = yield* generateHmacSignature(value, SESSION_VALUE_SECRET);
 						const token = Redacted.make(`${id}.${value}`);
 
-						yield* insertSession({
-							createdAt: undefined,
-							deviceLabel: data.deviceLabel,
-							expiresAt,
-							id,
-							passkeyId: data.passkeyId,
-							revokedAt: Option.none(),
-							signature,
-							userId: data.userId,
-						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+						yield* SessionModel.insert
+							.makeEffect({
+								createdAt: undefined,
+								deviceLabel: data.deviceLabel,
+								expiresAt,
+								id,
+								passkeyId: data.passkeyId,
+								revokedAt: Option.none(),
+								signature,
+								userId: data.userId,
+							})
+							.pipe(Effect.andThen(insertSession), Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 						return { expiresAt, token };
 					}),
@@ -168,11 +170,12 @@ export class Session extends Context.Service<
 						const unredactedToken = Redacted.value(token);
 						const lastDotIndex = unredactedToken.lastIndexOf(".");
 						const maybeId = Schema.decodeOption(SessionModel.fields.id)(unredactedToken.slice(0, lastDotIndex));
-						const value = unredactedToken.slice(lastDotIndex + 1);
 
 						if (Option.isNone(maybeId)) {
 							return Option.none();
 						}
+
+						const value = unredactedToken.slice(lastDotIndex + 1);
 
 						const maybeSession = yield* findForRetrievalFromToken({ id: maybeId.value }).pipe(
 							Effect.catchTag(["SqlError", "SchemaError"], Effect.die),

@@ -39,9 +39,9 @@ export const verifyHmacSignature = Effect.fn(function* (
 		return false;
 	}
 
-	const valid = yield* Effect.promise(async () =>
+	const isValid = yield* Effect.promise(async () =>
 		crypto.subtle.verify("HMAC", key, new Uint8Array(maybeSignature.success), data),
 	);
 
-	return valid;
+	return isValid;
 });

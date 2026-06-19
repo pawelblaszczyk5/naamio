@@ -14,13 +14,13 @@ export const VerifiedId = Schema.String.check(Schema.isLengthBetween(16, 16)).pi
 	Schema.decode({
 		decode: SchemaGetter.checkEffect(
 			Effect.fn(function* (value: string) {
-				const valid = yield* verifyId(value);
+				const isValid = yield* verifyId(value);
 
-				if (!valid) {
+				if (!isValid) {
 					return "Invalid ID";
 				}
 
-				return valid;
+				return isValid;
 			}),
 		),
 		encode: SchemaGetter.passthrough(),

@@ -115,14 +115,16 @@ export class User extends Context.Service<
 						const id = UserModel.fields.id.make(yield* generateId());
 						const webAuthnId = UserModel.fields.webAuthnId.make(yield* generateId());
 
-						yield* insertUser({
-							confirmedAt: Option.none(),
-							createdAt: undefined,
-							id,
-							language: data.language,
-							username: data.username,
-							webAuthnId,
-						}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+						yield* UserModel.insert
+							.makeEffect({
+								confirmedAt: Option.none(),
+								createdAt: undefined,
+								id,
+								language: data.language,
+								username: data.username,
+								webAuthnId,
+							})
+							.pipe(Effect.andThen(insertUser), Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 						return { id, username: data.username, webAuthnId };
 					}),

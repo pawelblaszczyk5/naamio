@@ -25,7 +25,7 @@ export const GenerateRegistrationOptionsPayload = UserModel.jsonCreate
 export type GenerateRegistrationOptionsPayload = Schema.Schema.Type<typeof GenerateRegistrationOptionsPayload>;
 
 export const generateRegistrationOptions = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(GenerateRegistrationOptionsPayload))
+	.validator(Schema.toStandardSchemaV1(GenerateRegistrationOptionsPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -45,7 +45,7 @@ export const VerifyRegistrationPayload = Schema.Struct({ registrationResponse: W
 export type VerifyRegistrationPayload = Schema.Schema.Type<typeof VerifyRegistrationPayload>;
 
 export const verifyRegistration = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(VerifyRegistrationPayload))
+	.validator(Schema.toStandardSchemaV1(VerifyRegistrationPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -85,7 +85,7 @@ export const GenerateAuthenticationOptionsPayload = Schema.Struct({
 export type GenerateAuthenticationOptionsPayload = Schema.Schema.Type<typeof GenerateAuthenticationOptionsPayload>;
 
 export const generateAuthenticationOptions = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(GenerateAuthenticationOptionsPayload))
+	.validator(Schema.toStandardSchemaV1(GenerateAuthenticationOptionsPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;
@@ -105,7 +105,7 @@ export const VerifyAuthenticationPayload = Schema.Struct({ authenticationRespons
 export type VerifyAuthenticationPayload = Schema.Schema.Type<typeof VerifyAuthenticationPayload>;
 
 export const verifyAuthentication = createServerFn({ method: "POST" })
-	.inputValidator(Schema.toStandardSchemaV1(VerifyAuthenticationPayload))
+	.validator(Schema.toStandardSchemaV1(VerifyAuthenticationPayload))
 	.handler(async (ctx) =>
 		Effect.gen(function* () {
 			const naamioApiClient = yield* NaamioApiClient;

@@ -16,59 +16,59 @@ catalog:
   "@babel/core": "^7.29.0"
   "@babel/plugin-syntax-jsx": ^7.28.6
   "@babel/preset-typescript": ^7.28.5
-  "@effect/ai-openai": 4.0.0-beta.44
-  "@effect/language-service": ^0.85.1
-  "@effect/platform-node": 4.0.0-beta.44
-  "@effect/platform-node-shared": 4.0.0-beta.44
-  "@effect/sql-pg": 4.0.0-beta.44
-  "@effect/vitest": 4.0.0-beta.44
-  "@electric-sql/client": ^1.5.15
+  "@effect/ai-openai": 4.0.0-beta.84
+  "@effect/language-service": ^0.86.2
+  "@effect/platform-node": 4.0.0-beta.84
+  "@effect/platform-node-shared": 4.0.0-beta.84
+  "@effect/sql-pg": 4.0.0-beta.84
+  "@effect/vitest": 4.0.0-beta.84
+  "@electric-sql/client": ^1.5.21
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
   "@rolldown/plugin-babel": ^0.2.3
-  "@stylexjs/babel-plugin": ^0.18.3
-  "@stylexjs/eslint-plugin": ^0.18.3
-  "@stylexjs/postcss-plugin": ^0.18.3
-  "@stylexjs/stylex": ^0.18.3
-  "@types/node": ^25.6.0
-  "@types/react": ^19.2.14
+  "@stylexjs/babel-plugin": ^0.19.0
+  "@stylexjs/eslint-plugin": ^0.19.0
+  "@stylexjs/postcss-plugin": ^0.19.0
+  "@stylexjs/stylex": ^0.19.0
+  "@types/node": ^26.0.0
+  "@types/react": ^19.2.17
   "@types/react-dom": ^19.2.3
-  "@typescript-eslint/utils": ^8.59.0
-  "@vitejs/devtools": ^0.1.15
-  "@vitejs/plugin-react": ^6.0.1
+  "@typescript-eslint/utils": ^8.61.1
+  "@vitejs/plugin-react": ^6.0.2
   babel-plugin-react-compiler: ^1.0.0
-  effect: 4.0.0-beta.44
-  eslint: ^10.2.1
+  effect: 4.0.0-beta.84
+  eslint: ^10.5.0
   fontaine: ^0.8.0
-  react: 19.3.0-canary-142cfde8-20260422
-  react-dom: 19.3.0-canary-142cfde8-20260422
-  tsc-alias: ^1.8.16
-  type-fest: ^5.6.0
+  react: 19.3.0-canary-b1786c31-20260618
+  react-dom: 19.3.0-canary-b1786c31-20260618
+  tsc-alias: ^1.8.17
+  type-fest: ^5.7.0
   typescript: ^6.0.3
-  vite: ^8.0.10
-  vitest: ^4.1.5
-  wait-on: ^9.0.5
+  vite: ^8.0.16
+  vitest: ^4.1.9
+  wait-on: ^9.0.10
 
 disallowWorkspaceCycles: true
 engineStrict: true
 linkWorkspacePackages: true
 managePackageManagerVersions: true
+minimumReleaseAge: 0
 
 overrides:
   eslint: "catalog:"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
   react: "catalog:"
   react-dom: "catalog:"
-  turbo: 2.8.20
+  turbo: 2.9.18
   vite: "catalog:"
 
 packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
-  "@stylexjs/eslint-plugin@0.18.3": patches/@stylexjs__eslint-plugin.patch
   "@stylexjs/stylex": patches/@stylexjs__stylex.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true
 strictDepBuilds: true
+trustLockfile: true
 verifyDepsBeforeRun: "install"

@@ -480,20 +480,23 @@ export class Conversation extends Context.Service<
 				]),
 			});
 
-			const mapMessagePartInputForInsert = Match.type<
-				UserMessagePartInput & { messageId: UserMessageModel["id"]; userId: UserMessageModel["userId"] }
-			>().pipe(
-				Match.withReturnType<Parameters<typeof insertMessageParts>[0][number]>(),
-				Match.when({ type: "TEXT" }, (part) => ({
-					createdAt: undefined,
-					data: { content: Option.some(part.data.content) },
-					id: part.id,
-					messageId: part.messageId,
-					type: "TEXT",
-					userId: part.userId,
-				})),
-				Match.exhaustive,
-			);
+			const mapMessagePartInputForInsert = Effect.fn(function* (
+				data: UserMessagePartInput & { messageId: UserMessageModel["id"]; userId: UserMessageModel["userId"] },
+			) {
+				return yield* Match.value(data).pipe(
+					Match.when({ type: "TEXT" }, (part) =>
+						TextMessagePartModel.insert.makeEffect({
+							createdAt: undefined,
+							data: { content: Option.some(part.data.content) },
+							id: part.id,
+							messageId: part.messageId,
+							type: "TEXT",
+							userId: part.userId,
+						}),
+					),
+					Match.exhaustive,
+				);
+			});
 
 			return Conversation.of({
 				system: {
@@ -541,17 +544,21 @@ export class Conversation extends Context.Service<
 									messageParts,
 									Effect.fn(function* (messagePart) {
 										if (messagePart.type === "REASONING") {
-											const maybeMessage = yield* Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId));
+											const maybeMessage = yield* Effect.fromOption(
+												Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId)),
+											);
 
 											maybeMessage.parts.push(messagePart);
 
 											return;
 										}
 
-										const maybeMessage = yield* Option.firstSomeOf([
-											Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId as never)),
-											Option.fromUndefinedOr(userMessagesById.get(messagePart.messageId as never)),
-										]);
+										const maybeMessage = yield* Effect.fromOption(
+											Option.firstSomeOf([
+												Option.fromUndefinedOr(agentMessagesById.get(messagePart.messageId as never)),
+												Option.fromUndefinedOr(userMessagesById.get(messagePart.messageId as never)),
+											]),
+										);
 
 										maybeMessage.parts.push(messagePart);
 
@@ -587,16 +594,19 @@ export class Conversation extends Context.Service<
 						function* (part) {
 							const id = ReasoningMessagePartModel.fields.id.make(yield* generateId());
 
-							yield* insertMessageParts([
-								{
+							yield* ReasoningMessagePartModel.insert
+								.makeEffect({
 									createdAt: undefined,
 									data: part.data,
 									id,
 									messageId: part.messageId,
 									type: "REASONING",
 									userId: part.userId,
-								},
-							]).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+								})
+								.pipe(
+									Effect.andThen((data) => insertMessageParts([data])),
+									Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
+								);
 
 							return { id };
 						},
@@ -604,16 +614,19 @@ export class Conversation extends Context.Service<
 					insertTextMessagePart: Effect.fn("@naamio/mercury/Conversation#insertTextMessagePart")(function* (part) {
 						const id = TextMessagePartModel.fields.id.make(yield* generateId());
 
-						yield* insertMessageParts([
-							{
+						yield* TextMessagePartModel.insert
+							.makeEffect({
 								createdAt: undefined,
 								data: part.data,
 								id,
 								messageId: part.messageId,
 								type: "TEXT",
 								userId: part.userId,
-							},
-						]).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+							})
+							.pipe(
+								Effect.andThen((data) => insertMessageParts([data])),
+								Effect.catchTag(["SchemaError", "SqlError"], Effect.die),
+							);
 
 						return { id };
 					}),
@@ -762,47 +775,54 @@ export class Conversation extends Context.Service<
 						const currentSession = yield* CurrentSession;
 
 						const transactionId = yield* Effect.gen(function* () {
-							yield* insertConversation({
-								accessedAt: yield* DateTime.now,
-								createdAt: undefined,
-								id: input.conversationId,
-								title: Option.none(),
-								updatedAt: yield* DateTime.now,
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* ConversationModel.insert
+								.makeEffect({
+									accessedAt: yield* DateTime.now,
+									createdAt: undefined,
+									id: input.conversationId,
+									title: Option.none(),
+									updatedAt: yield* DateTime.now,
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertConversation), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
 
-							yield* insertUserMessage({
-								conversationId: input.conversationId,
-								createdAt: undefined,
-								id: userMessageInput.id,
-								parentId: Option.none(),
-								role: "USER",
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* UserMessageModel.insert
+								.makeEffect({
+									conversationId: input.conversationId,
+									createdAt: undefined,
+									id: userMessageInput.id,
+									parentId: Option.none(),
+									role: "USER",
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertUserMessage), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertAgentMessage({
-								conversationId: input.conversationId,
-								createdAt: undefined,
-								id: agentMessageInput.id,
-								metadata: Option.none(),
-								parentId: userMessageInput.id,
-								role: "AGENT",
-								status: "IN_PROGRESS",
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* AgentMessageModel.insert
+								.makeEffect({
+									conversationId: input.conversationId,
+									createdAt: undefined,
+									id: agentMessageInput.id,
+									metadata: Option.none(),
+									parentId: userMessageInput.id,
+									role: "AGENT",
+									status: "IN_PROGRESS",
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertAgentMessage), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertMessageParts(
-								Array.map(userMessageInput.parts, (part) =>
-									mapMessagePartInputForInsert({
+							yield* Effect.forEach(
+								userMessageInput.parts,
+								Effect.fn(function* (part) {
+									return yield* mapMessagePartInputForInsert({
 										...part,
 										messageId: userMessageInput.id,
 										userId: currentSession.userId,
-									}),
-								),
-							).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+									});
+								}),
+							).pipe(Effect.andThen(insertMessageParts), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
@@ -913,35 +933,40 @@ export class Conversation extends Context.Service<
 							const userMessageInput = input.messages[0];
 							const agentMessageInput = input.messages[1];
 
-							yield* insertUserMessage({
-								conversationId: input.conversationId,
-								createdAt: undefined,
-								id: userMessageInput.id,
-								parentId: userMessageInput.parentId,
-								role: "USER",
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* UserMessageModel.insert
+								.makeEffect({
+									conversationId: input.conversationId,
+									createdAt: undefined,
+									id: userMessageInput.id,
+									parentId: userMessageInput.parentId,
+									role: "USER",
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertUserMessage), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertAgentMessage({
-								conversationId: input.conversationId,
-								createdAt: undefined,
-								id: agentMessageInput.id,
-								metadata: Option.none(),
-								parentId: userMessageInput.id,
-								role: "AGENT",
-								status: "IN_PROGRESS",
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* AgentMessageModel.insert
+								.makeEffect({
+									conversationId: input.conversationId,
+									createdAt: undefined,
+									id: agentMessageInput.id,
+									metadata: Option.none(),
+									parentId: userMessageInput.id,
+									role: "AGENT",
+									status: "IN_PROGRESS",
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertAgentMessage), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertMessageParts(
-								Array.map(userMessageInput.parts, (part) =>
-									mapMessagePartInputForInsert({
+							yield* Effect.forEach(
+								userMessageInput.parts,
+								Effect.fn(function* (part) {
+									return yield* mapMessagePartInputForInsert({
 										...part,
 										messageId: userMessageInput.id,
 										userId: currentSession.userId,
-									}),
-								),
-							).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+									});
+								}),
+							).pipe(Effect.andThen(insertMessageParts), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
@@ -969,16 +994,18 @@ export class Conversation extends Context.Service<
 								userId: currentSession.userId,
 							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
-							yield* insertAgentMessage({
-								conversationId: maybeConversation.value.id,
-								createdAt: undefined,
-								id: input.message.id,
-								metadata: Option.none(),
-								parentId: input.message.parentId,
-								role: "AGENT",
-								status: "IN_PROGRESS",
-								userId: currentSession.userId,
-							}).pipe(Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
+							yield* AgentMessageModel.insert
+								.makeEffect({
+									conversationId: maybeConversation.value.id,
+									createdAt: undefined,
+									id: input.message.id,
+									metadata: Option.none(),
+									parentId: input.message.parentId,
+									role: "AGENT",
+									status: "IN_PROGRESS",
+									userId: currentSession.userId,
+								})
+								.pipe(Effect.andThen(insertAgentMessage), Effect.catchTag(["SqlError", "SchemaError"], Effect.die));
 
 							return yield* getTransactionId();
 						}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));
@@ -1052,11 +1079,10 @@ export class Conversation extends Context.Service<
 	).pipe(Layer.provide([DatabaseLayer])) satisfies Layer.Layer<Conversation, unknown>;
 }
 
-export const InflightChunkCleanupWorkflow = Workflow.make({
+export class InflightChunkCleanupWorkflow extends Workflow.make("InflightChunkCleanupWorkflow", {
 	idempotencyKey: (payload) => payload.messagePartId,
-	name: "InflightChunkCleanupWorkflow",
 	payload: { messagePartId: InflightChunkModel.select.fields.messagePartId },
-});
+}) {}
 
 export const InflightChunkCleanupWorkflowLayer = InflightChunkCleanupWorkflow.toLayer(
 	Effect.fn(function* (payload) {

@@ -25,10 +25,10 @@
 		"@naamio/id-generator": "workspace:",
 		"@naamio/observability": "workspace:",
 		"@naamio/schema": "workspace:",
-		"@simplewebauthn/server": "^13.3.0",
+		"@simplewebauthn/server": "^13.3.1",
 		"effect": "catalog:",
-		"nanoid": "^5.1.9",
-		"tsx": "^4.21.0"
+		"nanoid": "^5.1.14",
+		"tsx": "^4.22.4"
 	},
 	"devDependencies": {
 		"@effect/language-service": "catalog:",

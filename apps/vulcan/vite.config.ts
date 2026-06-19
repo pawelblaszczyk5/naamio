@@ -59,7 +59,6 @@ export default defineConfig((environment) => {
 				],
 			},
 		},
-		devtools: { enabled: false },
 		optimizeDeps: { include: ["react/compiler-runtime"] },
 		plugins: [
 			react(),

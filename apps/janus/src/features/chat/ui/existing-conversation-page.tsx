@@ -129,11 +129,11 @@ export const ExistingConversationPage = () => {
 
 	const id = useId();
 
-	const contentFieldId = `content-field-${id}`;
-
 	if (!conversation || !conversationState) {
 		return <Navigate to="/app" />;
 	}
+
+	const contentFieldId = `content-field-${id}`;
 
 	return (
 		<div {...stylex.props(styles.root)}>
@@ -188,10 +188,16 @@ export const ExistingConversationPage = () => {
 						setContent(event.currentTarget.value);
 					}}
 					onKeyDown={(event) => {
-						if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
-							event.preventDefault();
-							formRef.current?.requestSubmit();
+						if (event.key !== "Enter") {
+							return;
 						}
+
+						if (!event.metaKey && !event.ctrlKey) {
+							return;
+						}
+
+						event.preventDefault();
+						formRef.current?.requestSubmit();
 					}}
 					id={contentFieldId}
 					rows={4}

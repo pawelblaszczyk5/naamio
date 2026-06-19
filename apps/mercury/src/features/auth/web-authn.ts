@@ -194,6 +194,8 @@ export class WebAuthn extends Context.Service<
 				]),
 			});
 
+			const InsertPasskeyRequest = PasskeyModel.insert;
+
 			const insertPasskey = SqlSchema.void({
 				execute: (request) => sql`
 					INSERT INTO
@@ -382,9 +384,10 @@ export class WebAuthn extends Context.Service<
 								}
 
 								const encodedPublicKey = Uint8Array.from(
-									yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey))
-										.asEffect()
-										.pipe(Effect.catchTag("EncodingError", Effect.die)),
+									yield* Encoding.decodeBase64(Redacted.value(maybePasskey.value.publicKey)).pipe(
+										Effect.fromResult,
+										Effect.catchTag("EncodingError", Effect.die),
+									),
 								);
 
 								const credential: WebAuthnCredential = Option.match(maybePasskey.value.transports, {
@@ -469,7 +472,7 @@ export class WebAuthn extends Context.Service<
 									verificationResult.registrationInfo.credential.publicKey,
 								);
 
-								yield* insertPasskey({
+								yield* InsertPasskeyRequest.makeEffect({
 									aaguid: PasskeyModel.fields.aaguid.make(verificationResult.registrationInfo.aaguid),
 									backedUp: verificationResult.registrationInfo.credentialBackedUp,
 									counter: verificationResult.registrationInfo.credential.counter,
@@ -487,7 +490,7 @@ export class WebAuthn extends Context.Service<
 									publicKey: Redacted.make(encodedPublicKey),
 									transports: Option.fromUndefinedOr(verificationResult.registrationInfo.credential.transports),
 									userId: maybeRegistrationChallenge.value.userId,
-								}).pipe(Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
+								}).pipe(Effect.andThen(insertPasskey), Effect.catchTag(["SchemaError", "SqlError"], Effect.die));
 
 								return { id: passkeyId, userId: maybeRegistrationChallenge.value.userId };
 							}).pipe(sql.withTransaction, Effect.catchTag("SqlError", Effect.die));

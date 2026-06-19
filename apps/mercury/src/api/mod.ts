@@ -99,11 +99,9 @@ const WebAuthnGroupLayer = HttpApiBuilder.group(
 				"generateAuthenticationOptions",
 				Effect.fn("@naamio/mercury/WebAuthnGroup#generateAuthenticationOptions")(function* (context) {
 					const maybeUserId = yield* Effect.gen(function* () {
-						const username = yield* context.payload.username;
+						const username = yield* context.payload.username.pipe(Effect.fromOption);
 
-						return yield* user.system
-							.findIdByUsername(username)
-							.pipe(Effect.flatMap((maybeUserId) => maybeUserId.asEffect()));
+						return yield* user.system.findIdByUsername(username).pipe(Effect.flatMap(Effect.fromOption));
 					}).pipe(Effect.catchNoSuchElement);
 
 					return yield* webAuthn.system.generateAuthenticationOptions(maybeUserId);

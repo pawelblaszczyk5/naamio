@@ -4,7 +4,7 @@ name: "naamio"
 
 services:
   postgres:
-    image: postgres:18.3-alpine
+    image: postgres:18.4-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: postgres
@@ -22,7 +22,7 @@ services:
       - wal_level=logical
 
   electric:
-    image: electricsql/electric:1.5.0
+    image: electricsql/electric:1.7.2
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
@@ -34,13 +34,13 @@ services:
       - postgres
 
   otel-lgtm:
-    image: grafana/otel-lgtm:0.23.0
+    image: grafana/otel-lgtm:0.28.0
     restart: unless-stopped
     volumes:
       - otel_data:/data
 
   caddy:
-    image: caddy:2.11.2-alpine
+    image: caddy:2.11.4-alpine
     restart: unless-stopped
     volumes:
       - ./config/Caddyfile:/etc/caddy/Caddyfile
@@ -48,7 +48,7 @@ services:
       - dev.orbstack.domains=janus.naamio.orb.local,mercury.naamio.orb.local,minerva.naamio.orb.local,vulcan.naamio.orb.local
 
   drizzle-gateway:
-    image: ghcr.io/drizzle-team/gateway:1.2.0
+    image: ghcr.io/drizzle-team/gateway:1.3.0
     restart: unless-stopped
     volumes:
       - drizzle_data:/app

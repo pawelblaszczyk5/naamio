@@ -1,4 +1,4 @@
-import { Context, Effect, Layer } from "effect";
+import { Context, DateTime, Effect, Layer } from "effect";
 
 import type { ConversationModel, TransactionId } from "@naamio/schema/domain";
 
@@ -170,7 +170,7 @@ export class Chat extends Context.Service<
 
 							yield* conversation.system.setInitialConversationTitle({
 								id: input.conversationId,
-								title: "Lorem ipsum",
+								title: `Lorem ipsum ${yield* DateTime.now.pipe(Effect.map(DateTime.formatIso))}`,
 								userId: currentSession.userId,
 							});
 						}).pipe(Effect.forkDetach);

@@ -40,6 +40,7 @@ export const SignInPage = () => {
 		const abortController = new AbortController();
 
 		void (async () => {
+			// eslint-disable-next-line unicorn/no-declarations-before-early-exit -- that's correct, look https://github.com/sindresorhus/eslint-plugin-unicorn/issues/3373
 			const authenticationResponse = await startAuthentication({
 				optionsJSON: authenticationOptions,
 				useBrowserAutofill: true,

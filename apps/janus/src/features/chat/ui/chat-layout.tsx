@@ -1,9 +1,8 @@
 import { Trans } from "@lingui/react/macro";
+import stylex from "@stylexjs/stylex";
 import { useLiveQuery } from "@tanstack/react-db";
 import { Link, Outlet } from "@tanstack/react-router";
 import { Array } from "effect";
-
-import stylex from "@naamio/stylex";
 
 import { conversationsCollection } from "#src/features/chat/data/collections.js";
 import { useLanguage } from "#src/lib/i18n/use-language.js";

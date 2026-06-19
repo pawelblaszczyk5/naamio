@@ -33,7 +33,6 @@ const getBabelConfig = ({
 				{
 					dev: isDevelopment,
 					enableMediaQueryOrder: true,
-					importSources: ["@naamio/stylex"],
 					treeshakeCompensation: true,
 					unstable_moduleResolution: { type: "commonJS" },
 				},

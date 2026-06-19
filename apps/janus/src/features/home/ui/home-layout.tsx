@@ -1,7 +1,6 @@
 import { Trans } from "@lingui/react/macro";
+import stylex from "@stylexjs/stylex";
 import { Link, Outlet, useLoaderData } from "@tanstack/react-router";
-
-import stylex from "@naamio/stylex";
 
 import { useLanguage } from "#src/lib/i18n/use-language.js";
 

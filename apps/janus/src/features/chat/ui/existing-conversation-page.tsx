@@ -1,11 +1,10 @@
 import { Trans, useLingui } from "@lingui/react/macro";
+import stylex from "@stylexjs/stylex";
 import { createOptimisticAction, eq, useLiveQuery } from "@tanstack/react-db";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 import { useId, useRef, useState } from "react";
-
-import stylex from "@naamio/stylex";
 
 import { conversationsCollection, conversationsStateCollection } from "#src/features/chat/data/collections.js";
 import { useContinueConversation } from "#src/features/chat/data/conversation-lifecycle.js";

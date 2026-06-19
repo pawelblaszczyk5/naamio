@@ -211,7 +211,6 @@ export default defineConfig({
 		"import-x/no-extraneous-dependencies": "error",
 		"import-x/no-mutable-exports": "error",
 		"import-x/no-named-as-default": "error",
-		"import-x/no-named-as-default-member": "error",
 		"import-x/no-default-export": "error",
 
 		// unicorn overrides

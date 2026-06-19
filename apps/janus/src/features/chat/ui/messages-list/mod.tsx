@@ -1,8 +1,8 @@
+import stylex from "@stylexjs/stylex";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import { Match } from "effect";
 
 import { assert } from "@naamio/assert";
-import stylex from "@naamio/stylex";
 
 import type { Conversation, Message } from "#src/features/chat/data/collections.js";
 

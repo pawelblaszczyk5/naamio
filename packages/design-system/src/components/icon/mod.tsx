@@ -1,9 +1,9 @@
+import type { StyleXStyles } from "@stylexjs/stylex";
+
+import stylex from "@stylexjs/stylex";
 import { use } from "react";
 
-import type { StyleXStyles } from "@naamio/stylex";
-
 import { assert } from "@naamio/assert";
-import stylex from "@naamio/stylex";
 
 import { IconSpritesheetContext } from "#src/components/icon/context.jsx";
 

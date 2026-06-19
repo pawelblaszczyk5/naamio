@@ -1,4 +1,4 @@
-import stylex from "@naamio/stylex";
+import stylex from "@stylexjs/stylex";
 
 import { color } from "#src/theme/color.stylex.js";
 

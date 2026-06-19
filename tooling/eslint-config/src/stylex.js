@@ -6,9 +6,9 @@ export default defineConfig({
 	files: ["**/*.{ts,tsx,js,jsx}"],
 	plugins: { stylex },
 	rules: {
-		"stylex/enforce-extension": ["error", { validImports: ["@naamio/stylex"] }],
-		"stylex/valid-shorthands": ["error", { validImports: ["@naamio/stylex"], preferInline: true }],
-		"stylex/no-unused": ["error", { validImports: ["@naamio/stylex"] }],
-		"stylex/no-legacy-contextual-styles": ["error", { validImports: ["@naamio/stylex"] }],
+		"stylex/enforce-extension": "error",
+		"stylex/valid-shorthands": ["error", { preferInline: true }],
+		"stylex/no-unused": "error",
+		"stylex/no-legacy-contextual-styles": "error",
 	},
 });

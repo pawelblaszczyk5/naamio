@@ -1,4 +1,4 @@
-import stylex from "@naamio/stylex";
+import stylex from "@stylexjs/stylex";
 
 export const accessibility = stylex.create({
 	srOnly: {

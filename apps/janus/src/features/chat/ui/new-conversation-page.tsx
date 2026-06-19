@@ -1,8 +1,7 @@
 import { Trans } from "@lingui/react/macro";
+import stylex from "@stylexjs/stylex";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
-
-import stylex from "@naamio/stylex";
 
 import { useStartConversation } from "#src/features/chat/data/conversation-lifecycle.js";
 

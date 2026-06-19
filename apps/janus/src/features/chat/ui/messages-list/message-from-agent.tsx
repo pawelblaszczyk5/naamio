@@ -1,8 +1,7 @@
 import { Trans } from "@lingui/react/macro";
+import stylex from "@stylexjs/stylex";
 import { and, eq, inArray, useLiveQuery } from "@tanstack/react-db";
 import { Match } from "effect";
-
-import stylex from "@naamio/stylex";
 
 import type { AgentMessage, MessagePart } from "#src/features/chat/data/collections.js";
 

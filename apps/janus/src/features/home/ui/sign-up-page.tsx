@@ -1,10 +1,9 @@
 import { Trans } from "@lingui/react/macro";
 import { startRegistration } from "@simplewebauthn/browser";
+import stylex from "@stylexjs/stylex";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 import { useId, useState } from "react";
-
-import stylex from "@naamio/stylex";
 
 import {
 	generateRegistrationOptions,

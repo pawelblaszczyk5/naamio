@@ -1,11 +1,10 @@
 import { Trans } from "@lingui/react/macro";
 import { startAuthentication } from "@simplewebauthn/browser";
+import stylex from "@stylexjs/stylex";
 import { useLoaderData } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Schema } from "effect";
 import { useEffect, useId, useState } from "react";
-
-import stylex from "@naamio/stylex";
 
 import {
 	generateAuthenticationOptions,

@@ -1,0 +1,38 @@
+diff --git a/lib/es/mod.d.ts b/lib/es/mod.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..e6ceec91411a767609e5dfae586617f4d48e86d4
+--- /dev/null
++++ b/lib/es/mod.d.ts
+@@ -0,0 +1,3 @@
++import * as stylex from "./stylex";
++export default stylex;
++export * from "./stylex";
+diff --git a/lib/es/mod.mjs b/lib/es/mod.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..883d68e77d0c2dae0a5c4da36536b85af0155d8a
+--- /dev/null
++++ b/lib/es/mod.mjs
+@@ -0,0 +1,3 @@
++import * as stylex from "./stylex.mjs";
++export default stylex;
++export * from "./stylex.mjs";
+diff --git a/package.json b/package.json
+index ff2485472e17dbe306387200ebdb0d0bc534e141..7809893c8f9dd60e891b5df51e4ef5ea07b2e3ec 100644
+--- a/package.json
++++ b/package.json
+@@ -3,12 +3,12 @@
+   "version": "0.18.3",
+   "description": "A library for defining styles for optimized user interfaces.",
+   "main": "./lib/cjs/stylex.js",
+-  "module": "./lib/es/stylex.mjs",
++  "module": "./lib/es/mod.mjs",
+   "types": "./lib/cjs/stylex.d.ts",
+   "exports": {
+     ".": {
+-      "types": "./lib/es/stylex.d.ts",
+-      "import": "./lib/es/stylex.mjs",
++      "types": "./lib/es/mod.d.ts",
++      "import": "./lib/es/mod.mjs",
+       "require": "./lib/cjs/stylex.js"
+     },
+     "./lib/stylex-inject": {

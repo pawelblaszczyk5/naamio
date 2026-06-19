@@ -13,53 +13,53 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/chat/ui/chat-layout.tsx:47
-#: src/features/home/ui/home-layout.tsx:31
+#: src/features/chat/ui/chat-layout.tsx:46
+#: src/features/home/ui/home-layout.tsx:30
 msgid "Hello world!"
 msgstr "Hello world!"
 
-#: src/features/chat/ui/chat-layout.tsx:49
-#: src/features/home/ui/home-layout.tsx:33
+#: src/features/chat/ui/chat-layout.tsx:48
+#: src/features/home/ui/home-layout.tsx:32
 msgid "Home"
 msgstr "Home"
 
-#: src/features/chat/ui/chat-layout.tsx:52
-#: src/features/home/ui/home-layout.tsx:37
+#: src/features/chat/ui/chat-layout.tsx:51
+#: src/features/home/ui/home-layout.tsx:36
 msgid "App"
 msgstr "App"
 
-#: src/features/chat/ui/chat-layout.tsx:55
+#: src/features/chat/ui/chat-layout.tsx:54
 #: src/features/user/ui/settings-page.tsx:120
 msgid "Settings"
 msgstr "Settings"
 
-#: src/features/chat/ui/chat-layout.tsx:61
+#: src/features/chat/ui/chat-layout.tsx:60
 msgid "No conversations yet"
 msgstr "No conversations yet"
 
-#: src/features/chat/ui/chat-layout.tsx:71
+#: src/features/chat/ui/chat-layout.tsx:70
 msgid "Waiting for title..."
 msgstr "Waiting for title..."
 
-#: src/features/chat/ui/existing-conversation-page.tsx:143
+#: src/features/chat/ui/existing-conversation-page.tsx:142
 msgid "Conversation \"{title}\""
 msgstr "Conversation \"{title}\""
 
-#: src/features/chat/ui/existing-conversation-page.tsx:144
+#: src/features/chat/ui/existing-conversation-page.tsx:143
 msgid "Conversation without title (yet)"
 msgstr "Conversation without title (yet)"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:148
+#: src/features/chat/ui/existing-conversation-page.tsx:147
 msgid "New title for conversation"
 msgstr "New title for conversation"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:185
-#: src/features/chat/ui/new-conversation-page.tsx:53
+#: src/features/chat/ui/existing-conversation-page.tsx:184
+#: src/features/chat/ui/new-conversation-page.tsx:52
 msgid "Message content"
 msgstr "Message content"
 
-#: src/features/chat/ui/existing-conversation-page.tsx:204
-#: src/features/chat/ui/new-conversation-page.tsx:72
+#: src/features/chat/ui/existing-conversation-page.tsx:203
+#: src/features/chat/ui/new-conversation-page.tsx:71
 msgid "Send"
 msgstr "Send"
 
@@ -71,43 +71,43 @@ msgstr "Previous"
 msgid "Next"
 msgstr "Next"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:48
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:47
 msgid "Regenerate"
 msgstr "Regenerate"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:55
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:54
 msgid "Message from agent"
 msgstr "Message from agent"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:59
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:58
 msgid "Failed during generation"
 msgstr "Failed during generation"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:64
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:63
 msgid "Correctly finished"
 msgstr "Correctly finished"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:69
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:68
 msgid "Generation in progress"
 msgstr "Generation in progress"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:76
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:75
 msgid "Interrupt"
 msgstr "Interrupt"
 
-#: src/features/chat/ui/messages-list/message-from-agent.tsx:82
+#: src/features/chat/ui/messages-list/message-from-agent.tsx:81
 msgid "Generation interrupted"
 msgstr "Generation interrupted"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:44
+#: src/features/chat/ui/messages-list/message-from-user.tsx:43
 msgid "Message from user"
 msgstr "Message from user"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:48
+#: src/features/chat/ui/messages-list/message-from-user.tsx:47
 msgid "New content for message"
 msgstr "New content for message"
 
-#: src/features/chat/ui/messages-list/message-from-user.tsx:62
+#: src/features/chat/ui/messages-list/message-from-user.tsx:61
 msgid "Edit message"
 msgstr "Edit message"
 
@@ -119,25 +119,25 @@ msgstr "Content"
 msgid "Reasoning..."
 msgstr "Reasoning..."
 
-#: src/features/chat/ui/new-conversation-page.tsx:39
+#: src/features/chat/ui/new-conversation-page.tsx:38
 msgid "Chat page"
 msgstr "Chat page"
 
-#: src/features/home/ui/home-layout.tsx:43
-#: src/features/home/ui/sign-in-page.tsx:97
+#: src/features/home/ui/home-layout.tsx:42
+#: src/features/home/ui/sign-in-page.tsx:96
 msgid "Sign in"
 msgstr "Sign in"
 
-#: src/features/home/ui/home-layout.tsx:46
-#: src/features/home/ui/sign-up-page.tsx:93
+#: src/features/home/ui/home-layout.tsx:45
+#: src/features/home/ui/sign-up-page.tsx:92
 msgid "Sign up"
 msgstr "Sign up"
 
-#: src/features/home/ui/home-layout.tsx:51
+#: src/features/home/ui/home-layout.tsx:50
 msgid "English"
 msgstr "English"
 
-#: src/features/home/ui/home-layout.tsx:54
+#: src/features/home/ui/home-layout.tsx:53
 msgid "Polish"
 msgstr "Polish"
 
@@ -149,20 +149,20 @@ msgstr "Unfortunately, it looks like you're lost :("
 msgid "Home page"
 msgstr "Home page"
 
-#: src/features/home/ui/sign-in-page.tsx:64
+#: src/features/home/ui/sign-in-page.tsx:63
 msgid "Sign in page"
 msgstr "Sign in page"
 
-#: src/features/home/ui/sign-in-page.tsx:83
-#: src/features/home/ui/sign-up-page.tsx:63
+#: src/features/home/ui/sign-in-page.tsx:82
+#: src/features/home/ui/sign-up-page.tsx:62
 msgid "Username"
 msgstr "Username"
 
-#: src/features/home/ui/sign-up-page.tsx:42
+#: src/features/home/ui/sign-up-page.tsx:41
 msgid "Sign up page"
 msgstr "Sign up page"
 
-#: src/features/home/ui/sign-up-page.tsx:78
+#: src/features/home/ui/sign-up-page.tsx:77
 msgid "Device name"
 msgstr "Device name"
 

@@ -66,6 +66,7 @@ packageManagerStrictVersion: true
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
   "@stylexjs/eslint-plugin@0.18.3": patches/@stylexjs__eslint-plugin.patch
+  "@stylexjs/stylex@0.18.3": patches/@stylexjs__stylex.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

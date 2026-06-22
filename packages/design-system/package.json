@@ -23,8 +23,8 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc --noCheck && tsc-alias",
-		"dev": "tsc --noCheck && tsc-alias",
+		"build": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
+		"dev": "tsc --build --noCheck && tsc-alias --project tsconfig.source.json",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"typecheck": "tsc --build --noEmit"

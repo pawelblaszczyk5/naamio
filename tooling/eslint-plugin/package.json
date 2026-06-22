@@ -13,8 +13,8 @@
 		}
 	},
 	"scripts": {
-		"build": "tsc --noCheck && tsc-alias",
-		"dev": "tsc --noCheck && tsc-alias",
+		"build": "tsc --build --noCheck && tsc-alias",
+		"dev": "tsc --build --noCheck && tsc-alias",
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {

@@ -55,7 +55,10 @@ disallowWorkspaceCycles: true
 engineStrict: true
 linkWorkspacePackages: true
 managePackageManagerVersions: true
-minimumReleaseAge: 0
+minimumReleaseAge: 1440
+
+minimumReleaseAgeExclude:
+  - cnfast@0.0.8
 
 overrides:
   eslint: "catalog:"

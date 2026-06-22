@@ -230,7 +230,7 @@ export default defineConfig({
 				onlyIfContainsSeparator: false,
 			},
 		],
-		"unicorn/prevent-abbreviations": "off",
+		"unicorn/name-replacements": "off",
 		"unicorn/require-post-message-target-origin": "error",
 		"unicorn/no-unused-properties": "error",
 		"unicorn/throw-new-error": "off",

@@ -112,7 +112,7 @@ export const SettingsPage = () => {
 	const revokeSession = useRevokeSession();
 	const signOut = useSignOut();
 
-	const formatter = Intl.DateTimeFormat(language);
+	const formatter = new Intl.DateTimeFormat(language);
 
 	return (
 		<div>

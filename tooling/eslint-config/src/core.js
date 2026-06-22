@@ -1,6 +1,5 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import preferArrowFunctions from "eslint-plugin-prefer-arrow-functions";
 import fp from "eslint-plugin-fp";
 import importX from "eslint-plugin-import-x";
 import gitignore from "eslint-config-flat-gitignore";
@@ -55,7 +54,7 @@ export default defineConfig({
 	name: "naamio/core",
 	files: ["**/*.{ts,tsx,js,jsx}"],
 	linterOptions: { reportUnusedDisableDirectives: "error", reportUnusedInlineConfigs: "error" },
-	plugins: { "prefer-arrow-functions": preferArrowFunctions, fp, "import-x": importX, "no-secrets": noSecrets },
+	plugins: { fp, "import-x": importX, "no-secrets": noSecrets },
 	settings: { "import-x/extensions": [".ts", ".tsx", ".js"], "import-x/resolver": { typescript: true, node: true } },
 	extends: [
 		gitignore(),
@@ -189,12 +188,6 @@ export default defineConfig({
 		"@eslint-community/eslint-comments/no-unused-disable": "error",
 		"@eslint-community/eslint-comments/require-description": "error",
 
-		// prefer-arrow-functions
-		"prefer-arrow-functions/prefer-arrow-functions": [
-			"error",
-			{ classPropertiesAllowed: true, disallowPrototype: true, returnStyle: "unchanged", singleReturnOnly: false },
-		],
-
 		// fp
 		"fp/no-arguments": "error",
 		"fp/no-delete": "error",
@@ -240,6 +233,18 @@ export default defineConfig({
 		"unicorn/prefer-array-flat": "off",
 		"unicorn/number-literal-case": "off",
 		"unicorn/max-nested-calls": "off",
+		"unicorn/consistent-function-style": [
+			"error",
+			{
+				default: "arrow-function",
+				namedFunctions: "arrow-function",
+				namedExports: "arrow-function",
+				callbacks: "arrow-function",
+				objectProperties: "arrow-function",
+				reassignedVariables: "arrow-function",
+				typedVariables: "arrow-function",
+			},
+		],
 
 		// perfectionist overrides
 		"perfectionist/sort-modules": "off",

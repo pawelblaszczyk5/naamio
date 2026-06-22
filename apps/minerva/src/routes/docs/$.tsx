@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define -- this is Fumadocs setup */
+
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useFumadocsLoader } from "fumadocs-core/source/client";

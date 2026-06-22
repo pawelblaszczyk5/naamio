@@ -12,8 +12,5 @@ export default defineConfig(
 		languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
 	},
 	{ files: ["vite.config.ts", "source.config.ts"], rules: { "import-x/no-default-export": "off" } },
-	{
-		files: ["src/routes/**"],
-		rules: { "naamio/no-index-file": "off", "@typescript-eslint/no-use-before-define": "off" },
-	},
+	{ files: ["src/routes/**"], rules: { "naamio/no-index-file": "off" } },
 );

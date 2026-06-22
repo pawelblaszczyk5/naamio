@@ -114,7 +114,6 @@ overrides:
   eslint-import-resolver-typescript>eslint-plugin-import: '-'
   react: 19.3.0-canary-b1786c31-20260618
   react-dom: 19.3.0-canary-b1786c31-20260618
-  turbo: 2.9.18
 
 patchedDependencies:
   '@babel/preset-typescript@7.28.5': ee9804e542a66f0c266a5cab5343f3983738f1bda5347c5dcf24cc8b7d0b6762
@@ -151,7 +150,7 @@ importers:
         specifier: ^19.14.1
         version: 19.14.1
       turbo:
-        specifier: 2.9.18
+        specifier: ^2.9.18
         version: 2.9.18
       typescript:
         specifier: 'catalog:'

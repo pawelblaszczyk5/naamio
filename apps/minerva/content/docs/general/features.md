@@ -1,3 +1,8 @@
+---
+title: Features
+description: List of various features and ideas
+---
+
 # Features
 
 Non-comprehensive list of important, user-facing features that are currently planned (and aren't documented somewhere else):
@@ -12,6 +17,6 @@ Non-comprehensive list of important, user-facing features that are currently pla
 ## Outside
 
 - Storybook
-- My own set of evaluations for deciding models <Badge type="tip" text="Future" />
-- Analytics, feature flags <Badge type="tip" text="Future" />
-- Observability <Badge type="tip" text="Future" />
+- My own set of evaluations for deciding models
+- Analytics, feature flags
+- Observability

@@ -10,7 +10,8 @@
 		".gitignore",
 		".vscode/",
 		"LICENSE.md",
-		"patches/"
+		"patches/",
+		"routeTree.gen.ts"
 	],
 	"dictionaries": ["lorem-ipsum"],
 	"useGitignore": true,
@@ -29,10 +30,13 @@
 	"ignoreWords": [
 		"arkregex",
 		"caddyfile",
+		"cnfast",
 		"fontaine",
 		"fontsource",
+		"fumadocs",
 		"httpapi",
 		"lingui",
+		"llms",
 		"pawelblaszczyk",
 		"predev",
 		"rolldown",

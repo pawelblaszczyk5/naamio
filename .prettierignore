@@ -1,2 +1,2 @@
 pnpm-lock.yaml
-apps/janus/src/routeTree.gen.ts
+routeTree.gen.ts

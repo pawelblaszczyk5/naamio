@@ -106,7 +106,7 @@ export default defineConfig({
 		"no-template-curly-in-string": "error",
 		"no-undef": "off",
 		"no-undef-init": "error",
-		"no-underscore-dangle": ["error", { allow: ["_tag"] }],
+		"no-underscore-dangle": ["error", { allow: ["_tag", "_splat"] }],
 		"no-unneeded-ternary": "error",
 		"no-useless-call": "error",
 		"no-useless-computed-key": "error",

@@ -3,19 +3,44 @@
 	"description": "Documentation for the Naamio system",
 	"sideEffects": false,
 	"type": "module",
+	"imports": {
+		"#src/*": "./src/*",
+		"#collections/*": "./.source/*"
+	},
 	"scripts": {
-		"build": "vitepress build src",
-		"dev": "vitepress dev src",
+		"build": "vite build",
+		"dev": "vite dev",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "vitepress preview src --port 6202",
+		"prepare": "fumadocs-mdx",
+		"preview": "node server.ts",
 		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@hono/node-server": "catalog:",
+		"@tanstack/react-router": "catalog:",
+		"@tanstack/react-start": "catalog:",
+		"cnfast": "^0.0.8",
+		"fumadocs-core": "^16.10.5",
+		"fumadocs-mdx": "^15.0.12",
+		"fumadocs-ui": "^16.10.5",
+		"hono": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"vite": "catalog:",
+		"zod": "^4.4.3"
 	},
 	"devDependencies": {
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
+		"@tailwindcss/vite": "^4.3.1",
+		"@types/mdx": "^2.0.14",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "catalog:",
 		"eslint": "catalog:",
-		"oxc-minify": "^0.137.0",
-		"vitepress": "2.0.0-alpha.17"
+		"tailwindcss": "^4.3.1",
+		"typescript": "catalog:"
 	}
 }

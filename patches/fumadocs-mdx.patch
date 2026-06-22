@@ -1,0 +1,22 @@
+diff --git a/dist/index-file-C9Bw7He1.js b/dist/index-file-C9Bw7He1.js
+index 008d57c975b593bcf1f20d03250dc2d7088b1004..345c6b8b079d9dcc48a0f7290b0bae77ba62ce45 100644
+--- a/dist/index-file-C9Bw7He1.js
++++ b/dist/index-file-C9Bw7He1.js
+@@ -111,7 +111,7 @@ function indexFile(options = {}) {
+ }
+ async function generateServerIndexFile(ctx) {
+ 	const { core, codegen, serverOptions, tc } = ctx;
+-	codegen.lines.push(`import { server } from 'fumadocs-mdx/runtime/server';`, `import type * as Config from '${codegen.formatImportPath(core.getOptions().configPath)}';`, "", `const create = server<typeof Config, ${tc}>(${JSON.stringify(serverOptions)});`);
++	codegen.lines.push(`import { server } from 'fumadocs-mdx/runtime/server';`, `import type * as Config from '${codegen.formatImportPath(core.getOptions().configPath)}.js';`, "", `const create = server<typeof Config, ${tc}>(${JSON.stringify(serverOptions)});`);
+ 	async function generateCollectionObject(collection) {
+ 		const base = getBase(collection);
+ 		switch (collection.type) {
+@@ -202,7 +202,7 @@ async function generateDynamicIndexFile(ctx) {
+ }
+ async function generateBrowserIndexFile(ctx) {
+ 	const { core, codegen, tc } = ctx;
+-	codegen.lines.push(`import { browser } from 'fumadocs-mdx/runtime/browser';`, `import type * as Config from '${codegen.formatImportPath(core.getOptions().configPath)}';`, "", `const create = browser<typeof Config, ${tc}>();`);
++	codegen.lines.push(`import { browser } from 'fumadocs-mdx/runtime/browser';`, `import type * as Config from '${codegen.formatImportPath(core.getOptions().configPath)}.js';`, "", `const create = browser<typeof Config, ${tc}>();`);
+ 	async function generateCollectionObject(collection) {
+ 		switch (collection.type) {
+ 			case "docs":

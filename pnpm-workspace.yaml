@@ -1,4 +1,4 @@
-# cspell:ignore esbuild, unrs, msgpackr, vitest, subdeps
+# cspell:ignore esbuild, unrs, msgpackr, vitest, subdeps, hono
 packages:
   - apps/*
   - packages/*
@@ -24,6 +24,7 @@ catalog:
   "@effect/vitest": 4.0.0-beta.85
   "@electric-sql/client": ^1.5.21
   "@fontsource-variable/ibm-plex-sans": ^5.2.8
+  "@hono/node-server": ^2.0.5
   "@rolldown/plugin-babel": ^0.2.3
   "@stylexjs/babel-plugin": ^0.19.0
   "@stylexjs/eslint-plugin": ^0.19.0
@@ -32,12 +33,15 @@ catalog:
   "@types/node": ^26.0.0
   "@types/react": ^19.2.17
   "@types/react-dom": ^19.2.3
+  "@tanstack/react-router": ^1.170.16
+  "@tanstack/react-start": ^1.168.26
   "@typescript-eslint/utils": ^8.61.1
   "@vitejs/plugin-react": ^6.0.2
   babel-plugin-react-compiler: ^1.0.0
   effect: 4.0.0-beta.85
   eslint: ^10.5.0
   fontaine: ^0.8.0
+  hono: ^4.12.26
   react: 19.3.0-canary-b1786c31-20260618
   react-dom: 19.3.0-canary-b1786c31-20260618
   tsc-alias: ^1.8.17
@@ -59,13 +63,13 @@ overrides:
   react: "catalog:"
   react-dom: "catalog:"
   turbo: 2.9.18
-  vite: "catalog:"
 
 packageManagerStrictVersion: true
 
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
   "@stylexjs/stylex": patches/@stylexjs__stylex.patch
+  fumadocs-mdx: patches/fumadocs-mdx.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

@@ -1,3 +1,8 @@
+---
+title: Flow
+description: In-depth chat mechanisms dive in
+---
+
 # Flow
 
 The chat coordination is a bit tricky because of a lot of pieces that influence technical decisions behind how things work. Hence, I want to document everything for further reference and for better understanding of the flow.

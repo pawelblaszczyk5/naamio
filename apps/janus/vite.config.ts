@@ -97,7 +97,6 @@ export default defineConfig((environment) => {
 				},
 			},
 		},
-
 		optimizeDeps: { include: ["react/compiler-runtime"] },
 		plugins: [
 			tanstackStart({ importProtection: { behavior: "error" }, router: { addExtensions: true } }),

@@ -1,6 +1,6 @@
 name: "naamio"
 
-# cspell:ignore initdb, tmpfs, axllent, caddyfile, orbstack, electricsql
+# cspell:ignore initdb, tmpfs, electricsql
 
 services:
   postgres:
@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example_root_password_123
+    ports:
+      - 6206:5432
     volumes:
       - postgres_data:/var/lib/postgresql
       - ./config/init-postgres-databases.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh:ro
@@ -24,8 +26,10 @@ services:
   electric:
     image: electricsql/electric:1.7.2
     restart: unless-stopped
+    ports:
+      - 6207:3000
     environment:
-      DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres.naamio.orb.local:5432/naamio_app
+      DATABASE_URL: postgresql://naamio_electric:example_electric_password_123@postgres:5432/naamio_app
       ELECTRIC_SECRET: example_electric_secret_123
       ELECTRIC_STORAGE_DIR: /var/lib/electric/persistent
     volumes:
@@ -36,20 +40,17 @@ services:
   otel-lgtm:
     image: grafana/otel-lgtm:0.28.0
     restart: unless-stopped
+    ports:
+      - 6208:4318
+      - 6209:3000
     volumes:
       - otel_data:/data
-
-  caddy:
-    image: caddy:2.11.4-alpine
-    restart: unless-stopped
-    volumes:
-      - ./config/Caddyfile:/etc/caddy/Caddyfile
-    labels:
-      - dev.orbstack.domains=janus.naamio.orb.local,mercury.naamio.orb.local,minerva.naamio.orb.local,vulcan.naamio.orb.local
 
   drizzle-gateway:
     image: ghcr.io/drizzle-team/gateway:1.3.0
     restart: unless-stopped
+    ports:
+      - 6210:4983
     volumes:
       - drizzle_data:/app
 

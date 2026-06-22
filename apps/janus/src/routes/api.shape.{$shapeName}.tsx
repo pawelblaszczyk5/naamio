@@ -52,8 +52,7 @@ export const Route = createFileRoute("/api/shape/{$shapeName}")({
 					const response = yield* naamioHttpClient.get(url);
 
 					const body = Stream.toReadableStream(response.stream);
-					// TODO [2026-06-30]: I shouldn't really remove the cache-control is a hack workaround for now
-					const headers = Headers.removeMany(response.headers, ["Content-Encoding", "Content-Length", "Cache-Control"]);
+					const headers = Headers.removeMany(response.headers, ["Content-Encoding", "Content-Length"]);
 
 					const varyValue = Option.match(Headers.get(headers, "Vary"), {
 						onNone: () => "Cookie",

@@ -1,0 +1,41 @@
+janus.naamio.localhost {
+	reverse_proxy localhost:6200 {
+		flush_interval -1
+	}
+	encode gzip
+	header {
+		Cache-Control "no-cache, no-transform"
+		X-Accel-Buffering "no"
+	}
+}
+
+http://mercury.naamio.localhost {
+	reverse_proxy localhost:6201 {
+		flush_interval -1
+	}
+	encode gzip
+	header {
+		Cache-Control "no-cache, no-transform"
+		X-Accel-Buffering "no"
+	}
+}
+
+minerva.naamio.localhost {
+	reverse_proxy localhost:6202
+	encode gzip
+}
+
+vulcan.naamio.localhost {
+	reverse_proxy localhost:6203
+	encode gzip
+}
+
+otel.naamio.localhost {
+	reverse_proxy localhost:6209
+	encode gzip
+}
+
+drizzle-gateway.naamio.localhost {
+	reverse_proxy localhost:6210
+	encode gzip
+}

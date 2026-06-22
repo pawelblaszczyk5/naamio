@@ -28,6 +28,7 @@
 	"enableGlobDot": true,
 	"ignoreWords": [
 		"arkregex",
+		"caddyfile",
 		"fontaine",
 		"fontsource",
 		"httpapi",

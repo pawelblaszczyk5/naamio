@@ -1,0 +1,9 @@
+{
+	"name": "@naamio/proxy",
+	"description": "Proxy for local development with HTTPS/h2 and nice domains",
+	"type": "module",
+	"scripts": {
+		"dev": "caddy run -c ./Caddyfile",
+		"preview": "caddy run -c ./Caddyfile"
+	}
+}

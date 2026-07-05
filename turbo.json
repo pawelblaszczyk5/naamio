@@ -1,6 +1,8 @@
 {
 	"$schema": "./node_modules/turbo/schema.json",
 	"ui": "tui",
+	"cacheMaxAge": "7d",
+	"cacheMaxSize": "10GB",
 	"tasks": {
 		"lint": { "dependsOn": ["^build"] },
 		"lint:fix": { "dependsOn": ["^build"], "cache": false },

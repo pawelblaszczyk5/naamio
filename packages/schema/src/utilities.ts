@@ -1,7 +1,7 @@
 import { Option, Redacted, Schema, SchemaGetter } from "effect";
 
 // NOTE this is used for objects returned from 3rd party code that doesn't differentiate between optionality and nullability, that's a bit of a workaround
-export const optionalWithExactOptionalPropertyKeysCompat = <T extends Schema.Top>(schema: T) =>
+export const optionalWithExactOptionalPropertyKeysCompat = <T extends Schema.Constraint>(schema: T) =>
 	Schema.optional(schema).pipe(
 		Schema.decodeTo(Schema.optionalKey(schema), {
 			decode: SchemaGetter.transformOptional(Option.filter((value) => value !== undefined)),
@@ -17,7 +17,7 @@ export const ArrayFromString = (separator?: string) =>
 		}),
 	);
 
-export const unsafeEncodableRedactedFromValue = <T extends Schema.Top>(
+export const unsafeEncodableRedactedFromValue = <T extends Schema.Constraint>(
 	schema: T,
 	options?: { readonly label?: string | undefined },
 ) =>

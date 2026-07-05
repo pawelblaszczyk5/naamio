@@ -24,9 +24,9 @@
 		"@naamio/id-generator": "workspace:",
 		"@naamio/observability": "workspace:",
 		"@naamio/schema": "workspace:",
-		"@simplewebauthn/server": "^13.3.1",
+		"@simplewebauthn/server": "^13.3.2",
 		"effect": "catalog:",
-		"nanoid": "^5.1.15",
+		"nanoid": "^5.1.16",
 		"tsx": "catalog:"
 	},
 	"devDependencies": {

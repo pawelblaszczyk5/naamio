@@ -246,6 +246,7 @@ export default defineConfig({
 		],
 		"unicorn/no-non-function-verb-prefix": "off",
 		"unicorn/prefer-includes-over-repeated-comparisons": "off",
+		"unicorn/consistent-boolean-name": "off",
 
 		// perfectionist overrides
 		"perfectionist/sort-modules": "off",

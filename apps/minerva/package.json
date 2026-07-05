@@ -21,9 +21,9 @@
 		"@tanstack/react-router": "catalog:",
 		"@tanstack/react-start": "catalog:",
 		"cnfast": "^0.0.8",
-		"fumadocs-core": "^16.10.5",
-		"fumadocs-mdx": "^15.0.12",
-		"fumadocs-ui": "^16.10.5",
+		"fumadocs-core": "^16.10.7",
+		"fumadocs-mdx": "^15.0.13",
+		"fumadocs-ui": "^16.10.7",
 		"hono": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",
@@ -33,14 +33,14 @@
 	"devDependencies": {
 		"@naamio/eslint-config": "workspace:",
 		"@naamio/typescript-config": "workspace:",
-		"@tailwindcss/vite": "^4.3.1",
+		"@tailwindcss/vite": "^4.3.2",
 		"@types/mdx": "^2.0.14",
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "catalog:",
 		"eslint": "catalog:",
-		"tailwindcss": "^4.3.1",
+		"tailwindcss": "^4.3.2",
 		"typescript": "catalog:"
 	}
 }

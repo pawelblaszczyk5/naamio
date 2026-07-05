@@ -35,18 +35,18 @@
 	},
 	"devDependencies": {
 		"@cspell/dict-pl_pl": "^3.0.6",
-		"actions-up": "^1.14.3",
+		"actions-up": "^1.16.0",
 		"cspell": "^10.0.1",
-		"prettier": "^3.8.4",
+		"prettier": "^3.9.4",
 		"prettier-plugin-embed": "^0.5.1",
 		"prettier-plugin-sql": "^0.20.0",
 		"sort-package-json": "^4.0.0",
 		"taze": "^19.14.1",
-		"turbo": "^2.9.18",
+		"turbo": "^2.10.3",
 		"typescript": "catalog:"
 	},
-	"packageManager": "pnpm@11.8.0",
+	"packageManager": "pnpm@11.9.0",
 	"engines": {
-		"node": "26.3.1"
+		"node": "26.4.0"
 	}
 }

@@ -6,7 +6,7 @@ const main = defineMain({
 	stories: ["../src/stories/**/*.stories.@(ts|tsx)"],
 	viteFinal: (config) => {
 		if (config.server && typeof config.server.hmr === "object") {
-			// eslint-disable-next-line fp/no-delete -- I'm not 100% sure why Storybook is setting this, this makes it impossible to work behind reverse proxy
+			// eslint-disable-next-line fp/no-delete, @typescript-eslint/no-deprecated -- I'm not 100% sure why Storybook is setting this, this makes it impossible to work behind reverse proxy
 			delete config.server.hmr.port;
 		}
 

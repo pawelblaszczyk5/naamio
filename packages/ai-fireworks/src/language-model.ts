@@ -513,7 +513,7 @@ const unsupportedSchemaError = (error: unknown, method: string): AiError.AiError
 		reason: new AiError.UnsupportedSchemaError({ description: error instanceof Error ? error.message : String(error) }),
 	});
 
-const tryJsonSchema = (schema: Schema.Top, method: string) =>
+const tryJsonSchema = (schema: Schema.Constraint, method: string) =>
 	Effect.try({
 		catch: (error) => unsupportedSchemaError(error, method),
 		try: () => Tool.getJsonSchemaFromSchema(schema, { transformer: OpenAiStructuredOutput.toCodecOpenAI }),
@@ -935,11 +935,7 @@ const make = Effect.fnUntraced(function* (options: {
 		| Partial<Omit<typeof QwenConfig.Service, "model">>
 		| undefined;
 	readonly configContext:
-		| typeof DeepseekConfig
-		| typeof GlmConfig
-		| typeof KimiConfig
-		| typeof MinimaxConfig
-		| typeof QwenConfig;
+		typeof DeepseekConfig | typeof GlmConfig | typeof KimiConfig | typeof MinimaxConfig | typeof QwenConfig;
 	readonly model: DeepseekModel | GlmModel | KimiModel | MinimaxModel | QwenModel;
 }): Effect.fn.Return<LanguageModel.Service, never, FireworksClient> {
 	const client = yield* FireworksClient;

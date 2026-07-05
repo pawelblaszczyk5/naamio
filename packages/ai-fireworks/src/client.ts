@@ -10,16 +10,16 @@ import { Errors } from "#src/internal/errors.js";
 import { FireworksChatCompletionRequest } from "#src/internal/request-schema.js";
 import { FireworksChatCompletionChunk, FireworksChatCompletionResponse } from "#src/internal/response-schema.js";
 
-export type CreateResponseOptions = Omit<
+export type FireworksCreateResponseOptions = Omit<
 	FireworksChatCompletionRequest,
-	"contextLengthExceededBehavior" | "perfMetricsInResponse" | "safeTokenization" | "stream" | "streamOptions"
+	"contextLengthExceededBehavior" | "perfMetricsInResponse" | "stream" | "streamOptions"
 >;
 
-export type ChatCompletionStreamEvent = "[DONE]" | FireworksChatCompletionChunk;
+export type FireworksChatCompletionStreamEvent = "[DONE]" | FireworksChatCompletionChunk;
 
 const decodeChatCompletionChunk = Schema.decodeResult(Schema.fromJsonString(FireworksChatCompletionChunk));
 
-const decodeChatCompletionSseData = (data: string): Result.Result<ChatCompletionStreamEvent, unknown> => {
+const decodeChatCompletionSseData = (data: string): Result.Result<FireworksChatCompletionStreamEvent, unknown> => {
 	if (data === "[DONE]") {
 		return Result.succeed(data);
 	}
@@ -30,16 +30,16 @@ const decodeChatCompletionSseData = (data: string): Result.Result<ChatCompletion
 export interface Service {
 	readonly client: HttpClient.HttpClient;
 	readonly createResponse: (
-		options: CreateResponseOptions,
+		options: FireworksCreateResponseOptions,
 	) => Effect.Effect<
 		[parsedResponse: FireworksChatCompletionResponse, rawResponse: HttpClientResponse.HttpClientResponse],
 		AiError.AiError
 	>;
 	readonly createResponseStream: (
-		options: CreateResponseOptions,
+		options: FireworksCreateResponseOptions,
 	) => Effect.Effect<
 		[
-			parsedStream: Stream.Stream<ChatCompletionStreamEvent, AiError.AiError>,
+			parsedStream: Stream.Stream<FireworksChatCompletionStreamEvent, AiError.AiError>,
 			rawResponse: HttpClientResponse.HttpClientResponse,
 		],
 		AiError.AiError
@@ -75,7 +75,7 @@ export const make = Effect.fnUntraced(function* (options: Options) {
 	);
 
 	const makeRequestBody = Effect.fnUntraced(function* (
-		createResponseOptions: CreateResponseOptions,
+		createResponseOptions: FireworksCreateResponseOptions,
 		isStream: boolean,
 	) {
 		return FireworksChatCompletionRequest.make({

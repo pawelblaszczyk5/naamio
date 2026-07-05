@@ -17,7 +17,7 @@ import {
 } from "effect";
 import { AiError, LanguageModel, Model, OpenAiStructuredOutput, Tool } from "effect/unstable/ai";
 
-import type { ChatCompletionStreamEvent, CreateResponseOptions } from "#src/client.js";
+import type { FireworksChatCompletionStreamEvent, FireworksCreateResponseOptions } from "#src/client.js";
 import type {
 	DeepseekReasoningEffort,
 	FireworksChatCompletionRequest,
@@ -297,7 +297,7 @@ type AnyFireworksLanguageModelConfig = BaseFireworksLanguageModelConfig & {
 	readonly reasoningEffort: Option.Option<DeepseekReasoningEffort | KimiReasoningEffort | MiniMaxReasoningEffort>;
 };
 
-const annotateRequest = (span: Tracer.Span, request: CreateResponseOptions): void => {
+const annotateRequest = (span: Tracer.Span, request: FireworksCreateResponseOptions): void => {
 	addGenAIAnnotations(span, {
 		fireworks: {
 			request: {
@@ -746,7 +746,7 @@ const makeStreamResponse = Effect.fnUntraced(function* <Tools extends ReadonlyAr
 	rawResponse,
 	toolNameMapper,
 }: {
-	readonly parsedStream: Stream.Stream<ChatCompletionStreamEvent, AiError.AiError>;
+	readonly parsedStream: Stream.Stream<FireworksChatCompletionStreamEvent, AiError.AiError>;
 	readonly rawResponse: HttpClientResponse.HttpClientResponse;
 	readonly toolNameMapper: Tool.NameMapper<Tools>;
 }): Effect.fn.Return<Stream.Stream<Response.StreamPartEncoded, AiError.AiError>, AiError.AiError> {
@@ -996,7 +996,7 @@ const make = Effect.fnUntraced(function* (options: {
 		readonly config: AnyFireworksLanguageModelConfig;
 		readonly options: LanguageModel.ProviderOptions;
 		readonly toolNameMapper: Tool.NameMapper<Tools>;
-	}): Effect.fn.Return<CreateResponseOptions, AiError.AiError> {
+	}): Effect.fn.Return<FireworksCreateResponseOptions, AiError.AiError> {
 		const messages = yield* prepareMessages({ options, toolNameMapper });
 
 		const { toolChoice, tools } = yield* prepareTools({ options, toolNameMapper });

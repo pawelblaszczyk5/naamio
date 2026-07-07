@@ -1,8 +1,15 @@
 {
 	"$schema": "./node_modules/turbo/schema.json",
-	"ui": "tui",
-	"cacheMaxAge": "7d",
-	"cacheMaxSize": "10GB",
+	"global": { "cacheMaxAge": "7d", "cacheMaxSize": "10GB", "ui": "tui" },
+	"futureFlags": {
+		"affectedUsingTaskInputs": true,
+		"errorsOnlyShowHash": true,
+		"filterUsingTasks": true,
+		"globalConfiguration": true,
+		"longerSignatureKey": true,
+		"pruneIncludesGlobalFiles": true,
+		"watchUsingTaskInputs": true
+	},
 	"tasks": {
 		"lint": { "dependsOn": ["^build"] },
 		"lint:fix": { "dependsOn": ["^build"], "cache": false },

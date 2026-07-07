@@ -7,7 +7,6 @@ coverage/
 # artifacts
 .turbo/
 dist/
-.source/
 
 # misc
 .DS_Store

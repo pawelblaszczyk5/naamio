@@ -43,6 +43,7 @@ catalog:
   hono: ^4.12.28
   react: 19.3.0-canary-b1786c31-20260618
   react-dom: 19.3.0-canary-b1786c31-20260618
+  serve: ^14.2.6
   tsc-alias: ^1.9.0
   tsx: ^4.23.0
   typescript: ^6.0.3
@@ -67,7 +68,6 @@ packageManagerStrictVersion: true
 patchedDependencies:
   "@babel/preset-typescript@7.28.5": patches/@babel__preset-typescript.patch
   "@stylexjs/stylex": patches/@stylexjs__stylex.patch
-  fumadocs-mdx: patches/fumadocs-mdx.patch
   prettier-plugin-sql@0.20.0: patches/prettier-plugin-sql.patch
 
 saveWorkspaceProtocol: true

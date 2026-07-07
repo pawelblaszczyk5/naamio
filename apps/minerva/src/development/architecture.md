@@ -1,8 +1,3 @@
----
-title: Architecture
-description: Technical overview of the app architecture
----
-
 # Architecture
 
 The overall initial architecture will consist of two separate apps working in tandem to deliver the experience to user. This is intentionally done this way, to mimic what would standard bigger projects use. Collocating API with your SSR framework doesn't really scale, regardless of what someone told you. Moreover, I'll use `Electric` for synchronizing the state between clients and the database - more on that later.

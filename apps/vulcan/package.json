@@ -40,7 +40,7 @@
 		"babel-plugin-react-compiler": "catalog:",
 		"eslint": "catalog:",
 		"fontaine": "catalog:",
-		"serve": "^14.2.6",
+		"serve": "catalog:",
 		"storybook": "^10.4.6",
 		"typescript": "catalog:",
 		"vite": "catalog:"

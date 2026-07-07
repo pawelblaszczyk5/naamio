@@ -1,0 +1,7 @@
+[book]
+title = "Naamio"
+authors = ["pawelblaszczyk5"]
+language = "en-US"
+
+[build]
+build-dir = "dist"

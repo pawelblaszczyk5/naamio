@@ -1,11 +1,8 @@
----
-title: Home
-description: Your favorite AI assistant
----
+# Intro
 
 Documentation is often skipped in a lot of projects I work everyday. I want to try document the development process, try to approach things from a different perspective than usual. This way, I'll learn a different way of doing. Moreover, this place will document various things that are related to highly-technical side of the project.
 
-# What is Naamio?
+## What is Naamio?
 
 Naamio is supposed to be my own AI chat app. ChatGPT free limits are getting more and more painful and I want to utilize AI more for various stuff.
 
@@ -13,17 +10,8 @@ However, I'm not fully satisfied with any current solution. I'm a programmer tho
 
 That's also supposed to be a bit of a proving grounds, before starting to build other, bigger apps that I want to build, but I have a creative block a bit.
 
-<Cards>
-	<Card
-		icon="🤖"
-		title="AI"
-		description="All the most powerful models at the tips of your fingers, just when you need them"
-	/>
-	<Card
-		icon="✨"
-		title="Seamless experience"
-		description="Slick, pretty, everything you want from a modern web application"
-	/>
-	<Card icon="🛠️" title="Integrations" description="Powered via access to multiple tools" />
-	<Card icon="🌀" title="Proving grounds" description="That's still my side project" />
-</Cards>
+## Key points
+
+- Slick, pretty, everything you want from a modern web application
+- Integrated with multiple tools
+- That's still my side project

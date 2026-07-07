@@ -1,8 +1,3 @@
----
-title: Features
-description: List of various features and ideas
----
-
 # Features
 
 Non-comprehensive list of important, user-facing features that are currently planned (and aren't documented somewhere else):

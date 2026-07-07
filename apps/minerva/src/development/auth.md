@@ -1,15 +1,10 @@
----
-title: Auth
-description: Deep dive into auth module
----
-
 # Auth
 
 When talking about the auth flow, there are two main focuses that are worth discussing. How the auth will work with the app being split and how user could auth themselves into the app. Let's talk about them, one-by-one.
 
 ## Split between applications
 
-As mentioned in [Architecture](/docs/development/architecture) overview there'll be a separate API app, which will serve the web app at the beginning but could potentially scale to other clients as well in the future. That requires a bit more sophisticated session handling than what I've already used.
+As mentioned in [Architecture](/development/architecture.html) overview there'll be a separate API app, which will serve the web app at the beginning but could potentially scale to other clients as well in the future. That requires a bit more sophisticated session handling than what I've already used.
 
 For a moment I considered making API black box which would be accessible only from private networking and it'd just straight up accept user ID and act on it. In that scenario, each app would have its own sessions system and the API would act on IDs which would be 100% to be valid/correct/authed. However, that makes it hard to e.g. making a pure SPA, VSCode extension, TUI or mobile app. Each of these would need an additional proxy API which would handle that. Moreover, you couldn't log out from all apps at once, because they'd be completely separate systems.
 

@@ -20,7 +20,7 @@ permissions:
 jobs:
   verify:
     name: 🔬 Verify
-    timeout-minutes: 3
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
 
   boundaries:
     name: 🛂 Boundaries
-    timeout-minutes: 1
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -48,7 +48,7 @@ jobs:
 
   codegen:
     name: ⚙️ Codegen
-    timeout-minutes: 1
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

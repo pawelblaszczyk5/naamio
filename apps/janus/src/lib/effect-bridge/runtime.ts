@@ -1,4 +1,4 @@
-import { Layer, Logger, ManagedRuntime } from "effect";
+import { Layer, ManagedRuntime } from "effect";
 
 import { ObservabilityLayer } from "@naamio/observability";
 
@@ -12,11 +12,15 @@ const EnvironmentLayer = Layer.mergeAll(
 	NaamioApiClient.layer,
 	NaamioUrlBuilder.layer,
 	CookieSigner.layer,
-).pipe(Layer.provideMerge([ObservabilityLayer, Logger.layer([Logger.consolePretty({ colors: true })])]));
+).pipe(Layer.provideMerge(ObservabilityLayer));
 
 const symbol = Symbol.for("@naamio/janus/RuntimeContainer");
 
 const createRuntimeWithHmrDisposing = () => {
+	if (import.meta.env.PROD) {
+		return ManagedRuntime.make(EnvironmentLayer);
+	}
+
 	const globalThisExtended = globalThis as typeof globalThis & { [symbol]?: ManagedRuntime.ManagedRuntime<any, any> };
 
 	const existingRuntime = globalThisExtended[symbol];

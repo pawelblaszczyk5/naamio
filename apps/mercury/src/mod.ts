@@ -1,5 +1,5 @@
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
-import { Config, Effect, Layer, Logger } from "effect";
+import { Config, Effect, Layer } from "effect";
 import { HttpRouter } from "effect/unstable/http";
 import { HttpApiSwagger } from "effect/unstable/httpapi";
 import { createServer } from "node:http";
@@ -27,9 +27,6 @@ const HttpLayer = NaamioApiServerLayer.pipe(
 	),
 );
 
-const EnvironmentLayer = HttpLayer.pipe(
-	Layer.merge(Jobs),
-	Layer.provide([ObservabilityLayer, Logger.layer([Logger.consolePretty({ colors: true })])]),
-);
+const EnvironmentLayer = HttpLayer.pipe(Layer.merge(Jobs), Layer.provide(ObservabilityLayer));
 
 EnvironmentLayer.pipe(Layer.launch, NodeRuntime.runMain);

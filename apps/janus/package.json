@@ -14,7 +14,7 @@
 		"i18n:extract": "lingui extract",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"preview": "wait-on tcp:mercury.naamio.localhost:80 tcp:6208 && node --env-file=.env server.ts",
+		"preview": "wait-on tcp:mercury.naamio.localhost:80 tcp:6208 && NODE_ENV=production node --env-file=.env server.ts",
 		"test": "vitest run",
 		"test:dev": "vitest dev",
 		"typecheck": "tsc --build --noEmit"

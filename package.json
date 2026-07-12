@@ -37,16 +37,16 @@
 		"@cspell/dict-pl_pl": "^3.0.6",
 		"actions-up": "^1.16.0",
 		"cspell": "^10.0.1",
-		"prettier": "^3.9.4",
+		"prettier": "^3.9.5",
 		"prettier-plugin-embed": "^0.5.1",
 		"prettier-plugin-sql": "^0.20.0",
 		"sort-package-json": "^4.0.0",
 		"taze": "^19.14.1",
-		"turbo": "^2.10.3",
+		"turbo": "^2.10.4",
 		"typescript": "catalog:"
 	},
-	"packageManager": "pnpm@11.10.0",
+	"packageManager": "pnpm@11.11.0",
 	"engines": {
-		"node": "26.4.0"
+		"node": "26.5.0"
 	}
 }

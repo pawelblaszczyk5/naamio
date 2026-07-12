@@ -9,4 +9,4 @@ export const ObservabilityLayer = Layer.unwrap(
 
 		return Otlp.layerJson({ baseUrl: BASE_URL, resource: { serviceName: SERVICE_NAME } });
 	}),
-).pipe(Layer.provide(NodeHttpClient.layerNodeHttp));
+).pipe(Layer.provide(NodeHttpClient.layerUndici));

@@ -224,5 +224,5 @@ export class Electric extends Context.Service<
 				},
 			});
 		}),
-	).pipe(Layer.provide([DatabaseLayer, NodeHttpClient.layerNodeHttp]));
+	).pipe(Layer.provide([DatabaseLayer, NodeHttpClient.layerUndici]));
 }

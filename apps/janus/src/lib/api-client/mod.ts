@@ -38,7 +38,7 @@ export class NaamioHttpClient extends Context.Service<NaamioHttpClient, HttpClie
 
 			return NaamioHttpClient.of(httpClient);
 		}),
-	).pipe(Layer.provide(NodeHttpClient.layerNodeHttp)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
+	).pipe(Layer.provide(NodeHttpClient.layerUndici)) satisfies Layer.Layer<NaamioHttpClient, unknown>;
 }
 
 export class NaamioUrlBuilder extends Context.Service<NaamioUrlBuilder, HttpApiClient.UrlBuilder<typeof NaamioApi>>()(

@@ -7,8 +7,7 @@
 		"filterUsingTasks": true,
 		"globalConfiguration": true,
 		"longerSignatureKey": true,
-		"pruneIncludesGlobalFiles": true,
-		"watchUsingTaskInputs": true
+		"pruneIncludesGlobalFiles": true
 	},
 	"tasks": {
 		"lint": { "dependsOn": ["^build"] },
